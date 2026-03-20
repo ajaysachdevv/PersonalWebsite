@@ -1,0 +1,11 @@
+node_modules/
+package.json
+package-lock.json
+docs/
+demos/
+_archive/
+mockups/
+.claude/
+.mcp.json
+.claudeignore
+*.log

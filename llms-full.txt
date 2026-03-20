@@ -1,0 +1,71 @@
+# Ajay Sachdev — Full Profile
+> Finance & Operations Manager at a B2B SaaS scale-up. CIMA part-qualified. Builds AI systems, Power BI dashboards, and financial models. Python, SQL, FAISS, RAG. Based in the UK.
+
+## Background
+Ajay Sachdev grew up in a Sindhi family from Mumbai. His dad ran a textile business (P. Ashok Kumar, est. 1988). After studying Financial Markets at Jai Hind College (2015-18) and earning a Chartered Wealth Management certification from AAFM, he worked in the family business — leading a vertical integration into garment manufacturing and building a direct-to-consumer website (uni-nation.in).
+
+He moved to the UK for an MSc in Finance at Loughborough University (2020-21, 2:1), then joined a B2B SaaS scale-up as an intern in October 2021. He is now the sole finance & operations function, managing three entities across the UK, US, and Pakistan.
+
+He is currently pursuing CIMA qualification (expected May 2026) and serves as a School Governor at a 250-pupil primary school.
+
+## Current Role — Finance & Operations Manager
+- Sole finance & operations function across UK, US, Pakistan (3 entities)
+- Supported £5M+ in seed and Series A fundraising
+- Built 50+ Power BI dashboards as sole data analyst
+- Manages 7 multi-currency bank accounts (GBP, USD, PKR)
+- Produces management accounts, VAT returns, payroll
+- Drafts contracts, NDAs, SoWs, supplier agreements
+- Board-level reporting and investor decks
+- Reduced WiFi costs 50%, electricity 74%, software 30%+
+- Saves 40+ hours/month through automation
+
+## Projects
+
+### Ajay Brain — Agentic AI System
+An internal AI assistant built with Python that connects to Microsoft Teams, SharePoint, Xero, HubSpot, and more. It processes natural language queries to retrieve company information, generate reports, and automate workflows.
+- 9,000 lines of Python
+- 15 API integrations
+- 6,124 documents indexed
+- 100% search accuracy on test suite
+- Uses FAISS vector search, BM25 keyword search, RAG pipeline
+- PII detection and redaction built in
+- Claude and GPT-4o as reasoning engines
+
+### Trading Bot — Algorithmic FTSE 100 Trading
+An algorithmic trading system for FTSE 100 stocks, built with Python. Uses technical indicators, sentiment analysis, and a Claude-powered risk auditor to make trading decisions.
+- 20 FTSE 100 tickers tracked
+- Zero leverage policy
+- Claude-powered risk auditor reviews every trade
+- Automated position sizing and risk management
+- Paper trading with real-time market data
+
+### Uni-Nation (uni-nation.in)
+Website for the family textile business. Built and maintained by Ajay.
+
+## Skills & Tools
+
+### Finance & Modelling
+Financial Modelling, Management Accounts, VAT & Payroll, Budgeting & Forecasting, Cash Management, Multi-entity consolidation, Seed & Series A fundraising support, Board-level reporting, Investor decks, Scenario analysis
+
+### Data & Analytics
+Power BI (50+ dashboards), SQL, GA4, Firebase, Python data analysis
+
+### Systems & Automation
+Xero, HubSpot, Factorial, Rydoo, Onboarding/offboarding, ESOPs
+
+### AI & Engineering
+Python, GPT-4o, Claude, FAISS, BM25, RAG, PII detection, API integrations
+
+### Commercial & Legal
+Contract drafting, NDAs, SoWs, Cost negotiation, Supplier agreements
+
+## Education
+- MSc Finance, Loughborough University (2020-21, 2:1)
+- B.Com (Financial Markets), Jai Hind College, Mumbai (2015-18)
+- CIMA part-qualified (expected May 2026)
+- Chartered Wealth Management (AAFM)
+
+## Contact
+- Web: https://ajaysachdev.com
+- LinkedIn: https://www.linkedin.com/in/ajayy-sachdev/
+- Email: ajaysachdev2@gmail.com

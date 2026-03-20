@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Bot -- Algorithmic FTSE 100 Trading | Ajay Sachdev</title>
+    <meta name="description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 6,942 lines of Python.">
+    <meta name="author" content="Ajay Sachdev">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0c0c0c">
+    <link rel="canonical" href="https://ajaysachdev.com/projects/trading-bot.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Trading Bot -- Algorithmic FTSE 100 Trading | Ajay Sachdev">
+    <meta property="og:description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 6,942 lines of Python.">
+    <meta property="og:url" content="https://ajaysachdev.com/projects/trading-bot.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Trading Bot -- Algorithmic FTSE 100 Trading | Ajay Sachdev">
+    <meta name="twitter:description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 6,942 lines of Python.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9a96d'/%3E%3Cstop offset='100%25' stop-color='%23e8e4de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23141414'/%3E%3Ctext x='16' y='23' font-family='system-ui' font-weight='700' font-size='18' fill='url(%23g)' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.css">
+<style>
+/* === V6 -- Minhpham Principles + Clash Display === */
+:root{--bg:#0c0c0c;--surface:#141414;--text:#e8e4de;--muted:#8a857d;--dim:#5e5952;--border:rgba(232,228,222,.06);--gold:#c9a96d;--font:'Inter',system-ui,sans-serif;--display:'Clash Display',sans-serif;--mono:'JetBrains Mono',monospace}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
+a{color:inherit;text-decoration:none}
+
+/* Grain */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E")}
+
+/* Cursor */
+.mf-cursor{z-index:9990}
+.mf-cursor-text{font-family:var(--mono)!important;font-size:.6rem!important;letter-spacing:1.5px;text-transform:uppercase}
+@media(pointer:coarse){.mf-cursor{display:none!important}}
+
+/* Progress */
+.v5-progress{position:fixed;top:0;left:0;height:1px;z-index:200;background:var(--gold);transform-origin:left;transform:scaleX(0)}
+
+/* Nav */
+.v5-nav{position:fixed;top:0;left:0;right:0;z-index:150;padding:28px clamp(2.5em,7vw,6em);display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference}
+.v5-nav-logo{font-family:var(--display);font-weight:500;font-size:.95rem;letter-spacing:-.3px;color:#fff}
+.v5-nav-links{display:flex;gap:32px;list-style:none}
+.v5-nav-links a{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.5px;transition:color .3s}
+.v5-nav-links a:hover{color:#fff}
+
+/* Loader */
+.v5-loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.v5-loader-word{font-family:var(--display);font-size:clamp(2rem,4vw,3.5rem);font-weight:600;color:var(--gold);letter-spacing:-1.5px;position:absolute;opacity:0}
+.v5-loader-screen{position:absolute;inset:0;background:var(--bg);z-index:2;will-change:transform}
+.v5-loader-curve{position:absolute;bottom:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%}
+
+/* === HERO === */
+.cs-hero{min-height:100vh;display:flex;align-items:flex-end;padding:0 clamp(3em,8vw,8em) clamp(5em,12vh,10em);position:relative;overflow:hidden}
+.cs-hero-bg{position:absolute;top:0;right:0;width:55%;height:100%;z-index:0;pointer-events:none;opacity:.2;-webkit-mask-image:linear-gradient(to left,rgba(0,0,0,.7) 0%,transparent 85%);mask-image:linear-gradient(to left,rgba(0,0,0,.7) 0%,transparent 85%)}
+.cs-hero-bg-img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(.7) sepia(.3) brightness(.8)}
+.cs-hero-inner{position:relative;z-index:2;max-width:800px}
+.cs-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:36px;transition:color .3s;opacity:0}
+.cs-back:hover{color:var(--gold)}
+.cs-hero-tagline{display:flex;align-items:center;gap:16px;margin-bottom:32px;flex-wrap:wrap;opacity:0}
+.cs-hero-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted)}
+.cs-status-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 12px;border:1px solid rgba(201,169,109,.15);border-radius:60px;font-family:var(--mono);font-size:.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(201,169,109,.04);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:border-color .4s,background .4s}
+.cs-status-tag:hover{border-color:rgba(201,169,109,.3);background:rgba(201,169,109,.07)}
+.cs-status-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:statusPulse 2.5s ease-in-out infinite}
+@keyframes statusPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(201,169,109,.4)}50%{opacity:.35;box-shadow:0 0 6px 2px rgba(201,169,109,0)}}
+.cs-hero-title{font-family:var(--display);font-size:clamp(4.5rem,10vw,9rem);font-weight:600;letter-spacing:-.04em;line-height:.88;margin-bottom:36px;opacity:0}
+.cs-hero-title em{font-style:normal;color:var(--gold)}
+.cs-hero-sub{font-size:clamp(1rem,1.3vw,1.15rem);color:#a09a92;max-width:500px;line-height:1.85;font-weight:300;margin-bottom:48px;opacity:0}
+.cs-hero-sub strong{color:var(--text);font-weight:400}
+.cs-hero-stats{display:flex;gap:clamp(32px,5vw,56px);opacity:0}
+.cs-stat-num{font-family:var(--display);font-size:clamp(2rem,3.5vw,3rem);font-weight:600;color:var(--gold);letter-spacing:-.02em;display:block;line-height:1}
+.cs-stat-label{font-family:var(--mono);font-size:.5rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;margin-top:8px}
+.v5-scroll-cue{position:absolute;bottom:36px;right:clamp(3em,8vw,8em);font-family:var(--mono);font-size:.5rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
+.v5-scroll-cue::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--dim),transparent);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.6;transform:scaleY(1)}50%{opacity:.15;transform:scaleY(.5)}}
+
+/* === MARQUEE === */
+.v5-marquee{padding:clamp(2em,4vh,4em) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;position:relative;z-index:2}
+.v5-marquee-track{display:flex;white-space:nowrap;will-change:transform}
+.v5-marquee-item{font-family:var(--display);font-size:clamp(.7rem,1vw,.85rem);font-weight:500;color:#706b63;letter-spacing:3px;text-transform:uppercase;padding:0 clamp(24px,3vw,48px);flex-shrink:0}
+.v5-marquee-item .sep{color:var(--gold);opacity:.4;margin:0 4px}
+
+/* === SECTIONS === */
+.cs-section{padding:clamp(8em,16vh,12em) clamp(3em,8vw,8em);position:relative;z-index:2;max-width:1200px;margin:0 auto}
+.cs-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:20px}
+.cs-divider{width:100%;height:1px;background:var(--border);margin-bottom:clamp(40px,6vh,64px)}
+.cs-heading{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:32px}
+.cs-prose{font-size:clamp(.88rem,1.1vw,1rem);color:#a09a92;line-height:1.85;max-width:680px;font-weight:300}
+.cs-prose strong{color:var(--text);font-weight:400}
+
+/* === DAILY SCHEDULE === */
+.cs-schedule{display:flex;gap:0;margin:48px 0;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
+.cs-sched-item{flex:1;padding:20px 16px;border-right:1px solid var(--border);position:relative;transition:background .3s}
+.cs-sched-item:last-child{border-right:none}
+.cs-sched-item.active{background:rgba(201,169,109,.04)}
+.cs-sched-item.active .cs-sched-time{color:var(--gold)}
+.cs-sched-item.active::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold)}
+.cs-sched-time{font-family:var(--mono);font-size:.75rem;font-weight:500;color:var(--text);display:block;margin-bottom:8px}
+.cs-sched-desc{font-size:.7rem;color:var(--muted);line-height:1.5}
+
+/* === PIPELINE FLOW === */
+.cs-flow{max-width:520px;margin:48px 0;position:relative;padding-left:36px}
+.cs-flow::before{content:'';position:absolute;left:11px;top:12px;bottom:12px;width:1px;background:var(--border)}
+.cs-flow-step{display:flex;align-items:flex-start;gap:20px;padding:10px 0;position:relative}
+.cs-flow-dot{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;position:absolute;left:-36px;z-index:1}
+.cs-flow-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--dim)}
+.cs-flow-step.highlight .cs-flow-dot::after{background:var(--gold)}
+.cs-flow-step.highlight .cs-flow-dot{border-color:rgba(201,169,109,.2)}
+.cs-flow-name{font-family:var(--display);font-size:.85rem;font-weight:500;letter-spacing:-.01em;margin-bottom:3px}
+.cs-flow-desc{font-size:.72rem;color:var(--muted);line-height:1.5}
+
+/* === TERMINAL === */
+.cs-term{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:640px;margin:48px 0}
+.cs-term-bar{display:flex;align-items:center;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.cs-term-dot{width:8px;height:8px;border-radius:50%}
+.cs-term-dot.r{background:#ef4444;opacity:.6}
+.cs-term-dot.y{background:#fbbf24;opacity:.6}
+.cs-term-dot.g{background:#34d399;opacity:.6}
+.cs-term-title{font-family:var(--mono);font-size:.55rem;color:var(--dim);letter-spacing:1px;margin-left:8px}
+.cs-term-body{padding:20px 24px;font-family:var(--mono);font-size:.68rem;line-height:2.2;color:var(--muted)}
+.cs-term-body .t-dim{color:var(--dim)}
+.cs-term-body .t-gold{color:var(--gold)}
+.cs-term-body .t-green{color:#34d399}
+.cs-term-body .t-amber{color:#fbbf24}
+.cs-term-body .t-blue{color:#60a5fa}
+
+/* === FEATURE CARDS === */
+.cs-features{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:48px}
+.cs-feat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:32px;transition:border-color .5s,box-shadow .5s}
+.cs-feat:hover{border-color:rgba(201,169,109,.1);box-shadow:0 0 50px rgba(201,169,109,.03)}
+.cs-feat h4{font-family:var(--display);font-size:1.1rem;font-weight:500;letter-spacing:-.02em;margin-bottom:14px}
+.cs-feat p{font-size:.82rem;color:var(--muted);line-height:1.8}
+
+/* === IN ACTION IMAGE === */
+.cs-img-wrap{position:relative;overflow:hidden;border-radius:10px;cursor:pointer;border:1px solid rgba(232,228,222,.06);box-shadow:0 24px 70px rgba(0,0,0,.45);background:#161616;transform-style:preserve-3d;will-change:transform;transition:box-shadow .6s cubic-bezier(.16,1,.3,1),border-color .5s;margin-top:32px}
+.cs-img-wrap:hover{box-shadow:0 40px 100px rgba(0,0,0,.5),0 0 0 1px rgba(201,169,109,.06);border-color:rgba(232,228,222,.1)}
+.cs-img{width:100%;display:block;filter:grayscale(.85) brightness(.9) sepia(.25) contrast(1.05);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1.2s cubic-bezier(.16,1,.3,1);will-change:transform,filter}
+.cs-img-wrap:hover .cs-img{transform:scale(1.05);filter:grayscale(0) brightness(1.05) sepia(0) contrast(1.05)}
+.cs-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.08) 0%,transparent 50%,rgba(12,12,12,.35) 100%);z-index:2;pointer-events:none;transition:opacity 1s;border-radius:10px}
+.cs-img-wrap:hover::after{opacity:.15}
+.cs-img-label{position:absolute;bottom:0;left:0;right:0;z-index:3;padding:36px 32px 28px;background:linear-gradient(to top,rgba(12,12,12,.88) 0%,rgba(12,12,12,.35) 65%,transparent 100%);pointer-events:none;display:flex;justify-content:space-between;align-items:flex-end}
+.cs-img-label-title{font-family:var(--display);font-size:clamp(1.2rem,2vw,1.6rem);font-weight:500;letter-spacing:-.02em;line-height:1}
+.cs-img-label-badge{font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.7}
+.cs-img-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(232,228,222,.05) 0%,transparent 50%);z-index:3;pointer-events:none;opacity:0;transition:opacity .3s;border-radius:10px}
+.cs-img-wrap:hover::before{opacity:1}
+.cs-img-caption{font-family:var(--mono);font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:20px;display:block}
+
+/* === TECH STACK === */
+.cs-stack{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:48px}
+.cs-stack-item{background:var(--bg);padding:20px 24px;transition:background .3s}
+.cs-stack-item:hover{background:var(--surface)}
+.cs-stack-name{font-family:var(--display);font-size:.85rem;font-weight:500;letter-spacing:-.01em;margin-bottom:4px}
+.cs-stack-role{font-size:.72rem;color:var(--muted)}
+
+/* === OTHER PROJECTS === */
+.cs-others{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.cs-other{display:block;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--surface);transition:border-color .5s,transform .6s cubic-bezier(.16,1,.3,1)}
+.cs-other:hover{border-color:rgba(232,228,222,.1);transform:translateY(-6px)}
+.cs-other-img-wrap{position:relative;overflow:hidden;aspect-ratio:16/10}
+.cs-other-img{width:100%;height:100%;object-fit:cover;filter:grayscale(.85) brightness(.9) sepia(.25);transition:filter .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.cs-other:hover .cs-other-img{filter:grayscale(0) brightness(1.05) sepia(0);transform:scale(1.05)}
+.cs-other-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);z-index:2;pointer-events:none;transition:opacity 1s}
+.cs-other:hover .cs-other-img-wrap::after{opacity:.15}
+.cs-other-body{padding:20px 24px}
+.cs-other-badge{font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.65;display:block;margin-bottom:10px}
+.cs-other-name{font-family:var(--display);font-size:1.15rem;font-weight:500;letter-spacing:-.02em;margin-bottom:8px}
+.cs-other-desc{font-size:.75rem;color:var(--muted);line-height:1.7}
+
+/* === MANIFESTO === */
+.v5-manifesto{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:clamp(4em,10vh,8em) clamp(3em,8vw,8em);position:relative;z-index:2}
+.v5-manifesto-text{font-family:var(--display);font-size:clamp(2rem,4vw,3.4rem);font-weight:500;letter-spacing:-.03em;line-height:1.3;max-width:750px;text-align:center}
+
+/* === FOOTER === */
+.v5-footer{padding:clamp(10em,18vh,14em) 0 48px;text-align:center;position:relative;z-index:2}
+.v5-footer::before{content:'';display:block;width:40px;height:1px;margin:0 auto 56px;background:var(--dim)}
+.v5-footer-title{font-family:var(--display);font-size:clamp(3rem,6vw,5rem);font-weight:600;letter-spacing:-.03em;margin-bottom:16px}
+.v5-footer-sub{color:var(--muted);font-size:.85rem;margin-bottom:44px}
+.v5-footer-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:60px}
+.v5-footer-link{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid var(--border);border-radius:60px;color:var(--muted);font-size:.78rem;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.v5-footer-link:hover{color:var(--gold);border-color:rgba(201,169,109,.2);transform:translateY(-2px)}
+.v5-footer-copy{font-size:.6rem;color:var(--dim);letter-spacing:1px}
+
+/* === RESPONSIVE === */
+@media(max-width:900px){
+    .cs-hero-title{font-size:clamp(3.5rem,14vw,5.5rem)}
+    .cs-hero-stats{flex-wrap:wrap;gap:24px 32px}
+    .cs-features{grid-template-columns:1fr}
+    .cs-others{grid-template-columns:1fr}
+    .cs-schedule{flex-direction:column}
+    .cs-sched-item{border-right:none;border-bottom:1px solid var(--border)}
+    .cs-sched-item:last-child{border-bottom:none}
+    .cs-sched-item.active::before{top:auto;bottom:auto;left:0;top:0;right:auto;width:2px;height:100%}
+    .cs-stack{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+    .cs-hero{padding:0 24px 48px;min-height:100svh}
+    .cs-hero-bg{width:100%;opacity:.1}
+    .cs-section{padding:60px 24px}
+    .v5-manifesto{min-height:40vh;padding:40px 24px}
+    .v5-manifesto-text{font-size:clamp(1.4rem,6.5vw,2rem)}
+    .v5-footer{padding:60px 24px 32px}
+    .v5-nav{padding:16px 24px}
+    .v5-scroll-cue{display:none}
+    .cs-hero-stats{gap:20px 28px}
+    .cs-stat-num{font-size:clamp(1.6rem,8vw,2.2rem)}
+    .cs-term-body{padding:16px;font-size:.6rem}
+    .cs-flow{padding-left:32px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.v5-loader{display:none!important}}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="v5-loader" id="loader">
+    <span class="v5-loader-word">Algorithmic</span>
+    <span class="v5-loader-word">Trading</span>
+    <span class="v5-loader-word">FTSE 100</span>
+    <span class="v5-loader-word">Python</span>
+    <span class="v5-loader-word">Four Agents</span>
+    <div class="v5-loader-screen" id="loaderScreen"><div class="v5-loader-curve"></div></div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="v5-progress" id="progBar"></div>
+
+<!-- Nav -->
+<nav class="v5-nav">
+    <a href="../index.html" class="v5-nav-logo">Ajay Sachdev</a>
+    <ul class="v5-nav-links">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- Hero -->
+<header class="cs-hero">
+    <div class="cs-hero-bg">
+        <img src="../images/hero-trading.png" alt="" class="cs-hero-bg-img">
+    </div>
+    <div class="cs-hero-inner">
+        <a href="index.html" class="cs-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            All projects
+        </a>
+        <div class="cs-hero-tagline">
+            <span class="cs-hero-tag">02 / Multi-Agent Trading</span>
+            <span class="cs-status-tag"><span class="cs-status-dot"></span>Paper Trading</span>
+        </div>
+        <h1 class="cs-hero-title">Trading<br><em>Bot</em></h1>
+        <p class="cs-hero-sub">I kept making emotional trades. Read some bad news, panic-sold. Saw a dip, bought too early. <strong>So I built a system that removes me from the equation.</strong></p>
+        <div class="cs-hero-stats">
+            <div class="cs-stat"><span class="cs-stat-num">7k</span><span class="cs-stat-label">Lines of Python</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">20</span><span class="cs-stat-label">Tickers tracked</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">4</span><span class="cs-stat-label">AI agents</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">1:2</span><span class="cs-stat-label">Risk-reward</span></div>
+        </div>
+    </div>
+    <div class="v5-scroll-cue">Scroll</div>
+</header>
+
+<!-- Marquee -->
+<div class="v5-marquee">
+    <div class="v5-marquee-track" id="marqueeTrack">
+        <span class="v5-marquee-item">Algorithmic Trading <span class="sep">/</span></span><span class="v5-marquee-item">FTSE 100 <span class="sep">/</span></span><span class="v5-marquee-item">Claude Opus <span class="sep">/</span></span><span class="v5-marquee-item">Paper Trading <span class="sep">/</span></span><span class="v5-marquee-item">Four Agents <span class="sep">/</span></span><span class="v5-marquee-item">Python <span class="sep">/</span></span><span class="v5-marquee-item">Risk Management <span class="sep">/</span></span><span class="v5-marquee-item">Intraday Only <span class="sep">/</span></span><span class="v5-marquee-item">Algorithmic Trading <span class="sep">/</span></span><span class="v5-marquee-item">FTSE 100 <span class="sep">/</span></span><span class="v5-marquee-item">Claude Opus <span class="sep">/</span></span><span class="v5-marquee-item">Paper Trading <span class="sep">/</span></span><span class="v5-marquee-item">Four Agents <span class="sep">/</span></span><span class="v5-marquee-item">Python <span class="sep">/</span></span><span class="v5-marquee-item">Risk Management <span class="sep">/</span></span><span class="v5-marquee-item">Intraday Only <span class="sep">/</span></span>
+    </div>
+</div>
+
+<!-- 01 / The Problem -->
+<section class="cs-section">
+    <span class="cs-label">01 / The Problem</span>
+    <div class="cs-divider"></div>
+    <p class="cs-prose">I studied Financial Markets at Jai Hind College and got my Chartered Wealth Management certification. I understood markets. But understanding them and trading them profitably turned out to be two different things. I'd watch a stock I'd researched all week tank 2% on a single RNS announcement and sell within five minutes -- then watch it recover by close. I'd spot a FTSE dip and buy in, convinced it was the bottom, only for it to keep sliding. After a red day I'd jump into something I hadn't even properly analysed, just to try and make the loss back. <strong>The analysis was usually fine. It was the real-time decisions that killed it.</strong> I'd override my own rules the moment I felt any pressure. So the question became: could I build something that kept the analysis but removed me from the execution?</p>
+</section>
+
+<!-- 02 / How It Works -->
+<section class="cs-section">
+    <span class="cs-label">02 / How It Works</span>
+    <div class="cs-divider"></div>
+    <h2 class="cs-heading">Four-agent pipeline</h2>
+    <p class="cs-prose">Every weekday at 10:35am GMT -- thirty minutes after London open, once the opening noise has settled -- the system runs. No human input. APScheduler fires five jobs throughout the day. Nothing is held overnight.</p>
+
+    <!-- Daily Schedule -->
+    <div class="cs-schedule">
+        <div class="cs-sched-item">
+            <span class="cs-sched-time">10:30</span>
+            <span class="cs-sched-desc">Start candle collection via Lightstreamer</span>
+        </div>
+        <div class="cs-sched-item active">
+            <span class="cs-sched-time">10:35</span>
+            <span class="cs-sched-desc">Full 4-agent evaluation scan</span>
+        </div>
+        <div class="cs-sched-item">
+            <span class="cs-sched-time">12:00</span>
+            <span class="cs-sched-desc">Regime recheck -- close if FTSE &lt;-1%</span>
+        </div>
+        <div class="cs-sched-item">
+            <span class="cs-sched-time">14:00</span>
+            <span class="cs-sched-desc">Second regime recheck</span>
+        </div>
+        <div class="cs-sched-item">
+            <span class="cs-sched-time">16:00</span>
+            <span class="cs-sched-desc">Liquidate everything -- nothing overnight</span>
+        </div>
+    </div>
+
+    <!-- Pipeline Flow -->
+    <div class="cs-flow">
+        <div class="cs-flow-step highlight">
+            <div class="cs-flow-dot"></div>
+            <div>
+                <div class="cs-flow-name">Kill-Switch</div>
+                <div class="cs-flow-desc">Check equity floor (&pound;750)</div>
+            </div>
+        </div>
+        <div class="cs-flow-step highlight">
+            <div class="cs-flow-dot"></div>
+            <div>
+                <div class="cs-flow-name">Market Regime</div>
+                <div class="cs-flow-desc">FTSE down &gt;0.5%? Skip session</div>
+            </div>
+        </div>
+        <div class="cs-flow-step">
+            <div class="cs-flow-dot"></div>
+            <div>
+                <div class="cs-flow-name">Parallel Scan</div>
+                <div class="cs-flow-desc">20 tickers + RNS news (Tier A/B/C)</div>
+            </div>
+        </div>
+        <div class="cs-flow-step">
+            <div class="cs-flow-dot"></div>
+            <div>
+                <div class="cs-flow-name">Technical Indicators</div>
+                <div class="cs-flow-desc">EMA-50 + VWAP + RSI-14</div>
+            </div>
+        </div>
+        <div class="cs-flow-step highlight">
+            <div class="cs-flow-dot"></div>
+            <div>
+                <div class="cs-flow-name">Claude Quality Gate</div>
+                <div class="cs-flow-desc">Sonnet rates setup 1--5</div>
+            </div>
+        </div>
+        <div class="cs-flow-step highlight">
+            <div class="cs-flow-dot"></div>
+            <div>
+                <div class="cs-flow-name">Claude Risk Audit</div>
+                <div class="cs-flow-desc">Opus approves or vetoes</div>
+            </div>
+        </div>
+        <div class="cs-flow-step">
+            <div class="cs-flow-dot"></div>
+            <div>
+                <div class="cs-flow-name">Execute or Kill</div>
+                <div class="cs-flow-desc">SL 3% / TP 6% / max 1 position</div>
+            </div>
+        </div>
+        <div class="cs-flow-step highlight">
+            <div class="cs-flow-dot"></div>
+            <div>
+                <div class="cs-flow-name">16:00 Liquidation</div>
+                <div class="cs-flow-desc">Nothing held overnight</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terminal Output -->
+    <div class="cs-term">
+        <div class="cs-term-bar"><span class="cs-term-dot r"></span><span class="cs-term-dot y"></span><span class="cs-term-dot g"></span><span class="cs-term-title">trading-bot -- scan output</span></div>
+        <div class="cs-term-body">
+<span class="t-dim">10:35:01</span> <span class="t-blue">SCAN</span> Kill-switch OK -- equity &pound;2,847<br>
+<span class="t-dim">10:35:02</span> <span class="t-blue">SCAN</span> FTSE 100: +0.12% -- session active<br>
+<span class="t-dim">10:35:04</span> <span class="t-green">PASS</span> AZN -- EMA OK, VWAP OK, RSI 42<br>
+<span class="t-dim">10:35:04</span> <span class="t-amber">SKIP</span> SHEL -- RSI 78 (overbought)<br>
+<span class="t-dim">10:35:04</span> <span class="t-amber">SKIP</span> ULVR -- below EMA-50<br>
+<span class="t-dim">10:35:05</span> <span class="t-gold">CLAUDE</span> AZN rated 4/5 -- clean setup<br>
+<span class="t-dim">10:35:06</span> <span class="t-green">AUDIT</span> Opus approved -- low correlation risk<br>
+<span class="t-dim">10:35:07</span> <span class="t-green">EXEC</span> BUY AZN @ 11,842p -- SL 11,487 / TP 12,553
+        </div>
+    </div>
+
+    <p class="cs-prose" style="margin-top:48px">First thing every morning: kill-switch and market regime check. If either fails, nothing else runs. RNS news gets scanned via Claude web search -- headlines classified as Tier A (earnings, M&amp;A), B (buybacks, upgrades), or C (skip). This replaced a BeautifulSoup scraper that kept breaking. Then the technical check -- EMA-50, VWAP, RSI. Only stocks that pass get sent to Claude Sonnet for a quality rating, strict JSON schema, no fallback. Last step is Claude Opus as risk auditor. The hard rails live in code, not prompts: &pound;750 max notional, one position at a time, equity above floor. If Opus vetoes, the trade dies. Running paper-trade on a demo account while I wait for enough data to trust it.</p>
+</section>
+
+<!-- 03 / Features -->
+<section class="cs-section">
+    <span class="cs-label">03 / Features</span>
+    <div class="cs-divider"></div>
+    <div class="cs-features">
+        <div class="cs-feat">
+            <h4>Hard Rails</h4>
+            <p>Every risk parameter lives in config.py, not in a prompt. &pound;750 max notional per trade. 3% stop loss, 6% take profit -- a 1:2 risk-reward ratio. One position at a time. Kill-switch at &pound;750 equity floor -- if it triggers, everything liquidates and trading stops until I manually reset it. Zero leverage. The agents can assess and recommend. They cannot override the code.</p>
+        </div>
+        <div class="cs-feat">
+            <h4>Structured Outputs</h4>
+            <p>The quality gate used to run on OpenAI's o1-mini. If the JSON response failed to parse, there was a fallback that defaulted the quality score to 3 -- a safety hole that could let marginal trades through. Switched to Claude Sonnet with structured outputs and a guaranteed JSON schema. No parse failures, no fallback needed. Single vendor now. System prompts are cached across parallel scans for about 90% token savings.</p>
+        </div>
+        <div class="cs-feat">
+            <h4>RNS Scanning</h4>
+            <p>Each ticker gets its RNS checked before the technical scan starts. Claude web search queries Investegate and the London Stock Exchange for same-day announcements published after 08:00 GMT. It finds the news and classifies it in one API call -- Tier A (earnings, trading updates, M&amp;A, CEO changes), Tier B (analyst upgrades, buybacks, regulatory approvals), or Tier C (director dealings, AGM notices, dividends). Falls back to a BeautifulSoup HTML scraper if the API is unavailable.</p>
+        </div>
+        <div class="cs-feat">
+            <h4>Multi-Scenario Backtesting</h4>
+            <p>60-day default, up to two years. Walk-forward simulation that evaluates at 10:35 GMT on each historical trading day -- no lookahead bias, 0.2% round-trip spread cost deducted. Reports break down per-ticker win rate, average win/loss, net P&amp;L, annualised Sharpe, max drawdown, consecutive losses, and why each trade exited. All historical data cached as Parquet via yfinance across 20 FTSE 100 tickers.</p>
+        </div>
+        <div class="cs-feat">
+            <h4>Intraday Only</h4>
+            <p>Evaluation at 10:35. Regime re-checks at 12:00 and 14:00 -- if the FTSE drops below negative 1%, open positions get closed. Everything liquidated at 16:00 regardless. No overnight gap risk. Spread betting through the IG API, so positions settle daily.</p>
+        </div>
+        <div class="cs-feat">
+            <h4>Atomic State &amp; Auto-Deploy</h4>
+            <p>A file-locked StateManager handles session state -- the order manager and kill-switch both read and write session_state.json, and filelock prevents race conditions on concurrent edits. Every decision writes to a JSONL audit trail with timestamp, session ID, stage, ticker, and outcome. Oracle Cloud Ubuntu VM with systemd service. GitHub pull every five minutes, automatic restart on changes. Secrets stay in .env files that never touch the repo.</p>
+        </div>
+    </div>
+</section>
+
+<!-- 04 / In Action -->
+<section class="cs-section">
+    <span class="cs-label">04 / In Action</span>
+    <div class="cs-divider"></div>
+    <h2 class="cs-heading">Backtest results</h2>
+    <div class="cs-img-wrap" id="actionImgWrap">
+        <img src="../images/trading-bot-backtest.png" alt="Trading bot backtest report showing equity curve, monthly returns heatmap, and trade log" class="cs-img" loading="lazy">
+        <div class="cs-img-label"><span class="cs-img-label-title">Backtest Report</span><span class="cs-img-label-badge">Paper Trading</span></div>
+    </div>
+    <span class="cs-img-caption">Multi-scenario backtest report -- equity curve, monthly returns, trade log</span>
+</section>
+
+<!-- 05 / Tech Stack -->
+<section class="cs-section">
+    <span class="cs-label">05 / Tech Stack</span>
+    <div class="cs-divider"></div>
+    <div class="cs-stack">
+        <div class="cs-stack-item"><div class="cs-stack-name">Python</div><div class="cs-stack-role">6,942 lines across 33 files</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">Claude Opus</div><div class="cs-stack-role">Risk auditor, final veto gate</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">Claude Sonnet</div><div class="cs-stack-role">Quality assessment, structured outputs</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">IG Broker API</div><div class="cs-stack-role">Order execution &amp; market data</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">Lightstreamer</div><div class="cs-stack-role">Real-time 5-min candle streaming</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">pandas-ta</div><div class="cs-stack-role">Technical indicator library</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">APScheduler</div><div class="cs-stack-role">Weekday-only job scheduling</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">yfinance</div><div class="cs-stack-role">Historical data for backtesting</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">matplotlib</div><div class="cs-stack-role">Backtest report charts</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">Oracle Cloud</div><div class="cs-stack-role">Ubuntu VM, systemd auto-deploy</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">Tenacity</div><div class="cs-stack-role">Exponential backoff retry logic</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">filelock</div><div class="cs-stack-role">Atomic state persistence</div></div>
+    </div>
+</section>
+
+<!-- Other Projects -->
+<section class="cs-section">
+    <span class="cs-label">More Work</span>
+    <div class="cs-divider"></div>
+    <div class="cs-others">
+        <a href="ajay-brain.html" class="cs-other" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-img-wrap">
+                <img src="../images/card-brain.png" alt="Ajay Brain dashboard" class="cs-other-img">
+            </div>
+            <div class="cs-other-body">
+                <span class="cs-other-badge">Production</span>
+                <h3 class="cs-other-name">Ajay Brain</h3>
+                <p class="cs-other-desc">AI assistant in Teams. Searches 7,000+ docs, fetches live Xero and HubSpot data, answers come back as cards you approve with one click.</p>
+            </div>
+        </a>
+        <a href="whatsapp-smart.html" class="cs-other" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-img-wrap">
+                <img src="../images/card-whatsapp.png" alt="WhatsApp Smart extension" class="cs-other-img">
+            </div>
+            <div class="cs-other-body">
+                <span class="cs-other-badge">Prototype</span>
+                <h3 class="cs-other-name">WhatsApp Smart</h3>
+                <p class="cs-other-desc">Chrome extension adding scheduling, AI replies, and group summaries to WhatsApp. Messages never leave your browser.</p>
+            </div>
+        </a>
+        <a href="uni-nation.html" class="cs-other" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-img-wrap">
+                <img src="../images/card-uninat.png" alt="Uni-Nation website" class="cs-other-img">
+            </div>
+            <div class="cs-other-body">
+                <span class="cs-other-badge">Live</span>
+                <h3 class="cs-other-name">Uni-Nation Digital</h3>
+                <p class="cs-other-desc">Family textile manufacturer since 1988. Website, inventory system with voice input in Hindi, sales intelligence dashboards.</p>
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- Manifesto -->
+<section class="v5-manifesto">
+    <p class="v5-manifesto-text" id="manifestoText">The analysis was usually fine. It was the real-time decisions that killed it.</p>
+</section>
+
+<!-- Footer -->
+<footer class="v5-footer" id="contact">
+    <h2 class="v5-footer-title" id="footerH">Let's talk.</h2>
+    <p class="v5-footer-sub">Always up for hard problems and good coffee.</p>
+    <div class="v5-footer-links">
+        <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span>LinkedIn</span></a>
+        <a href="mailto:ajaysachdev2@gmail.com" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg><span>Email</span></a>
+        <a href="https://uni-nation.in" target="_blank" rel="noopener" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg><span>Uni-Nation</span></a>
+    </div>
+    <p class="v5-footer-copy">&copy; 2026 Ajay Sachdev</p>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.js"></script>
+
+<script>
+/* === GSAP Setup === */
+gsap.registerPlugin(ScrollTrigger);
+if(typeof SplitText!=='undefined') gsap.registerPlugin(SplitText);
+if(typeof CustomEase!=='undefined'){gsap.registerPlugin(CustomEase);CustomEase.create('smooth','M0,0 C0.25,0.1 0.25,1 1,1')}
+
+/* === Lenis === */
+const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t))});
+lenis.on('scroll',ScrollTrigger.update);
+gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
+
+/* === Preloader === */
+const loaderScreen=document.getElementById('loaderScreen');
+const words=document.querySelectorAll('.v5-loader-word');
+const preTl=gsap.timeline({onComplete:()=>{
+    gsap.set('#loader',{display:'none'});lenis.start();heroReveal();
+}});
+words.forEach((w,i)=>{const t=.16-i*.012;preTl.set(w,{opacity:1},i*t+.15).set(w,{opacity:0},(i+1)*t+.15)});
+preTl.to({},{duration:.25});
+preTl.to(loaderScreen,{yPercent:-130,duration:.9,ease:'power4.inOut'});
+
+/* === Hero Reveal === */
+function heroReveal(){
+    const tl=gsap.timeline({defaults:{ease:'expo.out'}});
+    tl.fromTo('.cs-back',{opacity:0,x:-16},{opacity:1,x:0,duration:.8},.1);
+    tl.fromTo('.cs-hero-tagline',{opacity:0,y:20},{opacity:1,y:0,duration:1},.15);
+    tl.fromTo('.cs-status-tag',{opacity:0,scale:.9,x:-8},{opacity:1,scale:1,x:0,duration:.8,ease:'back.out(1.5)'},.45);
+    if(typeof SplitText!=='undefined'){
+        const titleSplit=new SplitText('.cs-hero-title',{type:'lines,chars',mask:'lines'});
+        tl.set('.cs-hero-title',{opacity:1},.25);
+        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.02,duration:1},.25);
+    } else {
+        tl.fromTo('.cs-hero-title',{opacity:0,y:50},{opacity:1,y:0,duration:1.2},.25);
+    }
+    tl.fromTo('.cs-hero-sub',{opacity:0,y:24},{opacity:1,y:0,duration:1.2},.55);
+    tl.fromTo('.cs-hero-stats',{opacity:0,y:20},{opacity:1,y:0,duration:1},.7);
+    tl.fromTo('.cs-hero-bg',{opacity:0,scale:1.1},{opacity:.2,scale:1,duration:2,ease:'power2.out'},.3);
+}
+
+/* === Progress === */
+gsap.to('#progBar',{scaleX:1,ease:'none',scrollTrigger:{trigger:'body',start:'top top',end:'bottom bottom',scrub:true}});
+
+/* === Marquee === */
+const mTrack=document.getElementById('marqueeTrack');
+if(mTrack){let mP=0,mD=-1;lenis.on('scroll',({velocity})=>{mD=velocity>0?-1:1});
+gsap.ticker.add(()=>{mP+=mD*.5;if(Math.abs(mP)>mTrack.scrollWidth/2)mP=0;mTrack.style.transform=`translateX(${mP}px)`})}
+
+/* === Section Scroll Reveals === */
+gsap.utils.toArray('.cs-section').forEach(section=>{
+    const label=section.querySelector('.cs-label');
+    const divider=section.querySelector('.cs-divider');
+    const heading=section.querySelector('.cs-heading');
+    const prose=section.querySelectorAll('.cs-prose');
+    const features=section.querySelectorAll('.cs-feat');
+    const schedule=section.querySelector('.cs-schedule');
+    const flow=section.querySelector('.cs-flow');
+    const term=section.querySelector('.cs-term');
+    const imgWrap=section.querySelector('.cs-img-wrap');
+    const stack=section.querySelector('.cs-stack');
+    const others=section.querySelectorAll('.cs-other');
+
+    const sTl=gsap.timeline({scrollTrigger:{trigger:section,start:'top 82%',once:true}});
+    if(label) sTl.from(label,{opacity:0,y:16,duration:.8,ease:'expo.out'},0);
+    if(divider) sTl.from(divider,{scaleX:0,transformOrigin:'left',duration:1,ease:'expo.out'},.1);
+    if(heading) sTl.from(heading,{opacity:0,y:24,duration:.9,ease:'expo.out'},.15);
+    prose.forEach((p,i)=>sTl.from(p,{opacity:0,y:20,duration:.8,ease:'expo.out'},.2+i*.1));
+
+    if(schedule){
+        const items=schedule.querySelectorAll('.cs-sched-item');
+        items.forEach((item,i)=>sTl.from(item,{opacity:0,y:16,duration:.6,ease:'expo.out'},.3+i*.08));
+    }
+
+    if(flow){
+        const steps=flow.querySelectorAll('.cs-flow-step');
+        steps.forEach((step,i)=>sTl.from(step,{opacity:0,x:-16,duration:.6,ease:'expo.out'},.35+i*.07));
+    }
+
+    if(term) sTl.from(term,{opacity:0,y:24,clipPath:'inset(8% 0% 0% 0%)',duration:1,ease:'expo.out'},.4);
+
+    if(features.length){
+        features.forEach((feat,i)=>sTl.from(feat,{opacity:0,y:24,duration:.7,ease:'expo.out'},.2+i*.08));
+    }
+
+    if(imgWrap){
+        sTl.fromTo(imgWrap,
+            {clipPath:'inset(12% 0% 0% 0%)',scale:.96,opacity:0},
+            {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:1.6,ease:'expo.out'},.2
+        );
+    }
+
+    if(stack){
+        const items=stack.querySelectorAll('.cs-stack-item');
+        items.forEach((item,i)=>sTl.from(item,{opacity:0,y:12,duration:.5,ease:'expo.out'},.2+i*.04));
+    }
+
+    if(others.length){
+        others.forEach((card,i)=>sTl.from(card,{opacity:0,y:30,duration:.8,ease:'expo.out'},.2+i*.1));
+    }
+});
+
+/* === In Action Image -- 3D Tilt + Glare === */
+const actionWrap=document.getElementById('actionImgWrap');
+if(actionWrap){
+    const actionImg=actionWrap.querySelector('.cs-img');
+    actionWrap.addEventListener('mousemove',(e)=>{
+        const rect=actionWrap.getBoundingClientRect();
+        const x=(e.clientX-rect.left)/rect.width;
+        const y=(e.clientY-rect.top)/rect.height;
+        gsap.to(actionWrap,{
+            rotateY:(x-.5)*4,rotateX:(y-.5)*-2.5,
+            transformPerspective:1400,duration:.9,ease:'power2.out'
+        });
+        actionWrap.style.setProperty('--mx',(x*100)+'%');
+        actionWrap.style.setProperty('--my',(y*100)+'%');
+    });
+    actionWrap.addEventListener('mouseleave',()=>{
+        gsap.to(actionWrap,{rotateY:0,rotateX:0,duration:1.4,ease:'power3.out'});
+    });
+    /* Inner parallax */
+    if(actionImg){
+        gsap.to(actionImg,{yPercent:-6,ease:'none',
+            scrollTrigger:{trigger:actionWrap,start:'top bottom',end:'bottom top',scrub:true}
+        });
+    }
+}
+
+/* === Scroll velocity skew === */
+lenis.on('scroll',({velocity})=>{
+    gsap.to('.cs-img',{skewY:velocity*.1,duration:.6,overwrite:'auto'});
+});
+
+/* === Manifesto -- word-by-word scroll reveal === */
+const mText=document.getElementById('manifestoText');
+if(mText&&typeof SplitText!=='undefined'){
+    const split=new SplitText(mText,{type:'words'});
+    gsap.set(split.words,{color:'var(--dim)'});
+    split.words.forEach((w,i)=>{
+        gsap.to(w,{color:'var(--text)',scrollTrigger:{
+            trigger:'.v5-manifesto',
+            start:()=>`top+=${(i/split.words.length)*60}% center`,
+            end:()=>`top+=${((i+1)/split.words.length)*60+10}% center`,
+            scrub:1
+        }});
+    });
+}
+
+/* === Footer -- Masked SplitText === */
+const fH=document.getElementById('footerH');
+if(fH&&typeof SplitText!=='undefined'){
+    const fSplit=new SplitText(fH,{type:'chars',mask:'lines'});
+    gsap.set(fSplit.chars,{yPercent:110});
+    ScrollTrigger.create({trigger:fH,start:'top 82%',once:true,
+        onEnter:()=>{gsap.to(fSplit.chars,{yPercent:0,stagger:.03,duration:.9,ease:'smooth'})}
+    });
+}
+
+/* === Mouse Follower === */
+if(matchMedia('(pointer:fine)').matches&&typeof MouseFollower!=='undefined'){
+    MouseFollower.registerGSAP(gsap);
+    new MouseFollower({speed:.5,ease:'expo.out',skewing:2.5,skewingText:1.5});
+}
+
+/* === Page Transitions === */
+document.querySelectorAll('.cs-other, .cs-back').forEach(link=>{
+    link.addEventListener('click',function(e){
+        e.preventDefault();const href=this.getAttribute('href');if(!href)return;
+        const s=document.createElement('div');s.style.cssText='position:fixed;inset:0;z-index:9999;pointer-events:none';
+        const b=document.createElement('div');b.style.cssText='position:absolute;inset:0;background:var(--bg);transform:translateY(100%);will-change:transform';
+        const c=document.createElement('div');c.style.cssText='position:absolute;top:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%';
+        b.appendChild(c);s.appendChild(b);document.body.appendChild(s);
+        gsap.timeline({onComplete:()=>{window.location.href=href}})
+            .to(b,{y:0,duration:.8,ease:'power4.inOut'},.05);
+    });
+});
+</script>
+</body>
+</html>

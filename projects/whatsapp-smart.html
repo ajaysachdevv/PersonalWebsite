@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Smart -- AI Chrome Extension | Ajay Sachdev</title>
+    <meta name="description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 16,500+ lines of TypeScript and React. Privacy-first -- messages never leave your browser.">
+    <meta name="theme-color" content="#0c0c0c">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9a96d'/%3E%3Cstop offset='100%25' stop-color='%23e8e4de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23141414'/%3E%3Ctext x='16' y='23' font-family='system-ui' font-weight='700' font-size='18' fill='url(%23g)' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
+    <link rel="canonical" href="https://ajaysachdev.com/projects/whatsapp-smart.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="WhatsApp Smart -- AI Chrome Extension | Ajay Sachdev">
+    <meta property="og:description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 16,500+ lines of TypeScript and React.">
+    <meta property="og:url" content="https://ajaysachdev.com/projects/whatsapp-smart.html">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.css">
+<style>
+/* === V6 Case Study -- WhatsApp Smart === */
+:root{--bg:#0c0c0c;--surface:#141414;--text:#e8e4de;--muted:#8a857d;--dim:#5e5952;--border:rgba(232,228,222,.06);--gold:#c9a96d;--font:'Inter',system-ui,sans-serif;--display:'Clash Display',sans-serif;--mono:'JetBrains Mono',monospace}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
+a{color:inherit;text-decoration:none}
+
+/* Grain */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E")}
+
+/* Cursor */
+.mf-cursor{z-index:9990}
+.mf-cursor-text{font-family:var(--mono)!important;font-size:.6rem!important;letter-spacing:1.5px;text-transform:uppercase}
+@media(pointer:coarse){.mf-cursor{display:none!important}}
+
+/* Progress */
+.v5-progress{position:fixed;top:0;left:0;height:1px;z-index:200;background:var(--gold);transform-origin:left;transform:scaleX(0)}
+
+/* Nav */
+.v5-nav{position:fixed;top:0;left:0;right:0;z-index:150;padding:28px clamp(2.5em,7vw,6em);display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference}
+.v5-nav-logo{font-family:var(--display);font-weight:500;font-size:.95rem;letter-spacing:-.3px;color:#fff}
+.v5-nav-links{display:flex;gap:32px;list-style:none}
+.v5-nav-links a{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.5px;transition:color .3s}
+.v5-nav-links a:hover{color:#fff}
+
+/* Loader */
+.v5-loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.v5-loader-word{font-family:var(--display);font-size:clamp(2rem,4vw,3.5rem);font-weight:600;color:var(--gold);letter-spacing:-1.5px;position:absolute;opacity:0}
+.v5-loader-screen{position:absolute;inset:0;background:var(--bg);z-index:2;will-change:transform}
+.v5-loader-curve{position:absolute;bottom:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%}
+
+/* === CASE STUDY HERO === */
+.cs-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(3em,8vw,8em) clamp(5em,12vh,8em);position:relative;overflow:hidden}
+.cs-hero-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:40px;transition:color .3s;opacity:0}
+.cs-hero-back:hover{color:var(--gold)}
+.cs-hero-back svg{width:14px;height:14px}
+.cs-hero-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:32px;display:block;opacity:0}
+.cs-hero-title{font-family:var(--display);font-size:clamp(4rem,10vw,8rem);font-weight:600;letter-spacing:-.04em;line-height:.9;margin-bottom:36px;opacity:0}
+.cs-hero-title em{font-style:normal;color:var(--gold)}
+.cs-hero-desc{font-size:clamp(1rem,1.3vw,1.15rem);color:#a09a92;max-width:600px;line-height:1.85;font-weight:300;opacity:0}
+.cs-hero-desc strong{color:var(--text);font-weight:400}
+.cs-hero-meta{display:flex;gap:clamp(32px,5vw,64px);margin-top:48px;opacity:0}
+.cs-hero-meta-val{font-family:var(--display);font-size:clamp(2rem,3.5vw,3rem);font-weight:600;color:var(--gold);letter-spacing:-.02em;display:block}
+.cs-hero-meta-label{font-family:var(--mono);font-size:.5rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;margin-top:6px}
+.v5-scroll-cue{position:absolute;bottom:36px;right:clamp(3em,8vw,8em);font-family:var(--mono);font-size:.5rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
+.v5-scroll-cue::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--dim),transparent);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.6;transform:scaleY(1)}50%{opacity:.15;transform:scaleY(.5)}}
+
+/* === HERO IMAGE === */
+.cs-hero-img{padding:0 clamp(3em,8vw,8em);margin-top:clamp(3em,6vh,5em);position:relative;z-index:2}
+.cs-hero-img-wrap{position:relative;overflow:hidden;border-radius:10px;border:1px solid var(--border);box-shadow:0 24px 70px rgba(0,0,0,.45);background:#161616;transform-style:preserve-3d;will-change:transform;transition:box-shadow .6s}
+.cs-hero-img-wrap:hover{box-shadow:0 40px 100px rgba(0,0,0,.5),0 0 0 1px rgba(201,169,109,.06)}
+.cs-hero-img-wrap img{width:100%;display:block;filter:grayscale(.3) brightness(.95) sepia(.1);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1s cubic-bezier(.16,1,.3,1)}
+.cs-hero-img-wrap:hover img{transform:scale(1.03);filter:grayscale(0) brightness(1.05) sepia(0)}
+.cs-hero-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);z-index:2;pointer-events:none;border-radius:10px;transition:opacity 1s}
+.cs-hero-img-wrap:hover::after{opacity:.1}
+/* Glare */
+.cs-hero-img-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(232,228,222,.04) 0%,transparent 50%);z-index:3;pointer-events:none;opacity:0;transition:opacity .3s;border-radius:10px}
+.cs-hero-img-wrap:hover::before{opacity:1}
+.cs-hero-img-caption{font-family:var(--mono);font-size:.55rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-top:16px}
+
+/* === SCREENSHOT CAROUSEL === */
+.cs-carousel{padding:clamp(5em,10vh,8em) 0;overflow:hidden;position:relative;z-index:2;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.cs-carousel-label{display:block;text-align:center;font-family:var(--mono);font-size:.55rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);margin-bottom:40px}
+.cs-carousel-track{display:flex;gap:clamp(16px,2vw,28px);will-change:transform;cursor:grab;user-select:none}
+.cs-carousel-track:active{cursor:grabbing}
+.cs-carousel-slide{flex:0 0 auto;width:clamp(280px,38vw,460px)}
+.cs-carousel-slide-img{position:relative;overflow:hidden;border-radius:10px;border:1px solid var(--border);background:#161616;box-shadow:0 12px 40px rgba(0,0,0,.3);transition:border-color .5s,box-shadow .5s,transform .5s cubic-bezier(.16,1,.3,1)}
+.cs-carousel-slide:hover .cs-carousel-slide-img{border-color:rgba(201,169,109,.1);box-shadow:0 20px 60px rgba(0,0,0,.4);transform:translateY(-4px)}
+.cs-carousel-slide-img img{width:100%;display:block;filter:grayscale(.8) brightness(.9) sepia(.2) contrast(1.05);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1.2s cubic-bezier(.16,1,.3,1)}
+.cs-carousel-slide:hover .cs-carousel-slide-img img{transform:scale(1.06);filter:grayscale(0) brightness(1.05) sepia(0) contrast(1.05)}
+.cs-carousel-slide-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);pointer-events:none;border-radius:10px;transition:opacity 1s}
+.cs-carousel-slide:hover .cs-carousel-slide-img::after{opacity:.1}
+.cs-carousel-slide-caption{font-family:var(--mono);font-size:.5rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-top:14px;text-align:center;transition:color .3s}
+.cs-carousel-slide:hover .cs-carousel-slide-caption{color:var(--muted)}
+
+/* === CONTENT SECTIONS === */
+.cs-content{max-width:900px;margin:0 auto;padding:0 clamp(2em,6vw,4em)}
+.cs-section{padding:clamp(6em,14vh,10em) 0}
+.cs-section-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:32px}
+.cs-section-divider{width:40px;height:1px;background:var(--dim);margin-bottom:48px;opacity:.5}
+.cs-section-heading{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:600;letter-spacing:-.03em;line-height:1.1;margin-bottom:32px}
+.cs-prose{font-size:.95rem;color:#a09a92;line-height:1.9;font-weight:300}
+.cs-prose strong{color:var(--text);font-weight:400}
+.cs-prose+.cs-prose{margin-top:24px}
+
+/* === ARCHITECTURE -- HTML-based === */
+.cs-arch{margin-top:56px}
+.cs-arch-label{font-family:var(--mono);font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:20px;display:block}
+.cs-arch-row{display:flex;gap:12px;margin-bottom:12px;align-items:stretch}
+.cs-arch-node{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;flex:1;min-width:0;position:relative;transition:border-color .4s,box-shadow .4s,background .4s}
+.cs-arch-node:hover{border-color:rgba(201,169,109,.15);box-shadow:0 8px 30px rgba(0,0,0,.25);background:#181818}
+.cs-arch-node.hl{border-color:rgba(201,169,109,.12)}
+.cs-arch-node.hl::after{content:'';position:absolute;inset:0;border-radius:8px;background:radial-gradient(ellipse at 50% 0%,rgba(201,169,109,.03),transparent 70%);pointer-events:none}
+.cs-arch-node-name{font-family:var(--display);font-size:.8rem;font-weight:500;letter-spacing:-.02em;margin-bottom:3px}
+.cs-arch-node-desc{font-family:var(--mono);font-size:.48rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase;line-height:1.5}
+.cs-arch-node-badge{position:absolute;top:8px;right:10px;font-family:var(--mono);font-size:.4rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);opacity:.6}
+/* Connector arrows between rows */
+.cs-arch-arrows{display:flex;justify-content:center;gap:48px;padding:4px 0;color:var(--dim);opacity:.3}
+.cs-arch-arrows svg{width:16px;height:16px}
+.cs-arch-wide{flex:2}
+.cs-arch-narrow{flex:1}
+/* Layer labels */
+.cs-arch-layer{display:flex;align-items:center;gap:12px;margin-bottom:16px;margin-top:32px}
+.cs-arch-layer-line{flex:1;height:1px;background:var(--border)}
+.cs-arch-layer-text{font-family:var(--mono);font-size:.45rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+
+/* === FEATURE CARDS === */
+.cs-features{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px}
+.cs-feature{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:32px 28px;position:relative;overflow:hidden;transition:border-color .5s,box-shadow .5s}
+.cs-feature:hover{border-color:rgba(201,169,109,.12);box-shadow:0 16px 60px rgba(0,0,0,.3)}
+.cs-feature::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(201,169,109,.04) 0%,transparent 60%);pointer-events:none;opacity:0;transition:opacity .3s}
+.cs-feature:hover::before{opacity:1}
+.cs-feature-num{font-family:var(--mono);font-size:.5rem;color:var(--dim);letter-spacing:3px;display:block;margin-bottom:14px}
+.cs-feature h4{font-family:var(--display);font-size:1.05rem;font-weight:500;letter-spacing:-.02em;margin-bottom:10px}
+.cs-feature p{font-size:.8rem;color:var(--muted);line-height:1.75}
+/* Featured card spans full width */
+.cs-feature--wide{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:0 28px;padding:36px 32px}
+.cs-feature--wide .cs-feature-num{grid-column:1/-1}
+.cs-feature--wide h4{align-self:start}
+.cs-feature--wide p{grid-column:1/-1}
+
+/* === TECH GRID === */
+.cs-tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:48px;background:var(--border);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.cs-tech-item{background:var(--bg);padding:22px 20px;transition:background .3s}
+.cs-tech-item:hover{background:var(--surface)}
+.cs-tech-name{font-family:var(--display);font-size:.85rem;font-weight:500;letter-spacing:-.02em;margin-bottom:3px}
+.cs-tech-role{font-family:var(--mono);font-size:.5rem;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase}
+
+/* === WIDE SECTION (breaks out of cs-content) === */
+.cs-wide{max-width:1100px;margin:0 auto;padding:0 clamp(2em,6vw,4em)}
+
+/* === OTHER PROJECTS === */
+.cs-others{padding:clamp(8em,16vh,12em) clamp(3em,8vw,8em);position:relative;z-index:2;max-width:1200px;margin:0 auto}
+.cs-others-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:32px}
+.cs-others-divider{width:40px;height:1px;background:var(--dim);margin-bottom:48px;opacity:.5}
+.cs-others-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cs-other-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .5s,box-shadow .5s,transform .5s cubic-bezier(.16,1,.3,1);text-decoration:none;color:inherit}
+.cs-other-card:hover{border-color:rgba(201,169,109,.12);box-shadow:0 24px 70px rgba(0,0,0,.35);transform:translateY(-4px)}
+.cs-other-card-img{position:relative;overflow:hidden;aspect-ratio:16/10;background:#161616}
+.cs-other-card-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.85) brightness(.9) sepia(.25);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1s}
+.cs-other-card:hover .cs-other-card-img img{transform:scale(1.05);filter:grayscale(0) brightness(1.05) sepia(0)}
+.cs-other-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);pointer-events:none;transition:opacity 1s}
+.cs-other-card:hover .cs-other-card-img::after{opacity:.1}
+.cs-other-card-body{padding:24px}
+.cs-other-card-badge{font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.7;display:block;margin-bottom:10px}
+.cs-other-card-title{font-family:var(--display);font-size:1.2rem;font-weight:500;letter-spacing:-.02em;margin-bottom:8px}
+.cs-other-card-desc{font-size:.78rem;color:var(--muted);line-height:1.7}
+.cs-other-card-arrow{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:16px;transition:color .3s}
+.cs-other-card:hover .cs-other-card-arrow{color:var(--gold)}
+
+/* === FOOTER === */
+.v5-footer{padding:clamp(10em,18vh,14em) 0 48px;text-align:center;position:relative;z-index:2}
+.v5-footer::before{content:'';display:block;width:40px;height:1px;margin:0 auto 56px;background:var(--dim)}
+.v5-footer-title{font-family:var(--display);font-size:clamp(3rem,6vw,5rem);font-weight:600;letter-spacing:-.03em;margin-bottom:16px}
+.v5-footer-sub{color:var(--muted);font-size:.85rem;margin-bottom:44px}
+.v5-footer-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:60px}
+.v5-footer-link{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid var(--border);border-radius:60px;color:var(--muted);font-size:.78rem;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.v5-footer-link:hover{color:var(--gold);border-color:rgba(201,169,109,.2);transform:translateY(-2px)}
+.v5-footer-copy{font-size:.6rem;color:var(--dim);letter-spacing:1px}
+
+/* === RESPONSIVE === */
+@media(max-width:900px){
+    .cs-hero-title{font-size:clamp(3rem,12vw,5rem)}
+    .cs-hero-meta{flex-wrap:wrap;gap:24px}
+    .cs-features{grid-template-columns:1fr}
+    .cs-feature--wide{grid-template-columns:1fr}
+    .cs-tech-grid{grid-template-columns:repeat(2,1fr)}
+    .cs-others-grid{grid-template-columns:1fr}
+    .cs-arch-row{flex-wrap:wrap}
+    .cs-arch-node{min-width:calc(50% - 6px)}
+    .cs-carousel-slide{width:clamp(240px,65vw,340px)}
+}
+@media(max-width:600px){
+    .cs-hero{padding:0 24px 48px;min-height:100svh}
+    .cs-hero-img{padding:0 24px}
+    .cs-content{padding:0 24px}
+    .cs-wide{padding:0 24px}
+    .cs-section{padding:60px 0}
+    .cs-others{padding:60px 24px}
+    .v5-footer{padding:60px 24px 32px}
+    .v5-nav{padding:16px 24px}
+    .v5-scroll-cue{display:none}
+    .cs-tech-grid{grid-template-columns:1fr 1fr}
+    .cs-arch-node{min-width:100%}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.v5-loader{display:none!important}}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="v5-loader" id="loader">
+    <span class="v5-loader-word">TypeScript</span>
+    <span class="v5-loader-word">React</span>
+    <span class="v5-loader-word">Chrome</span>
+    <span class="v5-loader-word">Privacy</span>
+    <span class="v5-loader-word">WhatsApp</span>
+    <span class="v5-loader-word">Smart</span>
+    <div class="v5-loader-screen" id="loaderScreen"><div class="v5-loader-curve"></div></div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="v5-progress" id="progBar"></div>
+
+<!-- Nav -->
+<nav class="v5-nav">
+    <a href="../index.html" class="v5-nav-logo">Ajay Sachdev</a>
+    <ul class="v5-nav-links">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- === HERO === -->
+<header class="cs-hero">
+    <a href="index.html" class="cs-hero-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        All projects
+    </a>
+    <span class="cs-hero-tag">Chrome Extension -- Prototype</span>
+    <h1 class="cs-hero-title">WhatsApp<br><em>Smart</em></h1>
+    <p class="cs-hero-desc"><strong>2.5 billion people use WhatsApp every day. Zero productivity tools.</strong> Gmail got smart replies in 2017. WhatsApp added basic single-message scheduling in February 2026 -- buried in the UI. Still no AI, no way to catch up on a hundred group messages, no follow-up reminders. Nobody's building for the people who just use WhatsApp to talk to friends, family, and colleagues. So I started building it.</p>
+    <div class="cs-hero-meta">
+        <div class="cs-hero-meta-item">
+            <span class="cs-hero-meta-val">16.5k</span>
+            <span class="cs-hero-meta-label">Lines of code</span>
+        </div>
+        <div class="cs-hero-meta-item">
+            <span class="cs-hero-meta-val">54</span>
+            <span class="cs-hero-meta-label">React components</span>
+        </div>
+        <div class="cs-hero-meta-item">
+            <span class="cs-hero-meta-val">7</span>
+            <span class="cs-hero-meta-label">Core features</span>
+        </div>
+        <div class="cs-hero-meta-item">
+            <span class="cs-hero-meta-val">135</span>
+            <span class="cs-hero-meta-label">Source files</span>
+        </div>
+    </div>
+    <div class="v5-scroll-cue">Scroll</div>
+</header>
+
+<!-- Hero Image -->
+<div class="cs-hero-img">
+    <div class="cs-hero-img-wrap" id="heroImgWrap">
+        <img src="../images/hero-whatsapp.png" alt="WhatsApp Smart Chrome extension showing AI reply suggestions, tone adjuster, and scheduled messages alongside a WhatsApp chat" loading="eager" width="1400" height="788">
+    </div>
+    <p class="cs-hero-img-caption">Extension sidebar -- AI suggestions, tone adjuster, scheduled messages</p>
+</div>
+
+<!-- === THE PROBLEM === -->
+<div class="cs-content">
+    <section class="cs-section" id="problem">
+        <span class="cs-section-label">01 / The Problem</span>
+        <div class="cs-section-divider"></div>
+        <h2 class="cs-section-heading">The missing layer</h2>
+        <p class="cs-prose">I kept running into the same friction. Want to schedule a birthday message for midnight? Can't. Need to catch up on a family group chat with 120 unread messages? Scroll through every single one. Want quick reply suggestions when you're juggling ten conversations? Nothing.</p>
+        <p class="cs-prose">The gap is bigger than scheduling. There's no personal productivity layer at all. WhatsApp's own scheduling, added in early 2026, is single-message only with no recurring option. Every third-party tool in this space targets businesses running customer support through the WhatsApp Business API. <strong>Personal users got left behind.</strong> That's the gap I'm filling.</p>
+    </section>
+</div>
+
+<!-- === HOW IT WORKS (wider for the architecture diagram) === -->
+<div class="cs-wide">
+    <section class="cs-section" id="architecture">
+        <span class="cs-section-label">02 / How It Works</span>
+        <div class="cs-section-divider"></div>
+        <h2 class="cs-section-heading">Three-layer architecture</h2>
+        <p class="cs-prose" style="max-width:700px">You open WhatsApp Web and the extension is already there -- a small toolbar next to the compose box. Type a message and you'll see AI suggestions, a tone adjuster, and a schedule button. Behind it, everything runs locally in the browser.</p>
+        <p class="cs-prose" style="max-width:700px">A content script injects the UI via shadow DOM so it never clashes with WhatsApp's own styles. A background service worker handles scheduling through Chrome Alarms -- messages go out even if the tab isn't focused. Message access comes from the WPP library (an open-source WhatsApp Web API), not brittle DOM scraping. <strong>No server required for core features. No sign-up.</strong></p>
+
+        <!-- HTML Architecture Diagram -->
+        <div class="cs-arch">
+            <!-- Browser Layer -->
+            <div class="cs-arch-layer">
+                <span class="cs-arch-layer-text">Browser Layer</span>
+                <div class="cs-arch-layer-line"></div>
+            </div>
+
+            <div class="cs-arch-row">
+                <div class="cs-arch-node hl cs-arch-wide">
+                    <span class="cs-arch-node-badge">Entry point</span>
+                    <div class="cs-arch-node-name">Content Script</div>
+                    <div class="cs-arch-node-desc">Injects into WhatsApp Web DOM via MutationObserver detection</div>
+                </div>
+                <div class="cs-arch-node hl">
+                    <span class="cs-arch-node-badge">Main world</span>
+                    <div class="cs-arch-node-name">Injected Script</div>
+                    <div class="cs-arch-node-desc">WPP bridge for programmatic message access</div>
+                </div>
+            </div>
+
+            <div class="cs-arch-arrows">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+            </div>
+
+            <div class="cs-arch-row">
+                <div class="cs-arch-node hl">
+                    <div class="cs-arch-node-name">Shadow DOM</div>
+                    <div class="cs-arch-node-desc">Isolated React mount -- never clashes with WhatsApp CSS</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Message Bridge</div>
+                    <div class="cs-arch-node-desc">postMessage relay between content + injected scripts</div>
+                </div>
+                <div class="cs-arch-node hl">
+                    <div class="cs-arch-node-name">React 19 UI</div>
+                    <div class="cs-arch-node-desc">54 components -- Radix primitives, Tailwind v4, shadcn/ui</div>
+                </div>
+            </div>
+
+            <!-- Extension Layer -->
+            <div class="cs-arch-layer">
+                <span class="cs-arch-layer-text">Extension Layer</span>
+                <div class="cs-arch-layer-line"></div>
+            </div>
+
+            <div class="cs-arch-row">
+                <div class="cs-arch-node hl cs-arch-wide">
+                    <span class="cs-arch-node-badge">Service worker</span>
+                    <div class="cs-arch-node-name">Background Worker</div>
+                    <div class="cs-arch-node-desc">1,400 lines -- scheduling engine, send queue, orphan recovery, tab manager</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Chrome Storage</div>
+                    <div class="cs-arch-node-desc">All user data local. Scheduled messages, voice profiles, office hours, reminders</div>
+                </div>
+            </div>
+
+            <div class="cs-arch-arrows">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+            </div>
+
+            <div class="cs-arch-row">
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Chrome Alarms</div>
+                    <div class="cs-arch-node-desc">OS-level timing -- fires even when tab unfocused or worker asleep</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Send Queue</div>
+                    <div class="cs-arch-node-desc">Retry logic, staggered batch delivery (3-10s gaps), status tracking</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Tab Manager</div>
+                    <div class="cs-arch-node-desc">Auto-opens WhatsApp tab for scheduled sends, closes when done</div>
+                </div>
+            </div>
+
+            <!-- External Services -->
+            <div class="cs-arch-layer">
+                <span class="cs-arch-layer-text">External Services (optional)</span>
+                <div class="cs-arch-layer-line"></div>
+            </div>
+
+            <div class="cs-arch-row">
+                <div class="cs-arch-node hl">
+                    <span class="cs-arch-node-badge">BYOK / proxy</span>
+                    <div class="cs-arch-node-name">Claude API</div>
+                    <div class="cs-arch-node-desc">Haiku 4.5 for speed, Sonnet 4.6 for quality. Direct from browser or via free-tier proxy</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Hono Server</div>
+                    <div class="cs-arch-node-desc">Push notifications when Chrome closed. AI proxy with 10 free actions/month</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Upstash Redis</div>
+                    <div class="cs-arch-node-desc">Server-side schedule state, push subscriptions, usage metering</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- === FEATURES === -->
+<div class="cs-content">
+    <section class="cs-section" id="features">
+        <span class="cs-section-label">03 / Features</span>
+        <div class="cs-section-divider"></div>
+        <h2 class="cs-section-heading">What it does</h2>
+
+        <div class="cs-features">
+            <div class="cs-feature cs-feature--wide">
+                <span class="cs-feature-num">01</span>
+                <h4>Smart Scheduling</h4>
+                <p>Set a message to go out at a specific time, then add a recurrence rule -- daily, weekly on specific days, monthly. Per-contact office hours mean messages won't fire at 3am; they defer to the next open window. Batch mode sends to up to 50 contacts with staggered delivery (3-10 second gaps between each) so it doesn't look automated.</p>
+            </div>
+            <div class="cs-feature">
+                <span class="cs-feature-num">02</span>
+                <h4>AI Reply Suggestions</h4>
+                <p>Reads the last 15 messages in a conversation and suggests three replies. Claude Haiku 4.5 by default -- latency matters more than depth here. It also builds a voice profile from your sent messages (average length, emoji habits, punctuation, formality) so the suggestions sound like you, not like a chatbot.</p>
+            </div>
+            <div class="cs-feature">
+                <span class="cs-feature-num">03</span>
+                <h4>Tone Adjuster</h4>
+                <p>Five modes: formal, casual, friendly, professional, funny. You draft something quickly and one click rewrites it in the tone you pick. I built this because I kept switching between a group chat with friends and a thread with my manager, and the register was always wrong.</p>
+            </div>
+            <div class="cs-feature">
+                <span class="cs-feature-num">04</span>
+                <h4>Group Chat Summary</h4>
+                <p>Pulls the last 30 messages from a group chat and summarises them -- what was discussed, any decisions, and who owes what. There's a separate "Extract Decisions" mode that returns structured data with assignees and deadlines. Output goes to a notification, a DM to yourself, or back into the group.</p>
+            </div>
+            <div class="cs-feature">
+                <span class="cs-feature-num">05</span>
+                <h4>Undo Send</h4>
+                <p>Every message gets held for a few seconds (you pick how many, 1-10) with a countdown bar. Hit cancel and it never sends. Under the hood it intercepts the send before WhatsApp sees it -- simple, but WhatsApp still doesn't have anything like it.</p>
+            </div>
+            <div class="cs-feature">
+                <span class="cs-feature-num">06</span>
+                <h4>Follow-Up Reminders</h4>
+                <p>Flag any message for follow-up with a timestamp. When it's time, you get a Chrome notification with a link straight to the chat. Group admins can also set keyword alerts -- words like "urgent" or "deadline" trigger a notification the moment they appear.</p>
+            </div>
+            <div class="cs-feature cs-feature--wide">
+                <span class="cs-feature-num">07</span>
+                <h4>Privacy-First</h4>
+                <p>Everything runs locally. Scheduled messages, voice profiles, office hours, reminders -- all Chrome Storage on your device. The only thing that leaves the browser is the prompt sent to Claude's API when you use an AI feature. You bring your own API key, or use the free tier (10 AI actions a month, proxied through the server). No account needed.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- === TECH STACK === -->
+    <section class="cs-section" id="stack">
+        <span class="cs-section-label">04 / Tech Stack</span>
+        <div class="cs-section-divider"></div>
+        <h2 class="cs-section-heading">What it's built with</h2>
+
+        <div class="cs-tech-grid">
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">React 19</div>
+                <div class="cs-tech-role">UI + state</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">TypeScript 5.9</div>
+                <div class="cs-tech-role">Type-safe code</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">WXT</div>
+                <div class="cs-tech-role">Extension framework</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Tailwind v4</div>
+                <div class="cs-tech-role">Utility styling</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Radix UI</div>
+                <div class="cs-tech-role">Accessible primitives</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Claude API</div>
+                <div class="cs-tech-role">Haiku + Sonnet</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Chrome Alarms</div>
+                <div class="cs-tech-role">Background scheduling</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">WPP / wa-js</div>
+                <div class="cs-tech-role">WhatsApp DOM access</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Hono</div>
+                <div class="cs-tech-role">Push + AI proxy</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Next.js 15</div>
+                <div class="cs-tech-role">Landing page</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Vite</div>
+                <div class="cs-tech-role">Build tooling</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Upstash Redis</div>
+                <div class="cs-tech-role">Server state</div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- === SCREENSHOT CAROUSEL === -->
+<section class="cs-carousel">
+    <span class="cs-carousel-label">Screenshots</span>
+    <div class="cs-carousel-track" id="carouselTrack">
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-1.png" alt="Schedule modal with recurrence options" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">Schedule modal + recurrence</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-2.png" alt="AI reply suggestions panel" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">AI reply suggestions</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-3.png" alt="Tone adjuster interface" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">Tone adjuster</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-4.png" alt="Group chat summary output" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">Group chat summary</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/whatsapp-smart-ui.png" alt="Full extension UI alongside WhatsApp" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">Full extension UI</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/mockup-whatsapp.png" alt="Extension mockup" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">Extension mockup</p>
+        </div>
+        <!-- Duplicates for seamless loop -->
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-1.png" alt="Schedule modal with recurrence options" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">Schedule modal + recurrence</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-2.png" alt="AI reply suggestions panel" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">AI reply suggestions</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-3.png" alt="Tone adjuster interface" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">Tone adjuster</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-4.png" alt="Group chat summary output" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">Group chat summary</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/whatsapp-smart-ui.png" alt="Full extension UI alongside WhatsApp" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">Full extension UI</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/mockup-whatsapp.png" alt="Extension mockup" loading="lazy"></div>
+            <p class="cs-carousel-slide-caption">Extension mockup</p>
+        </div>
+    </div>
+</section>
+
+<!-- === OTHER PROJECTS === -->
+<section class="cs-others">
+    <span class="cs-others-label">Other Projects</span>
+    <div class="cs-others-divider"></div>
+    <div class="cs-others-grid">
+        <a href="ajay-brain.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-card-img">
+                <img src="../images/card-brain.png" alt="Ajay Brain dashboard" loading="lazy">
+            </div>
+            <div class="cs-other-card-body">
+                <span class="cs-other-card-badge">Production</span>
+                <h3 class="cs-other-card-title">Ajay Brain</h3>
+                <p class="cs-other-card-desc">AI assistant in Teams. Searches 7,000+ docs, fetches live Xero and HubSpot data, 30+ chart dashboard.</p>
+                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+        <a href="trading-bot.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-card-img">
+                <img src="../images/card-trading.png" alt="Trading Bot backtest" loading="lazy">
+            </div>
+            <div class="cs-other-card-body">
+                <span class="cs-other-card-badge">Paper Trading</span>
+                <h3 class="cs-other-card-title">Trading Bot</h3>
+                <p class="cs-other-card-desc">Four AI agents scan 20 FTSE 100 stocks every morning. Deterministic technicals, Claude quality gate, Opus risk veto.</p>
+                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+        <a href="uni-nation.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-card-img">
+                <img src="../images/card-uninat.png" alt="Uni-Nation website" loading="lazy">
+            </div>
+            <div class="cs-other-card-body">
+                <span class="cs-other-card-badge">Live</span>
+                <h3 class="cs-other-card-title">Uni-Nation Digital</h3>
+                <p class="cs-other-card-desc">Family textile manufacturer since 1988. I built the website, inventory system with voice input in Hindi, sales intelligence dashboards.</p>
+                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="v5-footer" id="contact">
+    <h2 class="v5-footer-title" id="footerH">Let's talk.</h2>
+    <p class="v5-footer-sub">Always up for hard problems and good coffee.</p>
+    <div class="v5-footer-links">
+        <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span>LinkedIn</span></a>
+        <a href="mailto:ajaysachdev2@gmail.com" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg><span>Email</span></a>
+        <a href="https://uni-nation.in" target="_blank" rel="noopener" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg><span>Uni-Nation</span></a>
+    </div>
+    <p class="v5-footer-copy">&copy; 2026 Ajay Sachdev</p>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.js"></script>
+
+<script>
+/* === GSAP Setup === */
+gsap.registerPlugin(ScrollTrigger);
+if(typeof SplitText!=='undefined') gsap.registerPlugin(SplitText);
+if(typeof CustomEase!=='undefined'){gsap.registerPlugin(CustomEase);CustomEase.create('smooth','M0,0 C0.25,0.1 0.25,1 1,1')}
+
+/* === Lenis === */
+const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t))});
+lenis.on('scroll',ScrollTrigger.update);
+gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
+
+/* === Preloader === */
+const loaderScreen=document.getElementById('loaderScreen');
+const words=document.querySelectorAll('.v5-loader-word');
+const preTl=gsap.timeline({onComplete:()=>{
+    gsap.set('#loader',{display:'none'});lenis.start();heroReveal();
+}});
+words.forEach((w,i)=>{const t=.16-i*.012;preTl.set(w,{opacity:1},i*t+.15).set(w,{opacity:0},(i+1)*t+.15)});
+preTl.to({},{duration:.25});
+preTl.to(loaderScreen,{yPercent:-130,duration:.9,ease:'power4.inOut'});
+
+/* === Hero Reveal === */
+function heroReveal(){
+    const tl=gsap.timeline({defaults:{ease:'expo.out'}});
+    tl.fromTo('.cs-hero-back',{opacity:0,x:-20},{opacity:1,x:0,duration:.8},.1);
+    tl.fromTo('.cs-hero-tag',{opacity:0,y:20},{opacity:1,y:0,duration:1},.15);
+    if(typeof SplitText!=='undefined'){
+        const titleSplit=new SplitText('.cs-hero-title',{type:'lines,chars',mask:'lines'});
+        tl.set('.cs-hero-title',{opacity:1},.25);
+        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.02,duration:1},.25);
+    } else {
+        tl.fromTo('.cs-hero-title',{opacity:0,y:50},{opacity:1,y:0,duration:1.2},.25);
+    }
+    tl.fromTo('.cs-hero-desc',{opacity:0,y:24},{opacity:1,y:0,duration:1.2},.6);
+    tl.fromTo('.cs-hero-meta',{opacity:0,y:20},{opacity:1,y:0,duration:1},.8);
+}
+
+/* === Progress === */
+gsap.to('#progBar',{scaleX:1,ease:'none',scrollTrigger:{trigger:'body',start:'top top',end:'bottom bottom',scrub:true}});
+
+/* === Hero Image -- 3D tilt + glare === */
+const heroWrap=document.getElementById('heroImgWrap');
+if(heroWrap){
+    const heroImg=heroWrap.querySelector('img');
+    heroWrap.addEventListener('mousemove',(e)=>{
+        const rect=heroWrap.getBoundingClientRect();
+        const x=(e.clientX-rect.left)/rect.width;
+        const y=(e.clientY-rect.top)/rect.height;
+        gsap.to(heroWrap,{rotateY:(x-.5)*3,rotateX:(y-.5)*-2,transformPerspective:1400,duration:.9,ease:'power2.out'});
+        heroWrap.style.setProperty('--mx',(x*100)+'%');
+        heroWrap.style.setProperty('--my',(y*100)+'%');
+    });
+    heroWrap.addEventListener('mouseleave',()=>{
+        gsap.to(heroWrap,{rotateY:0,rotateX:0,duration:1.4,ease:'power3.out'});
+    });
+    if(heroImg){
+        gsap.to(heroImg,{yPercent:-8,ease:'none',scrollTrigger:{trigger:'.cs-hero-img',start:'top bottom',end:'bottom top',scrub:true}});
+    }
+}
+
+/* === Screenshot Carousel -- auto-scroll with velocity direction === */
+const cTrack=document.getElementById('carouselTrack');
+if(cTrack){
+    let cPos=0,cDir=-1,cSpeed=.6;
+    const slideCount=6; /* original slides before duplicates */
+    let resetWidth=0;
+
+    function calcResetWidth(){
+        const slides=cTrack.querySelectorAll('.cs-carousel-slide');
+        if(slides.length===0) return;
+        const gap=parseFloat(getComputedStyle(cTrack).gap)||20;
+        resetWidth=0;
+        for(let i=0;i<slideCount;i++){resetWidth+=slides[i].offsetWidth+gap}
+    }
+    calcResetWidth();
+    window.addEventListener('resize',calcResetWidth);
+
+    lenis.on('scroll',({velocity})=>{
+        cDir=velocity>0?-1:1;
+        cSpeed=Math.min(2,0.6+Math.abs(velocity)*0.05);
+    });
+
+    gsap.ticker.add(()=>{
+        cPos+=cDir*cSpeed;
+        if(cPos<-resetWidth) cPos+=resetWidth;
+        if(cPos>0) cPos-=resetWidth;
+        cTrack.style.transform='translateX('+cPos+'px)';
+    });
+
+    /* Drag */
+    let isDrag=false,startX=0,startPos=0;
+    cTrack.addEventListener('pointerdown',(e)=>{isDrag=true;startX=e.clientX;startPos=cPos;cTrack.setPointerCapture(e.pointerId)});
+    cTrack.addEventListener('pointermove',(e)=>{if(!isDrag)return;cPos=startPos+(e.clientX-startX)});
+    cTrack.addEventListener('pointerup',()=>{isDrag=false});
+}
+
+/* === Section scroll reveals === */
+gsap.utils.toArray('.cs-section').forEach(section=>{
+    const label=section.querySelector('.cs-section-label');
+    const divider=section.querySelector('.cs-section-divider');
+    const heading=section.querySelector('.cs-section-heading');
+    const proses=section.querySelectorAll('.cs-prose');
+
+    const els=[label,divider,heading,...proses].filter(Boolean);
+    els.forEach((el,i)=>{
+        gsap.from(el,{opacity:0,y:30,duration:1,ease:'expo.out',delay:i*.1,
+            scrollTrigger:{trigger:el,start:'top 85%',once:true}
+        });
+    });
+});
+
+/* === Architecture nodes -- staggered reveal === */
+gsap.utils.toArray('.cs-arch-row').forEach(row=>{
+    const nodes=row.querySelectorAll('.cs-arch-node');
+    nodes.forEach((node,i)=>{
+        gsap.from(node,{opacity:0,y:25,scale:.97,duration:.9,ease:'expo.out',delay:i*.08,
+            scrollTrigger:{trigger:row,start:'top 88%',once:true}
+        });
+    });
+});
+gsap.utils.toArray('.cs-arch-arrows').forEach(arrows=>{
+    gsap.from(arrows,{opacity:0,duration:.6,
+        scrollTrigger:{trigger:arrows,start:'top 90%',once:true}
+    });
+});
+gsap.utils.toArray('.cs-arch-layer').forEach(layer=>{
+    gsap.from(layer,{opacity:0,x:-20,duration:.8,ease:'expo.out',
+        scrollTrigger:{trigger:layer,start:'top 90%',once:true}
+    });
+});
+
+/* === Feature cards -- staggered reveal + spotlight === */
+gsap.utils.toArray('.cs-feature').forEach(card=>{
+    gsap.from(card,{opacity:0,y:40,duration:1,ease:'expo.out',
+        scrollTrigger:{trigger:card,start:'top 88%',once:true}
+    });
+    card.addEventListener('mousemove',(e)=>{
+        const rect=card.getBoundingClientRect();
+        card.style.setProperty('--mx',(((e.clientX-rect.left)/rect.width)*100)+'%');
+        card.style.setProperty('--my',(((e.clientY-rect.top)/rect.height)*100)+'%');
+    });
+});
+
+/* === Tech grid reveal === */
+gsap.utils.toArray('.cs-tech-item').forEach((item,i)=>{
+    gsap.from(item,{opacity:0,y:20,duration:.8,ease:'expo.out',delay:(i%4)*.06,
+        scrollTrigger:{trigger:item,start:'top 90%',once:true}
+    });
+});
+
+/* === Other project cards === */
+document.querySelectorAll('.cs-other-card').forEach(card=>{
+    const img=card.querySelector('img');
+    gsap.from(card,{opacity:0,y:40,duration:1,ease:'expo.out',
+        scrollTrigger:{trigger:card,start:'top 88%',once:true}
+    });
+    if(img){
+        gsap.to(img,{yPercent:-6,ease:'none',
+            scrollTrigger:{trigger:card,start:'top bottom',end:'bottom top',scrub:true}
+        });
+    }
+});
+
+/* === Footer -- Masked SplitText === */
+const fH=document.getElementById('footerH');
+if(fH&&typeof SplitText!=='undefined'){
+    const fSplit=new SplitText(fH,{type:'chars',mask:'lines'});
+    gsap.set(fSplit.chars,{yPercent:110});
+    ScrollTrigger.create({trigger:fH,start:'top 82%',once:true,
+        onEnter:()=>{gsap.to(fSplit.chars,{yPercent:0,stagger:.03,duration:.9,ease:'smooth'})}
+    });
+}
+
+/* === Mouse Follower === */
+if(matchMedia('(pointer:fine)').matches&&typeof MouseFollower!=='undefined'){
+    MouseFollower.registerGSAP(gsap);
+    new MouseFollower({speed:.5,ease:'expo.out',skewing:2.5,skewingText:1.5});
+}
+
+/* === Page Transitions === */
+document.querySelectorAll('.cs-other-card').forEach(card=>{
+    card.addEventListener('click',function(e){
+        e.preventDefault();const href=this.getAttribute('href');if(!href)return;
+        const s=document.createElement('div');s.style.cssText='position:fixed;inset:0;z-index:9999;pointer-events:none';
+        const b=document.createElement('div');b.style.cssText='position:absolute;inset:0;background:var(--bg);transform:translateY(100%);will-change:transform';
+        const c=document.createElement('div');c.style.cssText='position:absolute;top:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%';
+        b.appendChild(c);s.appendChild(b);document.body.appendChild(s);
+        gsap.timeline({onComplete:()=>{window.location.href=href}})
+            .to(b,{y:0,duration:.8,ease:'power4.inOut'},.1);
+    });
+});
+
+document.querySelector('.cs-hero-back')?.addEventListener('click',function(e){
+    e.preventDefault();const href=this.getAttribute('href');if(!href)return;
+    const s=document.createElement('div');s.style.cssText='position:fixed;inset:0;z-index:9999;pointer-events:none';
+    const b=document.createElement('div');b.style.cssText='position:absolute;inset:0;background:var(--bg);transform:translateY(100%);will-change:transform';
+    const c=document.createElement('div');c.style.cssText='position:absolute;top:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%';
+    b.appendChild(c);s.appendChild(b);document.body.appendChild(s);
+    gsap.timeline({onComplete:()=>{window.location.href=href}})
+        .to(b,{y:0,duration:.8,ease:'power4.inOut'},.1);
+});
+</script>
+</body>
+</html>

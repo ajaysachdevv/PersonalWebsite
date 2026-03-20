@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpsPilot — AI Executive OS | Ajay Sachdev</title>
+    <meta name="description" content="Production AI system in Microsoft Teams. Searches 6,000+ documents, pulls live Xero and HubSpot data, 25 Claude tools, 11-page dashboard. 59,000+ lines of Python.">
+    <meta name="theme-color" content="#0c0c0c">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9a96d'/%3E%3Cstop offset='100%25' stop-color='%23e8e4de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23141414'/%3E%3Ctext x='16' y='23' font-family='system-ui' font-weight='700' font-size='18' fill='url(%23g)' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.css">
+<style>
+/* === V6 Case Study — Minhpham Principles + Clash Display === */
+:root{--bg:#0c0c0c;--surface:#141414;--text:#e8e4de;--muted:#8a857d;--dim:#5e5952;--border:rgba(232,228,222,.06);--gold:#c9a96d;--font:'Inter',system-ui,sans-serif;--display:'Clash Display',sans-serif;--mono:'JetBrains Mono',monospace}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
+a{color:inherit;text-decoration:none}
+
+/* Grain */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E")}
+
+/* Cursor */
+.mf-cursor{z-index:9990}
+.mf-cursor-text{font-family:var(--mono)!important;font-size:.6rem!important;letter-spacing:1.5px;text-transform:uppercase}
+@media(pointer:coarse){.mf-cursor{display:none!important}}
+
+/* Progress */
+.v5-progress{position:fixed;top:0;left:0;height:1px;z-index:200;background:var(--gold);transform-origin:left;transform:scaleX(0)}
+
+/* Nav */
+.v5-nav{position:fixed;top:0;left:0;right:0;z-index:150;padding:28px clamp(2.5em,7vw,6em);display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference}
+.v5-nav-logo{font-family:var(--display);font-weight:500;font-size:.95rem;letter-spacing:-.3px;color:#fff}
+.v5-nav-links{display:flex;gap:32px;list-style:none}
+.v5-nav-links a{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.5px;transition:color .3s}
+.v5-nav-links a:hover{color:#fff}
+
+/* Loader */
+.v5-loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.v5-loader-word{font-family:var(--display);font-size:clamp(2rem,4vw,3.5rem);font-weight:600;color:var(--gold);letter-spacing:-1.5px;position:absolute;opacity:0}
+.v5-loader-screen{position:absolute;inset:0;background:var(--bg);z-index:2;will-change:transform}
+.v5-loader-curve{position:absolute;bottom:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%}
+
+/* Scroll Cue */
+.v5-scroll-cue{position:absolute;bottom:36px;right:clamp(3em,8vw,8em);font-family:var(--mono);font-size:.5rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
+.v5-scroll-cue::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--dim),transparent);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.6;transform:scaleY(1)}50%{opacity:.15;transform:scaleY(.5)}}
+
+/* Marquee */
+.v5-marquee{padding:clamp(2em,4vh,4em) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;position:relative;z-index:2}
+.v5-marquee-track{display:flex;white-space:nowrap;will-change:transform}
+.v5-marquee-item{font-family:var(--display);font-size:clamp(.7rem,1vw,.85rem);font-weight:500;color:#706b63;letter-spacing:3px;text-transform:uppercase;padding:0 clamp(24px,3vw,48px);flex-shrink:0}
+.v5-marquee-item .sep{color:var(--gold);opacity:.4;margin:0 4px}
+
+/* Manifesto */
+.v5-manifesto{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:clamp(4em,10vh,8em) clamp(3em,8vw,8em);position:relative;z-index:2}
+.v5-manifesto-text{font-family:var(--display);font-size:clamp(2rem,4vw,3.4rem);font-weight:500;letter-spacing:-.03em;line-height:1.3;max-width:750px;text-align:center}
+
+/* === HERO === */
+.cs-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(3em,8vw,8em) clamp(4em,10vh,8em);position:relative;z-index:2}
+.cs-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:40px;transition:color .3s;opacity:0}
+.cs-back:hover{color:var(--gold)}
+.cs-back svg{width:14px;height:14px;transition:transform .3s}
+.cs-back:hover svg{transform:translateX(-3px)}
+.cs-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:28px;display:block;opacity:0}
+.cs-tag .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:10px;vertical-align:middle;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.cs-title{font-family:var(--display);font-size:clamp(4rem,10vw,8rem);font-weight:600;letter-spacing:-.04em;line-height:.9;margin-bottom:32px;opacity:0}
+.cs-title em{font-style:normal;color:var(--gold)}
+.cs-sub{font-size:clamp(.95rem,1.2vw,1.1rem);color:#a09a92;max-width:580px;line-height:1.85;font-weight:300;margin-bottom:48px;opacity:0}
+.cs-sub strong{color:var(--text);font-weight:400}
+
+/* Stats bar */
+.cs-stats{display:flex;gap:clamp(24px,4vw,56px);flex-wrap:wrap;opacity:0}
+.cs-stat-item{text-align:left}
+.cs-stat-val{font-family:var(--display);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:600;color:var(--gold);letter-spacing:-.02em;display:block}
+.cs-stat-label{font-family:var(--mono);font-size:.5rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;margin-top:4px}
+
+/* === HERO IMAGE === */
+.cs-hero-img{padding:clamp(2em,4vw,4em) clamp(3em,8vw,8em);position:relative;z-index:2}
+.cs-hero-img-wrap{position:relative;overflow:hidden;border-radius:10px;border:1px solid var(--border);box-shadow:0 24px 70px rgba(0,0,0,.45);background:var(--surface)}
+.cs-hero-img-wrap img{width:100%;display:block;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.cs-hero-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.05) 0%,transparent 50%,rgba(12,12,12,.25) 100%);pointer-events:none;border-radius:10px}
+.cs-img-caption{font-family:var(--mono);font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:center;margin-top:16px}
+
+/* === CONTENT SECTIONS === */
+.cs-content{max-width:900px;margin:0 auto;padding:0 clamp(3em,8vw,8em)}
+.cs-section{padding:clamp(5em,12vh,9em) 0}
+.cs-label{font-family:var(--mono);font-size:.55rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:20px}
+.cs-divider{width:100%;height:1px;background:var(--border);margin-bottom:clamp(2em,5vh,4em)}
+.cs-heading{font-family:var(--display);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:600;letter-spacing:-.03em;line-height:1.1;margin-bottom:clamp(1.5em,3vh,2em)}
+.cs-prose{font-size:clamp(.88rem,1vw,1rem);color:#a09a92;line-height:1.9;max-width:720px}
+.cs-prose strong{color:var(--text);font-weight:500}
+.cs-prose+.cs-prose{margin-top:20px}
+
+/* Before / After */
+.cs-ba{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:clamp(2em,4vh,3em)}
+.cs-ba-col{padding:clamp(24px,3vw,36px);border-radius:10px;background:var(--surface);border:1px solid var(--border)}
+.cs-ba-col h4{font-family:var(--mono);font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.cs-ba-col.ba-after h4{color:var(--gold)}
+.cs-ba-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.cs-ba-col li{font-size:.85rem;color:#a09a92;line-height:1.6;padding-left:16px;position:relative}
+.cs-ba-col li::before{content:'';position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--dim)}
+.cs-ba-col.ba-after li::before{background:var(--gold)}
+
+/* Pipeline SVG */
+.cs-pipeline{margin-top:clamp(2em,4vh,3em);overflow-x:auto}
+.cs-pipeline svg{width:100%;max-width:700px;display:block;margin:0 auto}
+.cs-pipeline .stage-box{fill:var(--surface);stroke:var(--border);stroke-width:1;rx:6}
+.cs-pipeline .stage-box.hl{stroke:rgba(201,169,109,.2)}
+.cs-pipeline .stage-label{font-family:var(--mono);font-size:7px;fill:var(--gold);letter-spacing:1.5px;text-anchor:middle;dominant-baseline:central}
+.cs-pipeline .stage-text{font-family:var(--font);font-size:8px;fill:var(--muted);text-anchor:middle;dominant-baseline:central}
+.cs-pipeline .conn{stroke:rgba(232,228,222,.08);stroke-width:1;stroke-dasharray:4 3}
+
+/* Feature Grid */
+.cs-features{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:clamp(1em,2vh,1.5em)}
+.cs-feature{padding:clamp(24px,3vw,36px);border-radius:10px;background:var(--surface);border:1px solid var(--border);transition:border-color .4s,box-shadow .4s}
+.cs-feature:hover{border-color:rgba(201,169,109,.12);box-shadow:0 8px 40px rgba(0,0,0,.2)}
+.cs-feature h4{font-family:var(--display);font-size:clamp(1rem,1.3vw,1.2rem);font-weight:500;letter-spacing:-.02em;margin-bottom:12px;color:var(--text)}
+.cs-feature p{font-size:.82rem;color:#8a857d;line-height:1.8}
+
+/* Mockup wrapper + dummy tag */
+.teams-win-wrap{position:relative;max-width:640px;margin-top:clamp(1.5em,3vh,2em)}
+.dummy-tag{position:absolute;top:-12px;right:16px;z-index:2;font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:4px 14px;background:var(--surface);border:1px solid rgba(201,169,109,.2);border-radius:20px;backdrop-filter:blur(8px)}
+
+/* Mockup - Teams (realistic dark theme) */
+.teams-win{margin-top:clamp(1.5em,3vh,2em);max-width:640px;border-radius:8px;overflow:hidden;background:#292929;border:1px solid #3b3b3b;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+/* Title bar */
+.teams-titlebar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:#1f1f1f;border-bottom:1px solid #3b3b3b}
+.teams-titlebar-icon{width:16px;height:16px;opacity:.7}
+.teams-titlebar-text{font-size:.7rem;color:#c8c8c8;font-weight:500;flex:1}
+.teams-titlebar-dots{display:flex;gap:8px;margin-left:auto}
+.teams-titlebar-dots span{width:10px;height:10px;border-radius:50%;border:1px solid #555}
+/* Channel header */
+.teams-channel{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid #3b3b3b}
+.teams-channel-name{font-size:.75rem;font-weight:600;color:#d1d1d1}
+.teams-channel-desc{font-size:.62rem;color:#8b8b8b;margin-left:4px}
+/* Chat area */
+.teams-chat{padding:20px 16px;display:flex;flex-direction:column;gap:16px;background:#1e1e1e}
+/* User message (right aligned) */
+.teams-msg-user{display:flex;justify-content:flex-end}
+.teams-msg-user-bubble{max-width:75%;padding:10px 14px;border-radius:4px 4px 0 4px;background:#464775;color:#e0e0e0;font-size:.78rem;line-height:1.6}
+/* Bot message */
+.teams-msg-bot{display:flex;gap:10px;align-items:flex-start}
+.teams-bot-avatar{width:28px;height:28px;border-radius:50%;background:#6264a7;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;color:#fff;flex-shrink:0}
+.teams-bot-content{flex:1;min-width:0}
+.teams-bot-meta{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.teams-bot-name{font-size:.72rem;font-weight:600;color:#d1d1d1}
+.teams-bot-time{font-size:.58rem;color:#8b8b8b}
+/* Adaptive Card */
+.teams-card{background:#333;border-radius:4px;border-top:3px solid #6264a7;overflow:hidden;max-width:95%}
+.teams-card-body{padding:16px}
+.teams-card-title{font-size:.82rem;font-weight:600;color:#e8e8e8;margin-bottom:10px}
+.teams-card-text{font-size:.76rem;color:#c8c8c8;line-height:1.7;margin-bottom:14px}
+/* Fact set */
+.teams-facts{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;padding:10px 12px;background:rgba(255,255,255,.03);border-radius:4px}
+.teams-fact{display:flex;gap:12px;font-size:.7rem}
+.teams-fact-label{color:#8b8b8b;min-width:100px;flex-shrink:0}
+.teams-fact-value{color:#d1d1d1}
+/* Card actions */
+.teams-card-actions{display:flex;gap:8px;padding:12px 16px;border-top:1px solid #444}
+.teams-card-btn{font-size:.68rem;padding:6px 14px;border-radius:4px;border:1px solid #555;background:transparent;color:#c8c8c8;cursor:default;font-family:var(--font);letter-spacing:.2px}
+.teams-card-btn-primary{background:#6264a7;border-color:#6264a7;color:#fff}
+.teams-card-btn-danger{border-color:#c4314b;color:#c4314b}
+
+/* Tech Grid */
+.cs-tech{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin-top:clamp(1em,2vh,1.5em)}
+.cs-tech-item{padding:20px 24px;background:var(--surface)}
+.cs-tech-item-name{font-family:var(--display);font-size:.88rem;font-weight:500;letter-spacing:-.02em;margin-bottom:4px}
+.cs-tech-item-role{font-size:.72rem;color:var(--dim)}
+
+/* Other Work */
+.cs-other{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:clamp(1em,2vh,1.5em)}
+.cs-other-card{display:block;padding:clamp(24px,3vw,32px);border-radius:10px;background:var(--surface);border:1px solid var(--border);transition:border-color .4s,transform .5s cubic-bezier(.16,1,.3,1)}
+.cs-other-card:hover{border-color:rgba(201,169,109,.15);transform:translateY(-4px)}
+.cs-other-num{font-family:var(--mono);font-size:.5rem;color:var(--dim);letter-spacing:3px;display:block;margin-bottom:12px}
+.cs-other-title{font-family:var(--display);font-size:clamp(1.1rem,1.5vw,1.3rem);font-weight:500;letter-spacing:-.02em;margin-bottom:8px}
+.cs-other-desc{font-size:.78rem;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.cs-other-badge{font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+
+/* Footer */
+.v5-footer{padding:clamp(10em,18vh,14em) 0 48px;text-align:center;position:relative;z-index:2}
+.v5-footer::before{content:'';display:block;width:40px;height:1px;margin:0 auto 56px;background:var(--dim)}
+.v5-footer-title{font-family:var(--display);font-size:clamp(3rem,6vw,5rem);font-weight:600;letter-spacing:-.03em;margin-bottom:16px}
+.v5-footer-sub{color:var(--muted);font-size:.85rem;margin-bottom:44px}
+.v5-footer-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:60px}
+.v5-footer-link{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid var(--border);border-radius:60px;color:var(--muted);font-size:.78rem;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.v5-footer-link:hover{color:var(--gold);border-color:rgba(201,169,109,.2);transform:translateY(-2px)}
+.v5-footer-copy{font-size:.6rem;color:var(--dim);letter-spacing:1px}
+
+/* === RESPONSIVE === */
+@media(max-width:900px){
+    .cs-features{grid-template-columns:1fr}
+    .cs-ba{grid-template-columns:1fr}
+    .cs-other{grid-template-columns:1fr}
+    .cs-stats{gap:20px}
+}
+@media(max-width:600px){
+    .cs-hero{padding:0 24px 40px;min-height:100svh}
+    .cs-hero-img{padding:16px 24px}
+    .cs-content{padding:0 24px}
+    .cs-section{padding:48px 0}
+    .v5-footer{padding:60px 24px 32px}
+    .v5-nav{padding:16px 24px}
+    .cs-title{font-size:clamp(2.8rem,12vw,4rem)}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.v5-loader{display:none!important}}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="v5-loader" id="loader">
+    <span class="v5-loader-word">Agentic</span>
+    <span class="v5-loader-word">Pipeline</span>
+    <span class="v5-loader-word">Search</span>
+    <span class="v5-loader-word">Production</span>
+    <span class="v5-loader-word">OpsPilot</span>
+    <div class="v5-loader-screen" id="loaderScreen"><div class="v5-loader-curve"></div></div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="v5-progress" id="progBar"></div>
+
+<!-- Nav -->
+<nav class="v5-nav">
+    <a href="../index.html" class="v5-nav-logo">Ajay Sachdev</a>
+    <ul class="v5-nav-links">
+        <li><a href="index.html">Work</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- Hero -->
+<header class="cs-hero">
+    <a href="index.html" class="cs-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        All projects
+    </a>
+    <span class="cs-tag"><span class="dot"></span>Autonomous AI &middot; Production 24/7</span>
+    <h1 class="cs-title">Ops<em>Pilot</em></h1>
+    <p class="cs-sub"><strong>I was drowning in context-switching across 5+ business systems,</strong> missing follow-ups, and spending hours pulling data that should have taken seconds. So I built an autonomous AI that monitors my work environment, surfaces what matters, and handles the operational overhead that used to eat my day. It runs 24/7 on production infrastructure, not as a demo.</p>
+    <div class="cs-stats">
+        <div class="cs-stat-item"><span class="cs-stat-val" data-target="60" data-suffix="k+">0</span><span class="cs-stat-label">Lines of Python</span></div>
+        <div class="cs-stat-item"><span class="cs-stat-val" data-target="100" data-suffix="%">0</span><span class="cs-stat-label">Search accuracy</span></div>
+        <div class="cs-stat-item"><span class="cs-stat-val" data-target="6" data-suffix="k+">0</span><span class="cs-stat-label">Docs indexed</span></div>
+        <div class="cs-stat-item"><span class="cs-stat-val" data-target="5">0</span><span class="cs-stat-label">Data sources</span></div>
+    </div>
+    <div class="v5-scroll-cue">Scroll</div>
+</header>
+
+<!-- Hero Image -->
+<div class="cs-hero-img">
+    <div class="cs-hero-img-wrap">
+        <img src="../images/hero-brain.png" alt="OpsPilot Vizro dashboard showing KPI cards, P&L waterfall chart, HubSpot pipeline funnel, and Xero bank balances" loading="eager" width="1440" height="900">
+    </div>
+    <p class="cs-img-caption">Vizro dashboard showing live KPIs, P&amp;L, pipeline, and bank balances (dummy data)</p>
+</div>
+
+<!-- Marquee -->
+<div class="v5-marquee">
+    <div class="v5-marquee-track" id="marqueeTrack">
+        <span class="v5-marquee-item">Agentic AI <span class="sep">/</span></span><span class="v5-marquee-item">Microsoft Teams <span class="sep">/</span></span><span class="v5-marquee-item">Python <span class="sep">/</span></span><span class="v5-marquee-item">Production <span class="sep">/</span></span><span class="v5-marquee-item">SharePoint <span class="sep">/</span></span><span class="v5-marquee-item">Xero <span class="sep">/</span></span><span class="v5-marquee-item">HubSpot <span class="sep">/</span></span><span class="v5-marquee-item">60k+ Lines <span class="sep">/</span></span><span class="v5-marquee-item">Agentic AI <span class="sep">/</span></span><span class="v5-marquee-item">Microsoft Teams <span class="sep">/</span></span><span class="v5-marquee-item">Python <span class="sep">/</span></span><span class="v5-marquee-item">Production <span class="sep">/</span></span><span class="v5-marquee-item">SharePoint <span class="sep">/</span></span><span class="v5-marquee-item">Xero <span class="sep">/</span></span><span class="v5-marquee-item">HubSpot <span class="sep">/</span></span><span class="v5-marquee-item">60k+ Lines <span class="sep">/</span></span>
+    </div>
+</div>
+
+<!-- 01 / The Problem -->
+<div class="cs-content">
+<section class="cs-section">
+    <span class="cs-label">01 / The Problem</span>
+    <div class="cs-divider"></div>
+    <p class="cs-prose">I run finance and operations at a tech company. My day is split across Teams, SharePoint, Xero, HubSpot, and email. Someone asks a question in one system, the answer lives in another, and the context for why it matters is in a third. I was spending hours just pulling data, missing follow-ups because nobody tracked who said what, and scrambling for context before meetings.</p>
+    <p class="cs-prose">"What does the Customer X contract say about payment terms?" That's a SharePoint search. "Who hasn't paid us?" That's Xero. "What deals is the sales team working on?" HubSpot. "Tell me about Customer X." That needs all three. The information always existed. It was just scattered across 6,000+ files, multiple systems, and years of accumulated documents.</p>
+
+    <div class="cs-ba">
+        <div class="cs-ba-col">
+            <h4>Before</h4>
+            <ul>
+                <li>Dig through 6,000+ SharePoint files manually</li>
+                <li>Log into Xero, HubSpot, email, calendar separately for every question</li>
+                <li>Miss follow-ups because nobody tracked who promised what</li>
+                <li>Scramble for context 5 minutes before a meeting</li>
+            </ul>
+        </div>
+        <div class="cs-ba-col ba-after">
+            <h4>After</h4>
+            <ul>
+                <li>Ask a question in Teams, get an answer from any source in seconds</li>
+                <li>Morning briefing with everything that matters before 9am</li>
+                <li>Commitment tracker catches every promise, nudges when overdue</li>
+                <li>Pre-meeting brief lands 15 minutes before every call</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- 02 / How It Works -->
+<section class="cs-section">
+    <span class="cs-label">02 / How It Works</span>
+    <div class="cs-divider"></div>
+    <h2 class="cs-heading">Nine-stage pipeline</h2>
+    <p class="cs-prose" style="margin-bottom:40px">Someone asks a question in Teams. The pipeline triages it, figures out whether it needs documents, live accounting data, CRM data, or all three at once, and returns an answer as an Adaptive Card with approve/edit/reject buttons. Live data questions hit Xero or HubSpot directly, zero LLM cost. Document questions run a hybrid search (BM25 + FAISS + reranker). Cross-source queries like "tell me about Customer X" pull from everything simultaneously. A PII blocker catches sensitive data before anything goes out.</p>
+
+    <div class="cs-pipeline">
+        <svg viewBox="0 0 700 460" fill="none">
+            <!-- Row 1: S1 -> S2 -> S3 -> S4 -->
+            <rect class="stage-box" x="10" y="10" width="150" height="42" rx="6"/>
+            <text class="stage-label" x="85" y="25">S1</text>
+            <text class="stage-text" x="85" y="39">Teams webhook</text>
+
+            <line class="conn" x1="160" y1="31" x2="180" y2="31"/>
+
+            <rect class="stage-box" x="180" y="10" width="150" height="42" rx="6"/>
+            <text class="stage-label" x="255" y="25">S2</text>
+            <text class="stage-text" x="255" y="39">Dedup gate</text>
+
+            <line class="conn" x1="330" y1="31" x2="350" y2="31"/>
+
+            <rect class="stage-box hl" x="350" y="10" width="150" height="42" rx="6"/>
+            <text class="stage-label" x="425" y="25">S3</text>
+            <text class="stage-text" x="425" y="39">Smart triage (2-layer)</text>
+
+            <line class="conn" x1="500" y1="31" x2="520" y2="31"/>
+
+            <rect class="stage-box hl" x="520" y="10" width="170" height="42" rx="6"/>
+            <text class="stage-label" x="605" y="25">S4</text>
+            <text class="stage-text" x="605" y="39">Intent router</text>
+
+            <!-- Vertical splits from S4 -->
+            <line class="conn" x1="570" y1="52" x2="570" y2="92"/>
+            <line class="conn" x1="640" y1="52" x2="640" y2="92"/>
+
+            <!-- Row 2: S5b (left) and S5a (right) -->
+            <rect class="stage-box hl" x="10" y="92" width="460" height="42" rx="6"/>
+            <text class="stage-label" x="240" y="107">S5b / DOC SEARCH</text>
+            <text class="stage-text" x="240" y="121">BM25 + FAISS hybrid + RRF + ROSES reranker</text>
+
+            <rect class="stage-box hl" x="490" y="92" width="200" height="42" rx="6"/>
+            <text class="stage-label" x="590" y="107">S5a / LIVE DATA</text>
+            <text class="stage-text" x="590" y="121">Xero (9) + HubSpot (8)</text>
+
+            <!-- Vertical from both rows to S6 -->
+            <line class="conn" x1="240" y1="134" x2="240" y2="174"/>
+            <line class="conn" x1="590" y1="134" x2="590" y2="174"/>
+
+            <!-- Row 3: S6 and S7 -->
+            <rect class="stage-box" x="120" y="174" width="240" height="42" rx="6"/>
+            <text class="stage-label" x="240" y="189">S6</text>
+            <text class="stage-text" x="240" y="203">Multi-draft generation</text>
+
+            <line class="conn" x1="360" y1="195" x2="470" y2="195"/>
+
+            <rect class="stage-box hl" x="470" y="174" width="220" height="42" rx="6"/>
+            <text class="stage-label" x="580" y="189">S7</text>
+            <text class="stage-text" x="580" y="203">PII sensitivity gate</text>
+
+            <!-- Vertical to S8 -->
+            <line class="conn" x1="240" y1="216" x2="240" y2="256"/>
+            <line class="conn" x1="580" y1="216" x2="580" y2="256"/>
+
+            <!-- Row 4: S8 and S9 -->
+            <rect class="stage-box" x="120" y="256" width="240" height="42" rx="6"/>
+            <text class="stage-label" x="240" y="271">S8</text>
+            <text class="stage-text" x="240" y="285">Adaptive Card builder</text>
+
+            <line class="conn" x1="360" y1="277" x2="470" y2="277"/>
+
+            <rect class="stage-box hl" x="470" y="256" width="220" height="42" rx="6"/>
+            <text class="stage-label" x="580" y="271">S9</text>
+            <text class="stage-text" x="580" y="285">Approve / Edit / Reject</text>
+
+            <!-- Unified Orchestrator box -->
+            <rect x="120" y="340" width="570" height="50" rx="8" fill="none" stroke="rgba(201,169,109,.2)" stroke-width="1" stroke-dasharray="6 4"/>
+            <text class="stage-label" x="405" y="360" style="font-size:7.5px">UNIFIED ORCHESTRATOR</text>
+            <text class="stage-text" x="405" y="376">Single Claude Sonnet call with 25 combined tools for cross-source queries</text>
+        </svg>
+    </div>
+</section>
+
+<!-- 03 / What It Does -->
+<section class="cs-section">
+    <span class="cs-label">03 / What It Does</span>
+    <div class="cs-divider"></div>
+    <h2 class="cs-heading">What it does</h2>
+
+    <div class="cs-features">
+        <div class="cs-feature">
+            <h4>Hybrid Search</h4>
+            <p>BM25 for keywords, FAISS with E5-Large-Instruct for semantics, Reciprocal Rank Fusion merges rankings, then a ROSES AI reranker picks the top five. HyDE generates domain-specific terms so vague queries like "anything about the Customer X deal" still find the right documents. 100% accuracy on production tests. The search pipeline is frozen. No changes without explicit approval.</p>
+        </div>
+        <div class="cs-feature">
+            <h4>Cross-Source Intelligence</h4>
+            <p>"Who hasn't paid us?" pulls live Xero receivables. "What deals is David working on?" queries HubSpot pipeline data. "Find the employment contract template" searches SharePoint. Ask "tell me about Customer X" and it pulls from all three simultaneously. 17 direct API actions, and when a query routes to live data the LLM never touches it. Just formatted numbers, straight back.</p>
+        </div>
+        <div class="cs-feature">
+            <h4>11-Page Dashboard</h4>
+            <p>Built on McKinsey's Vizro framework. Covers the full picture: P&amp;L, cash position, sales pipeline, receivables, CRM activity, engagement trends. 40+ chart types. There's an AI chat overlay too, so you can ask Claude to recut any chart without leaving the page.</p>
+        </div>
+        <div class="cs-feature">
+            <h4>Autonomous Monitoring</h4>
+            <p>10+ scheduled jobs that run without any manual trigger. Morning and evening briefings land in Teams with calendar, email highlights, financial alerts, and follow-up reminders. Deal stage monitoring checks HubSpot every 5 minutes during business hours. An invoice scanner picks up PDFs from my inbox, uses Vision AI to extract line items, matches against Xero records, and flags duplicates or price drift. A commitment tracker detects promises in Teams and email, then alerts when they're overdue. Pre-meeting briefs generate 15 minutes before each call with attendee CRM history and open invoices.</p>
+        </div>
+        <div class="cs-feature">
+            <h4>Personal Growth Journal</h4>
+            <p>Every evening, it writes a first-person diary entry from the day's activity: Teams conversations, emails, calendar, deal changes, financial updates. A separate behavioural feedback system analyses my communication patterns and flags blind spots like unreplied messages, tone issues, or neglected relationships. Rolling memory tracks per-person interaction metrics and recurring feedback themes. Weekly digest every Friday with trends and self-review evidence.</p>
+        </div>
+        <div class="cs-feature">
+            <h4>Conversation Memory &amp; Approval</h4>
+            <p>It remembers what you were talking about. Per-user context with a 2-hour window and 10-turn memory. Ask about Customer X, then follow up with "what about their payment terms?" and it knows what you mean. Every answer comes back with options and nothing goes out without you approving it. It also learns which style of answer you tend to pick from your approval history.</p>
+        </div>
+    </div>
+</section>
+
+<!-- 04 / In Action -->
+<section class="cs-section">
+    <span class="cs-label">04 / In Action</span>
+    <div class="cs-divider"></div>
+    <h2 class="cs-heading">Teams Adaptive Card</h2>
+    <p class="cs-prose" style="margin-bottom:24px">Ask a question in Teams, pick an answer, click approve. Nothing gets sent without you seeing it first.</p>
+
+    <div class="teams-win-wrap">
+    <span class="dummy-tag">Sample data</span>
+    <div class="teams-win">
+        <!-- Title bar -->
+        <div class="teams-titlebar">
+            <svg class="teams-titlebar-icon" viewBox="0 0 24 24" fill="#7b83eb"><path d="M17.5 6.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM20 8h-5a1 1 0 0 0-1 1v5.5a.5.5 0 0 0 .5.5H20a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1zM9.5 7a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM13 9H6a2 2 0 0 0-2 2v6a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-6a2 2 0 0 0-2-2z"/></svg>
+            <span class="teams-titlebar-text">Microsoft Teams</span>
+            <div class="teams-titlebar-dots"><span></span><span></span><span></span></div>
+        </div>
+        <!-- Channel header -->
+        <div class="teams-channel">
+            <span class="teams-channel-name">OpsPilot</span>
+            <span class="teams-channel-desc">| General</span>
+        </div>
+        <!-- Chat -->
+        <div class="teams-chat">
+            <!-- User question -->
+            <div class="teams-msg-user">
+                <div class="teams-msg-user-bubble">What's our current MRR and how does it compare to forecast?</div>
+            </div>
+            <!-- Bot response -->
+            <div class="teams-msg-bot">
+                <div class="teams-bot-avatar">OP</div>
+                <div class="teams-bot-content">
+                    <div class="teams-bot-meta">
+                        <span class="teams-bot-name">OpsPilot</span>
+                        <span class="teams-bot-time">10:42 AM</span>
+                    </div>
+                    <div class="teams-card">
+                        <div class="teams-card-body">
+                            <div class="teams-card-title">Monthly Recurring Revenue</div>
+                            <div class="teams-card-text">MRR is &pound;127,400 as of March 2026, 4.2% above the Q1 forecast of &pound;122,300. Growth is driven by 3 new enterprise contracts closed in February. Churn held at 1.8%, below the 2.5% target.</div>
+                            <div class="teams-facts">
+                                <div class="teams-fact"><span class="teams-fact-label">Current MRR</span><span class="teams-fact-value">&pound;127,400</span></div>
+                                <div class="teams-fact"><span class="teams-fact-label">Q1 Forecast</span><span class="teams-fact-value">&pound;122,300</span></div>
+                                <div class="teams-fact"><span class="teams-fact-label">Variance</span><span class="teams-fact-value">+4.2% above target</span></div>
+                                <div class="teams-fact"><span class="teams-fact-label">Churn</span><span class="teams-fact-value">1.8% (target 2.5%)</span></div>
+                            </div>
+                        </div>
+                        <div class="teams-card-actions">
+                            <span class="teams-card-btn teams-card-btn-primary">Approve</span>
+                            <span class="teams-card-btn">Edit</span>
+                            <span class="teams-card-btn teams-card-btn-danger">Reject</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<!-- 05 / Built With -->
+<section class="cs-section">
+    <span class="cs-label">05 / Built With</span>
+    <div class="cs-divider"></div>
+    <h2 class="cs-heading">Tech stack</h2>
+
+    <div class="cs-tech">
+        <div class="cs-tech-item"><div class="cs-tech-item-name">Python 3.12</div><div class="cs-tech-item-role">59k+ lines across 173 files</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">Claude Sonnet</div><div class="cs-tech-item-role">Reasoning, synthesis, orchestration</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">Claude Haiku</div><div class="cs-tech-item-role">Triage, OCR, fast tasks</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">FAISS</div><div class="cs-tech-item-role">Vector similarity search</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">BM25</div><div class="cs-tech-item-role">Keyword search engine</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">MS Graph API</div><div class="cs-tech-item-role">Teams, SharePoint, Calendar, Email</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">Xero API</div><div class="cs-tech-item-role">Accounting data (read-only)</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">HubSpot API</div><div class="cs-tech-item-role">CRM &amp; sales pipeline</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">Bot Framework</div><div class="cs-tech-item-role">Teams webhook handler</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">Vizro</div><div class="cs-tech-item-role">11-page McKinsey dashboard</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">APScheduler</div><div class="cs-tech-item-role">11 automated briefing jobs</div></div>
+        <div class="cs-tech-item"><div class="cs-tech-item-name">Oracle Cloud</div><div class="cs-tech-item-role">Ubuntu VM, systemd, auto-deploy</div></div>
+    </div>
+</section>
+
+<!-- More Work -->
+<section class="cs-section">
+    <span class="cs-label">More Work</span>
+    <div class="cs-divider"></div>
+    <h2 class="cs-heading">Other projects</h2>
+
+    <div class="cs-other">
+        <a href="trading-bot.html" class="cs-other-card">
+            <span class="cs-other-num">02</span>
+            <h3 class="cs-other-title">Trading Bot</h3>
+            <p class="cs-other-desc">Four AI agents scan 20 FTSE 100 stocks every morning. Deterministic technicals, Claude quality gate, Opus risk veto.</p>
+            <span class="cs-other-badge">Paper Trading</span>
+        </a>
+        <a href="whatsapp-smart.html" class="cs-other-card">
+            <span class="cs-other-num">03</span>
+            <h3 class="cs-other-title">WhatsApp Smart</h3>
+            <p class="cs-other-desc">Chrome extension adding scheduling, AI replies, and group summaries to WhatsApp. Privacy-first.</p>
+            <span class="cs-other-badge">Prototype</span>
+        </a>
+        <a href="uni-nation.html" class="cs-other-card">
+            <span class="cs-other-num">04</span>
+            <h3 class="cs-other-title">Uni-Nation Digital</h3>
+            <p class="cs-other-desc">Family textile business since 1988. Website, inventory system with voice input, sales dashboards.</p>
+            <span class="cs-other-badge">Live</span>
+        </a>
+    </div>
+</section>
+</div>
+
+<!-- Manifesto -->
+<section class="v5-manifesto">
+    <p class="v5-manifesto-text" id="manifestoText">Nobody could find anything in 7,000 files. Every question meant someone stopping their day to dig through folders.</p>
+</section>
+
+<!-- Footer -->
+<footer class="v5-footer" id="contact">
+    <h2 class="v5-footer-title" id="footerH">Let's talk.</h2>
+    <p class="v5-footer-sub">Always up for hard problems and good coffee.</p>
+    <div class="v5-footer-links">
+        <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span>LinkedIn</span></a>
+        <a href="mailto:ajaysachdev2@gmail.com" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg><span>Email</span></a>
+        <a href="https://uni-nation.in" target="_blank" rel="noopener" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg><span>Uni-Nation</span></a>
+    </div>
+    <p class="v5-footer-copy">&copy; 2026 Ajay Sachdev</p>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.js"></script>
+
+<script>
+/* === GSAP Setup === */
+gsap.registerPlugin(ScrollTrigger);
+if(typeof SplitText!=='undefined') gsap.registerPlugin(SplitText);
+if(typeof CustomEase!=='undefined'){gsap.registerPlugin(CustomEase);CustomEase.create('smooth','M0,0 C0.25,0.1 0.25,1 1,1')}
+
+/* === Lenis === */
+const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t))});
+lenis.on('scroll',ScrollTrigger.update);
+gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
+
+/* === Preloader === */
+const loaderScreen=document.getElementById('loaderScreen');
+const words=document.querySelectorAll('.v5-loader-word');
+const preTl=gsap.timeline({onComplete:()=>{
+    gsap.set('#loader',{display:'none'});lenis.start();heroReveal();
+}});
+words.forEach((w,i)=>{const t=.16-i*.012;preTl.set(w,{opacity:1},i*t+.15).set(w,{opacity:0},(i+1)*t+.15)});
+preTl.to({},{duration:.25});
+preTl.to(loaderScreen,{yPercent:-130,duration:.9,ease:'power4.inOut'});
+
+/* === Hero Reveal === */
+function heroReveal(){
+    const tl=gsap.timeline({defaults:{ease:'expo.out'}});
+    tl.fromTo('.cs-back',{opacity:0,x:-20},{opacity:1,x:0,duration:.8},.1);
+    tl.fromTo('.cs-tag',{opacity:0,y:16},{opacity:1,y:0,duration:.8},.2);
+
+    if(typeof SplitText!=='undefined'){
+        const titleSplit=new SplitText('.cs-title',{type:'lines,chars',mask:'lines'});
+        tl.set('.cs-title',{opacity:1},.3);
+        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.02,duration:1},.3);
+    } else {
+        tl.fromTo('.cs-title',{opacity:0,y:50},{opacity:1,y:0,duration:1},.3);
+    }
+
+    tl.fromTo('.cs-sub',{opacity:0,y:20},{opacity:1,y:0,duration:1},.6);
+    tl.fromTo('.cs-stats',{opacity:0,y:20},{opacity:1,y:0,duration:1},.75);
+
+    /* Counter animation */
+    tl.add(()=>{animateCounters();},.9);
+}
+
+function animateCounters(){
+    document.querySelectorAll('.cs-stat-val[data-target]').forEach(el=>{
+        const target=parseInt(el.dataset.target);
+        const suffix=el.dataset.suffix||'';
+        if(isNaN(target))return;
+        gsap.to({v:0},{v:target,duration:1.8,ease:'power2.out',
+            onUpdate:function(){el.textContent=Math.round(this.targets()[0].v)+suffix}
+        });
+    });
+}
+
+/* === Progress === */
+gsap.to('#progBar',{scaleX:1,ease:'none',scrollTrigger:{trigger:'body',start:'top top',end:'bottom bottom',scrub:true}});
+
+/* === Section scroll reveals === */
+gsap.utils.toArray('.cs-section').forEach(sec=>{
+    const label=sec.querySelector('.cs-label');
+    const divider=sec.querySelector('.cs-divider');
+    const heading=sec.querySelector('.cs-heading');
+    const prose=sec.querySelectorAll('.cs-prose');
+    const els=[label,divider,heading,...prose].filter(Boolean);
+
+    els.forEach((el,i)=>{
+        gsap.from(el,{opacity:0,y:30,duration:1,ease:'expo.out',delay:i*.08,
+            scrollTrigger:{trigger:sec,start:'top 85%',once:true}
+        });
+    });
+});
+
+/* Hero image reveal */
+const heroImgWrap=document.querySelector('.cs-hero-img-wrap');
+if(heroImgWrap){
+    gsap.fromTo(heroImgWrap,
+        {clipPath:'inset(8% 0% 0% 0%)',scale:.97,opacity:0},
+        {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:1.6,ease:'expo.out',delay:.2,
+         scrollTrigger:{trigger:'.cs-hero-img',start:'top 90%',once:true}
+        }
+    );
+    /* Inner parallax */
+    const heroImg=heroImgWrap.querySelector('img');
+    if(heroImg){
+        gsap.to(heroImg,{yPercent:-6,ease:'none',
+            scrollTrigger:{trigger:'.cs-hero-img',start:'top bottom',end:'bottom top',scrub:true}
+        });
+    }
+}
+
+/* Before/After reveal */
+gsap.utils.toArray('.cs-ba-col').forEach((col,i)=>{
+    gsap.from(col,{opacity:0,y:30,duration:.8,ease:'expo.out',delay:i*.15,
+        scrollTrigger:{trigger:'.cs-ba',start:'top 82%',once:true}
+    });
+});
+
+/* Pipeline reveal */
+gsap.utils.toArray('.cs-pipeline svg > *').forEach((el,i)=>{
+    gsap.from(el,{opacity:0,y:12,duration:.6,ease:'expo.out',delay:i*.04,
+        scrollTrigger:{trigger:'.cs-pipeline',start:'top 82%',once:true}
+    });
+});
+
+/* Feature cards reveal */
+gsap.utils.toArray('.cs-feature').forEach((card,i)=>{
+    gsap.from(card,{opacity:0,y:30,duration:.8,ease:'expo.out',delay:i*.1,
+        scrollTrigger:{trigger:card,start:'top 88%',once:true}
+    });
+});
+
+/* Mockup reveal */
+const mockup=document.querySelector('.teams-win-wrap');
+if(mockup){
+    gsap.from(mockup,{opacity:0,y:30,duration:1,ease:'expo.out',
+        scrollTrigger:{trigger:mockup,start:'top 85%',once:true}
+    });
+}
+
+/* Tech grid reveal */
+gsap.utils.toArray('.cs-tech-item').forEach((item,i)=>{
+    gsap.from(item,{opacity:0,duration:.5,delay:i*.03,ease:'expo.out',
+        scrollTrigger:{trigger:'.cs-tech',start:'top 85%',once:true}
+    });
+});
+
+/* Other cards reveal */
+gsap.utils.toArray('.cs-other-card').forEach((card,i)=>{
+    gsap.from(card,{opacity:0,y:24,duration:.8,ease:'expo.out',delay:i*.12,
+        scrollTrigger:{trigger:'.cs-other',start:'top 85%',once:true}
+    });
+});
+
+/* Footer reveal */
+const fH=document.getElementById('footerH');
+if(fH&&typeof SplitText!=='undefined'){
+    const fSplit=new SplitText(fH,{type:'chars',mask:'lines'});
+    gsap.set(fSplit.chars,{yPercent:110});
+    ScrollTrigger.create({trigger:fH,start:'top 82%',once:true,
+        onEnter:()=>{gsap.to(fSplit.chars,{yPercent:0,stagger:.03,duration:.9,ease:'smooth'})}
+    });
+}
+
+/* === Mouse Follower === */
+if(matchMedia('(pointer:fine)').matches&&typeof MouseFollower!=='undefined'){
+    MouseFollower.registerGSAP(gsap);
+    new MouseFollower({speed:.5,ease:'expo.out',skewing:2.5,skewingText:1.5});
+}
+
+/* === Page Transitions === */
+document.querySelectorAll('.cs-other-card, .cs-back').forEach(card=>{
+    card.addEventListener('click',function(e){
+        e.preventDefault();const href=this.getAttribute('href');if(!href)return;
+        const s=document.createElement('div');s.style.cssText='position:fixed;inset:0;z-index:9999;pointer-events:none';
+        const b=document.createElement('div');b.style.cssText='position:absolute;inset:0;background:var(--bg);transform:translateY(100%);will-change:transform';
+        const c=document.createElement('div');c.style.cssText='position:absolute;top:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%';
+        b.appendChild(c);s.appendChild(b);document.body.appendChild(s);
+        gsap.timeline({onComplete:()=>{window.location.href=href}})
+            .to(this,{scale:.97,duration:.3,ease:'power2.in'})
+            .to(b,{y:0,duration:.8,ease:'power4.inOut'},.15);
+    });
+});
+</script>
+</body>
+</html>

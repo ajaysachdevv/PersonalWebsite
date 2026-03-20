@@ -1,0 +1,32 @@
+# Ajay Sachdev
+> Finance & Operations Manager at a B2B SaaS scale-up. CIMA part-qualified. Builds AI systems, Power BI dashboards, and financial models. Python, SQL, FAISS, RAG. Based in the UK.
+
+## Background
+- Sindhi family from Mumbai — grew up in a textile business (est. 1988)
+- B.Com, Jai Hind College, Mumbai (2015-18)
+- Chartered Wealth Management (AAFM)
+- MSc Finance, Loughborough University (2020-21, 2:1)
+- CIMA part-qualified (expected May 2026)
+- Started as intern (Oct 2021), now sole finance & ops function across UK, US, Pakistan
+- School Governor at a 250-pupil primary school
+
+## Projects
+- Ajay Brain: Agentic AI system — 9,000 lines Python, 15 API integrations, 6,124 docs indexed, 100% search accuracy
+- Trading Bot: Algorithmic FTSE 100 trading — 20 tickers, zero leverage, Claude-powered risk auditor
+- Uni-Nation (uni-nation.in): Family textile business website
+
+## Key Metrics
+- £5M+ seed & Series A funding supported
+- 50+ Power BI dashboards built
+- 7 multi-currency bank accounts managed (GBP, USD, PKR)
+- 3 entities (UK, US, Pakistan)
+- 40+ hours/month saved through automation
+- WiFi costs reduced 50%, electricity 74%, software 30%+
+
+## Skills
+Financial Modelling, Management Accounts, VAT & Payroll, Budgeting & Forecasting, Power BI, SQL, Python, GA4, Firebase, FAISS, RAG, BM25, GPT-4o, Claude, Xero, HubSpot, Factorial, Contract Drafting
+
+## Contact
+- Web: https://ajaysachdev.com
+- LinkedIn: https://www.linkedin.com/in/ajayy-sachdev/
+- Email: ajaysachdev2@gmail.com
