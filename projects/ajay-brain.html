@@ -683,6 +683,26 @@ gsap.utils.toArray('.cs-other-card').forEach((card,i)=>{
     });
 });
 
+/* === Marquee === */
+const mTrack=document.getElementById('marqueeTrack');
+if(mTrack){let mP=0,mD=-1;lenis.on('scroll',({velocity})=>{mD=velocity>0?-1:1});
+gsap.ticker.add(()=>{mP+=mD*.5;if(Math.abs(mP)>mTrack.scrollWidth/2)mP=0;mTrack.style.transform=`translateX(${mP}px)`})}
+
+/* === Manifesto -- word-by-word scroll reveal === */
+const mText=document.getElementById('manifestoText');
+if(mText&&typeof SplitText!=='undefined'){
+    const split=new SplitText(mText,{type:'words'});
+    gsap.set(split.words,{color:'var(--dim)'});
+    split.words.forEach((w,i)=>{
+        gsap.to(w,{color:'var(--text)',scrollTrigger:{
+            trigger:'.v5-manifesto',
+            start:()=>`top+=${(i/split.words.length)*60}% center`,
+            end:()=>`top+=${((i+1)/split.words.length)*60+10}% center`,
+            scrub:1
+        }});
+    });
+}
+
 /* Footer reveal */
 const fH=document.getElementById('footerH');
 if(fH&&typeof SplitText!=='undefined'){
