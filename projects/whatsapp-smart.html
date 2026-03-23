@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Smart -- AI Chrome Extension | Ajay Sachdev</title>
-    <meta name="description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 16,500+ lines of TypeScript and React. Privacy-first -- messages never leave your browser.">
+    <title>WhatsApp Smart | AI Chrome Extension | Ajay Sachdev</title>
+    <meta name="description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 16,500+ lines of TypeScript and React. Privacy-first: messages never leave your browser.">
     <meta name="theme-color" content="#0c0c0c">
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9a96d'/%3E%3Cstop offset='100%25' stop-color='%23e8e4de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23141414'/%3E%3Ctext x='16' y='23' font-family='system-ui' font-weight='700' font-size='18' fill='url(%23g)' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
@@ -12,7 +12,7 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:title" content="WhatsApp Smart -- AI Chrome Extension | Ajay Sachdev">
+    <meta property="og:title" content="WhatsApp Smart | AI Chrome Extension | Ajay Sachdev">
     <meta property="og:description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 16,500+ lines of TypeScript and React.">
     <meta property="og:url" content="https://ajaysachdev.com/projects/whatsapp-smart.html">
 
@@ -253,9 +253,9 @@ a{color:inherit;text-decoration:none}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
         All projects
     </a>
-    <span class="cs-hero-tag">Chrome Extension -- Prototype</span>
+    <span class="cs-hero-tag">Chrome Extension &middot; Prototype</span>
     <h1 class="cs-hero-title">WhatsApp<br><em>Smart</em></h1>
-    <p class="cs-hero-desc"><strong>2.5 billion people use WhatsApp every day. Zero productivity tools.</strong> Gmail got smart replies in 2017. WhatsApp added basic single-message scheduling in February 2026 -- buried in the UI. Still no AI, no way to catch up on a hundred group messages, no follow-up reminders. Nobody's building for the people who just use WhatsApp to talk to friends, family, and colleagues. So I started building it.</p>
+    <p class="cs-hero-desc"><strong>2.5 billion people use WhatsApp every day. Zero productivity tools.</strong> Gmail got smart replies in 2017. WhatsApp added basic single-message scheduling in February 2026, buried in the UI. Still no AI, no way to catch up on a hundred group messages, no follow-up reminders. Nobody's building for the people who just use WhatsApp to talk to friends, family, and colleagues. So I started building it.</p>
     <div class="cs-hero-meta">
         <div class="cs-hero-meta-item">
             <span class="cs-hero-meta-val">16.5k</span>
@@ -282,7 +282,7 @@ a{color:inherit;text-decoration:none}
     <div class="cs-hero-img-wrap" id="heroImgWrap">
         <img src="../images/hero-whatsapp.png" alt="WhatsApp Smart Chrome extension showing AI reply suggestions, tone adjuster, and scheduled messages alongside a WhatsApp chat" loading="eager" width="1400" height="788">
     </div>
-    <p class="cs-hero-img-caption">Extension sidebar -- AI suggestions, tone adjuster, scheduled messages</p>
+    <p class="cs-hero-img-caption">Extension sidebar: AI suggestions, tone adjuster, scheduled messages</p>
 </div>
 
 <!-- Marquee -->
@@ -309,8 +309,8 @@ a{color:inherit;text-decoration:none}
         <span class="cs-section-label">02 / How It Works</span>
         <div class="cs-section-divider"></div>
         <h2 class="cs-section-heading">Three-layer architecture</h2>
-        <p class="cs-prose" style="max-width:700px">You open WhatsApp Web and the extension is already there -- a small toolbar next to the compose box. Type a message and you'll see AI suggestions, a tone adjuster, and a schedule button. Behind it, everything runs locally in the browser.</p>
-        <p class="cs-prose" style="max-width:700px">A content script injects the UI via shadow DOM so it never clashes with WhatsApp's own styles. A background service worker handles scheduling through Chrome Alarms -- messages go out even if the tab isn't focused. Message access comes from the WPP library (an open-source WhatsApp Web API), not brittle DOM scraping. <strong>No server required for core features. No sign-up.</strong></p>
+        <p class="cs-prose" style="max-width:700px">You open WhatsApp Web and the extension is already there. A small toolbar next to the compose box. Type a message and you'll see AI suggestions, a tone adjuster, and a schedule button. Behind it, everything runs locally in the browser.</p>
+        <p class="cs-prose" style="max-width:700px">A content script injects the UI via shadow DOM so it never clashes with WhatsApp's own styles. A background service worker handles scheduling through Chrome Alarms, so messages go out even if the tab isn't focused. Message access comes from the WPP library (an open-source WhatsApp Web API), not brittle DOM scraping. <strong>No server required for core features. No sign-up.</strong></p>
 
         <!-- HTML Architecture Diagram -->
         <div class="cs-arch">
@@ -341,7 +341,7 @@ a{color:inherit;text-decoration:none}
             <div class="cs-arch-row">
                 <div class="cs-arch-node hl">
                     <div class="cs-arch-node-name">Shadow DOM</div>
-                    <div class="cs-arch-node-desc">Isolated React mount -- never clashes with WhatsApp CSS</div>
+                    <div class="cs-arch-node-desc">Isolated React mount. Never clashes with WhatsApp CSS</div>
                 </div>
                 <div class="cs-arch-node">
                     <div class="cs-arch-node-name">Message Bridge</div>
@@ -349,7 +349,7 @@ a{color:inherit;text-decoration:none}
                 </div>
                 <div class="cs-arch-node hl">
                     <div class="cs-arch-node-name">React 19 UI</div>
-                    <div class="cs-arch-node-desc">54 components -- Radix primitives, Tailwind v4, shadcn/ui</div>
+                    <div class="cs-arch-node-desc">54 components: Radix primitives, Tailwind v4, shadcn/ui</div>
                 </div>
             </div>
 
@@ -363,7 +363,7 @@ a{color:inherit;text-decoration:none}
                 <div class="cs-arch-node hl cs-arch-wide">
                     <span class="cs-arch-node-badge">Service worker</span>
                     <div class="cs-arch-node-name">Background Worker</div>
-                    <div class="cs-arch-node-desc">1,400 lines -- scheduling engine, send queue, orphan recovery, tab manager</div>
+                    <div class="cs-arch-node-desc">1,400 lines: scheduling engine, send queue, orphan recovery, tab manager</div>
                 </div>
                 <div class="cs-arch-node">
                     <div class="cs-arch-node-name">Chrome Storage</div>
@@ -378,7 +378,7 @@ a{color:inherit;text-decoration:none}
             <div class="cs-arch-row">
                 <div class="cs-arch-node">
                     <div class="cs-arch-node-name">Chrome Alarms</div>
-                    <div class="cs-arch-node-desc">OS-level timing -- fires even when tab unfocused or worker asleep</div>
+                    <div class="cs-arch-node-desc">OS-level timing. Fires even when tab unfocused or worker asleep</div>
                 </div>
                 <div class="cs-arch-node">
                     <div class="cs-arch-node-name">Send Queue</div>
@@ -426,12 +426,12 @@ a{color:inherit;text-decoration:none}
             <div class="cs-feature cs-feature--wide">
                 <span class="cs-feature-num">01</span>
                 <h4>Smart Scheduling</h4>
-                <p>Set a message to go out at a specific time, then add a recurrence rule -- daily, weekly on specific days, monthly. Per-contact office hours mean messages won't fire at 3am; they defer to the next open window. Batch mode sends to up to 50 contacts with staggered delivery (3-10 second gaps between each) so it doesn't look automated.</p>
+                <p>Set a message to go out at a specific time, then add a recurrence rule: daily, weekly on specific days, monthly. Per-contact office hours mean messages won't fire at 3am; they defer to the next open window. Batch mode sends to up to 50 contacts with staggered delivery (3-10 second gaps between each) so it doesn't look automated.</p>
             </div>
             <div class="cs-feature">
                 <span class="cs-feature-num">02</span>
                 <h4>AI Reply Suggestions</h4>
-                <p>Reads the last 15 messages in a conversation and suggests three replies. Claude Haiku 4.5 by default -- latency matters more than depth here. It also builds a voice profile from your sent messages (average length, emoji habits, punctuation, formality) so the suggestions sound like you, not like a chatbot.</p>
+                <p>Reads the last 15 messages in a conversation and suggests three replies. Claude Haiku 4.5 by default because latency matters more than depth here. It also builds a voice profile from your sent messages (average length, emoji habits, punctuation, formality) so the suggestions sound like you, not like a chatbot.</p>
             </div>
             <div class="cs-feature">
                 <span class="cs-feature-num">03</span>
@@ -441,22 +441,22 @@ a{color:inherit;text-decoration:none}
             <div class="cs-feature">
                 <span class="cs-feature-num">04</span>
                 <h4>Group Chat Summary</h4>
-                <p>Pulls the last 30 messages from a group chat and summarises them -- what was discussed, any decisions, and who owes what. There's a separate "Extract Decisions" mode that returns structured data with assignees and deadlines. Output goes to a notification, a DM to yourself, or back into the group.</p>
+                <p>Pulls the last 30 messages from a group chat and summarises them: what was discussed, any decisions, and who owes what. There's a separate "Extract Decisions" mode that returns structured data with assignees and deadlines. Output goes to a notification, a DM to yourself, or back into the group.</p>
             </div>
             <div class="cs-feature">
                 <span class="cs-feature-num">05</span>
                 <h4>Undo Send</h4>
-                <p>Every message gets held for a few seconds (you pick how many, 1-10) with a countdown bar. Hit cancel and it never sends. Under the hood it intercepts the send before WhatsApp sees it -- simple, but WhatsApp still doesn't have anything like it.</p>
+                <p>Every message gets held for a few seconds (you pick how many, 1-10) with a countdown bar. Hit cancel and it never sends. Under the hood it intercepts the send before WhatsApp sees it. Simple, but WhatsApp still doesn't have anything like it.</p>
             </div>
             <div class="cs-feature">
                 <span class="cs-feature-num">06</span>
                 <h4>Follow-Up Reminders</h4>
-                <p>Flag any message for follow-up with a timestamp. When it's time, you get a Chrome notification with a link straight to the chat. Group admins can also set keyword alerts -- words like "urgent" or "deadline" trigger a notification the moment they appear.</p>
+                <p>Flag any message for follow-up with a timestamp. When it's time, you get a Chrome notification with a link straight to the chat. Group admins can also set keyword alerts: words like "urgent" or "deadline" trigger a notification the moment they appear.</p>
             </div>
             <div class="cs-feature cs-feature--wide">
                 <span class="cs-feature-num">07</span>
                 <h4>Privacy-First</h4>
-                <p>Everything runs locally. Scheduled messages, voice profiles, office hours, reminders -- all Chrome Storage on your device. The only thing that leaves the browser is the prompt sent to Claude's API when you use an AI feature. You bring your own API key, or use the free tier (10 AI actions a month, proxied through the server). No account needed.</p>
+                <p>Everything runs locally. Scheduled messages, voice profiles, office hours, reminders, all Chrome Storage on your device. The only thing that leaves the browser is the prompt sent to Claude's API when you use an AI feature. You bring your own API key, or use the free tier (10 AI actions a month, proxied through the server). No account needed.</p>
             </div>
         </div>
     </section>
@@ -578,7 +578,7 @@ a{color:inherit;text-decoration:none}
 
 <!-- Manifesto -->
 <section class="v5-manifesto">
-    <p class="v5-manifesto-text" id="manifestoText">2.5 billion people use WhatsApp every day. Zero productivity tools. I'm building the missing layer.</p>
+    <p class="v5-manifesto-text" id="manifestoText">Every WhatsApp extension I found was built for businesses. I just wanted to schedule a birthday message.</p>
 </section>
 
 <!-- === OTHER PROJECTS === -->
@@ -588,11 +588,11 @@ a{color:inherit;text-decoration:none}
     <div class="cs-others-grid">
         <a href="ajay-brain.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
             <div class="cs-other-card-img">
-                <img src="../images/card-brain.png" alt="Ajay Brain dashboard" loading="lazy">
+                <img src="../images/card-brain.png" alt="OpsPilot dashboard" loading="lazy">
             </div>
             <div class="cs-other-card-body">
                 <span class="cs-other-card-badge">Production</span>
-                <h3 class="cs-other-card-title">Ajay Brain</h3>
+                <h3 class="cs-other-card-title">OpsPilot</h3>
                 <p class="cs-other-card-desc">AI assistant in Teams. Searches 7,000+ docs, fetches live Xero and HubSpot data, 30+ chart dashboard.</p>
                 <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
             </div>
@@ -718,6 +718,7 @@ if(cTrack){
     }
     calcResetWidth();
     window.addEventListener('resize',calcResetWidth);
+    window.addEventListener('load',calcResetWidth);
 
     lenis.on('scroll',({velocity})=>{
         cDir=velocity>0?-1:1;
@@ -734,8 +735,8 @@ if(cTrack){
     /* Drag */
     let isDrag=false,startX=0,startPos=0;
     cTrack.addEventListener('pointerdown',(e)=>{isDrag=true;startX=e.clientX;startPos=cPos;cTrack.setPointerCapture(e.pointerId)});
-    cTrack.addEventListener('pointermove',(e)=>{if(!isDrag)return;cPos=startPos+(e.clientX-startX)});
-    cTrack.addEventListener('pointerup',()=>{isDrag=false});
+    cTrack.addEventListener('pointermove',(e)=>{if(!isDrag)return;e.preventDefault();cPos=startPos+(e.clientX-startX)});
+    cTrack.addEventListener('pointerup',(e)=>{isDrag=false;cTrack.releasePointerCapture(e.pointerId)});
 }
 
 /* === Section scroll reveals === */
@@ -824,6 +825,13 @@ if(mText&&typeof SplitText!=='undefined'){
         }});
     });
 }
+
+/* === Scroll velocity skew === */
+lenis.on('scroll',({velocity})=>{
+    document.querySelectorAll('.cs-hero-img-wrap img, .cs-carousel-slide-img img').forEach(img=>{
+        gsap.to(img,{skewY:velocity*.1,duration:.6,overwrite:'auto'});
+    });
+});
 
 /* === Footer -- Masked SplitText === */
 const fH=document.getElementById('footerH');

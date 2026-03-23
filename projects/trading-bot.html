@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Bot -- Algorithmic FTSE 100 Trading | Ajay Sachdev</title>
+    <title>Trading Bot | Algorithmic FTSE 100 Trading | Ajay Sachdev</title>
     <meta name="description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 6,942 lines of Python.">
     <meta name="author" content="Ajay Sachdev">
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#0c0c0c">
     <link rel="canonical" href="https://ajaysachdev.com/projects/trading-bot.html">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Trading Bot -- Algorithmic FTSE 100 Trading | Ajay Sachdev">
+    <meta property="og:title" content="Trading Bot | Algorithmic FTSE 100 Trading | Ajay Sachdev">
     <meta property="og:description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 6,942 lines of Python.">
     <meta property="og:url" content="https://ajaysachdev.com/projects/trading-bot.html">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Trading Bot -- Algorithmic FTSE 100 Trading | Ajay Sachdev">
+    <meta name="twitter:title" content="Trading Bot | Algorithmic FTSE 100 Trading | Ajay Sachdev">
     <meta name="twitter:description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 6,942 lines of Python.">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9a96d'/%3E%3Cstop offset='100%25' stop-color='%23e8e4de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23141414'/%3E%3Ctext x='16' y='23' font-family='system-ui' font-weight='700' font-size='18' fill='url(%23g)' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -275,7 +275,7 @@ a{color:inherit;text-decoration:none}
 <section class="cs-section">
     <span class="cs-label">01 / The Problem</span>
     <div class="cs-divider"></div>
-    <p class="cs-prose">I studied Financial Markets at Jai Hind College and got my Chartered Wealth Management certification. I understood markets. But understanding them and trading them profitably turned out to be two different things. I'd watch a stock I'd researched all week tank 2% on a single RNS announcement and sell within five minutes -- then watch it recover by close. I'd spot a FTSE dip and buy in, convinced it was the bottom, only for it to keep sliding. After a red day I'd jump into something I hadn't even properly analysed, just to try and make the loss back. <strong>The analysis was usually fine. It was the real-time decisions that killed it.</strong> I'd override my own rules the moment I felt any pressure. So the question became: could I build something that kept the analysis but removed me from the execution?</p>
+    <p class="cs-prose">I studied Financial Markets at Jai Hind College and got my Chartered Wealth Management certification. I understood markets. But understanding them and trading them profitably turned out to be two different things. I'd watch a stock I'd researched all week tank 2% on a single RNS announcement and sell within five minutes, then watch it recover by close. I'd spot a FTSE dip and buy in, convinced it was the bottom, only for it to keep sliding. After a red day I'd jump into something I hadn't even properly analysed, just to try and make the loss back. <strong>The analysis was usually fine. It was the real-time decisions that killed it.</strong> I'd override my own rules the moment I felt any pressure. So the question became: could I build something that kept the analysis but removed me from the execution?</p>
 </section>
 
 <!-- 02 / How It Works -->
@@ -283,7 +283,7 @@ a{color:inherit;text-decoration:none}
     <span class="cs-label">02 / How It Works</span>
     <div class="cs-divider"></div>
     <h2 class="cs-heading">Four-agent pipeline</h2>
-    <p class="cs-prose">Every weekday at 10:35am GMT -- thirty minutes after London open, once the opening noise has settled -- the system runs. No human input. APScheduler fires five jobs throughout the day. Nothing is held overnight.</p>
+    <p class="cs-prose">Every weekday at 10:35am GMT, thirty minutes after London open, once the opening noise has settled, the system runs. No human input. APScheduler fires five jobs throughout the day. Nothing is held overnight.</p>
 
     <!-- Daily Schedule -->
     <div class="cs-schedule">
@@ -297,7 +297,7 @@ a{color:inherit;text-decoration:none}
         </div>
         <div class="cs-sched-item">
             <span class="cs-sched-time">12:00</span>
-            <span class="cs-sched-desc">Regime recheck -- close if FTSE &lt;-1%</span>
+            <span class="cs-sched-desc">Regime recheck: close if FTSE &lt;-1%</span>
         </div>
         <div class="cs-sched-item">
             <span class="cs-sched-time">14:00</span>
@@ -305,7 +305,7 @@ a{color:inherit;text-decoration:none}
         </div>
         <div class="cs-sched-item">
             <span class="cs-sched-time">16:00</span>
-            <span class="cs-sched-desc">Liquidate everything -- nothing overnight</span>
+            <span class="cs-sched-desc">Liquidate everything, nothing overnight</span>
         </div>
     </div>
 
@@ -371,20 +371,20 @@ a{color:inherit;text-decoration:none}
 
     <!-- Terminal Output -->
     <div class="cs-term">
-        <div class="cs-term-bar"><span class="cs-term-dot r"></span><span class="cs-term-dot y"></span><span class="cs-term-dot g"></span><span class="cs-term-title">trading-bot -- scan output</span></div>
+        <div class="cs-term-bar"><span class="cs-term-dot r"></span><span class="cs-term-dot y"></span><span class="cs-term-dot g"></span><span class="cs-term-title">trading-bot : scan output</span></div>
         <div class="cs-term-body">
-<span class="t-dim">10:35:01</span> <span class="t-blue">SCAN</span> Kill-switch OK -- equity &pound;2,847<br>
-<span class="t-dim">10:35:02</span> <span class="t-blue">SCAN</span> FTSE 100: +0.12% -- session active<br>
-<span class="t-dim">10:35:04</span> <span class="t-green">PASS</span> AZN -- EMA OK, VWAP OK, RSI 42<br>
-<span class="t-dim">10:35:04</span> <span class="t-amber">SKIP</span> SHEL -- RSI 78 (overbought)<br>
-<span class="t-dim">10:35:04</span> <span class="t-amber">SKIP</span> ULVR -- below EMA-50<br>
-<span class="t-dim">10:35:05</span> <span class="t-gold">CLAUDE</span> AZN rated 4/5 -- clean setup<br>
-<span class="t-dim">10:35:06</span> <span class="t-green">AUDIT</span> Opus approved -- low correlation risk<br>
-<span class="t-dim">10:35:07</span> <span class="t-green">EXEC</span> BUY AZN @ 11,842p -- SL 11,487 / TP 12,553
+<span class="t-dim">10:35:01</span> <span class="t-blue">SCAN</span> Kill-switch OK: equity &pound;2,847<br>
+<span class="t-dim">10:35:02</span> <span class="t-blue">SCAN</span> FTSE 100: +0.12%, session active<br>
+<span class="t-dim">10:35:04</span> <span class="t-green">PASS</span> AZN: EMA OK, VWAP OK, RSI 42<br>
+<span class="t-dim">10:35:04</span> <span class="t-amber">SKIP</span> SHEL: RSI 78 (overbought)<br>
+<span class="t-dim">10:35:04</span> <span class="t-amber">SKIP</span> ULVR: below EMA-50<br>
+<span class="t-dim">10:35:05</span> <span class="t-gold">CLAUDE</span> AZN rated 4/5, clean setup<br>
+<span class="t-dim">10:35:06</span> <span class="t-green">AUDIT</span> Opus approved, low correlation risk<br>
+<span class="t-dim">10:35:07</span> <span class="t-green">EXEC</span> BUY AZN @ 11,842p | SL 11,487 / TP 12,553
         </div>
     </div>
 
-    <p class="cs-prose" style="margin-top:48px">First thing every morning: kill-switch and market regime check. If either fails, nothing else runs. RNS news gets scanned via Claude web search -- headlines classified as Tier A (earnings, M&amp;A), B (buybacks, upgrades), or C (skip). This replaced a BeautifulSoup scraper that kept breaking. Then the technical check -- EMA-50, VWAP, RSI. Only stocks that pass get sent to Claude Sonnet for a quality rating, strict JSON schema, no fallback. Last step is Claude Opus as risk auditor. The hard rails live in code, not prompts: &pound;750 max notional, one position at a time, equity above floor. If Opus vetoes, the trade dies. Running paper-trade on a demo account while I wait for enough data to trust it.</p>
+    <p class="cs-prose" style="margin-top:48px">First thing every morning: kill-switch and market regime check. If either fails, nothing else runs. RNS news gets scanned via Claude web search, headlines classified as Tier A (earnings, M&amp;A), B (buybacks, upgrades), or C (skip). This replaced a BeautifulSoup scraper that kept breaking. Then the technical check: EMA-50, VWAP, RSI. Only stocks that pass get sent to Claude Sonnet for a quality rating, strict JSON schema, no fallback. Last step is Claude Opus as risk auditor. The hard rails live in code, not prompts: &pound;750 max notional, one position at a time, equity above floor. If Opus vetoes, the trade dies. Running paper-trade on a demo account while I wait for enough data to trust it.</p>
 </section>
 
 <!-- 03 / Features -->
@@ -394,27 +394,27 @@ a{color:inherit;text-decoration:none}
     <div class="cs-features">
         <div class="cs-feat">
             <h4>Hard Rails</h4>
-            <p>Every risk parameter lives in config.py, not in a prompt. &pound;750 max notional per trade. 3% stop loss, 6% take profit -- a 1:2 risk-reward ratio. One position at a time. Kill-switch at &pound;750 equity floor -- if it triggers, everything liquidates and trading stops until I manually reset it. Zero leverage. The agents can assess and recommend. They cannot override the code.</p>
+            <p>Every risk parameter lives in config.py, not in a prompt. &pound;750 max notional per trade. 3% stop loss, 6% take profit, a 1:2 risk-reward ratio. One position at a time. Kill-switch at &pound;750 equity floor. If it triggers, everything liquidates and trading stops until I manually reset it. Zero leverage. The agents can assess and recommend. They cannot override the code.</p>
         </div>
         <div class="cs-feat">
             <h4>Structured Outputs</h4>
-            <p>The quality gate used to run on OpenAI's o1-mini. If the JSON response failed to parse, there was a fallback that defaulted the quality score to 3 -- a safety hole that could let marginal trades through. Switched to Claude Sonnet with structured outputs and a guaranteed JSON schema. No parse failures, no fallback needed. Single vendor now. System prompts are cached across parallel scans for about 90% token savings.</p>
+            <p>The quality gate used to run on OpenAI's o1-mini. If the JSON response failed to parse, there was a fallback that defaulted the quality score to 3, a safety hole that could let marginal trades through. Switched to Claude Sonnet with structured outputs and a guaranteed JSON schema. No parse failures, no fallback needed. Single vendor now. System prompts are cached across parallel scans for about 90% token savings.</p>
         </div>
         <div class="cs-feat">
             <h4>RNS Scanning</h4>
-            <p>Each ticker gets its RNS checked before the technical scan starts. Claude web search queries Investegate and the London Stock Exchange for same-day announcements published after 08:00 GMT. It finds the news and classifies it in one API call -- Tier A (earnings, trading updates, M&amp;A, CEO changes), Tier B (analyst upgrades, buybacks, regulatory approvals), or Tier C (director dealings, AGM notices, dividends). Falls back to a BeautifulSoup HTML scraper if the API is unavailable.</p>
+            <p>Each ticker gets its RNS checked before the technical scan starts. Claude web search queries Investegate and the London Stock Exchange for same-day announcements published after 08:00 GMT. It finds the news and classifies it in one API call: Tier A (earnings, trading updates, M&amp;A, CEO changes), Tier B (analyst upgrades, buybacks, regulatory approvals), or Tier C (director dealings, AGM notices, dividends). Falls back to a BeautifulSoup HTML scraper if the API is unavailable.</p>
         </div>
         <div class="cs-feat">
             <h4>Multi-Scenario Backtesting</h4>
-            <p>60-day default, up to two years. Walk-forward simulation that evaluates at 10:35 GMT on each historical trading day -- no lookahead bias, 0.2% round-trip spread cost deducted. Reports break down per-ticker win rate, average win/loss, net P&amp;L, annualised Sharpe, max drawdown, consecutive losses, and why each trade exited. All historical data cached as Parquet via yfinance across 20 FTSE 100 tickers.</p>
+            <p>60-day default, up to two years. Walk-forward simulation that evaluates at 10:35 GMT on each historical trading day, no lookahead bias, 0.2% round-trip spread cost deducted. Reports break down per-ticker win rate, average win/loss, net P&amp;L, annualised Sharpe, max drawdown, consecutive losses, and why each trade exited. All historical data cached as Parquet via yfinance across 20 FTSE 100 tickers.</p>
         </div>
         <div class="cs-feat">
             <h4>Intraday Only</h4>
-            <p>Evaluation at 10:35. Regime re-checks at 12:00 and 14:00 -- if the FTSE drops below negative 1%, open positions get closed. Everything liquidated at 16:00 regardless. No overnight gap risk. Spread betting through the IG API, so positions settle daily.</p>
+            <p>Evaluation at 10:35. Regime re-checks at 12:00 and 14:00. If the FTSE drops below negative 1%, open positions get closed. Everything liquidated at 16:00 regardless. No overnight gap risk. Spread betting through the IG API, so positions settle daily.</p>
         </div>
         <div class="cs-feat">
             <h4>Atomic State &amp; Auto-Deploy</h4>
-            <p>A file-locked StateManager handles session state -- the order manager and kill-switch both read and write session_state.json, and filelock prevents race conditions on concurrent edits. Every decision writes to a JSONL audit trail with timestamp, session ID, stage, ticker, and outcome. Oracle Cloud Ubuntu VM with systemd service. GitHub pull every five minutes, automatic restart on changes. Secrets stay in .env files that never touch the repo.</p>
+            <p>A file-locked StateManager handles session state. The order manager and kill-switch both read and write session_state.json, and filelock prevents race conditions on concurrent edits. Every decision writes to a JSONL audit trail with timestamp, session ID, stage, ticker, and outcome. Oracle Cloud Ubuntu VM with systemd service. GitHub pull every five minutes, automatic restart on changes. Secrets stay in .env files that never touch the repo.</p>
         </div>
     </div>
 </section>
@@ -428,7 +428,7 @@ a{color:inherit;text-decoration:none}
         <img src="../images/trading-bot-backtest.png" alt="Trading bot backtest report showing equity curve, monthly returns heatmap, and trade log" class="cs-img" loading="lazy">
         <div class="cs-img-label"><span class="cs-img-label-title">Backtest Report</span><span class="cs-img-label-badge">Paper Trading</span></div>
     </div>
-    <span class="cs-img-caption">Multi-scenario backtest report -- equity curve, monthly returns, trade log</span>
+    <span class="cs-img-caption">Multi-scenario backtest report: equity curve, monthly returns, trade log</span>
 </section>
 
 <!-- 05 / Tech Stack -->
@@ -458,11 +458,11 @@ a{color:inherit;text-decoration:none}
     <div class="cs-others">
         <a href="ajay-brain.html" class="cs-other" data-cursor="-text" data-cursor-text="View">
             <div class="cs-other-img-wrap">
-                <img src="../images/card-brain.png" alt="Ajay Brain dashboard" class="cs-other-img">
+                <img src="../images/card-brain.png" alt="OpsPilot dashboard" class="cs-other-img">
             </div>
             <div class="cs-other-body">
                 <span class="cs-other-badge">Production</span>
-                <h3 class="cs-other-name">Ajay Brain</h3>
+                <h3 class="cs-other-name">OpsPilot</h3>
                 <p class="cs-other-desc">AI assistant in Teams. Searches 7,000+ docs, fetches live Xero and HubSpot data, answers come back as cards you approve with one click.</p>
             </div>
         </a>
