@@ -703,6 +703,13 @@ if(mText&&typeof SplitText!=='undefined'){
     });
 }
 
+/* === Scroll velocity skew === */
+lenis.on('scroll',({velocity})=>{
+    document.querySelectorAll('.cs-hero-img-wrap img').forEach(img=>{
+        gsap.to(img,{skewY:velocity*.1,duration:.6,overwrite:'auto'});
+    });
+});
+
 /* Footer reveal */
 const fH=document.getElementById('footerH');
 if(fH&&typeof SplitText!=='undefined'){
