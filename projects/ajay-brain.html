@@ -150,7 +150,22 @@ a{color:inherit;text-decoration:none}
 /* Caption */
 .cs-img-caption .dummy-badge{display:inline-block;background:rgba(201,169,109,.12);border:1px solid rgba(201,169,109,.25);color:var(--gold);padding:2px 10px;border-radius:20px;font-weight:500;margin-left:6px}
 
-@media(max-width:600px){.cs-hero-img{padding:16px}}
+/* === MOBILE KPI CARD (replaces laptop on small screens) === */
+.dash-mobile-card{display:none;background:linear-gradient(135deg,#0f0f1a,#0b0b14);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;box-shadow:0 16px 60px rgba(0,0,0,.4)}
+.dash-mobile-header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.05)}
+.dash-mobile-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:.85rem;font-weight:500;letter-spacing:-.02em}
+.dash-mobile-logo span{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.55rem;flex-shrink:0}
+.dash-mobile-badge{font-family:var(--mono);font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:rgba(201,169,109,.1);border:1px solid rgba(201,169,109,.25);color:var(--gold)}
+.dash-mobile-kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.03)}
+.dash-mobile-kpi{background:linear-gradient(135deg,#0f0f1a,#0b0b14);padding:18px 16px;position:relative}
+.dash-mobile-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.15),transparent);opacity:.6}
+.dash-mobile-kpi-label{font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:#5a5565;margin-bottom:6px;font-weight:500}
+.dash-mobile-kpi-val{font-family:var(--display);font-size:1.3rem;font-weight:600;letter-spacing:-.02em;color:var(--text)}
+.dash-mobile-kpi-change{font-size:.52rem;margin-top:4px;display:inline-block;font-weight:500}
+.dash-mobile-kpi-change.up{color:#34d399}
+.dash-mobile-note{padding:12px 18px;text-align:center;font-family:var(--mono);font-size:.48rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);border-top:1px solid rgba(255,255,255,.04)}
+
+@media(max-width:600px){.cs-hero-img{padding:8px 16px}}
 
 /* === CONTENT SECTIONS === */
 .cs-content{max-width:900px;margin:0 auto;padding:0 clamp(3em,8vw,8em)}
@@ -264,14 +279,79 @@ a{color:inherit;text-decoration:none}
     .cs-other{grid-template-columns:1fr}
     .cs-stats{gap:20px}
 }
+@media(max-width:768px){
+    .v5-nav-links{gap:20px}
+    .v5-nav-links a{font-size:.65rem}
+    .cs-title{font-size:clamp(3rem,12vw,5rem)}
+    .cs-sub{font-size:.92rem;line-height:1.75}
+    .cs-heading{font-size:clamp(1.6rem,5vw,2.4rem)}
+    .cs-prose{font-size:.88rem}
+    .cs-feature h4{font-size:1rem}
+    .cs-feature p{font-size:.8rem}
+    .cs-ba-col li{font-size:.82rem}
+    /* Laptop dashboard: hide full laptop, show mobile card */
+    .laptop{display:none}
+    .laptop-shadow{display:none}
+    .dash-mobile-card{display:block}
+    /* Teams mockup responsive */
+    .teams-msg-user-bubble{max-width:90%;font-size:.75rem}
+    .teams-card-text{font-size:.72rem}
+    .teams-facts{padding:8px 10px}
+    .teams-fact{font-size:.65rem}
+}
 @media(max-width:600px){
-    .cs-hero{padding:0 24px 40px;min-height:100svh}
-    .cs-hero-img{padding:16px 24px}
-    .cs-content{padding:0 24px}
+    .cs-hero{padding:0 20px 36px;min-height:100svh}
+    .cs-back{font-size:.55rem;margin-bottom:32px}
+    .cs-tag{font-size:.5rem;letter-spacing:3px;margin-bottom:20px}
+    .cs-title{font-size:clamp(2.5rem,11vw,3.5rem);margin-bottom:24px}
+    .cs-sub{font-size:.88rem;max-width:100%;margin-bottom:36px}
+    .cs-stats{gap:16px 24px}
+    .cs-stat-val{font-size:clamp(1.3rem,5vw,1.8rem)}
+    .cs-stat-label{font-size:.45rem}
+    .cs-hero-img{padding:8px 16px}
+    .cs-img-caption{font-size:.5rem;margin-top:14px}
+    .cs-content{padding:0 20px}
     .cs-section{padding:24px 0}
-    .v5-footer{padding:60px 24px 32px}
-    .v5-nav{padding:16px 24px}
-    .cs-title{font-size:clamp(2.8rem,12vw,4rem)}
+    .cs-label{font-size:.5rem;margin-bottom:16px}
+    .cs-heading{font-size:clamp(1.4rem,5vw,2rem);margin-bottom:20px}
+    .cs-prose{font-size:.85rem;line-height:1.8}
+    .cs-ba-col{padding:20px}
+    .cs-ba-col h4{font-size:.55rem;margin-bottom:14px}
+    .cs-ba-col li{font-size:.8rem;line-height:1.55}
+    .cs-pipeline svg{max-width:100%}
+    .cs-pipeline .stage-label{font-size:5px}
+    .cs-pipeline .stage-text{font-size:6px}
+    .cs-feature{padding:24px 20px}
+    .cs-feature h4{font-size:.95rem;margin-bottom:10px}
+    .cs-feature p{font-size:.78rem;line-height:1.7}
+    .teams-win{max-width:100%}
+    .teams-titlebar-text{font-size:.62rem}
+    .teams-channel-name{font-size:.68rem}
+    .teams-msg-user-bubble{font-size:.72rem;padding:8px 12px}
+    .teams-card-body{padding:12px}
+    .teams-card-title{font-size:.75rem}
+    .teams-card-text{font-size:.7rem;line-height:1.6}
+    .teams-fact{font-size:.62rem;gap:8px}
+    .teams-fact-label{min-width:80px}
+    .teams-card-btn{font-size:.6rem;padding:5px 10px}
+    .cs-tech{grid-template-columns:1fr}
+    .cs-tech-item{padding:16px 20px}
+    .cs-other-card{padding:20px}
+    .cs-other-title{font-size:1rem}
+    .cs-other-desc{font-size:.75rem}
+    .v5-manifesto{min-height:auto;padding:48px 20px}
+    .v5-manifesto-text{font-size:clamp(1.3rem,6vw,1.8rem)}
+    .v5-footer{padding:48px 20px 32px}
+    .v5-footer::before{margin-bottom:36px}
+    .v5-footer-title{font-size:clamp(2.2rem,9vw,3rem)}
+    .v5-footer-sub{font-size:.8rem;margin-bottom:32px}
+    .v5-footer-links{gap:10px;margin-bottom:40px}
+    .v5-footer-link{padding:10px 18px;font-size:.75rem}
+    .v5-nav{padding:14px 20px}
+    .v5-nav-links{gap:16px}
+    .v5-nav-links a{font-size:.6rem}
+    .v5-scroll-cue{display:none}
+    .v5-marquee{padding:clamp(1.2em,3vh,2em) 0}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -387,6 +467,21 @@ a{color:inherit;text-decoration:none}
         <div class="laptop-shadow"></div>
     </div>
     <p class="cs-img-caption">Vizro dashboard showing live KPIs, P&amp;L, pipeline, and bank balances <span class="dummy-badge">Dummy Data</span></p>
+
+    <!-- Mobile KPI card (shown at 768px and below) -->
+    <div class="dash-mobile-card">
+        <div class="dash-mobile-header">
+            <div class="dash-mobile-logo"><span>OP</span> OpsPilot Dashboard</div>
+            <div class="dash-mobile-badge">Dummy Data</div>
+        </div>
+        <div class="dash-mobile-kpis">
+            <div class="dash-mobile-kpi"><div class="dash-mobile-kpi-label">Monthly Revenue</div><div class="dash-mobile-kpi-val">&pound;284k</div><span class="dash-mobile-kpi-change up">+12.3% vs Feb</span></div>
+            <div class="dash-mobile-kpi"><div class="dash-mobile-kpi-label">Net Profit</div><div class="dash-mobile-kpi-val">&pound;41.2k</div><span class="dash-mobile-kpi-change up">+6.7% vs Feb</span></div>
+            <div class="dash-mobile-kpi"><div class="dash-mobile-kpi-label">Deals Won</div><div class="dash-mobile-kpi-val">14</div><span class="dash-mobile-kpi-change up">+3 this month</span></div>
+            <div class="dash-mobile-kpi"><div class="dash-mobile-kpi-label">Docs Indexed</div><div class="dash-mobile-kpi-val">7,241</div><span class="dash-mobile-kpi-change up">+124 new</span></div>
+        </div>
+        <div class="dash-mobile-note">Full 11-page dashboard best viewed on desktop</div>
+    </div>
 </div>
 
 <!-- Marquee -->
@@ -695,7 +790,8 @@ function scaleDash(){
     const vp=document.getElementById('laptopViewport');
     const sc=document.getElementById('dashScaler');
     if(!vp||!sc) return;
-    const s=vp.offsetWidth/1440;
+    const baseW=parseFloat(getComputedStyle(sc).width)||1440;
+    const s=vp.offsetWidth/baseW;
     sc.style.transform=`scale(${s})`;
 }
 scaleDash();

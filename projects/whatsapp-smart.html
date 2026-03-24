@@ -74,18 +74,81 @@ a{color:inherit;text-decoration:none}
 .v5-manifesto{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:clamp(4em,10vh,8em) clamp(3em,8vw,8em);position:relative;z-index:2}
 .v5-manifesto-text{font-family:var(--display);font-size:clamp(2rem,4vw,3.4rem);font-weight:500;letter-spacing:-.03em;line-height:1.3;max-width:750px;text-align:center}
 
-/* === HERO IMAGE === */
-.cs-hero-img{padding:0 clamp(3em,8vw,8em);margin-top:clamp(3em,6vh,5em);position:relative;z-index:2}
-.cs-hero-img-wrap{position:relative;overflow:hidden;border-radius:10px;border:1px solid var(--border);box-shadow:0 24px 70px rgba(0,0,0,.45);background:#161616;transform-style:preserve-3d;will-change:transform;transition:box-shadow .6s}
-.cs-hero-img-wrap:hover{box-shadow:0 40px 100px rgba(0,0,0,.5),0 0 0 1px rgba(201,169,109,.06)}
-.cs-hero-img-wrap img{width:100%;display:block;filter:grayscale(.3) brightness(.95) sepia(.1);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1s cubic-bezier(.16,1,.3,1)}
-.cs-hero-img-wrap:hover img{transform:scale(1.03);filter:grayscale(0) brightness(1.05) sepia(0)}
-.cs-hero-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);z-index:2;pointer-events:none;border-radius:10px;transition:opacity 1s}
-.cs-hero-img-wrap:hover::after{opacity:.1}
-/* Glare */
-.cs-hero-img-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(232,228,222,.04) 0%,transparent 50%);z-index:3;pointer-events:none;opacity:0;transition:opacity .3s;border-radius:10px}
-.cs-hero-img-wrap:hover::before{opacity:1}
+/* === HERO IMAGE / Browser Frame === */
+.cs-hero-img{padding:0 clamp(2em,6vw,6em);margin-top:clamp(3em,6vh,5em);position:relative;z-index:2}
 .cs-hero-img-caption{font-family:var(--mono);font-size:.55rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-top:16px}
+.cs-hero-img-caption .dummy-badge{display:inline-block;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);color:#60a5fa;padding:2px 10px;border-radius:20px;font-weight:500;margin-left:6px}
+
+/* Browser chrome */
+.browser{max-width:1100px;margin:0 auto;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.browser-chrome{background:linear-gradient(180deg,#1e1e22,#1a1a1e);border-radius:10px 10px 0 0;padding:0 14px;border:1px solid rgba(255,255,255,.06);border-bottom:none}
+.browser-bar{display:flex;align-items:center;height:36px;gap:10px}
+.browser-dots{display:flex;gap:6px}
+.browser-dots span{width:10px;height:10px;border-radius:50%}
+.browser-dots span:nth-child(1){background:#ff5f57}
+.browser-dots span:nth-child(2){background:#febc2e}
+.browser-dots span:nth-child(3){background:#28c840}
+.browser-tab{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);padding:5px 14px;border-radius:6px 6px 0 0;margin-left:8px;font-size:10px;color:#a09a92}
+.browser-tab-icon{width:12px;height:12px;border-radius:2px;background:#25d366;display:flex;align-items:center;justify-content:center}
+.browser-tab-icon svg{width:8px;height:8px;fill:#fff}
+.browser-url{flex:1;display:flex;align-items:center;margin-left:12px;background:rgba(255,255,255,.04);border-radius:6px;padding:4px 10px;font-size:9px;color:#5e5952;font-family:var(--font)}
+.browser-url-lock{color:#34d399;margin-right:5px;font-size:8px}
+.browser-viewport{border-radius:0 0 10px 10px;overflow:hidden;aspect-ratio:16/9.5;position:relative;border:1px solid rgba(255,255,255,.06);border-top:none;background:#0b141a}
+.browser-scaler{width:1440px;height:855px;transform-origin:top left;position:absolute;top:0;left:0;font-family:var(--font)}
+.browser-scaler *{box-sizing:border-box}
+
+/* WhatsApp layout */
+.wa{display:grid;grid-template-columns:300px 1fr 340px;height:100%;color:#e8e4de}
+
+/* Contacts sidebar */
+.wa-contacts{background:#111b21;border-right:1px solid rgba(255,255,255,.04);display:flex;flex-direction:column}
+.wa-contacts-head{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04)}
+.wa-contacts-head-name{font-size:13px;font-weight:500}
+.wa-contacts-search{margin:8px 12px;background:rgba(255,255,255,.04);border-radius:6px;padding:7px 12px;font-size:10px;color:#5e5952}
+.wa-contact{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.02)}
+.wa-contact.active{background:rgba(255,255,255,.04)}
+.wa-contact-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2a6d4e,#1a4030);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#34d399;flex-shrink:0}
+.wa-contact-info{flex:1;min-width:0}
+.wa-contact-name{font-size:11px;font-weight:500}
+.wa-contact-msg{font-size:9px;color:#5e5952;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wa-contact-time{font-size:8px;color:#5e5952;flex-shrink:0}
+
+/* Chat area */
+.wa-chat{display:flex;flex-direction:column;background:#0b141a}
+.wa-chat-head{padding:10px 16px;display:flex;align-items:center;gap:10px;background:#1f2c33;border-bottom:1px solid rgba(255,255,255,.04)}
+.wa-chat-head-name{font-size:12px;font-weight:500}
+.wa-chat-head-status{font-size:8px;color:#5e5952}
+.wa-chat-body{flex:1;padding:16px;display:flex;flex-direction:column;gap:6px;justify-content:flex-end;overflow:hidden}
+.wa-bubble{max-width:75%;padding:8px 10px;border-radius:8px;font-size:10px;line-height:1.5;position:relative}
+.wa-bubble-time{font-size:7px;color:rgba(255,255,255,.3);float:right;margin-left:8px;margin-top:4px}
+.wa-bubble.sent{background:#005c4b;align-self:flex-end;border-bottom-right-radius:2px}
+.wa-bubble.recv{background:#1f2c33;align-self:flex-start;border-bottom-left-radius:2px}
+.wa-chat-input{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#1f2c33;border-top:1px solid rgba(255,255,255,.04)}
+.wa-chat-input-field{flex:1;background:rgba(255,255,255,.04);border-radius:20px;padding:8px 14px;font-size:10px;color:#5e5952}
+
+/* Extension sidebar */
+.wa-ext{background:linear-gradient(180deg,#0f1318,#0d1117);border-left:1px solid rgba(96,165,250,.08);display:flex;flex-direction:column;padding:16px}
+.wa-ext-head{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.wa-ext-logo{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,#3b82f6,#2563eb);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.wa-ext-title{font-size:13px;font-weight:600;letter-spacing:-.02em}
+.wa-ext-badge{font-size:7px;background:rgba(96,165,250,.1);color:#60a5fa;padding:2px 6px;border-radius:3px;letter-spacing:.05em;text-transform:uppercase;margin-left:auto}
+.wa-ext-section{margin-bottom:14px}
+.wa-ext-label{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#4a5568;margin-bottom:8px;font-weight:500}
+.wa-ext-pill{display:inline-block;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.15);color:#93c5fd;padding:6px 10px;border-radius:6px;font-size:9px;margin:0 4px 6px 0;line-height:1.4;cursor:default}
+.wa-ext-pill:hover{background:rgba(96,165,250,.15);border-color:rgba(96,165,250,.3)}
+.wa-ext-tone{display:flex;align-items:center;gap:8px;margin-top:4px}
+.wa-ext-tone-track{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;position:relative}
+.wa-ext-tone-fill{height:100%;width:60%;background:linear-gradient(90deg,#3b82f6,#60a5fa);border-radius:2px}
+.wa-ext-tone-label{font-size:8px;color:#60a5fa;min-width:48px}
+.wa-ext-schedule{background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.1);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:8px}
+.wa-ext-schedule-icon{font-size:14px;color:#60a5fa}
+.wa-ext-schedule-text{font-size:9px;color:#93c5fd}
+.wa-ext-schedule-time{font-size:10px;font-weight:600;color:#e8e4de}
+.wa-ext-privacy{margin-top:auto;display:flex;align-items:center;gap:8px;background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.1);border-radius:8px;padding:10px 12px}
+.wa-ext-privacy-icon{font-size:14px;color:#34d399}
+.wa-ext-privacy-text{font-size:8px;color:#34d399;letter-spacing:.02em;line-height:1.5}
+
+.browser-shadow{height:20px;margin:0 5%;background:radial-gradient(ellipse at center,rgba(0,0,0,.35) 0%,transparent 70%);border-radius:50%;filter:blur(6px)}
 
 /* === SCREENSHOT CAROUSEL === */
 .cs-carousel{padding:clamp(5em,10vh,8em) 0;overflow:hidden;position:relative;z-index:2;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -199,18 +262,87 @@ a{color:inherit;text-decoration:none}
     .cs-arch-node{min-width:calc(50% - 6px)}
     .cs-carousel-slide{width:clamp(240px,65vw,340px)}
 }
+@media(max-width:768px){
+    .v5-nav-links{gap:20px}
+    .v5-nav-links a{font-size:.65rem}
+    .cs-hero-title{font-size:clamp(2.8rem,11vw,4rem)}
+    .cs-hero-desc{font-size:.92rem;line-height:1.75}
+    .cs-hero-meta{gap:20px 28px}
+    .cs-hero-meta-val{font-size:clamp(1.6rem,5vw,2.2rem)}
+    .cs-hero-meta-label{font-size:.45rem}
+    .cs-section-heading{font-size:clamp(1.6rem,5vw,2.4rem)}
+    .cs-prose{font-size:.88rem}
+    .cs-feature h4{font-size:.95rem}
+    .cs-feature p{font-size:.78rem}
+    .cs-arch-node-name{font-size:.75rem}
+    .cs-arch-node-desc{font-size:.44rem}
+    .cs-arch-node-badge{font-size:.38rem}
+    .cs-other-card-title{font-size:1rem}
+    .cs-other-card-desc{font-size:.72rem}
+}
 @media(max-width:600px){
-    .cs-hero{padding:0 24px 48px;min-height:100svh}
-    .cs-hero-img{padding:0 24px}
-    .cs-content{padding:0 24px}
-    .cs-wide{padding:0 24px}
-    .cs-section{padding:30px 0}
-    .cs-others{padding:60px 24px}
-    .v5-footer{padding:60px 24px 32px}
-    .v5-nav{padding:16px 24px}
+    .cs-hero{padding:0 20px 40px;min-height:100svh}
+    .cs-hero-back{font-size:.55rem;margin-bottom:32px}
+    .cs-hero-tag{font-size:.5rem;letter-spacing:3px;margin-bottom:24px}
+    .cs-hero-title{font-size:clamp(2.4rem,10vw,3.2rem);margin-bottom:28px}
+    .cs-hero-desc{font-size:.88rem;max-width:100%;line-height:1.75}
+    .cs-hero-meta{margin-top:36px;gap:16px 24px;display:grid;grid-template-columns:1fr 1fr}
+    .cs-hero-meta-val{font-size:clamp(1.3rem,6vw,1.8rem)}
+    .cs-hero-meta-label{font-size:.42rem;margin-top:4px}
+    .cs-hero-img{padding:0 20px;margin-top:clamp(2em,4vh,3em)}
+    .cs-hero-img-caption{font-size:.48rem;margin-top:12px}
+    .cs-content{padding:0 20px}
+    .cs-wide{padding:0 20px}
+    .cs-section{padding:28px 0}
+    .cs-section-label{font-size:.5rem;letter-spacing:3px;margin-bottom:24px}
+    .cs-section-divider{margin-bottom:32px}
+    .cs-section-heading{font-size:clamp(1.4rem,5vw,2rem);margin-bottom:24px}
+    .cs-prose{font-size:.85rem;line-height:1.8}
+    .cs-arch{margin-top:36px}
+    .cs-arch-label{font-size:.45rem}
+    .cs-arch-row{gap:10px;margin-bottom:10px}
+    .cs-arch-node{padding:12px 14px;min-width:100%}
+    .cs-arch-node-name{font-size:.72rem}
+    .cs-arch-node-desc{font-size:.42rem;line-height:1.4}
+    .cs-arch-node-badge{font-size:.36rem;top:6px;right:8px}
+    .cs-arch-layer{margin-top:24px;margin-bottom:12px}
+    .cs-arch-layer-text{font-size:.4rem;letter-spacing:2px}
+    .cs-arch-arrows{gap:24px;padding:2px 0}
+    .cs-features{margin-top:32px;gap:14px}
+    .cs-feature{padding:22px 18px}
+    .cs-feature-num{font-size:.45rem;margin-bottom:10px}
+    .cs-feature h4{font-size:.9rem;margin-bottom:8px}
+    .cs-feature p{font-size:.75rem;line-height:1.7}
+    .cs-feature--wide{padding:24px 20px;gap:0 20px}
+    .cs-tech-grid{grid-template-columns:1fr 1fr;margin-top:32px}
+    .cs-tech-item{padding:16px 14px}
+    .cs-tech-name{font-size:.78rem}
+    .cs-tech-role{font-size:.44rem}
+    .cs-carousel{padding:clamp(3em,6vh,5em) 0}
+    .cs-carousel-label{font-size:.48rem;margin-bottom:28px}
+    .cs-carousel-slide{width:clamp(220px,70vw,300px)}
+    .cs-carousel-slide-caption{font-size:.44rem;margin-top:10px}
+    .cs-others{padding:48px 20px}
+    .cs-others-label{font-size:.5rem;margin-bottom:24px}
+    .cs-others-divider{margin-bottom:32px}
+    .cs-other-card-body{padding:18px}
+    .cs-other-card-badge{font-size:.45rem;margin-bottom:8px}
+    .cs-other-card-title{font-size:.95rem}
+    .cs-other-card-desc{font-size:.72rem}
+    .cs-other-card-arrow{font-size:.45rem;margin-top:12px}
+    .v5-manifesto{min-height:auto;padding:48px 20px}
+    .v5-manifesto-text{font-size:clamp(1.3rem,6vw,1.8rem)}
+    .v5-footer{padding:48px 20px 32px}
+    .v5-footer::before{margin-bottom:36px}
+    .v5-footer-title{font-size:clamp(2.2rem,9vw,3rem)}
+    .v5-footer-sub{font-size:.8rem;margin-bottom:32px}
+    .v5-footer-links{gap:10px;margin-bottom:40px}
+    .v5-footer-link{padding:10px 18px;font-size:.75rem}
+    .v5-nav{padding:14px 20px}
+    .v5-nav-links{gap:16px}
+    .v5-nav-links a{font-size:.6rem}
     .v5-scroll-cue{display:none}
-    .cs-tech-grid{grid-template-columns:1fr 1fr}
-    .cs-arch-node{min-width:100%}
+    .v5-marquee{padding:clamp(1.2em,3vh,2em) 0}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -260,12 +392,110 @@ a{color:inherit;text-decoration:none}
     <div class="v5-scroll-cue">Scroll</div>
 </header>
 
-<!-- Hero Image -->
+<!-- Hero Image / Browser Frame -->
 <div class="cs-hero-img">
-    <div class="cs-hero-img-wrap" id="heroImgWrap">
-        <img src="../images/hero-whatsapp.png" alt="WhatsApp Smart Chrome extension showing AI reply suggestions, tone adjuster, and scheduled messages alongside a WhatsApp chat" loading="eager" width="1400" height="788">
+    <div class="browser">
+        <div class="browser-chrome">
+            <div class="browser-bar">
+                <div class="browser-dots"><span></span><span></span><span></span></div>
+                <div class="browser-tab">
+                    <div class="browser-tab-icon"><svg viewBox="0 0 24 24"><path d="M17.5 14.4l-5.01 2.78c-.46.26-1 .26-1.46 0L6 14.4c-.71-.4-.71-1.42 0-1.82l1.53-.85 3.5 1.95c.93.52 2.04.52 2.97 0l3.5-1.95 1.53.85c.71.4.71 1.42-.03 1.82zM12 3.19l5.01 2.78c.71.4.71 1.42 0 1.82L12 10.57 6.99 7.79c-.71-.4-.71-1.42 0-1.82L12 3.19z"/></svg></div>
+                    WhatsApp Web
+                </div>
+                <div class="browser-url"><span class="browser-url-lock">&#128274;</span> web.whatsapp.com</div>
+            </div>
+        </div>
+        <div class="browser-viewport" id="browserViewport">
+            <div class="browser-scaler" id="browserScaler">
+                <div class="wa">
+                    <!-- Contacts -->
+                    <div class="wa-contacts">
+                        <div class="wa-contacts-head"><span class="wa-contacts-head-name">Chats</span></div>
+                        <div class="wa-contacts-search">Search or start new chat</div>
+                        <div class="wa-contact active">
+                            <div class="wa-contact-avatar">SR</div>
+                            <div class="wa-contact-info"><div class="wa-contact-name">Sarah Reynolds</div><div class="wa-contact-msg">Yeah, 3pm works for me</div></div>
+                            <div class="wa-contact-time">9:14</div>
+                        </div>
+                        <div class="wa-contact">
+                            <div class="wa-contact-avatar">MK</div>
+                            <div class="wa-contact-info"><div class="wa-contact-name">Marketing Team</div><div class="wa-contact-msg">James: Updated the Q4 deck</div></div>
+                            <div class="wa-contact-time">8:52</div>
+                        </div>
+                        <div class="wa-contact">
+                            <div class="wa-contact-avatar">DP</div>
+                            <div class="wa-contact-info"><div class="wa-contact-name">David Park</div><div class="wa-contact-msg">Invoice sent, check email</div></div>
+                            <div class="wa-contact-time">8:30</div>
+                        </div>
+                        <div class="wa-contact">
+                            <div class="wa-contact-avatar">OT</div>
+                            <div class="wa-contact-info"><div class="wa-contact-name">Ops Team</div><div class="wa-contact-msg">You: Server migration done</div></div>
+                            <div class="wa-contact-time">Yesterday</div>
+                        </div>
+                        <div class="wa-contact">
+                            <div class="wa-contact-avatar">LM</div>
+                            <div class="wa-contact-info"><div class="wa-contact-name">Lisa Miller</div><div class="wa-contact-msg">Thanks for the update!</div></div>
+                            <div class="wa-contact-time">Yesterday</div>
+                        </div>
+                    </div>
+                    <!-- Chat -->
+                    <div class="wa-chat">
+                        <div class="wa-chat-head">
+                            <div class="wa-contact-avatar" style="width:32px;height:32px;font-size:10px">SR</div>
+                            <div><div class="wa-chat-head-name">Sarah Reynolds</div><div class="wa-chat-head-status">online</div></div>
+                        </div>
+                        <div class="wa-chat-body">
+                            <div class="wa-bubble recv">Did you get a chance to look at the Q4 budget numbers last week?<span class="wa-bubble-time">9:02</span></div>
+                            <div class="wa-bubble recv">Also wondering if you're free Thursday to walk through the variance report with finance<span class="wa-bubble-time">9:03</span></div>
+                            <div class="wa-bubble sent">Yeah I've been through them. Couple of things flagged in the exceptions file. Happy to walk through it Thursday, does 3pm work?<span class="wa-bubble-time">9:10</span></div>
+                            <div class="wa-bubble recv">3pm is perfect. Can you bring the YoY comparison too? Want to show the team how it tracks against forecast<span class="wa-bubble-time">9:12</span></div>
+                            <div class="wa-bubble recv">Oh and one more thing. Have we heard back from the new supplier about the Q3 pricing?<span class="wa-bubble-time">9:13</span></div>
+                            <div class="wa-bubble sent">Will bring the YoY comp. Supplier got back yesterday, pricing is 4% below current. I'll add it to the Thursday deck<span class="wa-bubble-time">9:14</span></div>
+                        </div>
+                        <div class="wa-chat-input"><div class="wa-chat-input-field">Type a message</div></div>
+                    </div>
+                    <!-- Extension Sidebar -->
+                    <div class="wa-ext">
+                        <div class="wa-ext-head">
+                            <div class="wa-ext-logo">WS</div>
+                            <span class="wa-ext-title">WhatsApp Smart</span>
+                            <span class="wa-ext-badge">Prototype</span>
+                        </div>
+                        <div class="wa-ext-section">
+                            <div class="wa-ext-label">AI Reply Suggestions</div>
+                            <div class="wa-ext-pill">Sure, I'll pull the Q3 pricing into the deck for Thursday</div>
+                            <div class="wa-ext-pill">Yes, supplier confirmed 4% savings. I'll prep the comparison</div>
+                            <div class="wa-ext-pill">Got it. Will have the full variance breakdown ready by 3pm</div>
+                        </div>
+                        <div class="wa-ext-section">
+                            <div class="wa-ext-label">Tone</div>
+                            <div class="wa-ext-tone">
+                                <span style="font-size:8px;color:#5e5952">Casual</span>
+                                <div class="wa-ext-tone-track"><div class="wa-ext-tone-fill"></div></div>
+                                <span class="wa-ext-tone-label">Professional</span>
+                            </div>
+                        </div>
+                        <div class="wa-ext-section">
+                            <div class="wa-ext-label">Scheduled Message</div>
+                            <div class="wa-ext-schedule">
+                                <span class="wa-ext-schedule-icon">&#9200;</span>
+                                <div>
+                                    <div class="wa-ext-schedule-text">Reminder for Sarah Reynolds</div>
+                                    <div class="wa-ext-schedule-time">Thu 3:00 PM / "See you at 3, bringing the reports"</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wa-ext-privacy">
+                            <span class="wa-ext-privacy-icon">&#128737;</span>
+                            <div class="wa-ext-privacy-text">Messages stay on your device. No server. No sign-up. All processing runs locally in the browser.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <p class="cs-hero-img-caption">Extension sidebar: AI suggestions, tone adjuster, scheduled messages</p>
+    <div class="browser-shadow"></div>
+    <p class="cs-hero-img-caption">Chrome extension showing AI suggestions, tone control, and scheduling <span class="dummy-badge">Prototype</span></p>
 </div>
 
 <!-- Marquee -->
@@ -637,6 +867,25 @@ lenis.on('scroll',ScrollTrigger.update);
 gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
 
 /* === Start === */
+/* === Browser scaler === */
+function scaleBrowser(){
+    const vp=document.getElementById('browserViewport');
+    const sc=document.getElementById('browserScaler');
+    if(!vp||!sc) return;
+    sc.style.transform=`scale(${vp.offsetWidth/1440})`;
+}
+scaleBrowser();
+window.addEventListener('resize',scaleBrowser);
+
+/* === Browser reveal === */
+const browserEl=document.querySelector('.browser');
+if(browserEl){
+    gsap.fromTo(browserEl,
+        {opacity:0,y:40,scale:.97},
+        {opacity:1,y:0,scale:1,duration:.5,ease:'expo.out',
+         scrollTrigger:{trigger:'.cs-hero-img',start:'top 85%',once:true}});
+}
+
 lenis.start();heroReveal();
 
 /* === Hero Reveal === */
@@ -658,25 +907,6 @@ function heroReveal(){
 /* === Progress === */
 gsap.to('#progBar',{scaleX:1,ease:'none',scrollTrigger:{trigger:'body',start:'top top',end:'bottom bottom',scrub:true}});
 
-/* === Hero Image -- 3D tilt + glare === */
-const heroWrap=document.getElementById('heroImgWrap');
-if(heroWrap){
-    const heroImg=heroWrap.querySelector('img');
-    heroWrap.addEventListener('mousemove',(e)=>{
-        const rect=heroWrap.getBoundingClientRect();
-        const x=(e.clientX-rect.left)/rect.width;
-        const y=(e.clientY-rect.top)/rect.height;
-        gsap.to(heroWrap,{rotateY:(x-.5)*3,rotateX:(y-.5)*-2,transformPerspective:1400,duration:.9,ease:'power2.out'});
-        heroWrap.style.setProperty('--mx',(x*100)+'%');
-        heroWrap.style.setProperty('--my',(y*100)+'%');
-    });
-    heroWrap.addEventListener('mouseleave',()=>{
-        gsap.to(heroWrap,{rotateY:0,rotateX:0,duration:1.4,ease:'power3.out'});
-    });
-    if(heroImg){
-        gsap.to(heroImg,{yPercent:-8,ease:'none',scrollTrigger:{trigger:'.cs-hero-img',start:'top bottom',end:'bottom top',scrub:true}});
-    }
-}
 
 /* === Screenshot Carousel -- auto-scroll with velocity direction === */
 const cTrack=document.getElementById('carouselTrack');

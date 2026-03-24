@@ -72,6 +72,80 @@ a{color:inherit;text-decoration:none}
 .v5-scroll-cue::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--dim),transparent);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.6;transform:scaleY(1)}50%{opacity:.15;transform:scaleY(.5)}}
 
+/* === TRADING TERMINAL === */
+.term-hero{padding:clamp(1em,3vw,3em) clamp(2em,6vw,6em);position:relative;z-index:2}
+.term-panel{max-width:1100px;margin:0 auto;background:linear-gradient(135deg,#0d1117,#0b0f15);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 1px rgba(255,255,255,.05) inset}
+.term-viewport{position:relative;aspect-ratio:16/10;overflow:hidden}
+.term-scaler{width:1440px;height:900px;transform-origin:top left;position:absolute;top:0;left:0;font-family:var(--font);color:#e8e4de;display:grid;grid-template-rows:auto auto 1fr auto}
+.term-scaler *{box-sizing:border-box}
+
+/* Terminal header */
+.term-head{display:flex;justify-content:space-between;align-items:center;padding:20px 28px;border-bottom:1px solid rgba(255,255,255,.04)}
+.term-head-title{font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-.02em}
+.term-head-sub{font-size:10px;color:#5e5952;margin-top:2px}
+.term-badges{display:flex;gap:8px}
+.term-badge{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:4px;font-weight:500}
+.term-badge--status{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);color:#34d399}
+.term-badge--data{background:rgba(201,169,109,.1);border:1px solid rgba(201,169,109,.25);color:var(--gold)}
+
+/* KPI strip */
+.term-kpis{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid rgba(255,255,255,.04)}
+.term-kpi{padding:16px 20px;border-right:1px solid rgba(255,255,255,.04);text-align:center}
+.term-kpi:last-child{border-right:none}
+.term-kpi-label{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#4a4544;margin-bottom:4px;font-weight:500}
+.term-kpi-val{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.02em}
+.term-kpi-val.pos{color:#34d399}
+.term-kpi-val.neg{color:#f87171}
+
+/* Charts area */
+.term-charts{display:grid;grid-template-columns:1.3fr 1fr;min-height:0}
+.term-chart-panel{padding:16px 20px;display:flex;flex-direction:column}
+.term-chart-panel+.term-chart-panel{border-left:1px solid rgba(255,255,255,.04)}
+.term-chart-label{font-size:10px;font-weight:500;color:#7a7584;letter-spacing:.02em;margin-bottom:8px;text-transform:uppercase}
+.term-chart-wrap{flex:1;min-height:0}
+
+/* Monthly returns heatmap */
+.term-heatmap{width:100%}
+.term-heatmap table{width:100%;border-collapse:collapse;font-size:10px}
+.term-heatmap th{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#4a4544;padding:6px 4px;font-weight:500;text-align:center}
+.term-heatmap td{padding:4px;text-align:center}
+.term-hm-cell{display:inline-block;padding:4px 8px;border-radius:3px;font-size:10px;font-weight:600;min-width:42px}
+.term-hm-cell.pos{background:rgba(52,211,153,.15);color:#34d399}
+.term-hm-cell.neg{background:rgba(248,113,113,.15);color:#f87171}
+.term-hm-row-label{font-size:9px;color:#5e5952;text-align:left;font-weight:500;padding-right:8px}
+
+/* Trades table */
+.term-trades{border-top:1px solid rgba(255,255,255,.04);padding:16px 20px}
+.term-trades-label{font-size:10px;font-weight:500;color:#7a7584;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+.term-trades table{width:100%;border-collapse:collapse;font-size:10px}
+.term-trades th{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#3d3852;padding:6px 8px;text-align:left;font-weight:500;border-bottom:1px solid rgba(255,255,255,.04)}
+.term-trades td{padding:8px;border-bottom:1px solid rgba(255,255,255,.02);color:#a09a92}
+.term-trades td.ticker{color:#e8e4de;font-weight:500}
+.term-trades td.pos{color:#34d399}
+.term-trades td.neg{color:#f87171}
+
+.term-glow{height:1px;margin:0 10%;background:linear-gradient(90deg,transparent,rgba(201,169,109,.15),transparent)}
+.cs-img-caption{font-family:var(--mono);font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:center;margin-top:16px}
+.cs-img-caption .dummy-badge{display:inline-block;background:rgba(201,169,109,.12);border:1px solid rgba(201,169,109,.25);color:var(--gold);padding:2px 10px;border-radius:20px;font-weight:500;margin-left:6px}
+
+/* === MOBILE TERMINAL CARD (replaces term-panel on small screens) === */
+.term-mobile-card{display:none;background:linear-gradient(135deg,#0d1117,#0b0f15);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;box-shadow:0 16px 60px rgba(0,0,0,.4)}
+.term-mobile-header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.04)}
+.term-mobile-title{font-family:var(--display);font-size:.85rem;font-weight:600;letter-spacing:-.02em}
+.term-mobile-badges{display:flex;gap:6px}
+.term-mobile-badge{font-family:var(--mono);font-size:.45rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px;font-weight:500}
+.term-mobile-badge--status{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);color:#34d399}
+.term-mobile-badge--data{background:rgba(201,169,109,.1);border:1px solid rgba(201,169,109,.25);color:var(--gold)}
+.term-mobile-kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.03)}
+.term-mobile-kpi{background:linear-gradient(135deg,#0d1117,#0b0f15);padding:16px;text-align:center;border-bottom:1px solid rgba(255,255,255,.03)}
+.term-mobile-kpi-label{font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:#4a4544;margin-bottom:4px;font-weight:500;font-family:var(--mono)}
+.term-mobile-kpi-val{font-family:var(--display);font-size:1.2rem;font-weight:600;letter-spacing:-.02em}
+.term-mobile-kpi-val.pos{color:#34d399}
+.term-mobile-kpi-val.neg{color:#f87171}
+.term-mobile-note{padding:12px 18px;text-align:center;font-family:var(--mono);font-size:.48rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);border-top:1px solid rgba(255,255,255,.04)}
+
+@media(max-width:600px){.term-hero{padding:16px}}
+
 /* === MARQUEE === */
 .v5-marquee{padding:clamp(2em,4vh,4em) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;position:relative;z-index:2}
 .v5-marquee-track{display:flex;white-space:nowrap;will-change:transform}
@@ -190,19 +264,85 @@ a{color:inherit;text-decoration:none}
     .cs-sched-item.active::before{top:auto;bottom:auto;left:0;top:0;right:auto;width:2px;height:100%}
     .cs-stack{grid-template-columns:1fr}
 }
+@media(max-width:768px){
+    .v5-nav-links{gap:20px}
+    .v5-nav-links a{font-size:.65rem}
+    .cs-hero-title{font-size:clamp(3rem,12vw,4.5rem)}
+    .cs-hero-sub{font-size:.92rem;line-height:1.75}
+    .cs-heading{font-size:clamp(1.6rem,5vw,2.4rem)}
+    .cs-prose{font-size:.88rem}
+    .cs-feat h4{font-size:1rem}
+    .cs-feat p{font-size:.8rem}
+    .cs-sched-item{padding:16px 14px}
+    .cs-sched-time{font-size:.7rem}
+    .cs-sched-desc{font-size:.68rem}
+    .cs-other-name{font-size:1rem}
+    .cs-other-desc{font-size:.72rem}
+    .cs-img-label{padding:24px 20px 18px}
+    .cs-img-label-title{font-size:clamp(1rem,3vw,1.3rem)}
+    /* Terminal: hide full panel, show mobile card */
+    .term-panel{display:none}
+    .term-glow{display:none}
+    .term-mobile-card{display:block}
+}
 @media(max-width:600px){
-    .cs-hero{padding:0 24px 48px;min-height:100svh}
+    .cs-hero{padding:0 20px 40px;min-height:100svh}
     .cs-hero-bg{width:100%;opacity:.1}
-    .cs-section{padding:30px 24px}
-    .v5-manifesto{min-height:40vh;padding:40px 24px}
-    .v5-manifesto-text{font-size:clamp(1.4rem,6.5vw,2rem)}
-    .v5-footer{padding:60px 24px 32px}
-    .v5-nav{padding:16px 24px}
+    .cs-back{font-size:.55rem}
+    .cs-hero-tagline{margin-bottom:24px;gap:12px}
+    .cs-hero-tag{font-size:.5rem;letter-spacing:3px}
+    .cs-status-tag{font-size:.45rem;padding:4px 10px 4px 8px}
+    .cs-hero-title{font-size:clamp(2.5rem,11vw,3.5rem);margin-bottom:28px}
+    .cs-hero-sub{font-size:.88rem;max-width:100%}
+    .cs-hero-stats{gap:16px 24px}
+    .cs-stat-num{font-size:clamp(1.4rem,7vw,1.8rem)}
+    .cs-stat-label{font-size:.45rem}
+    .cs-section{padding:28px 20px}
+    .cs-label{font-size:.5rem;margin-bottom:16px}
+    .cs-divider{margin-bottom:clamp(24px,4vh,40px)}
+    .cs-heading{font-size:clamp(1.4rem,5vw,2rem);margin-bottom:24px}
+    .cs-prose{font-size:.85rem;line-height:1.8}
+    .cs-schedule{margin:32px 0}
+    .cs-sched-item{padding:14px 12px}
+    .cs-sched-time{font-size:.65rem;margin-bottom:6px}
+    .cs-sched-desc{font-size:.62rem}
+    .cs-flow{margin:32px 0;padding-left:30px}
+    .cs-flow-name{font-size:.8rem}
+    .cs-flow-desc{font-size:.68rem}
+    .cs-flow-dot{width:20px;height:20px;left:-30px}
+    .cs-term{margin:32px 0;max-width:100%}
+    .cs-term-body{padding:14px 16px;font-size:.58rem;line-height:2}
+    .cs-features{margin-top:32px;gap:16px}
+    .cs-feat{padding:24px 20px}
+    .cs-feat h4{font-size:.95rem;margin-bottom:10px}
+    .cs-feat p{font-size:.78rem;line-height:1.7}
+    .cs-img-wrap{margin-top:24px}
+    .cs-img-label{padding:20px 16px 14px}
+    .cs-img-label-title{font-size:.9rem}
+    .cs-img-label-badge{font-size:.42rem}
+    .cs-img-caption{font-size:.48rem;margin-top:14px}
+    .cs-stack{margin-top:32px}
+    .cs-stack-item{padding:16px 18px}
+    .cs-stack-name{font-size:.8rem}
+    .cs-stack-role{font-size:.68rem}
+    .cs-others{margin-top:32px;gap:16px}
+    .cs-other-body{padding:16px 18px}
+    .cs-other-badge{font-size:.45rem}
+    .cs-other-name{font-size:.95rem}
+    .cs-other-desc{font-size:.7rem}
+    .v5-manifesto{min-height:auto;padding:48px 20px}
+    .v5-manifesto-text{font-size:clamp(1.3rem,6vw,1.8rem)}
+    .v5-footer{padding:48px 20px 32px}
+    .v5-footer::before{margin-bottom:36px}
+    .v5-footer-title{font-size:clamp(2.2rem,9vw,3rem)}
+    .v5-footer-sub{font-size:.8rem;margin-bottom:32px}
+    .v5-footer-links{gap:10px;margin-bottom:40px}
+    .v5-footer-link{padding:10px 18px;font-size:.75rem}
+    .v5-nav{padding:14px 20px}
+    .v5-nav-links{gap:16px}
+    .v5-nav-links a{font-size:.6rem}
     .v5-scroll-cue{display:none}
-    .cs-hero-stats{gap:20px 28px}
-    .cs-stat-num{font-size:clamp(1.6rem,8vw,2.2rem)}
-    .cs-term-body{padding:16px;font-size:.6rem}
-    .cs-flow{padding-left:32px}
+    .v5-marquee{padding:clamp(1.2em,3vh,2em) 0}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -247,6 +387,94 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="v5-scroll-cue">Scroll</div>
 </header>
+
+<!-- Trading Terminal Panel -->
+<div class="term-hero">
+    <div class="term-panel">
+        <div class="term-viewport" id="termViewport">
+            <div class="term-scaler" id="termScaler">
+                <!-- Header -->
+                <div class="term-head">
+                    <div>
+                        <div class="term-head-title">Backtest Report / FTSE 100 Multi-Agent Strategy</div>
+                        <div class="term-head-sub">1 Sep 2025 to 28 Feb 2026 (120 trading days)</div>
+                    </div>
+                    <div class="term-badges">
+                        <span class="term-badge term-badge--data">Dummy Data</span>
+                        <span class="term-badge term-badge--status">Paper Trading</span>
+                    </div>
+                </div>
+                <!-- KPIs -->
+                <div class="term-kpis">
+                    <div class="term-kpi"><div class="term-kpi-label">Total Return</div><div class="term-kpi-val pos">+18.4%</div></div>
+                    <div class="term-kpi"><div class="term-kpi-label">Win Rate</div><div class="term-kpi-val">67.2%</div></div>
+                    <div class="term-kpi"><div class="term-kpi-label">Sharpe Ratio</div><div class="term-kpi-val">1.84</div></div>
+                    <div class="term-kpi"><div class="term-kpi-label">Max Drawdown</div><div class="term-kpi-val neg">-6.3%</div></div>
+                    <div class="term-kpi"><div class="term-kpi-label">Total Trades</div><div class="term-kpi-val">134</div></div>
+                    <div class="term-kpi"><div class="term-kpi-label">Avg Hold</div><div class="term-kpi-val">3.2h</div></div>
+                </div>
+                <!-- Charts -->
+                <div class="term-charts">
+                    <div class="term-chart-panel">
+                        <div class="term-chart-label">Equity Curve</div>
+                        <div class="term-chart-wrap" id="chartEquity"></div>
+                    </div>
+                    <div class="term-chart-panel">
+                        <div class="term-chart-label">Monthly Returns</div>
+                        <div class="term-heatmap">
+                            <table>
+                                <thead><tr><th></th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Jan</th><th>Feb</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="term-hm-row-label">Return</td><td><span class="term-hm-cell pos">+1.8%</span></td><td><span class="term-hm-cell pos">+3.4%</span></td><td><span class="term-hm-cell neg">-0.6%</span></td><td><span class="term-hm-cell pos">+4.2%</span></td><td><span class="term-hm-cell pos">+2.8%</span></td><td><span class="term-hm-cell pos">+4.8%</span></td></tr>
+                                    <tr><td class="term-hm-row-label">Trades</td><td>18</td><td>24</td><td>19</td><td>28</td><td>22</td><td>23</td></tr>
+                                    <tr><td class="term-hm-row-label">Win %</td><td><span class="term-hm-cell pos">61%</span></td><td><span class="term-hm-cell pos">71%</span></td><td><span class="term-hm-cell neg">53%</span></td><td><span class="term-hm-cell pos">75%</span></td><td><span class="term-hm-cell pos">68%</span></td><td><span class="term-hm-cell pos">72%</span></td></tr>
+                                    <tr><td class="term-hm-row-label">Max DD</td><td><span class="term-hm-cell neg">-2.1%</span></td><td><span class="term-hm-cell neg">-1.8%</span></td><td><span class="term-hm-cell neg">-6.3%</span></td><td><span class="term-hm-cell neg">-0.9%</span></td><td><span class="term-hm-cell neg">-1.2%</span></td><td><span class="term-hm-cell neg">-1.5%</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Recent Trades -->
+                <div class="term-trades">
+                    <div class="term-trades-label">Recent Trades (last 8)</div>
+                    <table>
+                        <thead><tr><th>Date</th><th>Ticker</th><th>Side</th><th>Entry</th><th>Exit</th><th>P&amp;L</th><th>Hold Time</th><th>Claude Rating</th></tr></thead>
+                        <tbody>
+                            <tr><td>28 Feb</td><td class="ticker">AZN</td><td>LONG</td><td>11,842p</td><td>12,118p</td><td class="pos">+2.3%</td><td>2h 41m</td><td>4/5</td></tr>
+                            <tr><td>28 Feb</td><td class="ticker">SHEL</td><td>LONG</td><td>2,634p</td><td>3,591p</td><td class="neg">-1.6%</td><td>4h 12m</td><td>3/5</td></tr>
+                            <tr><td>27 Feb</td><td class="ticker">LSEG</td><td>LONG</td><td>10,440p</td><td>10,622p</td><td class="pos">+1.7%</td><td>3h 08m</td><td>4/5</td></tr>
+                            <tr><td>27 Feb</td><td class="ticker">RR.</td><td>LONG</td><td>624p</td><td>637p</td><td class="pos">+2.1%</td><td>1h 55m</td><td>5/5</td></tr>
+                            <tr><td>26 Feb</td><td class="ticker">ULVR</td><td>LONG</td><td>4,218p</td><td>4,184p</td><td class="neg">-0.8%</td><td>5h 30m</td><td>3/5</td></tr>
+                            <tr><td>26 Feb</td><td class="ticker">BA.</td><td>LONG</td><td>528p</td><td>541p</td><td class="pos">+2.5%</td><td>2h 20m</td><td>4/5</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="term-glow"></div>
+    <p class="cs-img-caption">Backtest performance across 120 trading days <span class="dummy-badge">Dummy Data</span></p>
+
+    <!-- Mobile terminal card (shown at 768px and below) -->
+    <div class="term-mobile-card">
+        <div class="term-mobile-header">
+            <div class="term-mobile-title">FTSE 100 Backtest</div>
+            <div class="term-mobile-badges">
+                <span class="term-mobile-badge term-mobile-badge--data">Dummy</span>
+                <span class="term-mobile-badge term-mobile-badge--status">Paper</span>
+            </div>
+        </div>
+        <div class="term-mobile-kpis">
+            <div class="term-mobile-kpi"><div class="term-mobile-kpi-label">Total Return</div><div class="term-mobile-kpi-val pos">+18.4%</div></div>
+            <div class="term-mobile-kpi"><div class="term-mobile-kpi-label">Win Rate</div><div class="term-mobile-kpi-val">67.2%</div></div>
+            <div class="term-mobile-kpi"><div class="term-mobile-kpi-label">Sharpe Ratio</div><div class="term-mobile-kpi-val">1.84</div></div>
+            <div class="term-mobile-kpi"><div class="term-mobile-kpi-label">Max Drawdown</div><div class="term-mobile-kpi-val neg">-6.3%</div></div>
+            <div class="term-mobile-kpi"><div class="term-mobile-kpi-label">Total Trades</div><div class="term-mobile-kpi-val">134</div></div>
+            <div class="term-mobile-kpi"><div class="term-mobile-kpi-label">Avg Hold</div><div class="term-mobile-kpi-val">3.2h</div></div>
+        </div>
+        <div class="term-mobile-note">Full terminal view best viewed on desktop</div>
+    </div>
+</div>
 
 <!-- Marquee -->
 <div class="v5-marquee">
@@ -497,6 +725,7 @@ a{color:inherit;text-decoration:none}
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <script>
 /* === GSAP Setup === */
@@ -510,6 +739,59 @@ lenis.on('scroll',ScrollTrigger.update);
 gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
 
 /* === Start === */
+/* === Terminal scaler === */
+function scaleTerm(){
+    const vp=document.getElementById('termViewport');
+    const sc=document.getElementById('termScaler');
+    if(!vp||!sc) return;
+    sc.style.transform=`scale(${vp.offsetWidth/1440})`;
+}
+scaleTerm();
+window.addEventListener('resize',scaleTerm);
+
+/* === Equity Curve Chart === */
+if(typeof ApexCharts!=='undefined'){
+    /* Generate realistic equity curve data */
+    const days=120,startVal=10000;
+    let val=startVal;const eqData=[];const idxData=[];let idxVal=startVal;
+    for(let i=0;i<days;i++){
+        const dailyReturn=(Math.random()-.42)*.015;
+        val=val*(1+dailyReturn);
+        eqData.push(Math.round(val));
+        idxVal=idxVal*(1+(Math.random()-.48)*.01);
+        idxData.push(Math.round(idxVal));
+    }
+    new ApexCharts(document.getElementById('chartEquity'),{
+        chart:{type:'area',height:'100%',background:'transparent',toolbar:{show:false},
+            fontFamily:'Inter,system-ui,sans-serif',foreColor:'#5e5952',zoom:{enabled:false},
+            animations:{enabled:true,easing:'easeinout',speed:1500}},
+        series:[{name:'Strategy',data:eqData},{name:'FTSE 100',data:idxData}],
+        xaxis:{labels:{show:false},axisBorder:{show:false},axisTicks:{show:false},
+            crosshairs:{show:true,stroke:{color:'rgba(255,255,255,.15)',width:1}}},
+        yaxis:{labels:{formatter:v=>'GBP '+v.toLocaleString(),style:{fontSize:'9px'}},
+            axisBorder:{show:false},forceNiceScale:true},
+        grid:{borderColor:'rgba(255,255,255,.03)',padding:{left:4,right:4,bottom:0}},
+        colors:['#34d399','#5e5952'],
+        fill:{type:'gradient',gradient:{shadeIntensity:1,opacityFrom:.35,opacityTo:0,stops:[0,90]}},
+        stroke:{width:[2.5,1.5],curve:'smooth',dashArray:[0,4]},
+        legend:{show:true,position:'top',horizontalAlign:'right',fontSize:'9px',
+            labels:{colors:['#34d399','#5e5952']},markers:{width:8,height:2,radius:0},
+            itemMargin:{horizontal:12}},
+        dataLabels:{enabled:false},
+        tooltip:{theme:'dark',style:{fontSize:'10px'},
+            y:{formatter:v=>'GBP '+v.toLocaleString()}},
+    }).render();
+}
+
+/* === Terminal reveal === */
+const termPanel=document.querySelector('.term-panel');
+if(termPanel){
+    gsap.fromTo(termPanel,
+        {opacity:0,y:40,scale:.97},
+        {opacity:1,y:0,scale:1,duration:.5,ease:'expo.out',
+         scrollTrigger:{trigger:'.term-hero',start:'top 85%',once:true}});
+}
+
 lenis.start();heroReveal();
 
 /* === Hero Reveal === */
