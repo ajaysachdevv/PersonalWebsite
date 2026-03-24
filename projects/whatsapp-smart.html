@@ -47,12 +47,6 @@ a{color:inherit;text-decoration:none}
 .v5-nav-links a{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.5px;transition:color .3s}
 .v5-nav-links a:hover{color:#fff}
 
-/* Loader */
-.v5-loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
-.v5-loader-word{font-family:var(--display);font-size:clamp(2rem,4vw,3.5rem);font-weight:600;color:var(--gold);letter-spacing:-1.5px;position:absolute;opacity:0}
-.v5-loader-screen{position:absolute;inset:0;background:var(--bg);z-index:2;will-change:transform}
-.v5-loader-curve{position:absolute;bottom:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%}
-
 /* === CASE STUDY HERO === */
 .cs-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(3em,8vw,8em) clamp(5em,12vh,8em);position:relative;overflow:hidden}
 .cs-hero-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:40px;transition:color .3s;opacity:0}
@@ -110,7 +104,7 @@ a{color:inherit;text-decoration:none}
 
 /* === CONTENT SECTIONS === */
 .cs-content{max-width:900px;margin:0 auto;padding:0 clamp(2em,6vw,4em)}
-.cs-section{padding:clamp(6em,14vh,10em) 0}
+.cs-section{padding:clamp(3em,7vh,5em) 0}
 .cs-section-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:32px}
 .cs-section-divider{width:40px;height:1px;background:var(--dim);margin-bottom:48px;opacity:.5}
 .cs-section-heading{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:600;letter-spacing:-.03em;line-height:1.1;margin-bottom:32px}
@@ -210,7 +204,7 @@ a{color:inherit;text-decoration:none}
     .cs-hero-img{padding:0 24px}
     .cs-content{padding:0 24px}
     .cs-wide{padding:0 24px}
-    .cs-section{padding:60px 0}
+    .cs-section{padding:30px 0}
     .cs-others{padding:60px 24px}
     .v5-footer{padding:60px 24px 32px}
     .v5-nav{padding:16px 24px}
@@ -218,21 +212,10 @@ a{color:inherit;text-decoration:none}
     .cs-tech-grid{grid-template-columns:1fr 1fr}
     .cs-arch-node{min-width:100%}
 }
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.v5-loader{display:none!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-
-<!-- Loader -->
-<div class="v5-loader" id="loader">
-    <span class="v5-loader-word">TypeScript</span>
-    <span class="v5-loader-word">React</span>
-    <span class="v5-loader-word">Chrome</span>
-    <span class="v5-loader-word">Privacy</span>
-    <span class="v5-loader-word">WhatsApp</span>
-    <span class="v5-loader-word">Smart</span>
-    <div class="v5-loader-screen" id="loaderScreen"><div class="v5-loader-curve"></div></div>
-</div>
 
 <div class="grain" aria-hidden="true"></div>
 <div class="v5-progress" id="progBar"></div>
@@ -653,30 +636,23 @@ const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)
 lenis.on('scroll',ScrollTrigger.update);
 gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
 
-/* === Preloader === */
-const loaderScreen=document.getElementById('loaderScreen');
-const words=document.querySelectorAll('.v5-loader-word');
-const preTl=gsap.timeline({onComplete:()=>{
-    gsap.set('#loader',{display:'none'});lenis.start();heroReveal();
-}});
-words.forEach((w,i)=>{const t=.16-i*.012;preTl.set(w,{opacity:1},i*t+.15).set(w,{opacity:0},(i+1)*t+.15)});
-preTl.to({},{duration:.25});
-preTl.to(loaderScreen,{yPercent:-130,duration:.9,ease:'power4.inOut'});
+/* === Start === */
+lenis.start();heroReveal();
 
 /* === Hero Reveal === */
 function heroReveal(){
     const tl=gsap.timeline({defaults:{ease:'expo.out'}});
-    tl.fromTo('.cs-hero-back',{opacity:0,x:-20},{opacity:1,x:0,duration:.8},.1);
-    tl.fromTo('.cs-hero-tag',{opacity:0,y:20},{opacity:1,y:0,duration:1},.15);
+    tl.fromTo('.cs-hero-back',{opacity:0,x:-20},{opacity:1,x:0,duration:.25},.03);
+    tl.fromTo('.cs-hero-tag',{opacity:0,y:20},{opacity:1,y:0,duration:.3},.05);
     if(typeof SplitText!=='undefined'){
         const titleSplit=new SplitText('.cs-hero-title',{type:'lines,chars',mask:'lines'});
-        tl.set('.cs-hero-title',{opacity:1},.25);
-        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.02,duration:1},.25);
+        tl.set('.cs-hero-title',{opacity:1},.08);
+        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.007,duration:.3},.08);
     } else {
-        tl.fromTo('.cs-hero-title',{opacity:0,y:50},{opacity:1,y:0,duration:1.2},.25);
+        tl.fromTo('.cs-hero-title',{opacity:0,y:50},{opacity:1,y:0,duration:.4},.08);
     }
-    tl.fromTo('.cs-hero-desc',{opacity:0,y:24},{opacity:1,y:0,duration:1.2},.6);
-    tl.fromTo('.cs-hero-meta',{opacity:0,y:20},{opacity:1,y:0,duration:1},.8);
+    tl.fromTo('.cs-hero-desc',{opacity:0,y:24},{opacity:1,y:0,duration:.4},.2);
+    tl.fromTo('.cs-hero-meta',{opacity:0,y:20},{opacity:1,y:0,duration:.3},.27);
 }
 
 /* === Progress === */
@@ -748,7 +724,7 @@ gsap.utils.toArray('.cs-section').forEach(section=>{
 
     const els=[label,divider,heading,...proses].filter(Boolean);
     els.forEach((el,i)=>{
-        gsap.from(el,{opacity:0,y:30,duration:1,ease:'expo.out',delay:i*.1,
+        gsap.from(el,{opacity:0,y:30,duration:.2,ease:'expo.out',delay:i*.05,
             scrollTrigger:{trigger:el,start:'top 85%',once:true}
         });
     });
@@ -758,25 +734,25 @@ gsap.utils.toArray('.cs-section').forEach(section=>{
 gsap.utils.toArray('.cs-arch-row').forEach(row=>{
     const nodes=row.querySelectorAll('.cs-arch-node');
     nodes.forEach((node,i)=>{
-        gsap.from(node,{opacity:0,y:25,scale:.97,duration:.9,ease:'expo.out',delay:i*.08,
+        gsap.from(node,{opacity:0,y:25,scale:.97,duration:.25,ease:'expo.out',delay:i*.04,
             scrollTrigger:{trigger:row,start:'top 88%',once:true}
         });
     });
 });
 gsap.utils.toArray('.cs-arch-arrows').forEach(arrows=>{
-    gsap.from(arrows,{opacity:0,duration:.6,
+    gsap.from(arrows,{opacity:0,duration:.2,
         scrollTrigger:{trigger:arrows,start:'top 90%',once:true}
     });
 });
 gsap.utils.toArray('.cs-arch-layer').forEach(layer=>{
-    gsap.from(layer,{opacity:0,x:-20,duration:.8,ease:'expo.out',
+    gsap.from(layer,{opacity:0,x:-20,duration:.25,ease:'expo.out',
         scrollTrigger:{trigger:layer,start:'top 90%',once:true}
     });
 });
 
 /* === Feature cards -- staggered reveal + spotlight === */
 gsap.utils.toArray('.cs-feature').forEach(card=>{
-    gsap.from(card,{opacity:0,y:40,duration:1,ease:'expo.out',
+    gsap.from(card,{opacity:0,y:40,duration:.2,ease:'expo.out',
         scrollTrigger:{trigger:card,start:'top 88%',once:true}
     });
     card.addEventListener('mousemove',(e)=>{
@@ -788,7 +764,7 @@ gsap.utils.toArray('.cs-feature').forEach(card=>{
 
 /* === Tech grid reveal === */
 gsap.utils.toArray('.cs-tech-item').forEach((item,i)=>{
-    gsap.from(item,{opacity:0,y:20,duration:.8,ease:'expo.out',delay:(i%4)*.06,
+    gsap.from(item,{opacity:0,y:20,duration:.25,ease:'expo.out',delay:(i%4)*.03,
         scrollTrigger:{trigger:item,start:'top 90%',once:true}
     });
 });
@@ -796,7 +772,7 @@ gsap.utils.toArray('.cs-tech-item').forEach((item,i)=>{
 /* === Other project cards === */
 document.querySelectorAll('.cs-other-card').forEach(card=>{
     const img=card.querySelector('img');
-    gsap.from(card,{opacity:0,y:40,duration:1,ease:'expo.out',
+    gsap.from(card,{opacity:0,y:40,duration:.2,ease:'expo.out',
         scrollTrigger:{trigger:card,start:'top 88%',once:true}
     });
     if(img){

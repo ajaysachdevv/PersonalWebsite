@@ -44,12 +44,6 @@ a{color:inherit;text-decoration:none}
 .v5-nav-links a{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.5px;transition:color .3s}
 .v5-nav-links a:hover{color:#fff}
 
-/* Loader */
-.v5-loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
-.v5-loader-word{font-family:var(--display);font-size:clamp(2rem,4vw,3.5rem);font-weight:600;color:var(--gold);letter-spacing:-1.5px;position:absolute;opacity:0}
-.v5-loader-screen{position:absolute;inset:0;background:var(--bg);z-index:2;will-change:transform}
-.v5-loader-curve{position:absolute;bottom:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%}
-
 /* Marquee */
 .v5-marquee{padding:clamp(2em,4vh,4em) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;position:relative;z-index:2}
 .v5-marquee-track{display:flex;white-space:nowrap;will-change:transform}
@@ -129,7 +123,7 @@ a{color:inherit;text-decoration:none}
 .cs-stat-label{font-family:var(--mono);font-size:.5rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block}
 
 /* Content Sections */
-.cs-section{padding:clamp(6em,12vh,10em) clamp(3em,8vw,8em);position:relative;z-index:2;max-width:1200px;margin:0 auto}
+.cs-section{padding:clamp(3em,6vh,5em) clamp(3em,8vw,8em);position:relative;z-index:2;max-width:1200px;margin:0 auto}
 .cs-label{font-family:var(--mono);font-size:.55rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:20px}
 .cs-divider{width:40px;height:1px;background:var(--dim);margin-bottom:48px}
 .cs-heading{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:600;letter-spacing:-.03em;line-height:1.1;margin-bottom:32px}
@@ -189,7 +183,7 @@ a{color:inherit;text-decoration:none}
     .cs-hero{padding:0 24px 48px;min-height:100svh}
     .cs-back{left:24px;top:80px}
     .cs-hero-img-section{padding:0 24px}
-    .cs-section{padding:60px 24px}
+    .cs-section{padding:30px 24px}
     .cs-overview{padding:40px 24px}
     .cs-other{padding:0 24px 60px}
     .v5-manifesto{min-height:40vh;padding:40px 24px}
@@ -199,21 +193,10 @@ a{color:inherit;text-decoration:none}
     .v5-scroll-cue{display:none}
     .cs-tech-grid{grid-template-columns:1fr}
 }
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.v5-loader{display:none!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-
-<!-- Loader -->
-<div class="v5-loader" id="loader">
-    <span class="v5-loader-word">Textiles</span>
-    <span class="v5-loader-word">Family</span>
-    <span class="v5-loader-word">India</span>
-    <span class="v5-loader-word">Since '88</span>
-    <span class="v5-loader-word">Digital</span>
-    <span class="v5-loader-word">Fabrics</span>
-    <div class="v5-loader-screen" id="loaderScreen"><div class="v5-loader-curve"></div></div>
-</div>
 
 <div class="grain" aria-hidden="true"></div>
 <div class="v5-progress" id="progBar"></div>
@@ -463,30 +446,23 @@ const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)
 lenis.on('scroll',ScrollTrigger.update);
 gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
 
-/* === Preloader === */
-const loaderScreen=document.getElementById('loaderScreen');
-const words=document.querySelectorAll('.v5-loader-word');
-const preTl=gsap.timeline({onComplete:()=>{
-    gsap.set('#loader',{display:'none'});lenis.start();heroReveal();
-}});
-words.forEach((w,i)=>{const t=.16-i*.012;preTl.set(w,{opacity:1},i*t+.15).set(w,{opacity:0},(i+1)*t+.15)});
-preTl.to({},{duration:.25});
-preTl.to(loaderScreen,{yPercent:-130,duration:.9,ease:'power4.inOut'});
+/* === Start === */
+lenis.start();heroReveal();
 
 /* === Hero Reveal === */
 function heroReveal(){
     const tl=gsap.timeline({defaults:{ease:'expo.out'}});
-    tl.fromTo('.cs-back',{opacity:0,x:-20},{opacity:1,x:0,duration:.8},.1);
-    tl.fromTo('.cs-hero-tag',{opacity:0,y:20},{opacity:1,y:0,duration:1},.15);
+    tl.fromTo('.cs-back',{opacity:0,x:-20},{opacity:1,x:0,duration:.25},.03);
+    tl.fromTo('.cs-hero-tag',{opacity:0,y:20},{opacity:1,y:0,duration:.35},.05);
     if(typeof SplitText!=='undefined'){
         const titleSplit=new SplitText('.cs-hero-title',{type:'lines,chars',mask:'lines'});
-        tl.set('.cs-hero-title',{opacity:1},.25);
-        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.02,duration:1},.25);
+        tl.set('.cs-hero-title',{opacity:1},.08);
+        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.007,duration:.35},.08);
     } else {
-        tl.fromTo('.cs-hero-title',{opacity:0,y:50},{opacity:1,y:0,duration:1.2},.25);
+        tl.fromTo('.cs-hero-title',{opacity:0,y:50},{opacity:1,y:0,duration:.4},.08);
     }
-    tl.fromTo('.cs-hero-sub',{opacity:0,y:24},{opacity:1,y:0,duration:1.2},.6);
-    tl.fromTo('.cs-cta',{opacity:0,y:16},{opacity:1,y:0,duration:.8},.8);
+    tl.fromTo('.cs-hero-sub',{opacity:0,y:24},{opacity:1,y:0,duration:.4},.2);
+    tl.fromTo('.cs-cta',{opacity:0,y:16},{opacity:1,y:0,duration:.25},.27);
 }
 
 /* === Progress === */
@@ -502,7 +478,7 @@ const heroImgWrap=document.querySelector('.cs-hero-img-section .cs-img-wrap');
 if(heroImgWrap){
     gsap.fromTo(heroImgWrap,
         {clipPath:'inset(12% 0% 0% 0%)',scale:.96,opacity:0},
-        {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:1.6,ease:'expo.out',
+        {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:.5,ease:'expo.out',
          scrollTrigger:{trigger:heroImgWrap,start:'top 90%',once:true}}
     );
 }
@@ -534,7 +510,7 @@ document.querySelectorAll('.cs-img-wrap').forEach(wrap=>{
 
 /* === Overview Stats Reveal === */
 gsap.utils.toArray('.cs-stat').forEach((stat,i)=>{
-    gsap.from(stat,{opacity:0,y:30,duration:1,ease:'expo.out',delay:i*.1,
+    gsap.from(stat,{opacity:0,y:30,duration:.2,ease:'expo.out',delay:i*.05,
         scrollTrigger:{trigger:'.cs-stat-row',start:'top 85%',once:true}
     });
 });
@@ -549,7 +525,7 @@ gsap.utils.toArray('.cs-section').forEach(section=>{
 
     const els=[label,divider,heading,...proseEls].filter(Boolean);
     els.forEach((el,i)=>{
-        gsap.from(el,{opacity:0,y:30,duration:1,ease:'expo.out',delay:.1+i*.08,
+        gsap.from(el,{opacity:0,y:30,duration:.2,ease:'expo.out',delay:.05+i*.04,
             scrollTrigger:{trigger:section,start:'top 80%',once:true}
         });
     });
@@ -558,7 +534,7 @@ gsap.utils.toArray('.cs-section').forEach(section=>{
     section.querySelectorAll('.cs-img-wrap').forEach((wrap,i)=>{
         gsap.fromTo(wrap,
             {clipPath:'inset(10% 0% 0% 0%)',scale:.97,opacity:0},
-            {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:1.4,ease:'expo.out',delay:.2+i*.15,
+            {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:.4,ease:'expo.out',delay:.1+i*.07,
              scrollTrigger:{trigger:wrap,start:'top 85%',once:true}}
         );
     });
@@ -566,14 +542,14 @@ gsap.utils.toArray('.cs-section').forEach(section=>{
 
 /* === Product Card Reveals === */
 gsap.utils.toArray('.cs-product-card').forEach((card,i)=>{
-    gsap.from(card,{opacity:0,y:40,duration:1,ease:'expo.out',delay:i*.1,
+    gsap.from(card,{opacity:0,y:40,duration:.2,ease:'expo.out',delay:i*.05,
         scrollTrigger:{trigger:'.cs-product-grid',start:'top 80%',once:true}
     });
 });
 
 /* === Tech Grid Reveals === */
 gsap.utils.toArray('.cs-tech-item').forEach((item,i)=>{
-    gsap.from(item,{opacity:0,y:20,duration:.8,ease:'expo.out',delay:i*.06,
+    gsap.from(item,{opacity:0,y:20,duration:.25,ease:'expo.out',delay:i*.03,
         scrollTrigger:{trigger:'.cs-tech-grid',start:'top 85%',once:true}
     });
 });
@@ -600,12 +576,12 @@ gsap.utils.toArray('.cs-other-entry').forEach((entry,i)=>{
     if(imgWrap){
         gsap.fromTo(imgWrap,
             {clipPath:'inset(10% 0% 0% 0%)',scale:.97,opacity:0},
-            {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:1.4,ease:'expo.out',delay:i*.12,
+            {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:.4,ease:'expo.out',delay:i*.06,
              scrollTrigger:{trigger:'.cs-other-grid',start:'top 82%',once:true}}
         );
     }
     if(meta){
-        gsap.from(meta,{opacity:0,y:20,duration:1,ease:'expo.out',delay:.3+i*.12,
+        gsap.from(meta,{opacity:0,y:20,duration:.2,ease:'expo.out',delay:.15+i*.06,
             scrollTrigger:{trigger:'.cs-other-grid',start:'top 80%',once:true}
         });
     }

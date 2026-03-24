@@ -39,11 +39,6 @@ a{color:inherit;text-decoration:none}
 .v5-nav-links a{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.5px;transition:color .3s}
 .v5-nav-links a:hover{color:#fff}
 
-/* Loader */
-.v5-loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
-.v5-loader-word{font-family:var(--display);font-size:clamp(2rem,4vw,3.5rem);font-weight:600;color:var(--gold);letter-spacing:-1.5px;position:absolute;opacity:0}
-.v5-loader-screen{position:absolute;inset:0;background:var(--bg);z-index:2;will-change:transform}
-.v5-loader-curve{position:absolute;bottom:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%}
 
 /* Scroll Cue */
 .v5-scroll-cue{position:absolute;bottom:36px;right:clamp(3em,8vw,8em);font-family:var(--mono);font-size:.5rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
@@ -81,15 +76,85 @@ a{color:inherit;text-decoration:none}
 .cs-stat-label{font-family:var(--mono);font-size:.5rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;margin-top:4px}
 
 /* === HERO IMAGE === */
-.cs-hero-img{padding:clamp(2em,4vw,4em) clamp(3em,8vw,8em);position:relative;z-index:2}
-.cs-hero-img-wrap{position:relative;overflow:hidden;border-radius:10px;border:1px solid var(--border);box-shadow:0 24px 70px rgba(0,0,0,.45);background:var(--surface)}
-.cs-hero-img-wrap img{width:100%;display:block;transition:transform .8s cubic-bezier(.16,1,.3,1)}
-.cs-hero-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.05) 0%,transparent 50%,rgba(12,12,12,.25) 100%);pointer-events:none;border-radius:10px}
-.cs-img-caption{font-family:var(--mono);font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:center;margin-top:16px}
+.cs-hero-img{padding:clamp(2em,4vw,4em) clamp(2em,6vw,6em);position:relative;z-index:2}
+.cs-img-caption{font-family:var(--mono);font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:center;margin-top:20px}
+
+/* Laptop frame */
+/* Laptop frame */
+.laptop{max-width:1100px;margin:0 auto}
+.laptop-lid{background:linear-gradient(180deg,#2c2c2e,#1c1c1e);border-radius:14px 14px 0 0;padding:10px 10px 0;border:1px solid #3a3a3c;border-bottom:none;box-shadow:0 -2px 60px rgba(0,0,0,.4)}
+.laptop-cam{width:6px;height:6px;border-radius:50%;background:#1a1a1a;border:1px solid #333;margin:0 auto 8px;position:relative}
+.laptop-cam::after{content:'';position:absolute;width:2px;height:2px;border-radius:50%;background:#2a4a2a;top:1px;left:1px}
+.laptop-viewport{border-radius:4px;overflow:hidden;aspect-ratio:16/10;background:#0b0b14;position:relative}
+.laptop-base{height:16px;background:linear-gradient(180deg,#2c2c2e,#222224);border-radius:0 0 8px 8px;border:1px solid #3a3a3c;border-top:1px solid #444;display:flex;align-items:center;justify-content:center}
+.laptop-base::before{content:'';width:18%;height:4px;background:#1a1a1c;border-radius:0 0 4px 4px;border:1px solid #333;border-top:none}
+.laptop-shadow{height:20px;margin:0 5%;background:radial-gradient(ellipse at center,rgba(0,0,0,.4) 0%,transparent 70%);border-radius:50%;filter:blur(6px)}
+
+/* Dashboard scaler -- renders at 1440x900, CSS scales to fit viewport */
+.dash-scaler{width:1440px;height:900px;transform-origin:top left;position:absolute;top:0;left:0}
+.dash{display:grid;grid-template-columns:220px 1fr;width:100%;height:100%;font-family:var(--font);color:#e8e4de}
+.dash *{box-sizing:border-box}
+
+/* Sidebar */
+.dash-side{background:linear-gradient(180deg,#0f0f1a,#0b0b14);border-right:1px solid rgba(255,255,255,.05);padding:28px 20px;display:flex;flex-direction:column}
+.dash-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.dash-logo-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:11px;flex-shrink:0;box-shadow:0 2px 8px rgba(139,92,246,.3)}
+.dash-logo-text{font-weight:500;font-size:14px;letter-spacing:-.02em}
+.dash-nav-group{margin-bottom:22px}
+.dash-nav-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#3d3852;margin-bottom:10px;font-weight:500;padding-left:10px}
+.dash-nav-item{padding:8px 10px;border-radius:6px;font-size:12px;color:#6a6578;margin-bottom:2px}
+.dash-nav-item.active{background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(99,102,241,.08));color:#c4b5fd;font-weight:500;box-shadow:0 1px 4px rgba(139,92,246,.1)}
+
+/* Main area */
+.dash-main{padding:24px 28px;display:grid;grid-template-rows:auto auto 1fr auto;gap:16px;overflow:hidden}
+.dash-header{display:flex;justify-content:space-between;align-items:center}
+.dash-title{font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:-.02em}
+.dash-header-actions{display:flex;gap:8px;align-items:center}
+.dash-btn{font-size:10px;padding:5px 12px;border-radius:4px;border:1px solid rgba(255,255,255,.08);color:#8a857d;background:transparent;letter-spacing:.03em;font-family:var(--font)}
+.dash-btn--gold{background:rgba(201,169,109,.1);border-color:rgba(201,169,109,.2);color:var(--gold)}
+
+/* KPI cards */
+.dash-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.dash-kpi{background:linear-gradient(135deg,#13131e,#101018);border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:16px 14px;position:relative;overflow:hidden}
+.dash-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.2),transparent);opacity:0.6}
+.dash-kpi-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#5a5565;margin-bottom:6px;font-weight:500}
+.dash-kpi-val{font-family:var(--display);font-size:22px;font-weight:600;letter-spacing:-.02em}
+.dash-kpi-change{font-size:9px;margin-top:4px;display:inline-block;font-weight:500}
+.dash-kpi-change.up{color:#34d399}
+.dash-kpi-change.down{color:#f87171}
+
+/* Charts row */
+.dash-charts{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;min-height:0}
+.dash-card{background:linear-gradient(135deg,#13131e,#101018);border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:14px;display:flex;flex-direction:column;overflow:hidden}
+.dash-card-title{font-size:11px;font-weight:500;margin-bottom:4px;letter-spacing:.02em;flex-shrink:0;text-transform:uppercase;color:#7a7584}
+.dash-chart-wrap{flex:1;min-height:0}
+
+/* Bottom row */
+.dash-bottom{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dash-bal-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.dash-bal-row:last-child{border:none}
+.dash-bal-name{font-size:11px;font-weight:500;color:#c8c4be}
+.dash-bal-sub{font-size:8px;color:#4a4544;margin-top:2px;letter-spacing:.03em}
+.dash-bal-amt{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--gold);letter-spacing:-.01em}
+
+/* Queries */
+.dash-query{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.dash-query:last-child{border:none}
+.dash-query-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;color:#fff;font-weight:600}
+.dash-query-icon.purple{background:rgba(139,92,246,.25);box-shadow:0 0 8px rgba(139,92,246,.15)}
+.dash-query-icon.green{background:rgba(52,211,153,.25);box-shadow:0 0 8px rgba(52,211,153,.15)}
+.dash-query-icon.blue{background:rgba(96,165,250,.25);box-shadow:0 0 8px rgba(96,165,250,.15)}
+.dash-query-text{font-size:10px;line-height:1.5;color:#b0aaa2}
+.dash-query-meta{font-size:8px;color:#4a4544;margin-top:2px;letter-spacing:.02em}
+
+/* Caption */
+.cs-img-caption .dummy-badge{display:inline-block;background:rgba(201,169,109,.12);border:1px solid rgba(201,169,109,.25);color:var(--gold);padding:2px 10px;border-radius:20px;font-weight:500;margin-left:6px}
+
+@media(max-width:600px){.cs-hero-img{padding:16px}}
 
 /* === CONTENT SECTIONS === */
 .cs-content{max-width:900px;margin:0 auto;padding:0 clamp(3em,8vw,8em)}
-.cs-section{padding:clamp(5em,12vh,9em) 0}
+.cs-section{padding:clamp(2.5em,6vh,4.5em) 0}
 .cs-label{font-family:var(--mono);font-size:.55rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:20px}
 .cs-divider{width:100%;height:1px;background:var(--border);margin-bottom:clamp(2em,5vh,4em)}
 .cs-heading{font-family:var(--display);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:600;letter-spacing:-.03em;line-height:1.1;margin-bottom:clamp(1.5em,3vh,2em)}
@@ -203,25 +268,16 @@ a{color:inherit;text-decoration:none}
     .cs-hero{padding:0 24px 40px;min-height:100svh}
     .cs-hero-img{padding:16px 24px}
     .cs-content{padding:0 24px}
-    .cs-section{padding:48px 0}
+    .cs-section{padding:24px 0}
     .v5-footer{padding:60px 24px 32px}
     .v5-nav{padding:16px 24px}
     .cs-title{font-size:clamp(2.8rem,12vw,4rem)}
 }
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.v5-loader{display:none!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 
-<!-- Loader -->
-<div class="v5-loader" id="loader">
-    <span class="v5-loader-word">Agentic</span>
-    <span class="v5-loader-word">Pipeline</span>
-    <span class="v5-loader-word">Search</span>
-    <span class="v5-loader-word">Production</span>
-    <span class="v5-loader-word">OpsPilot</span>
-    <div class="v5-loader-screen" id="loaderScreen"><div class="v5-loader-curve"></div></div>
-</div>
 
 <div class="grain" aria-hidden="true"></div>
 <div class="v5-progress" id="progBar"></div>
@@ -254,12 +310,83 @@ a{color:inherit;text-decoration:none}
     <div class="v5-scroll-cue">Scroll</div>
 </header>
 
-<!-- Hero Image -->
+<!-- Hero Image — CSS Laptop + Dashboard -->
 <div class="cs-hero-img">
-    <div class="cs-hero-img-wrap">
-        <img src="../images/hero-brain.png" alt="OpsPilot Vizro dashboard showing KPI cards, P&L waterfall chart, HubSpot pipeline funnel, and Xero bank balances" loading="eager" width="1440" height="900">
+    <div class="laptop">
+        <div class="laptop-lid">
+            <div class="laptop-cam"></div>
+            <div class="laptop-viewport" id="laptopViewport">
+                <div class="dash-scaler" id="dashScaler">
+                    <div class="dash">
+                        <!-- Sidebar -->
+                        <aside class="dash-side">
+                            <div class="dash-logo">
+                                <div class="dash-logo-icon">OP</div>
+                                <span class="dash-logo-text">OpsPilot</span>
+                            </div>
+                            <nav class="dash-nav-group">
+                                <div class="dash-nav-label">Overview</div>
+                                <div class="dash-nav-item active">Dashboard</div>
+                                <div class="dash-nav-item">Analytics</div>
+                                <div class="dash-nav-item">Queries</div>
+                            </nav>
+                            <nav class="dash-nav-group">
+                                <div class="dash-nav-label">Data Sources</div>
+                                <div class="dash-nav-item">SharePoint</div>
+                                <div class="dash-nav-item">Xero</div>
+                                <div class="dash-nav-item">HubSpot</div>
+                            </nav>
+                            <nav class="dash-nav-group">
+                                <div class="dash-nav-label">System</div>
+                                <div class="dash-nav-item">Settings</div>
+                                <div class="dash-nav-item">Briefings</div>
+                            </nav>
+                        </aside>
+                        <!-- Main -->
+                        <div class="dash-main">
+                            <div class="dash-header">
+                                <div class="dash-title">Financial Overview</div>
+                                <div class="dash-header-actions">
+                                    <div class="dash-btn">Export Data</div>
+                                    <div class="dash-btn dash-btn--gold">Mar 2026</div>
+                                </div>
+                            </div>
+                            <!-- KPIs -->
+                            <div class="dash-kpis">
+                                <div class="dash-kpi"><div class="dash-kpi-label">Monthly Revenue</div><div class="dash-kpi-val">&pound;284k</div><span class="dash-kpi-change up">+12.3% vs Feb</span></div>
+                                <div class="dash-kpi"><div class="dash-kpi-label">Net Profit</div><div class="dash-kpi-val">&pound;41.2k</div><span class="dash-kpi-change up">+6.7% vs Feb</span></div>
+                                <div class="dash-kpi"><div class="dash-kpi-label">Deals Won</div><div class="dash-kpi-val">14</div><span class="dash-kpi-change up">+3 this month</span></div>
+                                <div class="dash-kpi"><div class="dash-kpi-label">Docs Indexed</div><div class="dash-kpi-val">7,241</div><span class="dash-kpi-change up">+124 new</span></div>
+                            </div>
+                            <!-- Charts (ApexCharts) -->
+                            <div class="dash-charts">
+                                <div class="dash-card"><div class="dash-card-title">Monthly Revenue</div><div class="dash-chart-wrap" id="chartRevenue"></div></div>
+                                <div class="dash-card"><div class="dash-card-title">HubSpot Pipeline</div><div class="dash-chart-wrap" id="chartPipeline"></div></div>
+                            </div>
+                            <!-- Bottom row -->
+                            <div class="dash-bottom">
+                                <div class="dash-card">
+                                    <div class="dash-card-title">Xero Bank Balances</div>
+                                    <div class="dash-bal-row"><div><div class="dash-bal-name">Business Current Account</div><div class="dash-bal-sub">Barclays ****4521</div></div><div class="dash-bal-amt">&pound;142,388</div></div>
+                                    <div class="dash-bal-row"><div><div class="dash-bal-name">Savings Reserve</div><div class="dash-bal-sub">Barclays ****7830</div></div><div class="dash-bal-amt">&pound;85,200</div></div>
+                                    <div class="dash-bal-row"><div><div class="dash-bal-name">VAT Holding</div><div class="dash-bal-sub">Barclays ****2104</div></div><div class="dash-bal-amt">&pound;28,740</div></div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="dash-card-title">Recent Queries</div>
+                                    <div class="dash-query"><div class="dash-query-icon purple">?</div><div><div class="dash-query-text">What's our current MRR and how does it compare to forecast?</div><div class="dash-query-meta">Today 09:14 -- 1.2s response</div></div></div>
+                                    <div class="dash-query"><div class="dash-query-icon green">?</div><div><div class="dash-query-text">Find the Q4 board deck and summarise the revenue section</div><div class="dash-query-meta">Today 08:46 -- 3.4s response</div></div></div>
+                                    <div class="dash-query"><div class="dash-query-icon blue">?</div><div><div class="dash-query-text">What's the HR policy on remote working days?</div><div class="dash-query-meta">Yesterday 16:22 -- 0.8s response</div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="laptop-base"></div>
+        <div class="laptop-shadow"></div>
     </div>
-    <p class="cs-img-caption">Vizro dashboard showing live KPIs, P&amp;L, pipeline, and bank balances (dummy data)</p>
+    <p class="cs-img-caption">Vizro dashboard showing live KPIs, P&amp;L, pipeline, and bank balances <span class="dummy-badge">Dummy Data</span></p>
 </div>
 
 <!-- Marquee -->
@@ -550,6 +677,7 @@ a{color:inherit;text-decoration:none}
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <script>
 /* === GSAP Setup === */
@@ -562,35 +690,88 @@ const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)
 lenis.on('scroll',ScrollTrigger.update);
 gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
 
-/* === Preloader === */
-const loaderScreen=document.getElementById('loaderScreen');
-const words=document.querySelectorAll('.v5-loader-word');
-const preTl=gsap.timeline({onComplete:()=>{
-    gsap.set('#loader',{display:'none'});lenis.start();heroReveal();
-}});
-words.forEach((w,i)=>{const t=.16-i*.012;preTl.set(w,{opacity:1},i*t+.15).set(w,{opacity:0},(i+1)*t+.15)});
-preTl.to({},{duration:.25});
-preTl.to(loaderScreen,{yPercent:-130,duration:.9,ease:'power4.inOut'});
+/* === Dashboard scaler === */
+function scaleDash(){
+    const vp=document.getElementById('laptopViewport');
+    const sc=document.getElementById('dashScaler');
+    if(!vp||!sc) return;
+    const s=vp.offsetWidth/1440;
+    sc.style.transform=`scale(${s})`;
+}
+scaleDash();
+window.addEventListener('resize',scaleDash);
+
+/* === ApexCharts === */
+if(typeof ApexCharts!=='undefined'){
+    const chartColors={bg:'transparent',card:'#12121c',grid:'rgba(255,255,255,.04)',text:'#8a857d'};
+
+    /* Revenue bar chart */
+    new ApexCharts(document.getElementById('chartRevenue'),{
+        chart:{type:'bar',height:'100%',background:chartColors.bg,toolbar:{show:false},
+            fontFamily:'Inter,system-ui,sans-serif',foreColor:chartColors.text,
+            animations:{enabled:true,easing:'easeinout',speed:1200,animateGradually:{enabled:true,delay:80}}},
+        series:[{name:'Revenue',data:[184,196,168,142,208,224,158,284]}],
+        xaxis:{categories:['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+            axisBorder:{show:false},axisTicks:{show:false},
+            labels:{style:{fontSize:'10px'}},
+            crosshairs:{show:true,fill:{type:'solid',color:'rgba(255,255,255,.12)'},
+                stroke:{color:'rgba(255,255,255,.25)',width:1}}},
+        yaxis:{labels:{formatter:v=>'GBP '+Math.round(v)+'k',style:{fontSize:'10px'}},
+            min:0,max:300},
+        grid:{borderColor:chartColors.grid,strokeDashArray:0,padding:{left:4,right:4}},
+        plotOptions:{bar:{borderRadius:3,columnWidth:'55%',
+            colors:{ranges:[
+                {from:-1000,to:170,color:'#f87171'},
+                {from:170,to:1000,color:'#34d399'}
+            ]}}},
+        dataLabels:{enabled:false},
+        tooltip:{theme:'dark',y:{formatter:v=>'GBP '+v+'k'},style:{fontSize:'11px'}},
+        states:{hover:{filter:{type:'darken',value:.12}}}
+    }).render();
+
+    /* Pipeline horizontal bar */
+    new ApexCharts(document.getElementById('chartPipeline'),{
+        chart:{type:'bar',height:'100%',background:chartColors.bg,toolbar:{show:false},
+            fontFamily:'Inter,system-ui,sans-serif',foreColor:chartColors.text,
+            animations:{enabled:true,easing:'easeinout',speed:1000,animateGradually:{enabled:true,delay:100}}},
+        series:[{name:'Deals',data:[847,422,89,34,54]}],
+        xaxis:{categories:['Leads','Qualified','Proposal','Negotiating','Won'],
+            labels:{show:false},axisBorder:{show:false},axisTicks:{show:false}},
+        yaxis:{labels:{style:{fontSize:'10px'},maxWidth:120,offsetX:-4},axisBorder:{show:false}},
+        grid:{borderColor:chartColors.grid,xaxis:{lines:{show:false}},yaxis:{lines:{show:false}},padding:{left:16,right:8}},
+        plotOptions:{bar:{horizontal:true,borderRadius:3,barHeight:'60%',distributed:true,
+            dataLabels:{position:'center'}}},
+        colors:['#8b5cf6','#6366f1','#3b82f6','#06b6d4','#10b981'],
+        dataLabels:{enabled:true,style:{fontSize:'10px',fontWeight:600},
+            formatter:v=>v.toLocaleString()},
+        legend:{show:false},
+        tooltip:{theme:'dark',y:{formatter:v=>v.toLocaleString()+' deals'},style:{fontSize:'11px'}},
+        states:{hover:{filter:{type:'darken',value:.15}}}
+    }).render();
+}
+
+/* === Start === */
+lenis.start();heroReveal();
 
 /* === Hero Reveal === */
 function heroReveal(){
     const tl=gsap.timeline({defaults:{ease:'expo.out'}});
-    tl.fromTo('.cs-back',{opacity:0,x:-20},{opacity:1,x:0,duration:.8},.1);
-    tl.fromTo('.cs-tag',{opacity:0,y:16},{opacity:1,y:0,duration:.8},.2);
+    tl.fromTo('.cs-back',{opacity:0,x:-20},{opacity:1,x:0,duration:.3},.05);
+    tl.fromTo('.cs-tag',{opacity:0,y:10},{opacity:1,y:0,duration:.3},.1);
 
     if(typeof SplitText!=='undefined'){
         const titleSplit=new SplitText('.cs-title',{type:'lines,chars',mask:'lines'});
-        tl.set('.cs-title',{opacity:1},.3);
-        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.02,duration:1},.3);
+        tl.set('.cs-title',{opacity:1},.15);
+        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.015,duration:.4},.15);
     } else {
-        tl.fromTo('.cs-title',{opacity:0,y:50},{opacity:1,y:0,duration:1},.3);
+        tl.fromTo('.cs-title',{opacity:0,y:30},{opacity:1,y:0,duration:.4},.15);
     }
 
-    tl.fromTo('.cs-sub',{opacity:0,y:20},{opacity:1,y:0,duration:1},.6);
-    tl.fromTo('.cs-stats',{opacity:0,y:20},{opacity:1,y:0,duration:1},.75);
+    tl.fromTo('.cs-sub',{opacity:0,y:12},{opacity:1,y:0,duration:.3},.35);
+    tl.fromTo('.cs-stats',{opacity:0,y:12},{opacity:1,y:0,duration:.3},.45);
 
     /* Counter animation */
-    tl.add(()=>{animateCounters();},.9);
+    tl.add(()=>{animateCounters();},.5);
 }
 
 function animateCounters(){
@@ -616,47 +797,44 @@ gsap.utils.toArray('.cs-section').forEach(sec=>{
     const els=[label,divider,heading,...prose].filter(Boolean);
 
     els.forEach((el,i)=>{
-        gsap.from(el,{opacity:0,y:30,duration:1,ease:'expo.out',delay:i*.08,
+        gsap.from(el,{opacity:0,y:16,duration:.2,ease:'expo.out',delay:i*.03,
             scrollTrigger:{trigger:sec,start:'top 85%',once:true}
         });
     });
 });
 
-/* Hero image reveal */
-const heroImgWrap=document.querySelector('.cs-hero-img-wrap');
-if(heroImgWrap){
-    gsap.fromTo(heroImgWrap,
-        {clipPath:'inset(8% 0% 0% 0%)',scale:.97,opacity:0},
-        {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:1.6,ease:'expo.out',delay:.2,
+/* Hero laptop reveal */
+const laptopEl=document.querySelector('.laptop');
+if(laptopEl){
+    gsap.fromTo(laptopEl,
+        {scale:.95,opacity:0,y:40},
+        {scale:1,opacity:1,y:0,duration:.5,ease:'expo.out',delay:.1,
          scrollTrigger:{trigger:'.cs-hero-img',start:'top 90%',once:true}
         }
     );
-    /* Inner parallax */
-    const heroImg=heroImgWrap.querySelector('img');
-    if(heroImg){
-        gsap.to(heroImg,{yPercent:-6,ease:'none',
-            scrollTrigger:{trigger:'.cs-hero-img',start:'top bottom',end:'bottom top',scrub:true}
-        });
-    }
+    /* Subtle parallax on scroll */
+    gsap.to(laptopEl,{yPercent:-4,ease:'none',
+        scrollTrigger:{trigger:'.cs-hero-img',start:'top bottom',end:'bottom top',scrub:true}
+    });
 }
 
 /* Before/After reveal */
 gsap.utils.toArray('.cs-ba-col').forEach((col,i)=>{
-    gsap.from(col,{opacity:0,y:30,duration:.8,ease:'expo.out',delay:i*.15,
+    gsap.from(col,{opacity:0,y:16,duration:.2,ease:'expo.out',delay:i*.05,
         scrollTrigger:{trigger:'.cs-ba',start:'top 82%',once:true}
     });
 });
 
 /* Pipeline reveal */
 gsap.utils.toArray('.cs-pipeline svg > *').forEach((el,i)=>{
-    gsap.from(el,{opacity:0,y:12,duration:.6,ease:'expo.out',delay:i*.04,
+    gsap.from(el,{opacity:0,y:8,duration:.2,ease:'expo.out',delay:i*.02,
         scrollTrigger:{trigger:'.cs-pipeline',start:'top 82%',once:true}
     });
 });
 
 /* Feature cards reveal */
 gsap.utils.toArray('.cs-feature').forEach((card,i)=>{
-    gsap.from(card,{opacity:0,y:30,duration:.8,ease:'expo.out',delay:i*.1,
+    gsap.from(card,{opacity:0,y:16,duration:.25,ease:'expo.out',delay:i*.04,
         scrollTrigger:{trigger:card,start:'top 88%',once:true}
     });
 });
@@ -664,7 +842,7 @@ gsap.utils.toArray('.cs-feature').forEach((card,i)=>{
 /* Mockup reveal */
 const mockup=document.querySelector('.teams-win-wrap');
 if(mockup){
-    gsap.from(mockup,{opacity:0,y:30,duration:1,ease:'expo.out',
+    gsap.from(mockup,{opacity:0,y:16,duration:.3,ease:'expo.out',
         scrollTrigger:{trigger:mockup,start:'top 85%',once:true}
     });
 }
@@ -678,7 +856,7 @@ gsap.utils.toArray('.cs-tech-item').forEach((item,i)=>{
 
 /* Other cards reveal */
 gsap.utils.toArray('.cs-other-card').forEach((card,i)=>{
-    gsap.from(card,{opacity:0,y:24,duration:.8,ease:'expo.out',delay:i*.12,
+    gsap.from(card,{opacity:0,y:12,duration:.25,ease:'expo.out',delay:i*.04,
         scrollTrigger:{trigger:'.cs-other',start:'top 85%',once:true}
     });
 });
@@ -703,12 +881,6 @@ if(mText&&typeof SplitText!=='undefined'){
     });
 }
 
-/* === Scroll velocity skew === */
-lenis.on('scroll',({velocity})=>{
-    document.querySelectorAll('.cs-hero-img-wrap img').forEach(img=>{
-        gsap.to(img,{skewY:velocity*.1,duration:.6,overwrite:'auto'});
-    });
-});
 
 /* Footer reveal */
 const fH=document.getElementById('footerH');

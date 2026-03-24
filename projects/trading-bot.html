@@ -48,12 +48,6 @@ a{color:inherit;text-decoration:none}
 .v5-nav-links a{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.5px;transition:color .3s}
 .v5-nav-links a:hover{color:#fff}
 
-/* Loader */
-.v5-loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
-.v5-loader-word{font-family:var(--display);font-size:clamp(2rem,4vw,3.5rem);font-weight:600;color:var(--gold);letter-spacing:-1.5px;position:absolute;opacity:0}
-.v5-loader-screen{position:absolute;inset:0;background:var(--bg);z-index:2;will-change:transform}
-.v5-loader-curve{position:absolute;bottom:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%}
-
 /* === HERO === */
 .cs-hero{min-height:100vh;display:flex;align-items:flex-end;padding:0 clamp(3em,8vw,8em) clamp(5em,12vh,10em);position:relative;overflow:hidden}
 .cs-hero-bg{position:absolute;top:0;right:0;width:55%;height:100%;z-index:0;pointer-events:none;opacity:.2;-webkit-mask-image:linear-gradient(to left,rgba(0,0,0,.7) 0%,transparent 85%);mask-image:linear-gradient(to left,rgba(0,0,0,.7) 0%,transparent 85%)}
@@ -85,7 +79,7 @@ a{color:inherit;text-decoration:none}
 .v5-marquee-item .sep{color:var(--gold);opacity:.4;margin:0 4px}
 
 /* === SECTIONS === */
-.cs-section{padding:clamp(8em,16vh,12em) clamp(3em,8vw,8em);position:relative;z-index:2;max-width:1200px;margin:0 auto}
+.cs-section{padding:clamp(4em,8vh,6em) clamp(3em,8vw,8em);position:relative;z-index:2;max-width:1200px;margin:0 auto}
 .cs-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:20px}
 .cs-divider{width:100%;height:1px;background:var(--border);margin-bottom:clamp(40px,6vh,64px)}
 .cs-heading{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:32px}
@@ -199,7 +193,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:600px){
     .cs-hero{padding:0 24px 48px;min-height:100svh}
     .cs-hero-bg{width:100%;opacity:.1}
-    .cs-section{padding:60px 24px}
+    .cs-section{padding:30px 24px}
     .v5-manifesto{min-height:40vh;padding:40px 24px}
     .v5-manifesto-text{font-size:clamp(1.4rem,6.5vw,2rem)}
     .v5-footer{padding:60px 24px 32px}
@@ -210,20 +204,10 @@ a{color:inherit;text-decoration:none}
     .cs-term-body{padding:16px;font-size:.6rem}
     .cs-flow{padding-left:32px}
 }
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.v5-loader{display:none!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-
-<!-- Loader -->
-<div class="v5-loader" id="loader">
-    <span class="v5-loader-word">Algorithmic</span>
-    <span class="v5-loader-word">Trading</span>
-    <span class="v5-loader-word">FTSE 100</span>
-    <span class="v5-loader-word">Python</span>
-    <span class="v5-loader-word">Four Agents</span>
-    <div class="v5-loader-screen" id="loaderScreen"><div class="v5-loader-curve"></div></div>
-</div>
 
 <div class="grain" aria-hidden="true"></div>
 <div class="v5-progress" id="progBar"></div>
@@ -525,32 +509,25 @@ const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)
 lenis.on('scroll',ScrollTrigger.update);
 gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
 
-/* === Preloader === */
-const loaderScreen=document.getElementById('loaderScreen');
-const words=document.querySelectorAll('.v5-loader-word');
-const preTl=gsap.timeline({onComplete:()=>{
-    gsap.set('#loader',{display:'none'});lenis.start();heroReveal();
-}});
-words.forEach((w,i)=>{const t=.16-i*.012;preTl.set(w,{opacity:1},i*t+.15).set(w,{opacity:0},(i+1)*t+.15)});
-preTl.to({},{duration:.25});
-preTl.to(loaderScreen,{yPercent:-130,duration:.9,ease:'power4.inOut'});
+/* === Start === */
+lenis.start();heroReveal();
 
 /* === Hero Reveal === */
 function heroReveal(){
     const tl=gsap.timeline({defaults:{ease:'expo.out'}});
-    tl.fromTo('.cs-back',{opacity:0,x:-16},{opacity:1,x:0,duration:.8},.1);
-    tl.fromTo('.cs-hero-tagline',{opacity:0,y:20},{opacity:1,y:0,duration:1},.15);
-    tl.fromTo('.cs-status-tag',{opacity:0,scale:.9,x:-8},{opacity:1,scale:1,x:0,duration:.8,ease:'back.out(1.5)'},.45);
+    tl.fromTo('.cs-back',{opacity:0,x:-16},{opacity:1,x:0,duration:.25},.03);
+    tl.fromTo('.cs-hero-tagline',{opacity:0,y:20},{opacity:1,y:0,duration:.3},.05);
+    tl.fromTo('.cs-status-tag',{opacity:0,scale:.9,x:-8},{opacity:1,scale:1,x:0,duration:.25,ease:'back.out(1.5)'},.15);
     if(typeof SplitText!=='undefined'){
         const titleSplit=new SplitText('.cs-hero-title',{type:'lines,chars',mask:'lines'});
-        tl.set('.cs-hero-title',{opacity:1},.25);
-        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.02,duration:1},.25);
+        tl.set('.cs-hero-title',{opacity:1},.08);
+        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.007,duration:.3},.08);
     } else {
-        tl.fromTo('.cs-hero-title',{opacity:0,y:50},{opacity:1,y:0,duration:1.2},.25);
+        tl.fromTo('.cs-hero-title',{opacity:0,y:50},{opacity:1,y:0,duration:.4},.08);
     }
-    tl.fromTo('.cs-hero-sub',{opacity:0,y:24},{opacity:1,y:0,duration:1.2},.55);
-    tl.fromTo('.cs-hero-stats',{opacity:0,y:20},{opacity:1,y:0,duration:1},.7);
-    tl.fromTo('.cs-hero-bg',{opacity:0,scale:1.1},{opacity:.2,scale:1,duration:2,ease:'power2.out'},.3);
+    tl.fromTo('.cs-hero-sub',{opacity:0,y:24},{opacity:1,y:0,duration:.4},.18);
+    tl.fromTo('.cs-hero-stats',{opacity:0,y:20},{opacity:1,y:0,duration:.3},.23);
+    tl.fromTo('.cs-hero-bg',{opacity:0,scale:1.1},{opacity:.2,scale:1,duration:.65,ease:'power2.out'},.1);
 }
 
 /* === Progress === */
@@ -576,41 +553,41 @@ gsap.utils.toArray('.cs-section').forEach(section=>{
     const others=section.querySelectorAll('.cs-other');
 
     const sTl=gsap.timeline({scrollTrigger:{trigger:section,start:'top 82%',once:true}});
-    if(label) sTl.from(label,{opacity:0,y:16,duration:.8,ease:'expo.out'},0);
-    if(divider) sTl.from(divider,{scaleX:0,transformOrigin:'left',duration:1,ease:'expo.out'},.1);
-    if(heading) sTl.from(heading,{opacity:0,y:24,duration:.9,ease:'expo.out'},.15);
-    prose.forEach((p,i)=>sTl.from(p,{opacity:0,y:20,duration:.8,ease:'expo.out'},.2+i*.1));
+    if(label) sTl.from(label,{opacity:0,y:16,duration:.25,ease:'expo.out'},0);
+    if(divider) sTl.from(divider,{scaleX:0,transformOrigin:'left',duration:.2,ease:'expo.out'},.05);
+    if(heading) sTl.from(heading,{opacity:0,y:24,duration:.25,ease:'expo.out'},.08);
+    prose.forEach((p,i)=>sTl.from(p,{opacity:0,y:20,duration:.25,ease:'expo.out'},.1+i*.05));
 
     if(schedule){
         const items=schedule.querySelectorAll('.cs-sched-item');
-        items.forEach((item,i)=>sTl.from(item,{opacity:0,y:16,duration:.6,ease:'expo.out'},.3+i*.08));
+        items.forEach((item,i)=>sTl.from(item,{opacity:0,y:16,duration:.2,ease:'expo.out'},.15+i*.04));
     }
 
     if(flow){
         const steps=flow.querySelectorAll('.cs-flow-step');
-        steps.forEach((step,i)=>sTl.from(step,{opacity:0,x:-16,duration:.6,ease:'expo.out'},.35+i*.07));
+        steps.forEach((step,i)=>sTl.from(step,{opacity:0,x:-16,duration:.2,ease:'expo.out'},.18+i*.035));
     }
 
-    if(term) sTl.from(term,{opacity:0,y:24,clipPath:'inset(8% 0% 0% 0%)',duration:1,ease:'expo.out'},.4);
+    if(term) sTl.from(term,{opacity:0,y:24,clipPath:'inset(8% 0% 0% 0%)',duration:.2,ease:'expo.out'},.2);
 
     if(features.length){
-        features.forEach((feat,i)=>sTl.from(feat,{opacity:0,y:24,duration:.7,ease:'expo.out'},.2+i*.08));
+        features.forEach((feat,i)=>sTl.from(feat,{opacity:0,y:24,duration:.2,ease:'expo.out'},.1+i*.04));
     }
 
     if(imgWrap){
         sTl.fromTo(imgWrap,
             {clipPath:'inset(12% 0% 0% 0%)',scale:.96,opacity:0},
-            {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:1.6,ease:'expo.out'},.2
+            {clipPath:'inset(0% 0% 0% 0%)',scale:1,opacity:1,duration:.5,ease:'expo.out'},.1
         );
     }
 
     if(stack){
         const items=stack.querySelectorAll('.cs-stack-item');
-        items.forEach((item,i)=>sTl.from(item,{opacity:0,y:12,duration:.5,ease:'expo.out'},.2+i*.04));
+        items.forEach((item,i)=>sTl.from(item,{opacity:0,y:12,duration:.2,ease:'expo.out'},.1+i*.02));
     }
 
     if(others.length){
-        others.forEach((card,i)=>sTl.from(card,{opacity:0,y:30,duration:.8,ease:'expo.out'},.2+i*.1));
+        others.forEach((card,i)=>sTl.from(card,{opacity:0,y:30,duration:.25,ease:'expo.out'},.1+i*.05));
     }
 });
 
