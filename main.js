@@ -361,14 +361,15 @@ if (matchMedia("(pointer:fine)").matches) {
     });
 
     /* Project cards: "View" label */
-    document.querySelectorAll(".pcard,.other-card").forEach((el) => {
+    document.querySelectorAll(".pcard,.other-card,.v5-work-entry,.cs-other-entry").forEach((el) => {
       el.dataset.cursor = "-text";
       el.dataset.cursorText = "View";
     });
 
-    /* Images: expand cursor */
-    document.querySelectorAll(".project-img").forEach((el) => {
-      el.dataset.cursor = "-exclusion";
+    /* Images and complex components: expand cursor */
+    document.querySelectorAll(".project-img,.cs-img-wrap img,.term-viewport,.browser-viewport,.un-phone,.un-browser,.v5-entry-img-wrap").forEach((el) => {
+      el.dataset.cursor = "-inverse";
+      el.dataset.cursorText = "View";
     });
 
     /* Hide old cursor elements */

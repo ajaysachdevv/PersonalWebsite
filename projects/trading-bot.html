@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Bot | Algorithmic FTSE 100 Trading | Ajay Sachdev</title>
-    <meta name="description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 6,942 lines of Python.">
+    <meta name="description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 7,000+ lines of Python.">
     <meta name="author" content="Ajay Sachdev">
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#0c0c0c">
     <link rel="canonical" href="https://ajaysachdev.com/projects/trading-bot.html">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Trading Bot | Algorithmic FTSE 100 Trading | Ajay Sachdev">
-    <meta property="og:description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 6,942 lines of Python.">
+    <meta property="og:description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 7,000+ lines of Python.">
     <meta property="og:url" content="https://ajaysachdev.com/projects/trading-bot.html">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Trading Bot | Algorithmic FTSE 100 Trading | Ajay Sachdev">
-    <meta name="twitter:description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 6,942 lines of Python.">
+    <meta name="twitter:description" content="Multi-agent algorithmic trading system for FTSE 100 stocks. 4 AI agents, zero leverage, intraday only. 7,000+ lines of Python.">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9a96d'/%3E%3Cstop offset='100%25' stop-color='%23e8e4de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23141414'/%3E%3Ctext x='16' y='23' font-family='system-ui' font-weight='700' font-size='18' fill='url(%23g)' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.css">
 <style>
 /* === V6 -- Minhpham Principles + Clash Display === */
-:root{--bg:#0c0c0c;--surface:#141414;--text:#e8e4de;--muted:#8a857d;--dim:#5e5952;--border:rgba(232,228,222,.06);--gold:#c9a96d;--font:'Inter',system-ui,sans-serif;--display:'Clash Display',sans-serif;--mono:'JetBrains Mono',monospace}
+:root{--bg:#0c0c0c;--surface:#141414;--text:#e8e4de;--muted:#8a857d;--dim:#706b63;--border:rgba(232,228,222,.06);--gold:#c9a96d;--font:'Inter',system-ui,sans-serif;--display:'Clash Display',sans-serif;--mono:'JetBrains Mono',monospace}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-font-smoothing:antialiased;scrollbar-width:none}html::-webkit-scrollbar{display:none}
 body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
@@ -63,18 +63,22 @@ a{color:inherit;text-decoration:none}
 @keyframes statusPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(201,169,109,.4)}50%{opacity:.35;box-shadow:0 0 6px 2px rgba(201,169,109,0)}}
 .cs-hero-title{font-family:var(--display);font-size:clamp(4.5rem,10vw,9rem);font-weight:600;letter-spacing:-.04em;line-height:.88;margin-bottom:36px;opacity:0}
 .cs-hero-title em{font-style:normal;color:var(--gold)}
-.cs-hero-sub{font-size:clamp(1rem,1.3vw,1.15rem);color:#a09a92;max-width:500px;line-height:1.85;font-weight:300;margin-bottom:48px;opacity:0}
+.cs-hero-sub{font-size:clamp(1rem,1.3vw,1.15rem);color:#b0aaa2;max-width:500px;line-height:1.85;font-weight:300;margin-bottom:48px;opacity:0}
 .cs-hero-sub strong{color:var(--text);font-weight:400}
-.cs-hero-stats{display:flex;gap:clamp(32px,5vw,56px);opacity:0}
-.cs-stat-num{font-family:var(--display);font-size:clamp(2rem,3.5vw,3rem);font-weight:600;color:var(--gold);letter-spacing:-.02em;display:block;line-height:1}
-.cs-stat-label{font-family:var(--mono);font-size:.5rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;margin-top:8px}
+.cs-hero-stats{display:flex;gap:clamp(24px,4vw,48px);opacity:0;flex-wrap:wrap;margin-bottom:-1rem;position:relative;z-index:0}
+.cs-stat{text-align:left;position:relative}
+.cs-stat:hover .cs-stat-num{color:var(--gold);-webkit-text-stroke-color:var(--gold)}
+.cs-stat-num{font-family:var(--display);font-size:clamp(4rem,10vw,8rem);font-weight:600;color:transparent;-webkit-text-stroke:1.5px rgba(201,169,109,.55);letter-spacing:-.04em;display:block;line-height:0.85;margin-bottom:0;transition:color .4s,-webkit-text-stroke-color .4s}
+.cs-stat-label{font-family:var(--mono);font-size:.55rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-top:6px;position:relative;z-index:2}
+.cs-stat-label::before{content:'';width:16px;height:1px;background:var(--gold);opacity:.4;flex-shrink:0}
 .v5-scroll-cue{position:absolute;bottom:36px;right:clamp(3em,8vw,8em);font-family:var(--mono);font-size:.5rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
 .v5-scroll-cue::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--dim),transparent);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.6;transform:scaleY(1)}50%{opacity:.15;transform:scaleY(.5)}}
 
 /* === TRADING TERMINAL === */
 .term-hero{padding:clamp(1em,3vw,3em) clamp(2em,6vw,6em);position:relative;z-index:2}
-.term-panel{max-width:1100px;margin:0 auto;background:linear-gradient(135deg,#0d1117,#0b0f15);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 1px rgba(255,255,255,.05) inset}
+.term-hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70%;height:80%;background:radial-gradient(ellipse at center,rgba(52,211,153,.15) 0%,transparent 60%);z-index:-1;filter:blur(60px);pointer-events:none}
+.term-panel{max-width:1100px;margin:0 auto;background:linear-gradient(135deg,#0d1117,#0b0f15);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px rgba(52,211,153,.15),0 24px 80px rgba(0,0,0,.5),0 0 40px rgba(52,211,153,.08) inset}
 .term-viewport{position:relative;aspect-ratio:16/10;overflow:hidden}
 .term-scaler{width:1440px;height:900px;transform-origin:top left;position:absolute;top:0;left:0;font-family:var(--font);color:#e8e4de;display:grid;grid-template-rows:auto auto 1fr auto}
 .term-scaler *{box-sizing:border-box}
@@ -154,10 +158,11 @@ a{color:inherit;text-decoration:none}
 
 /* === SECTIONS === */
 .cs-section{padding:clamp(4em,8vh,6em) clamp(3em,8vw,8em);position:relative;z-index:2;max-width:1200px;margin:0 auto}
+.cs-section:nth-child(even){background:var(--surface);border-radius:12px}
 .cs-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:20px}
 .cs-divider{width:100%;height:1px;background:var(--border);margin-bottom:clamp(40px,6vh,64px)}
 .cs-heading{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:32px}
-.cs-prose{font-size:clamp(.88rem,1.1vw,1rem);color:#a09a92;line-height:1.85;max-width:680px;font-weight:300}
+.cs-prose{font-size:clamp(.88rem,1.1vw,1rem);color:#b0aaa2;line-height:1.85;max-width:680px;font-weight:300}
 .cs-prose strong{color:var(--text);font-weight:400}
 
 /* === DAILY SCHEDULE === */
@@ -198,15 +203,17 @@ a{color:inherit;text-decoration:none}
 
 /* === FEATURE CARDS === */
 .cs-features{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:48px}
-.cs-feat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:32px;transition:border-color .5s,box-shadow .5s}
-.cs-feat:hover{border-color:rgba(201,169,109,.1);box-shadow:0 0 50px rgba(201,169,109,.03)}
+.cs-feat{background:var(--surface);border:1px solid var(--border);border-left:3px solid rgba(52,211,153,.25);border-radius:10px;padding:32px;transition:border-color .5s,box-shadow .5s;position:relative;overflow:hidden}
+.cs-feat::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(52,211,153,.05) 0%,transparent 60%);pointer-events:none;opacity:0;transition:opacity .3s}
+.cs-feat:hover::before{opacity:1}
+.cs-feat:hover{border-color:rgba(52,211,153,.2);box-shadow:0 16px 48px rgba(0,0,0,.3),0 0 40px rgba(52,211,153,.05)}
 .cs-feat h4{font-family:var(--display);font-size:1.1rem;font-weight:500;letter-spacing:-.02em;margin-bottom:14px}
 .cs-feat p{font-size:.82rem;color:var(--muted);line-height:1.8}
 
 /* === IN ACTION IMAGE === */
 .cs-img-wrap{position:relative;overflow:hidden;border-radius:10px;cursor:pointer;border:1px solid rgba(232,228,222,.06);box-shadow:0 24px 70px rgba(0,0,0,.45);background:#161616;transform-style:preserve-3d;will-change:transform;transition:box-shadow .6s cubic-bezier(.16,1,.3,1),border-color .5s;margin-top:32px}
 .cs-img-wrap:hover{box-shadow:0 40px 100px rgba(0,0,0,.5),0 0 0 1px rgba(201,169,109,.06);border-color:rgba(232,228,222,.1)}
-.cs-img{width:100%;display:block;filter:grayscale(.85) brightness(.9) sepia(.25) contrast(1.05);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1.2s cubic-bezier(.16,1,.3,1);will-change:transform,filter}
+.cs-img{width:100%;display:block;filter:grayscale(.5) brightness(.92) sepia(.15) contrast(1.05);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1.2s cubic-bezier(.16,1,.3,1);will-change:transform,filter}
 .cs-img-wrap:hover .cs-img{transform:scale(1.05);filter:grayscale(0) brightness(1.05) sepia(0) contrast(1.05)}
 .cs-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.08) 0%,transparent 50%,rgba(12,12,12,.35) 100%);z-index:2;pointer-events:none;transition:opacity 1s;border-radius:10px}
 .cs-img-wrap:hover::after{opacity:.15}
@@ -225,18 +232,23 @@ a{color:inherit;text-decoration:none}
 .cs-stack-role{font-size:.72rem;color:var(--muted)}
 
 /* === OTHER PROJECTS === */
-.cs-others{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
-.cs-other{display:block;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--surface);transition:border-color .5s,transform .6s cubic-bezier(.16,1,.3,1)}
-.cs-other:hover{border-color:rgba(232,228,222,.1);transform:translateY(-6px)}
-.cs-other-img-wrap{position:relative;overflow:hidden;aspect-ratio:16/10}
-.cs-other-img{width:100%;height:100%;object-fit:cover;filter:grayscale(.85) brightness(.9) sepia(.25);transition:filter .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
-.cs-other:hover .cs-other-img{filter:grayscale(0) brightness(1.05) sepia(0);transform:scale(1.05)}
-.cs-other-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);z-index:2;pointer-events:none;transition:opacity 1s}
-.cs-other:hover .cs-other-img-wrap::after{opacity:.15}
-.cs-other-body{padding:20px 24px}
-.cs-other-badge{font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.65;display:block;margin-bottom:10px}
-.cs-other-name{font-family:var(--display);font-size:1.15rem;font-weight:500;letter-spacing:-.02em;margin-bottom:8px}
-.cs-other-desc{font-size:.75rem;color:var(--muted);line-height:1.7}
+.cs-others{padding:clamp(8em,16vh,12em) clamp(3em,8vw,8em);position:relative;z-index:2;max-width:1200px;margin:0 auto}
+.cs-others-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:32px}
+.cs-others-divider{width:40px;height:1px;background:var(--dim);margin-bottom:48px;opacity:.5}
+.cs-others-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cs-other-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .5s,box-shadow .5s,transform .5s cubic-bezier(.16,1,.3,1);text-decoration:none;color:inherit}
+.cs-other-card:hover{border-color:rgba(201,169,109,.12);box-shadow:0 24px 70px rgba(0,0,0,.35);transform:translateY(-4px)}
+.cs-other-card-img{position:relative;overflow:hidden;aspect-ratio:16/10;background:#161616}
+.cs-other-card-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) brightness(.92) sepia(.15);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1s}
+.cs-other-card:hover .cs-other-card-img img{transform:scale(1.05);filter:grayscale(0) brightness(1.05) sepia(0)}
+.cs-other-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);pointer-events:none;transition:opacity 1s}
+.cs-other-card:hover .cs-other-card-img::after{opacity:.1}
+.cs-other-card-body{padding:24px}
+.cs-other-card-badge{font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.7;display:block;margin-bottom:10px}
+.cs-other-card-title{font-family:var(--display);font-size:1.2rem;font-weight:500;letter-spacing:-.02em;margin-bottom:8px}
+.cs-other-card-desc{font-size:.78rem;color:var(--muted);line-height:1.7}
+.cs-other-card-arrow{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:16px;transition:color .3s}
+.cs-other-card:hover .cs-other-card-arrow{color:var(--gold)}
 
 /* === MANIFESTO === */
 .v5-manifesto{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:clamp(4em,10vh,8em) clamp(3em,8vw,8em);position:relative;z-index:2}
@@ -255,9 +267,10 @@ a{color:inherit;text-decoration:none}
 /* === RESPONSIVE === */
 @media(max-width:900px){
     .cs-hero-title{font-size:clamp(3.5rem,14vw,5.5rem)}
-    .cs-hero-stats{flex-wrap:wrap;gap:24px 32px}
+    .cs-hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px 32px}
+    .cs-stat-num{font-size:clamp(3rem,10vw,5rem)}
     .cs-features{grid-template-columns:1fr}
-    .cs-others{grid-template-columns:1fr}
+    .cs-others-grid{grid-template-columns:1fr}
     .cs-schedule{flex-direction:column}
     .cs-sched-item{border-right:none;border-bottom:1px solid var(--border)}
     .cs-sched-item:last-child{border-bottom:none}
@@ -294,9 +307,9 @@ a{color:inherit;text-decoration:none}
     .cs-status-tag{font-size:.45rem;padding:4px 10px 4px 8px}
     .cs-hero-title{font-size:clamp(2.5rem,11vw,3.5rem);margin-bottom:28px}
     .cs-hero-sub{font-size:.88rem;max-width:100%}
-    .cs-hero-stats{gap:16px 24px}
-    .cs-stat-num{font-size:clamp(1.4rem,7vw,1.8rem)}
-    .cs-stat-label{font-size:.45rem}
+    .cs-hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
+    .cs-stat-num{font-size:clamp(2.5rem,14vw,4rem);margin-bottom:0}
+    .cs-stat-label{font-size:.48rem;margin-top:4px}
     .cs-section{padding:28px 20px}
     .cs-label{font-size:.5rem;margin-bottom:16px}
     .cs-divider{margin-bottom:clamp(24px,4vh,40px)}
@@ -325,11 +338,11 @@ a{color:inherit;text-decoration:none}
     .cs-stack-item{padding:16px 18px}
     .cs-stack-name{font-size:.8rem}
     .cs-stack-role{font-size:.68rem}
-    .cs-others{margin-top:32px;gap:16px}
-    .cs-other-body{padding:16px 18px}
-    .cs-other-badge{font-size:.45rem}
-    .cs-other-name{font-size:.95rem}
-    .cs-other-desc{font-size:.7rem}
+    .cs-others-grid{gap:16px}
+    .cs-other-card-body{padding:16px 18px}
+    .cs-other-card-badge{font-size:.45rem}
+    .cs-other-card-title{font-size:.95rem}
+    .cs-other-card-desc{font-size:.7rem}
     .v5-manifesto{min-height:auto;padding:48px 20px}
     .v5-manifesto-text{font-size:clamp(1.3rem,6vw,1.8rem)}
     .v5-footer{padding:48px 20px 32px}
@@ -382,7 +395,7 @@ a{color:inherit;text-decoration:none}
         <h1 class="cs-hero-title">Trading<br><em>Bot</em></h1>
         <p class="cs-hero-sub">I kept making emotional trades. Read some bad news, panic-sold. Saw a dip, bought too early. <strong>So I built a system that removes me from the equation.</strong></p>
         <div class="cs-hero-stats">
-            <div class="cs-stat"><span class="cs-stat-num">7k</span><span class="cs-stat-label">Lines of Python</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">0</span><span class="cs-stat-label">Leverage</span></div>
             <div class="cs-stat"><span class="cs-stat-num">20</span><span class="cs-stat-label">Tickers tracked</span></div>
             <div class="cs-stat"><span class="cs-stat-num">4</span><span class="cs-stat-label">AI agents</span></div>
             <div class="cs-stat"><span class="cs-stat-num">1:2</span><span class="cs-stat-label">Risk-reward</span></div>
@@ -651,7 +664,7 @@ a{color:inherit;text-decoration:none}
     <span class="cs-label">05 / Tech Stack</span>
     <div class="cs-divider"></div>
     <div class="cs-stack">
-        <div class="cs-stack-item"><div class="cs-stack-name">Python</div><div class="cs-stack-role">6,942 lines across 33 files</div></div>
+        <div class="cs-stack-item"><div class="cs-stack-name">Python</div><div class="cs-stack-role">7,000+ lines across 33 files</div></div>
         <div class="cs-stack-item"><div class="cs-stack-name">Claude Opus</div><div class="cs-stack-role">Risk auditor, final veto gate</div></div>
         <div class="cs-stack-item"><div class="cs-stack-name">Claude Sonnet</div><div class="cs-stack-role">Quality assessment, structured outputs</div></div>
         <div class="cs-stack-item"><div class="cs-stack-name">IG Broker API</div><div class="cs-stack-role">Order execution &amp; market data</div></div>
@@ -667,38 +680,41 @@ a{color:inherit;text-decoration:none}
 </section>
 
 <!-- Other Projects -->
-<section class="cs-section">
-    <span class="cs-label">More Work</span>
-    <div class="cs-divider"></div>
-    <div class="cs-others">
-        <a href="ajay-brain.html" class="cs-other" data-cursor="-text" data-cursor-text="View">
-            <div class="cs-other-img-wrap">
-                <img src="../images/card-brain.png" alt="OpsPilot dashboard" class="cs-other-img">
+<section class="cs-others">
+    <span class="cs-others-label">More Work</span>
+    <div class="cs-others-divider"></div>
+    <div class="cs-others-grid">
+        <a href="ajay-brain.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-card-img">
+                <img src="../images/card-brain.png" alt="OpsPilot dashboard" loading="lazy">
             </div>
-            <div class="cs-other-body">
-                <span class="cs-other-badge">Production</span>
-                <h3 class="cs-other-name">OpsPilot</h3>
-                <p class="cs-other-desc">The same obsession with automation, applied to business ops. 60k lines of Python running 24/7 in production.</p>
-            </div>
-        </a>
-        <a href="whatsapp-smart.html" class="cs-other" data-cursor="-text" data-cursor-text="View">
-            <div class="cs-other-img-wrap">
-                <img src="../images/card-whatsapp.png" alt="WhatsApp Smart extension" class="cs-other-img">
-            </div>
-            <div class="cs-other-body">
-                <span class="cs-other-badge">Prototype</span>
-                <h3 class="cs-other-name">WhatsApp Smart</h3>
-                <p class="cs-other-desc">Consumer product, not enterprise. TypeScript/React Chrome extension with local-only AI processing.</p>
+            <div class="cs-other-card-body">
+                <span class="cs-other-card-badge">Production</span>
+                <h3 class="cs-other-card-title">OpsPilot</h3>
+                <p class="cs-other-card-desc">The same obsession with automation, applied to business ops. 60k lines of Python running 24/7 in production.</p>
+                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
             </div>
         </a>
-        <a href="uni-nation.html" class="cs-other" data-cursor="-text" data-cursor-text="View">
-            <div class="cs-other-img-wrap">
-                <img src="../images/card-uninat.png" alt="Uni-Nation website" class="cs-other-img">
+        <a href="whatsapp-smart.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-card-img">
+                <img src="../images/card-whatsapp.png" alt="WhatsApp Smart extension" loading="lazy">
             </div>
-            <div class="cs-other-body">
-                <span class="cs-other-badge">Live</span>
-                <h3 class="cs-other-name">Uni-Nation Digital</h3>
-                <p class="cs-other-desc">Not AI, but the same end-to-end thinking. Family textile business taken digital from scratch.</p>
+            <div class="cs-other-card-body">
+                <span class="cs-other-card-badge">Prototype</span>
+                <h3 class="cs-other-card-title">WhatsApp Smart</h3>
+                <p class="cs-other-card-desc">Consumer product, not enterprise. TypeScript/React Chrome extension with local-only AI processing.</p>
+                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+        <a href="uni-nation.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-card-img">
+                <img src="../images/card-uninat.png" alt="Uni-Nation website" loading="lazy">
+            </div>
+            <div class="cs-other-card-body">
+                <span class="cs-other-card-badge">Live</span>
+                <h3 class="cs-other-card-title">Uni-Nation Digital</h3>
+                <p class="cs-other-card-desc">Not AI, but the same end-to-end thinking. Family textile business taken digital from scratch.</p>
+                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
             </div>
         </a>
     </div>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Smart | AI Chrome Extension | Ajay Sachdev</title>
-    <meta name="description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 16,500+ lines of TypeScript and React. Privacy-first: messages never leave your browser.">
+    <meta name="description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 16,000+ lines of TypeScript and React. Privacy-first: messages never leave your browser.">
     <meta name="theme-color" content="#0c0c0c">
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9a96d'/%3E%3Cstop offset='100%25' stop-color='%23e8e4de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23141414'/%3E%3Ctext x='16' y='23' font-family='system-ui' font-weight='700' font-size='18' fill='url(%23g)' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
@@ -13,7 +13,7 @@
     <!-- Open Graph -->
     <meta property="og:type" content="article">
     <meta property="og:title" content="WhatsApp Smart | AI Chrome Extension | Ajay Sachdev">
-    <meta property="og:description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 16,500+ lines of TypeScript and React.">
+    <meta property="og:description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 16,000+ lines of TypeScript and React.">
     <meta property="og:url" content="https://ajaysachdev.com/projects/whatsapp-smart.html">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.css">
 <style>
 /* === V6 Case Study -- WhatsApp Smart === */
-:root{--bg:#0c0c0c;--surface:#141414;--text:#e8e4de;--muted:#8a857d;--dim:#5e5952;--border:rgba(232,228,222,.06);--gold:#c9a96d;--font:'Inter',system-ui,sans-serif;--display:'Clash Display',sans-serif;--mono:'JetBrains Mono',monospace}
+:root{--bg:#0c0c0c;--surface:#141414;--text:#e8e4de;--muted:#8a857d;--dim:#706b63;--border:rgba(232,228,222,.06);--gold:#c9a96d;--font:'Inter',system-ui,sans-serif;--display:'Clash Display',sans-serif;--mono:'JetBrains Mono',monospace}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-font-smoothing:antialiased;scrollbar-width:none}html::-webkit-scrollbar{display:none}
 body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
@@ -55,11 +55,14 @@ a{color:inherit;text-decoration:none}
 .cs-hero-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:32px;display:block;opacity:0}
 .cs-hero-title{font-family:var(--display);font-size:clamp(4rem,10vw,8rem);font-weight:600;letter-spacing:-.04em;line-height:.9;margin-bottom:36px;opacity:0}
 .cs-hero-title em{font-style:normal;color:var(--gold)}
-.cs-hero-desc{font-size:clamp(1rem,1.3vw,1.15rem);color:#a09a92;max-width:600px;line-height:1.85;font-weight:300;opacity:0}
+.cs-hero-desc{font-size:clamp(1rem,1.3vw,1.15rem);color:#b0aaa2;max-width:600px;line-height:1.85;font-weight:300;opacity:0}
 .cs-hero-desc strong{color:var(--text);font-weight:400}
-.cs-hero-meta{display:flex;gap:clamp(32px,5vw,64px);margin-top:48px;opacity:0}
-.cs-hero-meta-val{font-family:var(--display);font-size:clamp(2rem,3.5vw,3rem);font-weight:600;color:var(--gold);letter-spacing:-.02em;display:block}
-.cs-hero-meta-label{font-family:var(--mono);font-size:.5rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;margin-top:6px}
+.cs-hero-meta{display:flex;gap:clamp(24px,4vw,48px);flex-wrap:wrap;margin-top:48px;opacity:0;margin-bottom:-1rem;position:relative;z-index:0}
+.cs-hero-meta-item{text-align:left;position:relative}
+.cs-hero-meta-item:hover .cs-hero-meta-val{color:var(--gold);-webkit-text-stroke-color:var(--gold)}
+.cs-hero-meta-val{font-family:var(--display);font-size:clamp(4rem,10vw,8rem);font-weight:600;color:transparent;-webkit-text-stroke:1.5px rgba(201,169,109,.55);letter-spacing:-.04em;display:block;line-height:0.85;margin-bottom:0;transition:color .4s,-webkit-text-stroke-color .4s}
+.cs-hero-meta-label{font-family:var(--mono);font-size:.55rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-top:6px;position:relative;z-index:2}
+.cs-hero-meta-label::before{content:'';width:16px;height:1px;background:var(--gold);opacity:.4;flex-shrink:0}
 .v5-scroll-cue{position:absolute;bottom:36px;right:clamp(3em,8vw,8em);font-family:var(--mono);font-size:.5rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
 .v5-scroll-cue::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--dim),transparent);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.6;transform:scaleY(1)}50%{opacity:.15;transform:scaleY(.5)}}
@@ -165,13 +168,30 @@ a{color:inherit;text-decoration:none}
 .cs-carousel-slide-caption{font-family:var(--mono);font-size:.5rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-top:14px;text-align:center;transition:color .3s}
 .cs-carousel-slide:hover .cs-carousel-slide-caption{color:var(--muted)}
 
+/* === STICKY LAYOUT === */
+.cs-sticky-layout{display:flex;align-items:flex-start;max-width:1800px;margin:0 auto;position:relative}
+.cs-sticky-visual{flex:1.5;position:sticky;top:6vh;height:auto}
+.cs-sticky-text{flex:1;min-width:0;padding-bottom:10vh}
+@media(max-width:900px){
+    .cs-sticky-layout{flex-direction:column}
+    .cs-sticky-visual{position:relative;top:auto;width:100%}
+    .cs-sticky-text{width:100%;padding-bottom:0}
+}
+@media(min-width:901px){
+    .cs-sticky-text .cs-content, .cs-sticky-text .cs-wide { max-width: 100%; padding-left: 2vw; padding-right: 4vw; }
+    .cs-hero-img{margin-top:0 !important; padding-top:6vh; padding-left:4vw; padding-right:2vw;}
+    .cs-sticky-text .cs-features { grid-template-columns: 1fr; }
+    .cs-sticky-text .cs-feature--wide { grid-template-columns: 1fr; gap:0; padding:24px 28px; }
+}
+
 /* === CONTENT SECTIONS === */
 .cs-content{max-width:900px;margin:0 auto;padding:0 clamp(2em,6vw,4em)}
 .cs-section{padding:clamp(3em,7vh,5em) 0}
-.cs-section-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:32px}
-.cs-section-divider{width:40px;height:1px;background:var(--dim);margin-bottom:48px;opacity:.5}
+.cs-section:nth-child(even){background:var(--surface);border-radius:12px;padding:clamp(3em,7vh,5em) clamp(24px,3vw,36px);margin:0 -24px}
+.cs-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:32px}
+.cs-divider{width:40px;height:1px;background:var(--dim);margin-bottom:48px;opacity:.5}
 .cs-section-heading{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:600;letter-spacing:-.03em;line-height:1.1;margin-bottom:32px}
-.cs-prose{font-size:.95rem;color:#a09a92;line-height:1.9;font-weight:300}
+.cs-prose{font-size:.95rem;color:#b0aaa2;line-height:1.9;font-weight:300}
 .cs-prose strong{color:var(--text);font-weight:400}
 .cs-prose+.cs-prose{margin-top:24px}
 
@@ -198,9 +218,9 @@ a{color:inherit;text-decoration:none}
 
 /* === FEATURE CARDS === */
 .cs-features{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px}
-.cs-feature{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:32px 28px;position:relative;overflow:hidden;transition:border-color .5s,box-shadow .5s}
-.cs-feature:hover{border-color:rgba(201,169,109,.12);box-shadow:0 16px 60px rgba(0,0,0,.3)}
-.cs-feature::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(201,169,109,.04) 0%,transparent 60%);pointer-events:none;opacity:0;transition:opacity .3s}
+.cs-feature{background:var(--surface);border:1px solid var(--border);border-left:3px solid rgba(96,165,250,.25);border-radius:10px;padding:32px 28px;position:relative;overflow:hidden;transition:border-color .5s,box-shadow .5s}
+.cs-feature:hover{border-color:rgba(96,165,250,.2);box-shadow:0 16px 60px rgba(0,0,0,.3),0 0 40px rgba(96,165,250,.06)}
+.cs-feature::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(96,165,250,.05) 0%,transparent 60%);pointer-events:none;opacity:0;transition:opacity .3s}
 .cs-feature:hover::before{opacity:1}
 .cs-feature-num{font-family:var(--mono);font-size:.5rem;color:var(--dim);letter-spacing:3px;display:block;margin-bottom:14px}
 .cs-feature h4{font-family:var(--display);font-size:1.05rem;font-weight:500;letter-spacing:-.02em;margin-bottom:10px}
@@ -229,7 +249,7 @@ a{color:inherit;text-decoration:none}
 .cs-other-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .5s,box-shadow .5s,transform .5s cubic-bezier(.16,1,.3,1);text-decoration:none;color:inherit}
 .cs-other-card:hover{border-color:rgba(201,169,109,.12);box-shadow:0 24px 70px rgba(0,0,0,.35);transform:translateY(-4px)}
 .cs-other-card-img{position:relative;overflow:hidden;aspect-ratio:16/10;background:#161616}
-.cs-other-card-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.85) brightness(.9) sepia(.25);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1s}
+.cs-other-card-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) brightness(.92) sepia(.15);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1s}
 .cs-other-card:hover .cs-other-card-img img{transform:scale(1.05);filter:grayscale(0) brightness(1.05) sepia(0)}
 .cs-other-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);pointer-events:none;transition:opacity 1s}
 .cs-other-card:hover .cs-other-card-img::after{opacity:.1}
@@ -268,7 +288,9 @@ a{color:inherit;text-decoration:none}
     .cs-hero-title{font-size:clamp(2.8rem,11vw,4rem)}
     .cs-hero-desc{font-size:.92rem;line-height:1.75}
     .cs-hero-meta{gap:20px 28px}
-    .cs-hero-meta-val{font-size:clamp(1.6rem,5vw,2.2rem)}
+    .cs-hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:24px 32px}
+    .cs-hero-meta-val{font-size:clamp(3rem,10vw,5rem)}
+    .cs-hero-meta-label{font-size:.5rem}
     .cs-hero-meta-label{font-size:.45rem}
     .cs-section-heading{font-size:clamp(1.6rem,5vw,2.4rem)}
     .cs-prose{font-size:.88rem}
@@ -287,15 +309,18 @@ a{color:inherit;text-decoration:none}
     .cs-hero-title{font-size:clamp(2.4rem,10vw,3.2rem);margin-bottom:28px}
     .cs-hero-desc{font-size:.88rem;max-width:100%;line-height:1.75}
     .cs-hero-meta{margin-top:36px;gap:16px 24px;display:grid;grid-template-columns:1fr 1fr}
-    .cs-hero-meta-val{font-size:clamp(1.3rem,6vw,1.8rem)}
+    .cs-hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
+    .cs-hero-meta-val{font-size:clamp(2.5rem,14vw,4rem);margin-bottom:0}
+    .cs-hero-meta-label{font-size:.48rem;margin-top:4px}
+    .cs-hero-meta-label::before{width:12px}
     .cs-hero-meta-label{font-size:.42rem;margin-top:4px}
-    .cs-hero-img{padding:0 20px;margin-top:clamp(2em,4vh,3em)}
+    .cs-hero-img{display:none}
     .cs-hero-img-caption{font-size:.48rem;margin-top:12px}
     .cs-content{padding:0 20px}
     .cs-wide{padding:0 20px}
     .cs-section{padding:28px 0}
-    .cs-section-label{font-size:.5rem;letter-spacing:3px;margin-bottom:24px}
-    .cs-section-divider{margin-bottom:32px}
+    .cs-label{font-size:.5rem;letter-spacing:3px;margin-bottom:24px}
+    .cs-divider{margin-bottom:32px}
     .cs-section-heading{font-size:clamp(1.4rem,5vw,2rem);margin-bottom:24px}
     .cs-prose{font-size:.85rem;line-height:1.8}
     .cs-arch{margin-top:36px}
@@ -373,11 +398,11 @@ a{color:inherit;text-decoration:none}
     <p class="cs-hero-desc"><strong>2.5 billion people use WhatsApp every day. Zero productivity tools.</strong> Gmail got smart replies in 2017. WhatsApp added basic single-message scheduling in February 2026, buried in the UI. Still no AI, no way to catch up on a hundred group messages, no follow-up reminders. Nobody's building for the people who just use WhatsApp to talk to friends, family, and colleagues. So I started building it.</p>
     <div class="cs-hero-meta">
         <div class="cs-hero-meta-item">
-            <span class="cs-hero-meta-val">16.5k</span>
+            <span class="cs-hero-meta-val">16k+</span>
             <span class="cs-hero-meta-label">Lines of code</span>
         </div>
         <div class="cs-hero-meta-item">
-            <span class="cs-hero-meta-val">54</span>
+            <span class="cs-hero-meta-val">50+</span>
             <span class="cs-hero-meta-label">React components</span>
         </div>
         <div class="cs-hero-meta-item">
@@ -385,15 +410,24 @@ a{color:inherit;text-decoration:none}
             <span class="cs-hero-meta-label">Core features</span>
         </div>
         <div class="cs-hero-meta-item">
-            <span class="cs-hero-meta-val">135</span>
+            <span class="cs-hero-meta-val">130+</span>
             <span class="cs-hero-meta-label">Source files</span>
         </div>
     </div>
     <div class="v5-scroll-cue">Scroll</div>
 </header>
 
-<!-- Hero Image / Browser Frame -->
-<div class="cs-hero-img">
+<!-- Marquee -->
+<div class="v5-marquee">
+    <div class="v5-marquee-track" id="marqueeTrack">
+        <span class="v5-marquee-item">Chrome Extension <span class="sep">/</span></span><span class="v5-marquee-item">TypeScript <span class="sep">/</span></span><span class="v5-marquee-item">React <span class="sep">/</span></span><span class="v5-marquee-item">Privacy-First <span class="sep">/</span></span><span class="v5-marquee-item">AI Replies <span class="sep">/</span></span><span class="v5-marquee-item">Scheduling <span class="sep">/</span></span><span class="v5-marquee-item">WhatsApp <span class="sep">/</span></span><span class="v5-marquee-item">16.5k Lines <span class="sep">/</span></span><span class="v5-marquee-item">Chrome Extension <span class="sep">/</span></span><span class="v5-marquee-item">TypeScript <span class="sep">/</span></span><span class="v5-marquee-item">React <span class="sep">/</span></span><span class="v5-marquee-item">Privacy-First <span class="sep">/</span></span><span class="v5-marquee-item">AI Replies <span class="sep">/</span></span><span class="v5-marquee-item">Scheduling <span class="sep">/</span></span><span class="v5-marquee-item">WhatsApp <span class="sep">/</span></span><span class="v5-marquee-item">16.5k Lines <span class="sep">/</span></span>
+    </div>
+</div>
+
+<div class="cs-sticky-layout">
+    <div class="cs-sticky-visual">
+        <!-- Hero Image / Browser Frame -->
+        <div class="cs-hero-img">
     <div class="browser">
         <div class="browser-chrome">
             <div class="browser-bar">
@@ -496,20 +530,15 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="browser-shadow"></div>
     <p class="cs-hero-img-caption">Chrome extension showing AI suggestions, tone control, and scheduling <span class="dummy-badge">Prototype</span></p>
-</div>
-
-<!-- Marquee -->
-<div class="v5-marquee">
-    <div class="v5-marquee-track" id="marqueeTrack">
-        <span class="v5-marquee-item">Chrome Extension <span class="sep">/</span></span><span class="v5-marquee-item">TypeScript <span class="sep">/</span></span><span class="v5-marquee-item">React <span class="sep">/</span></span><span class="v5-marquee-item">Privacy-First <span class="sep">/</span></span><span class="v5-marquee-item">AI Replies <span class="sep">/</span></span><span class="v5-marquee-item">Scheduling <span class="sep">/</span></span><span class="v5-marquee-item">WhatsApp <span class="sep">/</span></span><span class="v5-marquee-item">16.5k Lines <span class="sep">/</span></span><span class="v5-marquee-item">Chrome Extension <span class="sep">/</span></span><span class="v5-marquee-item">TypeScript <span class="sep">/</span></span><span class="v5-marquee-item">React <span class="sep">/</span></span><span class="v5-marquee-item">Privacy-First <span class="sep">/</span></span><span class="v5-marquee-item">AI Replies <span class="sep">/</span></span><span class="v5-marquee-item">Scheduling <span class="sep">/</span></span><span class="v5-marquee-item">WhatsApp <span class="sep">/</span></span><span class="v5-marquee-item">16.5k Lines <span class="sep">/</span></span>
+        </div>
     </div>
-</div>
-
-<!-- === THE PROBLEM === -->
-<div class="cs-content">
+    
+    <div class="cs-sticky-text">
+        <!-- === THE PROBLEM === -->
+        <div class="cs-content">
     <section class="cs-section" id="problem">
-        <span class="cs-section-label">01 / The Problem</span>
-        <div class="cs-section-divider"></div>
+        <span class="cs-label">01 / The Problem</span>
+        <div class="cs-divider"></div>
         <h2 class="cs-section-heading">The missing layer</h2>
         <p class="cs-prose">I kept running into the same friction. Want to schedule a birthday message for midnight? Can't. Need to catch up on a family group chat with 120 unread messages? Scroll through every single one. Want quick reply suggestions when you're juggling ten conversations? Nothing.</p>
         <p class="cs-prose">The gap is bigger than scheduling. There's no personal productivity layer at all. WhatsApp's own scheduling, added in early 2026, is single-message only with no recurring option. Every third-party tool in this space targets businesses running customer support through the WhatsApp Business API. <strong>Personal users got left behind.</strong> That's the gap I'm filling.</p>
@@ -519,8 +548,8 @@ a{color:inherit;text-decoration:none}
 <!-- === HOW IT WORKS (wider for the architecture diagram) === -->
 <div class="cs-wide">
     <section class="cs-section" id="architecture">
-        <span class="cs-section-label">02 / How It Works</span>
-        <div class="cs-section-divider"></div>
+        <span class="cs-label">02 / How It Works</span>
+        <div class="cs-divider"></div>
         <h2 class="cs-section-heading">Three-layer architecture</h2>
         <p class="cs-prose" style="max-width:700px">You open WhatsApp Web and the extension is already there. A small toolbar next to the compose box. Type a message and you'll see AI suggestions, a tone adjuster, and a schedule button. Behind it, everything runs locally in the browser.</p>
         <p class="cs-prose" style="max-width:700px">A content script injects the UI via shadow DOM so it never clashes with WhatsApp's own styles. A background service worker handles scheduling through Chrome Alarms, so messages go out even if the tab isn't focused. Message access comes from the WPP library (an open-source WhatsApp Web API), not brittle DOM scraping. <strong>No server required for core features. No sign-up.</strong></p>
@@ -631,53 +660,53 @@ a{color:inherit;text-decoration:none}
 <!-- === FEATURES === -->
 <div class="cs-content">
     <section class="cs-section" id="features">
-        <span class="cs-section-label">03 / Features</span>
-        <div class="cs-section-divider"></div>
+        <span class="cs-label">03 / Features</span>
+        <div class="cs-divider"></div>
         <h2 class="cs-section-heading">What it does</h2>
 
         <div class="cs-features">
             <div class="cs-feature cs-feature--wide">
                 <span class="cs-feature-num">01</span>
                 <h4>Smart Scheduling</h4>
-                <p>Set a message to go out at a specific time, then add a recurrence rule: daily, weekly on specific days, monthly. Per-contact office hours mean messages won't fire at 3am; they defer to the next open window. Batch mode sends to up to 50 contacts with staggered delivery (3-10 second gaps between each) so it doesn't look automated.</p>
+                <p>Schedule one-off or recurring messages. Enforces per-contact office hours so messages don't fire at 3am. Supports intelligent batch sending with staggered delays.</p>
             </div>
             <div class="cs-feature">
                 <span class="cs-feature-num">02</span>
                 <h4>AI Reply Suggestions</h4>
-                <p>Reads the last 15 messages in a conversation and suggests three replies. Claude Haiku 4.5 by default because latency matters more than depth here. It also builds a voice profile from your sent messages (average length, emoji habits, punctuation, formality) so the suggestions sound like you, not like a chatbot.</p>
+                <p>Reads the context of the chat and suggests 3 replies instantly via Claude Haiku. Learns your personal emoji habits and tone.</p>
             </div>
             <div class="cs-feature">
                 <span class="cs-feature-num">03</span>
                 <h4>Tone Adjuster</h4>
-                <p>Five modes: formal, casual, friendly, professional, funny. You draft something quickly and one click rewrites it in the tone you pick. I built this because I kept switching between a group chat with friends and a thread with my manager, and the register was always wrong.</p>
+                <p>Draft quickly, then click to rewrite as formal, casual, or professional. Seamless context switching.</p>
             </div>
             <div class="cs-feature">
                 <span class="cs-feature-num">04</span>
                 <h4>Group Chat Summary</h4>
-                <p>Pulls the last 30 messages from a group chat and summarises them: what was discussed, any decisions, and who owes what. There's a separate "Extract Decisions" mode that returns structured data with assignees and deadlines. Output goes to a notification, a DM to yourself, or back into the group.</p>
+                <p>Instantly summarise 30+ unread messages. Extracts decisions, assignees, and deadlines into structured bullets.</p>
             </div>
             <div class="cs-feature">
                 <span class="cs-feature-num">05</span>
                 <h4>Undo Send</h4>
-                <p>Every message gets held for a few seconds (you pick how many, 1-10) with a countdown bar. Hit cancel and it never sends. Under the hood it intercepts the send before WhatsApp sees it. Simple, but WhatsApp still doesn't have anything like it.</p>
+                <p>Intercepts messages with a 5-second countdown bar. Cancel anytime before it hits WhatsApp's servers.</p>
             </div>
             <div class="cs-feature">
                 <span class="cs-feature-num">06</span>
                 <h4>Follow-Up Reminders</h4>
-                <p>Flag any message for follow-up with a timestamp. When it's time, you get a Chrome notification with a link straight to the chat. Group admins can also set keyword alerts: words like "urgent" or "deadline" trigger a notification the moment they appear.</p>
+                <p>Flag messages to bounce back to your attention later. Set keyword alerts for terms like "urgent" or "deadline".</p>
             </div>
             <div class="cs-feature cs-feature--wide">
                 <span class="cs-feature-num">07</span>
                 <h4>Privacy-First</h4>
-                <p>Everything runs locally. Scheduled messages, voice profiles, office hours, reminders, all Chrome Storage on your device. The only thing that leaves the browser is the prompt sent to Claude's API when you use an AI feature. You bring your own API key, or use the free tier (10 AI actions a month, proxied through the server). No account needed.</p>
+                <p>All data stays in local Chrome storage. No sign-ups required. Bring your own API key or use the free tier proxy.</p>
             </div>
         </div>
     </section>
 
     <!-- === TECH STACK === -->
     <section class="cs-section" id="stack">
-        <span class="cs-section-label">04 / Tech Stack</span>
-        <div class="cs-section-divider"></div>
+        <span class="cs-label">04 / Tech Stack</span>
+        <div class="cs-divider"></div>
         <h2 class="cs-section-heading">What it's built with</h2>
 
         <div class="cs-tech-grid">
@@ -731,6 +760,8 @@ a{color:inherit;text-decoration:none}
             </div>
         </div>
     </section>
+        </div>
+    </div>
 </div>
 
 <!-- === SCREENSHOT CAROUSEL === -->
@@ -738,52 +769,52 @@ a{color:inherit;text-decoration:none}
     <span class="cs-carousel-label">Screenshots</span>
     <div class="cs-carousel-track" id="carouselTrack">
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-1.png" alt="Schedule modal with recurrence options" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-1.png" alt="Schedule modal with recurrence options" loading="eager"></div>
             <p class="cs-carousel-slide-caption">Schedule modal + recurrence</p>
         </div>
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-2.png" alt="AI reply suggestions panel" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-2.png" alt="AI reply suggestions panel" loading="eager"></div>
             <p class="cs-carousel-slide-caption">AI reply suggestions</p>
         </div>
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-3.png" alt="Tone adjuster interface" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-3.png" alt="Tone adjuster interface" loading="eager"></div>
             <p class="cs-carousel-slide-caption">Tone adjuster</p>
         </div>
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-4.png" alt="Group chat summary output" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-4.png" alt="Group chat summary output" loading="eager"></div>
             <p class="cs-carousel-slide-caption">Group chat summary</p>
         </div>
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/whatsapp-smart-ui.png" alt="Full extension UI alongside WhatsApp" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/whatsapp-smart-ui.png" alt="Full extension UI alongside WhatsApp" loading="eager"></div>
             <p class="cs-carousel-slide-caption">Full extension UI</p>
         </div>
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/mockup-whatsapp.png" alt="Extension mockup" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/mockup-whatsapp.png" alt="Extension mockup" loading="eager"></div>
             <p class="cs-carousel-slide-caption">Extension mockup</p>
         </div>
         <!-- Duplicates for seamless loop -->
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-1.png" alt="Schedule modal with recurrence options" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-1.png" alt="Schedule modal with recurrence options" loading="eager"></div>
             <p class="cs-carousel-slide-caption">Schedule modal + recurrence</p>
         </div>
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-2.png" alt="AI reply suggestions panel" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-2.png" alt="AI reply suggestions panel" loading="eager"></div>
             <p class="cs-carousel-slide-caption">AI reply suggestions</p>
         </div>
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-3.png" alt="Tone adjuster interface" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-3.png" alt="Tone adjuster interface" loading="eager"></div>
             <p class="cs-carousel-slide-caption">Tone adjuster</p>
         </div>
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-4.png" alt="Group chat summary output" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/thumb-whatsapp-4.png" alt="Group chat summary output" loading="eager"></div>
             <p class="cs-carousel-slide-caption">Group chat summary</p>
         </div>
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/whatsapp-smart-ui.png" alt="Full extension UI alongside WhatsApp" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/whatsapp-smart-ui.png" alt="Full extension UI alongside WhatsApp" loading="eager"></div>
             <p class="cs-carousel-slide-caption">Full extension UI</p>
         </div>
         <div class="cs-carousel-slide">
-            <div class="cs-carousel-slide-img"><img src="../images/mockup-whatsapp.png" alt="Extension mockup" loading="lazy"></div>
+            <div class="cs-carousel-slide-img"><img src="../images/mockup-whatsapp.png" alt="Extension mockup" loading="eager"></div>
             <p class="cs-carousel-slide-caption">Extension mockup</p>
         </div>
     </div>
@@ -947,8 +978,8 @@ if(cTrack){
 
 /* === Section scroll reveals === */
 gsap.utils.toArray('.cs-section').forEach(section=>{
-    const label=section.querySelector('.cs-section-label');
-    const divider=section.querySelector('.cs-section-divider');
+    const label=section.querySelector('.cs-label');
+    const divider=section.querySelector('.cs-divider');
     const heading=section.querySelector('.cs-section-heading');
     const proses=section.querySelectorAll('.cs-prose');
 
@@ -1012,7 +1043,7 @@ document.querySelectorAll('.cs-other-card').forEach(card=>{
     }
 });
 
-/* === Marquee === */
+/* === Marquee and Carousel === */
 const mTrack=document.getElementById('marqueeTrack');
 if(mTrack){let mP=0,mD=-1;lenis.on('scroll',({velocity})=>{mD=velocity>0?-1:1});
 gsap.ticker.add(()=>{mP+=mD*.5;if(Math.abs(mP)>mTrack.scrollWidth/2)mP=0;mTrack.style.transform=`translateX(${mP}px)`})}
