@@ -1162,6 +1162,49 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var pageStart = Date.now();
 
+  /* ---------- Analytics: GoatCounter (production only, no cookies, no PII) ---------- */
+  if (location.hostname === 'ajaysachdev.com' || location.hostname === 'www.ajaysachdev.com') {
+    var gc = document.createElement('script');
+    gc.async = true;
+    gc.src = 'https://gc.zgo.at/count.js';
+    gc.setAttribute('data-goatcounter', 'https://ajaysachdev.goatcounter.com/count');
+    document.head.appendChild(gc);
+  }
+  var tracked = {};
+  function track(name) {
+    if (tracked[name]) return;
+    tracked[name] = true;
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({ path: name, event: true });
+    }
+  }
+
+  /* Scroll-depth funnel: how far do visitors get into the film? */
+  if ('IntersectionObserver' in window) {
+    var depthMap = [
+      ['#ch1', 'depth-ch1-origins'], ['#office', 'depth-ch2-office'], ['#desk', 'depth-ch3-desk'],
+      ['#mill', 'depth-ch4-mill'], ['#work', 'depth-schedule'], ['#contact', 'depth-footer']
+    ];
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { track(en.target.dataset.depth); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.2 });
+    depthMap.forEach(function (d) {
+      var el = document.querySelector(d[0]);
+      if (el) { el.dataset.depth = d[1]; io.observe(el); }
+    });
+  }
+
+  /* Contact intent */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a');
+    if (!a) return;
+    if ((a.getAttribute('href') || '').indexOf('mailto:') === 0) track('contact-email');
+    else if ((a.getAttribute('href') || '').indexOf('linkedin.com') !== -1) track('contact-linkedin');
+    else if (a.classList.contains('open-skip') || a.classList.contains('skip-link')) track('skip-to-schedule');
+  });
+
   /* ---------- Sound toggle + palette flash ---------- */
   var muted = false;
   var sndBtn = document.getElementById('snd');
@@ -1482,6 +1525,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
       btn.disabled = true;
       btn.classList.add('done');
       btn.textContent = 'Message sent...';
+      track('sim-office-played');
       var delay = 0;
       stages.forEach(function (id, i) {
         setTimeout(function () {
@@ -1516,6 +1560,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
     approveBtn.addEventListener('click', function () {
       this.disabled = true;
       this.textContent = 'Sent. 4.6s end to end.';
+      track('sim-office-approved');
       foot.textContent = 'Answered before the kettle boiled. 100% search accuracy, frozen until it misses.';
       blip(760, 0.3);
     });
@@ -1545,6 +1590,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
       btn.disabled = true;
       document.getElementById('agents').classList.add('playing');
       btn.textContent = 'Trade submitted...';
+      track('sim-desk-played');
       [['a1', 380, 0], ['a2', 320, 900], ['a3', 290, 1900], ['a4', 180, 3000]].forEach(function (s) {
         setTimeout(function () {
           document.getElementById(s[0]).classList.add('show');
@@ -1587,6 +1633,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
       played = true;
       mic.classList.add('listening');
       mic.innerHTML = 'Listening';
+      track('sim-mill-played');
       blip(520, 0.15);
       transcript.textContent = '';
       var i = 0;
@@ -1688,6 +1735,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   var termTrigger = null;
   function openTerm() {
     termTrigger = document.activeElement;
+    track('terminal-opened');
     term.classList.add('open');
     if (!opened) {
       opened = true;
