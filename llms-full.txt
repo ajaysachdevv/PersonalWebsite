@@ -34,11 +34,12 @@ An AI assistant that lives in Microsoft Teams: reads 6,124+ SharePoint documents
 An intraday trading system where four AI agents vote on every signal and a Risk Auditor holds an absolute veto.
 - 4 agents: Orchestrator, Context Lead, Analyst, Risk Auditor (Claude-powered)
 - Paper trading by design: 62 sessions, zero impulsive trades let through
-- Hard safety rails, kill switch, end-of-day liquidation
+- 7,000+ lines of Python across 33 files
+- Hard safety rails in code, not prompts: GBP 750 max notional, 3% stop loss, 6% take profit, one position at a time, kill switch, end-of-day liquidation
 
 ### Uni-Nation Digital (uni-nation.in)
 Website, inventory system and analytics for the family fabric business running since 1988.
-- Inventory PWA tracking Rs 13.76cr of sales data, 1,955 products, 658 customers
+- Inventory PWA (~22,000 lines) tracking roughly $2m of sales data, 1,955 products, 658 customers
 - Voice stock entry in mixed Hindi-English: the parser understands thaan, taaka, metre and Hindi numbers, and corrects speech-to-text on fabric names
 - Receivables tracking with WhatsApp follow-up generation
 
