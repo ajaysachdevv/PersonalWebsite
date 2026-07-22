@@ -81,6 +81,13 @@ body.scene-mill #ch4 .num b { color: #1f7a4d; }
 body.scene-mill #ch4 h2 { color: #1c160d; }
 body.scene-mill #ch4 h2 em { color: #1f7a4d; }
 body.scene-mill #ch4 p { color: rgba(28, 22, 13, 0.68); }
+/* .ink flips ch4's own text at the blend midpoint; scene-mill fires too late (#mill top 55%)
+   and left the heading paper-white on a fully cream background for slow scrollers */
+#ch4.ink .num { color: rgba(28, 22, 13, 0.55); border-color: rgba(28, 22, 13, 0.18); }
+#ch4.ink .num b { color: #1f7a4d; }
+#ch4.ink h2 { color: #1c160d; }
+#ch4.ink h2 em { color: #1f7a4d; }
+#ch4.ink p { color: rgba(28, 22, 13, 0.68); }
 ::selection { background: var(--credit); color: var(--ink); }
 a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   outline: 2px solid var(--credit); outline-offset: 3px;
@@ -1377,6 +1384,12 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
     blend('#ch3', '#0b0d12', '#07090d');
     blend('#ch4', '#07090d', '#efe8d5', 'top 95%', 'top 10%');
     blend('#work', '#efe8d5', '#0d0c0a', 'top 98%', 'top 45%');
+
+    /* ch4 text goes ink at the blend midpoint, not when #mill arrives */
+    ScrollTrigger.create({
+      trigger: '#ch4', start: 'top 55%', end: 'bottom top',
+      toggleClass: { targets: '#ch4', className: 'ink' }
+    });
 
     /* Reveals */
     document.querySelectorAll('.reveal').forEach(function (el) {
