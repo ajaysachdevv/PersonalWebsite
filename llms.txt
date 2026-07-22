@@ -1,0 +1,38 @@
+# Ajay Sachdev
+> Finance & Operations Manager at a B2B tech scale-up. CIMA finalist (Strategic Case Study sat May 2026). Builds production AI systems, Power BI dashboards, and financial models. Python, TypeScript, SQL. Based in Cambridge, UK.
+
+## Background
+- Sindhi family from Mumbai; grew up in the family textile business (est. 1988)
+- Bachelor in Financial Markets, Jai Hind College, Mumbai (2015-18)
+- M.Com (Year 1), University of Mumbai
+- Diploma in Weaving Technology, Sasmira, Mumbai
+- Chartered Wealth Management (AAFM, 2019)
+- MSc Finance, Loughborough University (2020-21, 2:1)
+- CIMA finalist: Strategic Case Study sat May 2026
+- Joined a B2B tech scale-up in October 2021; now sole finance & ops function across UK, US, Pakistan
+- School Governor at a 250-pupil primary school
+
+## Projects
+- OpsPilot: AI executive assistant in Microsoft Teams. 97,000 lines, 28 AI tools, 6,124+ documents indexed, 100% search accuracy on a 50-query suite. In production 24/7
+- Trading Bot: FTSE 100 intraday system with four AI agents and an absolute-veto risk auditor. Paper trading: 62 sessions, zero impulsive trades let through
+- Uni-Nation Digital (uni-nation.in): website, inventory PWA and Hindi voice stock entry for the family fabric business. Rs 13.76cr of sales data, 1,955 products, 658 customers
+- WhatsApp Smart: Chrome extension prototype adding scheduling, AI replies and summaries to WhatsApp Web. 10 features built, privacy-first, unreleased
+- SCS Cockpit: zero-dependency study engine built to prepare for his own CIMA case study. 4,200 lines
+
+## Key Metrics
+- Board-level financial models and reporting
+- 50+ Power BI dashboards built
+- 7 multi-currency bank accounts managed (GBP, USD, PKR)
+- 3 entities (UK, US, Pakistan)
+- 40+ hours/month saved through automation
+- WiFi costs reduced 50%, electricity 74%, software 30%+
+- Core SaaS platform cost cut 65% through a systematic audit
+- Redesigned contracts from 15 pages to 2; six-month stalls became one-week signings
+
+## Skills
+Financial Modelling, Management Accounts, VAT & Payroll, Budgeting & Forecasting, Power BI, SQL, Python, TypeScript, GA4, Firebase, FAISS, RAG, BM25, Claude, GPT, Gemini, Xero, HubSpot, Factorial, Contract Drafting
+
+## Contact
+- Web: https://ajaysachdev.com
+- LinkedIn: https://www.linkedin.com/in/ajayy-sachdev/
+- Email: ajaysachdev2@gmail.com

@@ -1,0 +1,23 @@
+node_modules/
+package.json
+package-lock.json
+docs/
+demos/
+_archive/
+mockups/
+.claude/
+.mcp.json
+.claudeignore
+*.log
+design-history/
+.playwright-mcp/
+.serena/
+copy-draft.md
+copy-review.md
+
+# internal working docs: local only, must never deploy to Pages
+CLAUDE.md
+BRAND.md
+CONTEXT.md
+SITE-PLAN.md
+spec.md

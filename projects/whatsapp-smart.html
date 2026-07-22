@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Smart | AI Chrome Extension | Ajay Sachdev</title>
+    <meta name="description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 10 features built in TypeScript and React. Privacy-first: messages never leave your browser.">
+    <meta name="theme-color" content="#0c0c0c">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9a96d'/%3E%3Cstop offset='100%25' stop-color='%23e8e4de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23141414'/%3E%3Ctext x='16' y='23' font-family='system-ui' font-weight='700' font-size='18' fill='url(%23g)' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
+    <link rel="canonical" href="https://ajaysachdev.com/projects/whatsapp-smart.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="WhatsApp Smart | AI Chrome Extension | Ajay Sachdev">
+    <meta property="og:description" content="Chrome extension that adds smart scheduling, AI reply suggestions, tone adjustment, and group chat summaries to WhatsApp Web. 10 features built in TypeScript and React.">
+    <meta property="og:url" content="https://ajaysachdev.com/projects/whatsapp-smart.html">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.css">
+<style>
+/* === V6 Case Study -- WhatsApp Smart === */
+:root{--bg:#0c0c0c;--surface:#141414;--text:#e8e4de;--muted:#8a857d;--dim:#706b63;--border:rgba(232,228,222,.06);--gold:#c9a96d;--font:'Inter',system-ui,sans-serif;--display:'Clash Display',sans-serif;--mono:'JetBrains Mono',monospace}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
+a{color:inherit;text-decoration:none}
+
+/* Grain */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E")}
+
+/* Cursor */
+.mf-cursor{z-index:9990}
+.mf-cursor-text{font-family:var(--mono)!important;font-size:.6rem!important;letter-spacing:1.5px;text-transform:uppercase}
+@media(pointer:coarse){.mf-cursor{display:none!important}}
+
+/* Progress */
+.v5-progress{position:fixed;top:0;left:0;height:1px;z-index:200;background:var(--gold);transform-origin:left;transform:scaleX(0)}
+
+/* Nav */
+.v5-nav{position:fixed;top:0;left:0;right:0;z-index:150;padding:28px clamp(2.5em,7vw,6em);display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference}
+.v5-nav-logo{font-family:var(--display);font-weight:500;font-size:.95rem;letter-spacing:-.3px;color:#fff}
+.v5-nav-links{display:flex;gap:32px;list-style:none}
+.v5-nav-links a{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.5px;transition:color .3s}
+.v5-nav-links a:hover{color:#fff}
+
+/* === CASE STUDY HERO === */
+.cs-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(3em,8vw,8em) clamp(5em,12vh,8em);position:relative;overflow:hidden}
+.cs-hero-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:40px;transition:color .3s;opacity:0}
+.cs-hero-back:hover{color:var(--gold)}
+.cs-hero-back svg{width:14px;height:14px}
+.cs-hero-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:32px;display:block;opacity:0}
+.cs-hero-title{font-family:var(--display);font-size:clamp(4rem,10vw,8rem);font-weight:600;letter-spacing:-.04em;line-height:.9;margin-bottom:36px;opacity:0}
+.cs-hero-title em{font-style:normal;color:var(--gold)}
+.cs-hero-desc{font-size:clamp(1rem,1.3vw,1.15rem);color:#b0aaa2;max-width:600px;line-height:1.85;font-weight:300;opacity:0}
+.cs-hero-desc strong{color:var(--text);font-weight:400}
+.cs-hero-meta{display:flex;gap:clamp(24px,4vw,48px);flex-wrap:wrap;margin-top:48px;opacity:0;margin-bottom:-1rem;position:relative;z-index:0}
+.cs-hero-meta-item{text-align:left;position:relative}
+.cs-hero-meta-item:hover .cs-hero-meta-val{color:var(--gold);-webkit-text-stroke-color:var(--gold)}
+.cs-hero-meta-val{font-family:var(--display);font-size:clamp(4rem,10vw,8rem);font-weight:600;color:transparent;-webkit-text-stroke:1.5px rgba(201,169,109,.55);letter-spacing:-.04em;display:block;line-height:0.85;margin-bottom:0;transition:color .4s,-webkit-text-stroke-color .4s}
+.cs-hero-meta-label{font-family:var(--mono);font-size:.55rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-top:6px;position:relative;z-index:2}
+.cs-hero-meta-label::before{content:'';width:16px;height:1px;background:var(--gold);opacity:.4;flex-shrink:0}
+.v5-scroll-cue{position:absolute;bottom:36px;right:clamp(3em,8vw,8em);font-family:var(--mono);font-size:.5rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
+.v5-scroll-cue::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--dim),transparent);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.6;transform:scaleY(1)}50%{opacity:.15;transform:scaleY(.5)}}
+
+/* Marquee */
+.v5-marquee{padding:clamp(2em,4vh,4em) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;position:relative;z-index:2}
+.v5-marquee-track{display:flex;white-space:nowrap;will-change:transform}
+.v5-marquee-item{font-family:var(--display);font-size:clamp(.7rem,1vw,.85rem);font-weight:500;color:#706b63;letter-spacing:3px;text-transform:uppercase;padding:0 clamp(24px,3vw,48px);flex-shrink:0}
+.v5-marquee-item .sep{color:var(--gold);opacity:.4;margin:0 4px}
+
+/* Manifesto */
+.v5-manifesto{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:clamp(4em,10vh,8em) clamp(3em,8vw,8em);position:relative;z-index:2}
+.v5-manifesto-text{font-family:var(--display);font-size:clamp(2rem,4vw,3.4rem);font-weight:500;letter-spacing:-.03em;line-height:1.3;max-width:750px;text-align:center}
+
+/* === HERO IMAGE / Browser Frame === */
+.cs-hero-img{padding:0 clamp(2em,6vw,6em);margin-top:clamp(3em,6vh,5em);position:relative;z-index:2}
+.cs-hero-img-caption{font-family:var(--mono);font-size:.55rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-top:16px}
+.cs-hero-img-caption .dummy-badge{display:inline-block;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);color:#60a5fa;padding:2px 10px;border-radius:20px;font-weight:500;margin-left:6px}
+
+/* Browser chrome */
+.browser{max-width:1100px;margin:0 auto;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.browser-chrome{background:linear-gradient(180deg,#1e1e22,#1a1a1e);border-radius:10px 10px 0 0;padding:0 14px;border:1px solid rgba(255,255,255,.06);border-bottom:none}
+.browser-bar{display:flex;align-items:center;height:36px;gap:10px}
+.browser-dots{display:flex;gap:6px}
+.browser-dots span{width:10px;height:10px;border-radius:50%}
+.browser-dots span:nth-child(1){background:#ff5f57}
+.browser-dots span:nth-child(2){background:#febc2e}
+.browser-dots span:nth-child(3){background:#28c840}
+.browser-tab{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);padding:5px 14px;border-radius:6px 6px 0 0;margin-left:8px;font-size:10px;color:#a09a92}
+.browser-tab-icon{width:12px;height:12px;border-radius:2px;background:#25d366;display:flex;align-items:center;justify-content:center}
+.browser-tab-icon svg{width:8px;height:8px;fill:#fff}
+.browser-url{flex:1;display:flex;align-items:center;margin-left:12px;background:rgba(255,255,255,.04);border-radius:6px;padding:4px 10px;font-size:9px;color:#5e5952;font-family:var(--font)}
+.browser-url-lock{color:#34d399;margin-right:5px;font-size:8px}
+.browser-viewport{border-radius:0 0 10px 10px;overflow:hidden;aspect-ratio:16/9.5;position:relative;border:1px solid rgba(255,255,255,.06);border-top:none;background:#0b141a}
+.browser-scaler{width:1440px;height:855px;transform-origin:top left;position:absolute;top:0;left:0;font-family:var(--font)}
+.browser-scaler *{box-sizing:border-box}
+
+/* WhatsApp layout */
+.wa{display:grid;grid-template-columns:300px 1fr 340px;height:100%;color:#e8e4de}
+
+/* Contacts sidebar */
+.wa-contacts{background:#111b21;border-right:1px solid rgba(255,255,255,.04);display:flex;flex-direction:column}
+.wa-contacts-head{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04)}
+.wa-contacts-head-name{font-size:13px;font-weight:500}
+.wa-contacts-search{margin:8px 12px;background:rgba(255,255,255,.04);border-radius:6px;padding:7px 12px;font-size:10px;color:#5e5952}
+.wa-contact{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.02)}
+.wa-contact.active{background:rgba(255,255,255,.04)}
+.wa-contact-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2a6d4e,#1a4030);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#34d399;flex-shrink:0}
+.wa-contact-info{flex:1;min-width:0}
+.wa-contact-name{font-size:11px;font-weight:500}
+.wa-contact-msg{font-size:9px;color:#5e5952;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wa-contact-time{font-size:8px;color:#5e5952;flex-shrink:0}
+
+/* Chat area */
+.wa-chat{display:flex;flex-direction:column;background:#0b141a}
+.wa-chat-head{padding:10px 16px;display:flex;align-items:center;gap:10px;background:#1f2c33;border-bottom:1px solid rgba(255,255,255,.04)}
+.wa-chat-head-name{font-size:12px;font-weight:500}
+.wa-chat-head-status{font-size:8px;color:#5e5952}
+.wa-chat-body{flex:1;padding:16px;display:flex;flex-direction:column;gap:6px;justify-content:flex-end;overflow:hidden}
+.wa-bubble{max-width:75%;padding:8px 10px;border-radius:8px;font-size:10px;line-height:1.5;position:relative}
+.wa-bubble-time{font-size:7px;color:rgba(255,255,255,.3);float:right;margin-left:8px;margin-top:4px}
+.wa-bubble.sent{background:#005c4b;align-self:flex-end;border-bottom-right-radius:2px}
+.wa-bubble.recv{background:#1f2c33;align-self:flex-start;border-bottom-left-radius:2px}
+.wa-chat-input{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#1f2c33;border-top:1px solid rgba(255,255,255,.04)}
+.wa-chat-input-field{flex:1;background:rgba(255,255,255,.04);border-radius:20px;padding:8px 14px;font-size:10px;color:#5e5952}
+
+/* Extension sidebar */
+.wa-ext{background:linear-gradient(180deg,#0f1318,#0d1117);border-left:1px solid rgba(96,165,250,.08);display:flex;flex-direction:column;padding:16px}
+.wa-ext-head{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.wa-ext-logo{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,#3b82f6,#2563eb);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.wa-ext-title{font-size:13px;font-weight:600;letter-spacing:-.02em}
+.wa-ext-badge{font-size:7px;background:rgba(96,165,250,.1);color:#60a5fa;padding:2px 6px;border-radius:3px;letter-spacing:.05em;text-transform:uppercase;margin-left:auto}
+.wa-ext-section{margin-bottom:14px}
+.wa-ext-label{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#4a5568;margin-bottom:8px;font-weight:500}
+.wa-ext-pill{display:inline-block;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.15);color:#93c5fd;padding:6px 10px;border-radius:6px;font-size:9px;margin:0 4px 6px 0;line-height:1.4;cursor:default}
+.wa-ext-pill:hover{background:rgba(96,165,250,.15);border-color:rgba(96,165,250,.3)}
+.wa-ext-tone{display:flex;align-items:center;gap:8px;margin-top:4px}
+.wa-ext-tone-track{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;position:relative}
+.wa-ext-tone-fill{height:100%;width:60%;background:linear-gradient(90deg,#3b82f6,#60a5fa);border-radius:2px}
+.wa-ext-tone-label{font-size:8px;color:#60a5fa;min-width:48px}
+.wa-ext-schedule{background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.1);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:8px}
+.wa-ext-schedule-icon{font-size:14px;color:#60a5fa}
+.wa-ext-schedule-text{font-size:9px;color:#93c5fd}
+.wa-ext-schedule-time{font-size:10px;font-weight:600;color:#e8e4de}
+.wa-ext-privacy{margin-top:auto;display:flex;align-items:center;gap:8px;background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.1);border-radius:8px;padding:10px 12px}
+.wa-ext-privacy-icon{font-size:14px;color:#34d399}
+.wa-ext-privacy-text{font-size:8px;color:#34d399;letter-spacing:.02em;line-height:1.5}
+
+.browser-shadow{height:20px;margin:0 5%;background:radial-gradient(ellipse at center,rgba(0,0,0,.35) 0%,transparent 70%);border-radius:50%;filter:blur(6px)}
+
+/* === SCREENSHOT CAROUSEL === */
+.cs-carousel{padding:clamp(5em,10vh,8em) 0;overflow:hidden;position:relative;z-index:2;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.cs-carousel-label{display:block;text-align:center;font-family:var(--mono);font-size:.55rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);margin-bottom:40px}
+.cs-carousel-track{display:flex;gap:clamp(16px,2vw,28px);will-change:transform;cursor:grab;user-select:none}
+.cs-carousel-track:active{cursor:grabbing}
+.cs-carousel-slide{flex:0 0 auto;width:clamp(280px,38vw,460px)}
+.cs-carousel-slide-img{position:relative;overflow:hidden;border-radius:10px;border:1px solid var(--border);background:#161616;box-shadow:0 12px 40px rgba(0,0,0,.3);transition:border-color .5s,box-shadow .5s,transform .5s cubic-bezier(.16,1,.3,1)}
+.cs-carousel-slide:hover .cs-carousel-slide-img{border-color:rgba(201,169,109,.1);box-shadow:0 20px 60px rgba(0,0,0,.4);transform:translateY(-4px)}
+.cs-carousel-slide-img img{width:100%;display:block;filter:grayscale(.8) brightness(.9) sepia(.2) contrast(1.05);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1.2s cubic-bezier(.16,1,.3,1)}
+.cs-carousel-slide:hover .cs-carousel-slide-img img{transform:scale(1.06);filter:grayscale(0) brightness(1.05) sepia(0) contrast(1.05)}
+.cs-carousel-slide-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);pointer-events:none;border-radius:10px;transition:opacity 1s}
+.cs-carousel-slide:hover .cs-carousel-slide-img::after{opacity:.1}
+.cs-carousel-slide-caption{font-family:var(--mono);font-size:.5rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-top:14px;text-align:center;transition:color .3s}
+.cs-carousel-slide:hover .cs-carousel-slide-caption{color:var(--muted)}
+
+/* === STICKY LAYOUT === */
+.cs-sticky-layout{display:flex;align-items:flex-start;max-width:1800px;margin:0 auto;position:relative}
+.cs-sticky-visual{flex:1.5;position:sticky;top:6vh;height:auto}
+.cs-sticky-text{flex:1;min-width:0;padding-bottom:10vh}
+@media(max-width:900px){
+    .cs-sticky-layout{flex-direction:column}
+    .cs-sticky-visual{position:relative;top:auto;width:100%}
+    .cs-sticky-text{width:100%;padding-bottom:0}
+}
+@media(min-width:901px){
+    .cs-sticky-text .cs-content, .cs-sticky-text .cs-wide { max-width: 100%; padding-left: 2vw; padding-right: 4vw; }
+    .cs-hero-img{margin-top:0 !important; padding-top:6vh; padding-left:4vw; padding-right:2vw;}
+    .cs-sticky-text .cs-features { grid-template-columns: 1fr; }
+    .cs-sticky-text .cs-feature--wide { grid-template-columns: 1fr; gap:0; padding:24px 28px; }
+}
+
+/* === CONTENT SECTIONS === */
+.cs-content{max-width:900px;margin:0 auto;padding:0 clamp(2em,6vw,4em)}
+.cs-section{padding:clamp(3em,7vh,5em) 0}
+.cs-section:nth-child(even){background:var(--surface);border-radius:12px;padding:clamp(3em,7vh,5em) clamp(24px,3vw,36px);margin:0 -24px}
+.cs-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:32px}
+.cs-divider{width:40px;height:1px;background:var(--dim);margin-bottom:48px;opacity:.5}
+.cs-section-heading{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:600;letter-spacing:-.03em;line-height:1.1;margin-bottom:32px}
+.cs-prose{font-size:.95rem;color:#b0aaa2;line-height:1.9;font-weight:300}
+.cs-prose strong{color:var(--text);font-weight:400}
+.cs-prose+.cs-prose{margin-top:24px}
+
+/* === ARCHITECTURE -- HTML-based === */
+.cs-arch{margin-top:56px}
+.cs-arch-label{font-family:var(--mono);font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:20px;display:block}
+.cs-arch-row{display:flex;gap:12px;margin-bottom:12px;align-items:stretch}
+.cs-arch-node{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;flex:1;min-width:0;position:relative;transition:border-color .4s,box-shadow .4s,background .4s}
+.cs-arch-node:hover{border-color:rgba(201,169,109,.15);box-shadow:0 8px 30px rgba(0,0,0,.25);background:#181818}
+.cs-arch-node.hl{border-color:rgba(201,169,109,.12)}
+.cs-arch-node.hl::after{content:'';position:absolute;inset:0;border-radius:8px;background:radial-gradient(ellipse at 50% 0%,rgba(201,169,109,.03),transparent 70%);pointer-events:none}
+.cs-arch-node-name{font-family:var(--display);font-size:.8rem;font-weight:500;letter-spacing:-.02em;margin-bottom:3px}
+.cs-arch-node-desc{font-family:var(--mono);font-size:.48rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase;line-height:1.5}
+.cs-arch-node-badge{position:absolute;top:8px;right:10px;font-family:var(--mono);font-size:.4rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);opacity:.6}
+/* Connector arrows between rows */
+.cs-arch-arrows{display:flex;justify-content:center;gap:48px;padding:4px 0;color:var(--dim);opacity:.3}
+.cs-arch-arrows svg{width:16px;height:16px}
+.cs-arch-wide{flex:2}
+.cs-arch-narrow{flex:1}
+/* Layer labels */
+.cs-arch-layer{display:flex;align-items:center;gap:12px;margin-bottom:16px;margin-top:32px}
+.cs-arch-layer-line{flex:1;height:1px;background:var(--border)}
+.cs-arch-layer-text{font-family:var(--mono);font-size:.45rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+
+/* === FEATURE CARDS === */
+.cs-features{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px}
+.cs-feature{background:var(--surface);border:1px solid var(--border);border-left:3px solid rgba(96,165,250,.25);border-radius:10px;padding:32px 28px;position:relative;overflow:hidden;transition:border-color .5s,box-shadow .5s}
+.cs-feature:hover{border-color:rgba(96,165,250,.2);box-shadow:0 16px 60px rgba(0,0,0,.3),0 0 40px rgba(96,165,250,.06)}
+.cs-feature::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(96,165,250,.05) 0%,transparent 60%);pointer-events:none;opacity:0;transition:opacity .3s}
+.cs-feature:hover::before{opacity:1}
+.cs-feature-num{font-family:var(--mono);font-size:.5rem;color:var(--dim);letter-spacing:3px;display:block;margin-bottom:14px}
+.cs-feature h4{font-family:var(--display);font-size:1.05rem;font-weight:500;letter-spacing:-.02em;margin-bottom:10px}
+.cs-feature p{font-size:.8rem;color:var(--muted);line-height:1.75}
+/* Featured card spans full width */
+.cs-feature--wide{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:0 28px;padding:36px 32px}
+.cs-feature--wide .cs-feature-num{grid-column:1/-1}
+.cs-feature--wide h4{align-self:start}
+.cs-feature--wide p{grid-column:1/-1}
+
+/* === TECH GRID === */
+.cs-tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:48px;background:var(--border);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.cs-tech-item{background:var(--bg);padding:22px 20px;transition:background .3s}
+.cs-tech-item:hover{background:var(--surface)}
+.cs-tech-name{font-family:var(--display);font-size:.85rem;font-weight:500;letter-spacing:-.02em;margin-bottom:3px}
+.cs-tech-role{font-family:var(--mono);font-size:.5rem;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase}
+
+/* === WIDE SECTION (breaks out of cs-content) === */
+.cs-wide{max-width:1100px;margin:0 auto;padding:0 clamp(2em,6vw,4em)}
+
+/* === OTHER PROJECTS === */
+.cs-others{padding:clamp(8em,16vh,12em) clamp(3em,8vw,8em);position:relative;z-index:2;max-width:1200px;margin:0 auto}
+.cs-others-label{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:32px}
+.cs-others-divider{width:40px;height:1px;background:var(--dim);margin-bottom:48px;opacity:.5}
+.cs-others-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cs-other-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .5s,box-shadow .5s,transform .5s cubic-bezier(.16,1,.3,1);text-decoration:none;color:inherit}
+.cs-other-card:hover{border-color:rgba(201,169,109,.12);box-shadow:0 24px 70px rgba(0,0,0,.35);transform:translateY(-4px)}
+.cs-other-card-img{position:relative;overflow:hidden;aspect-ratio:16/10;background:#161616}
+.cs-other-card-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) brightness(.92) sepia(.15);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1s}
+.cs-other-card:hover .cs-other-card-img img{transform:scale(1.05);filter:grayscale(0) brightness(1.05) sepia(0)}
+.cs-other-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);pointer-events:none;transition:opacity 1s}
+.cs-other-card:hover .cs-other-card-img::after{opacity:.1}
+.cs-other-card-body{padding:24px}
+.cs-other-card-badge{font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.7;display:block;margin-bottom:10px}
+.cs-other-card-title{font-family:var(--display);font-size:1.2rem;font-weight:500;letter-spacing:-.02em;margin-bottom:8px}
+.cs-other-card-desc{font-size:.78rem;color:var(--muted);line-height:1.7}
+.cs-other-card-arrow{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:16px;transition:color .3s}
+.cs-other-card:hover .cs-other-card-arrow{color:var(--gold)}
+
+/* === FOOTER === */
+.v5-footer{padding:clamp(10em,18vh,14em) 0 48px;text-align:center;position:relative;z-index:2}
+.v5-footer::before{content:'';display:block;width:40px;height:1px;margin:0 auto 56px;background:var(--dim)}
+.v5-footer-title{font-family:var(--display);font-size:clamp(3rem,6vw,5rem);font-weight:600;letter-spacing:-.03em;margin-bottom:16px}
+.v5-footer-sub{color:var(--muted);font-size:.85rem;margin-bottom:44px}
+.v5-footer-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:60px}
+.v5-footer-link{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid var(--border);border-radius:60px;color:var(--muted);font-size:.78rem;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.v5-footer-link:hover{color:var(--gold);border-color:rgba(201,169,109,.2);transform:translateY(-2px)}
+.v5-footer-copy{font-size:.6rem;color:var(--dim);letter-spacing:1px}
+
+/* === RESPONSIVE === */
+@media(max-width:900px){
+    .cs-hero-title{font-size:clamp(3rem,12vw,5rem)}
+    .cs-hero-meta{flex-wrap:wrap;gap:24px}
+    .cs-features{grid-template-columns:1fr}
+    .cs-feature--wide{grid-template-columns:1fr}
+    .cs-tech-grid{grid-template-columns:repeat(2,1fr)}
+    .cs-others-grid{grid-template-columns:1fr}
+    .cs-arch-row{flex-wrap:wrap}
+    .cs-arch-node{min-width:calc(50% - 6px)}
+    .cs-carousel-slide{width:clamp(240px,65vw,340px)}
+}
+@media(max-width:768px){
+    .v5-nav-links{gap:20px}
+    .v5-nav-links a{font-size:.65rem}
+    .cs-hero-title{font-size:clamp(2.8rem,11vw,4rem)}
+    .cs-hero-desc{font-size:.92rem;line-height:1.75}
+    .cs-hero-meta{gap:20px 28px}
+    .cs-hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:24px 32px}
+    .cs-hero-meta-val{font-size:clamp(3rem,10vw,5rem)}
+    .cs-hero-meta-label{font-size:.5rem}
+    .cs-hero-meta-label{font-size:.45rem}
+    .cs-section-heading{font-size:clamp(1.6rem,5vw,2.4rem)}
+    .cs-prose{font-size:.88rem}
+    .cs-feature h4{font-size:.95rem}
+    .cs-feature p{font-size:.78rem}
+    .cs-arch-node-name{font-size:.75rem}
+    .cs-arch-node-desc{font-size:.44rem}
+    .cs-arch-node-badge{font-size:.38rem}
+    .cs-other-card-title{font-size:1rem}
+    .cs-other-card-desc{font-size:.72rem}
+}
+@media(max-width:600px){
+    .cs-hero{padding:0 20px 40px;min-height:100svh}
+    .cs-hero-back{font-size:.55rem;margin-bottom:32px}
+    .cs-hero-tag{font-size:.5rem;letter-spacing:3px;margin-bottom:24px}
+    .cs-hero-title{font-size:clamp(2.4rem,10vw,3.2rem);margin-bottom:28px}
+    .cs-hero-desc{font-size:.88rem;max-width:100%;line-height:1.75}
+    .cs-hero-meta{margin-top:36px;gap:16px 24px;display:grid;grid-template-columns:1fr 1fr}
+    .cs-hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
+    .cs-hero-meta-val{font-size:clamp(2.5rem,14vw,4rem);margin-bottom:0}
+    .cs-hero-meta-label{font-size:.48rem;margin-top:4px}
+    .cs-hero-meta-label::before{width:12px}
+    .cs-hero-meta-label{font-size:.42rem;margin-top:4px}
+    .cs-hero-img{display:none}
+    .cs-hero-img-caption{font-size:.48rem;margin-top:12px}
+    .cs-content{padding:0 20px}
+    .cs-wide{padding:0 20px}
+    .cs-section{padding:28px 0}
+    .cs-label{font-size:.5rem;letter-spacing:3px;margin-bottom:24px}
+    .cs-divider{margin-bottom:32px}
+    .cs-section-heading{font-size:clamp(1.4rem,5vw,2rem);margin-bottom:24px}
+    .cs-prose{font-size:.85rem;line-height:1.8}
+    .cs-arch{margin-top:36px}
+    .cs-arch-label{font-size:.45rem}
+    .cs-arch-row{gap:10px;margin-bottom:10px}
+    .cs-arch-node{padding:12px 14px;min-width:100%}
+    .cs-arch-node-name{font-size:.72rem}
+    .cs-arch-node-desc{font-size:.42rem;line-height:1.4}
+    .cs-arch-node-badge{font-size:.36rem;top:6px;right:8px}
+    .cs-arch-layer{margin-top:24px;margin-bottom:12px}
+    .cs-arch-layer-text{font-size:.4rem;letter-spacing:2px}
+    .cs-arch-arrows{gap:24px;padding:2px 0}
+    .cs-features{margin-top:32px;gap:14px}
+    .cs-feature{padding:22px 18px}
+    .cs-feature-num{font-size:.45rem;margin-bottom:10px}
+    .cs-feature h4{font-size:.9rem;margin-bottom:8px}
+    .cs-feature p{font-size:.75rem;line-height:1.7}
+    .cs-feature--wide{padding:24px 20px;gap:0 20px}
+    .cs-tech-grid{grid-template-columns:1fr 1fr;margin-top:32px}
+    .cs-tech-item{padding:16px 14px}
+    .cs-tech-name{font-size:.78rem}
+    .cs-tech-role{font-size:.44rem}
+    .cs-carousel{padding:clamp(3em,6vh,5em) 0}
+    .cs-carousel-label{font-size:.48rem;margin-bottom:28px}
+    .cs-carousel-slide{width:clamp(220px,70vw,300px)}
+    .cs-carousel-slide-caption{font-size:.44rem;margin-top:10px}
+    .cs-others{padding:48px 20px}
+    .cs-others-label{font-size:.5rem;margin-bottom:24px}
+    .cs-others-divider{margin-bottom:32px}
+    .cs-other-card-body{padding:18px}
+    .cs-other-card-badge{font-size:.45rem;margin-bottom:8px}
+    .cs-other-card-title{font-size:.95rem}
+    .cs-other-card-desc{font-size:.72rem}
+    .cs-other-card-arrow{font-size:.45rem;margin-top:12px}
+    .v5-manifesto{min-height:auto;padding:48px 20px}
+    .v5-manifesto-text{font-size:clamp(1.3rem,6vw,1.8rem)}
+    .v5-footer{padding:48px 20px 32px}
+    .v5-footer::before{margin-bottom:36px}
+    .v5-footer-title{font-size:clamp(2.2rem,9vw,3rem)}
+    .v5-footer-sub{font-size:.8rem;margin-bottom:32px}
+    .v5-footer-links{gap:10px;margin-bottom:40px}
+    .v5-footer-link{padding:10px 18px;font-size:.75rem}
+    .v5-nav{padding:14px 20px}
+    .v5-nav-links{gap:16px}
+    .v5-nav-links a{font-size:.6rem}
+    .v5-scroll-cue{display:none}
+    .v5-marquee{padding:clamp(1.2em,3vh,2em) 0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="v5-progress" id="progBar"></div>
+
+<!-- Nav -->
+<nav class="v5-nav">
+    <a href="../index.html" class="v5-nav-logo">Ajay Sachdev</a>
+    <ul class="v5-nav-links">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- === HERO === -->
+<header class="cs-hero">
+    <a href="index.html" class="cs-hero-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        All projects
+    </a>
+    <span class="cs-hero-tag">Chrome Extension &middot; Prototype</span>
+    <h1 class="cs-hero-title">WhatsApp<br><em>Smart</em></h1>
+    <p class="cs-hero-desc"><strong>2.5 billion people use WhatsApp every day. Zero productivity tools.</strong> Gmail got smart replies in 2017. WhatsApp added basic single-message scheduling in February 2026, buried in the UI. Still no AI, no way to catch up on a hundred group messages, no follow-up reminders. Nobody's building for the people who just use WhatsApp to talk to friends, family, and colleagues. So I started building it.</p>
+    <div class="cs-hero-meta">
+        <div class="cs-hero-meta-item">
+            <span class="cs-hero-meta-val">50+</span>
+            <span class="cs-hero-meta-label">React components</span>
+        </div>
+        <div class="cs-hero-meta-item">
+            <span class="cs-hero-meta-val">10</span>
+            <span class="cs-hero-meta-label">Features built</span>
+        </div>
+        <div class="cs-hero-meta-item">
+            <span class="cs-hero-meta-val">130+</span>
+            <span class="cs-hero-meta-label">Source files</span>
+        </div>
+    </div>
+    <div class="v5-scroll-cue">Scroll</div>
+</header>
+
+<!-- Marquee -->
+<div class="v5-marquee">
+    <div class="v5-marquee-track" id="marqueeTrack">
+        <span class="v5-marquee-item">Chrome Extension <span class="sep">/</span></span><span class="v5-marquee-item">TypeScript <span class="sep">/</span></span><span class="v5-marquee-item">React <span class="sep">/</span></span><span class="v5-marquee-item">Privacy-First <span class="sep">/</span></span><span class="v5-marquee-item">AI Replies <span class="sep">/</span></span><span class="v5-marquee-item">Scheduling <span class="sep">/</span></span><span class="v5-marquee-item">WhatsApp <span class="sep">/</span></span><span class="v5-marquee-item">16.5k Lines <span class="sep">/</span></span><span class="v5-marquee-item">Chrome Extension <span class="sep">/</span></span><span class="v5-marquee-item">TypeScript <span class="sep">/</span></span><span class="v5-marquee-item">React <span class="sep">/</span></span><span class="v5-marquee-item">Privacy-First <span class="sep">/</span></span><span class="v5-marquee-item">AI Replies <span class="sep">/</span></span><span class="v5-marquee-item">Scheduling <span class="sep">/</span></span><span class="v5-marquee-item">WhatsApp <span class="sep">/</span></span><span class="v5-marquee-item">16.5k Lines <span class="sep">/</span></span>
+    </div>
+</div>
+
+<div class="cs-sticky-layout">
+    <div class="cs-sticky-visual">
+        <!-- Hero Image / Browser Frame -->
+        <div class="cs-hero-img">
+    <div class="browser">
+        <div class="browser-chrome">
+            <div class="browser-bar">
+                <div class="browser-dots"><span></span><span></span><span></span></div>
+                <div class="browser-tab">
+                    <div class="browser-tab-icon"><svg viewBox="0 0 24 24"><path d="M17.5 14.4l-5.01 2.78c-.46.26-1 .26-1.46 0L6 14.4c-.71-.4-.71-1.42 0-1.82l1.53-.85 3.5 1.95c.93.52 2.04.52 2.97 0l3.5-1.95 1.53.85c.71.4.71 1.42-.03 1.82zM12 3.19l5.01 2.78c.71.4.71 1.42 0 1.82L12 10.57 6.99 7.79c-.71-.4-.71-1.42 0-1.82L12 3.19z"/></svg></div>
+                    WhatsApp Web
+                </div>
+                <div class="browser-url"><span class="browser-url-lock">&#128274;</span> web.whatsapp.com</div>
+            </div>
+        </div>
+        <div class="browser-viewport" id="browserViewport">
+            <div class="browser-scaler" id="browserScaler">
+                <div class="wa">
+                    <!-- Contacts -->
+                    <div class="wa-contacts">
+                        <div class="wa-contacts-head"><span class="wa-contacts-head-name">Chats</span></div>
+                        <div class="wa-contacts-search">Search or start new chat</div>
+                        <div class="wa-contact active">
+                            <div class="wa-contact-avatar">SR</div>
+                            <div class="wa-contact-info"><div class="wa-contact-name">Sarah Reynolds</div><div class="wa-contact-msg">Yeah, 3pm works for me</div></div>
+                            <div class="wa-contact-time">9:14</div>
+                        </div>
+                        <div class="wa-contact">
+                            <div class="wa-contact-avatar">MK</div>
+                            <div class="wa-contact-info"><div class="wa-contact-name">Marketing Team</div><div class="wa-contact-msg">James: Updated the Q4 deck</div></div>
+                            <div class="wa-contact-time">8:52</div>
+                        </div>
+                        <div class="wa-contact">
+                            <div class="wa-contact-avatar">DP</div>
+                            <div class="wa-contact-info"><div class="wa-contact-name">David Park</div><div class="wa-contact-msg">Invoice sent, check email</div></div>
+                            <div class="wa-contact-time">8:30</div>
+                        </div>
+                        <div class="wa-contact">
+                            <div class="wa-contact-avatar">OT</div>
+                            <div class="wa-contact-info"><div class="wa-contact-name">Ops Team</div><div class="wa-contact-msg">You: Server migration done</div></div>
+                            <div class="wa-contact-time">Yesterday</div>
+                        </div>
+                        <div class="wa-contact">
+                            <div class="wa-contact-avatar">LM</div>
+                            <div class="wa-contact-info"><div class="wa-contact-name">Lisa Miller</div><div class="wa-contact-msg">Thanks for the update!</div></div>
+                            <div class="wa-contact-time">Yesterday</div>
+                        </div>
+                    </div>
+                    <!-- Chat -->
+                    <div class="wa-chat">
+                        <div class="wa-chat-head">
+                            <div class="wa-contact-avatar" style="width:32px;height:32px;font-size:10px">SR</div>
+                            <div><div class="wa-chat-head-name">Sarah Reynolds</div><div class="wa-chat-head-status">online</div></div>
+                        </div>
+                        <div class="wa-chat-body">
+                            <div class="wa-bubble recv">Did you get a chance to look at the Q4 budget numbers last week?<span class="wa-bubble-time">9:02</span></div>
+                            <div class="wa-bubble recv">Also wondering if you're free Thursday to walk through the variance report with finance<span class="wa-bubble-time">9:03</span></div>
+                            <div class="wa-bubble sent">Yeah I've been through them. Couple of things flagged in the exceptions file. Happy to walk through it Thursday, does 3pm work?<span class="wa-bubble-time">9:10</span></div>
+                            <div class="wa-bubble recv">3pm is perfect. Can you bring the YoY comparison too? Want to show the team how it tracks against forecast<span class="wa-bubble-time">9:12</span></div>
+                            <div class="wa-bubble recv">Oh and one more thing. Have we heard back from the new supplier about the Q3 pricing?<span class="wa-bubble-time">9:13</span></div>
+                            <div class="wa-bubble sent">Will bring the YoY comp. Supplier got back yesterday, pricing is 4% below current. I'll add it to the Thursday deck<span class="wa-bubble-time">9:14</span></div>
+                        </div>
+                        <div class="wa-chat-input"><div class="wa-chat-input-field">Type a message</div></div>
+                    </div>
+                    <!-- Extension Sidebar -->
+                    <div class="wa-ext">
+                        <div class="wa-ext-head">
+                            <div class="wa-ext-logo">WS</div>
+                            <span class="wa-ext-title">WhatsApp Smart</span>
+                            <span class="wa-ext-badge">Prototype</span>
+                        </div>
+                        <div class="wa-ext-section">
+                            <div class="wa-ext-label">AI Reply Suggestions</div>
+                            <div class="wa-ext-pill">Sure, I'll pull the Q3 pricing into the deck for Thursday</div>
+                            <div class="wa-ext-pill">Yes, supplier confirmed 4% savings. I'll prep the comparison</div>
+                            <div class="wa-ext-pill">Got it. Will have the full variance breakdown ready by 3pm</div>
+                        </div>
+                        <div class="wa-ext-section">
+                            <div class="wa-ext-label">Tone</div>
+                            <div class="wa-ext-tone">
+                                <span style="font-size:8px;color:#5e5952">Casual</span>
+                                <div class="wa-ext-tone-track"><div class="wa-ext-tone-fill"></div></div>
+                                <span class="wa-ext-tone-label">Professional</span>
+                            </div>
+                        </div>
+                        <div class="wa-ext-section">
+                            <div class="wa-ext-label">Scheduled Message</div>
+                            <div class="wa-ext-schedule">
+                                <span class="wa-ext-schedule-icon">&#9200;</span>
+                                <div>
+                                    <div class="wa-ext-schedule-text">Reminder for Sarah Reynolds</div>
+                                    <div class="wa-ext-schedule-time">Thu 3:00 PM / "See you at 3, bringing the reports"</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wa-ext-privacy">
+                            <span class="wa-ext-privacy-icon">&#128737;</span>
+                            <div class="wa-ext-privacy-text">Messages stay on your device. No server. No sign-up. All processing runs locally in the browser.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="browser-shadow"></div>
+    <p class="cs-hero-img-caption">Chrome extension showing AI suggestions, tone control, and scheduling <span class="dummy-badge">Prototype</span></p>
+        </div>
+    </div>
+    
+    <div class="cs-sticky-text">
+        <!-- === THE PROBLEM === -->
+        <div class="cs-content">
+    <section class="cs-section" id="problem">
+        <span class="cs-label">01 / The Problem</span>
+        <div class="cs-divider"></div>
+        <h2 class="cs-section-heading">The missing layer</h2>
+        <p class="cs-prose">I kept running into the same friction. Want to schedule a birthday message for midnight? Can't. Need to catch up on a family group chat with 120 unread messages? Scroll through every single one. Want quick reply suggestions when you're juggling ten conversations? Nothing.</p>
+        <p class="cs-prose">The gap is bigger than scheduling. There's no personal productivity layer at all. WhatsApp's own scheduling, added in early 2026, is single-message only with no recurring option. Every third-party tool in this space targets businesses running customer support through the WhatsApp Business API. <strong>Personal users got left behind.</strong> That's the gap I'm filling.</p>
+    </section>
+</div>
+
+<!-- === HOW IT WORKS (wider for the architecture diagram) === -->
+<div class="cs-wide">
+    <section class="cs-section" id="architecture">
+        <span class="cs-label">02 / How It Works</span>
+        <div class="cs-divider"></div>
+        <h2 class="cs-section-heading">Three-layer architecture</h2>
+        <p class="cs-prose" style="max-width:700px">You open WhatsApp Web and the extension is already there. A small toolbar next to the compose box. Type a message and you'll see AI suggestions, a tone adjuster, and a schedule button. Behind it, everything runs locally in the browser.</p>
+        <p class="cs-prose" style="max-width:700px">A content script injects the UI via shadow DOM so it never clashes with WhatsApp's own styles. A background service worker handles scheduling through Chrome Alarms, so messages go out even if the tab isn't focused. Message access comes from the WPP library (an open-source WhatsApp Web API), not brittle DOM scraping. <strong>No server required for core features. No sign-up.</strong></p>
+
+        <!-- HTML Architecture Diagram -->
+        <div class="cs-arch">
+            <!-- Browser Layer -->
+            <div class="cs-arch-layer">
+                <span class="cs-arch-layer-text">Browser Layer</span>
+                <div class="cs-arch-layer-line"></div>
+            </div>
+
+            <div class="cs-arch-row">
+                <div class="cs-arch-node hl cs-arch-wide">
+                    <span class="cs-arch-node-badge">Entry point</span>
+                    <div class="cs-arch-node-name">Content Script</div>
+                    <div class="cs-arch-node-desc">Injects into WhatsApp Web DOM via MutationObserver detection</div>
+                </div>
+                <div class="cs-arch-node hl">
+                    <span class="cs-arch-node-badge">Main world</span>
+                    <div class="cs-arch-node-name">Injected Script</div>
+                    <div class="cs-arch-node-desc">WPP bridge for programmatic message access</div>
+                </div>
+            </div>
+
+            <div class="cs-arch-arrows">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+            </div>
+
+            <div class="cs-arch-row">
+                <div class="cs-arch-node hl">
+                    <div class="cs-arch-node-name">Shadow DOM</div>
+                    <div class="cs-arch-node-desc">Isolated React mount. Never clashes with WhatsApp CSS</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Message Bridge</div>
+                    <div class="cs-arch-node-desc">postMessage relay between content + injected scripts</div>
+                </div>
+                <div class="cs-arch-node hl">
+                    <div class="cs-arch-node-name">React 19 UI</div>
+                    <div class="cs-arch-node-desc">54 components: Radix primitives, Tailwind v4, shadcn/ui</div>
+                </div>
+            </div>
+
+            <!-- Extension Layer -->
+            <div class="cs-arch-layer">
+                <span class="cs-arch-layer-text">Extension Layer</span>
+                <div class="cs-arch-layer-line"></div>
+            </div>
+
+            <div class="cs-arch-row">
+                <div class="cs-arch-node hl cs-arch-wide">
+                    <span class="cs-arch-node-badge">Service worker</span>
+                    <div class="cs-arch-node-name">Background Worker</div>
+                    <div class="cs-arch-node-desc">1,400 lines: scheduling engine, send queue, orphan recovery, tab manager</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Chrome Storage</div>
+                    <div class="cs-arch-node-desc">All user data local. Scheduled messages, voice profiles, office hours, reminders</div>
+                </div>
+            </div>
+
+            <div class="cs-arch-arrows">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+            </div>
+
+            <div class="cs-arch-row">
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Chrome Alarms</div>
+                    <div class="cs-arch-node-desc">OS-level timing. Fires even when tab unfocused or worker asleep</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Send Queue</div>
+                    <div class="cs-arch-node-desc">Retry logic, staggered batch delivery (3-10s gaps), status tracking</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Tab Manager</div>
+                    <div class="cs-arch-node-desc">Auto-opens WhatsApp tab for scheduled sends, closes when done</div>
+                </div>
+            </div>
+
+            <!-- External Services -->
+            <div class="cs-arch-layer">
+                <span class="cs-arch-layer-text">External Services (optional)</span>
+                <div class="cs-arch-layer-line"></div>
+            </div>
+
+            <div class="cs-arch-row">
+                <div class="cs-arch-node hl">
+                    <span class="cs-arch-node-badge">BYOK / proxy</span>
+                    <div class="cs-arch-node-name">Claude API</div>
+                    <div class="cs-arch-node-desc">Haiku 4.5 for speed, Sonnet 4.6 for quality. Direct from browser or via free-tier proxy</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Hono Server</div>
+                    <div class="cs-arch-node-desc">Push notifications when Chrome closed. AI proxy with 10 free actions/month</div>
+                </div>
+                <div class="cs-arch-node">
+                    <div class="cs-arch-node-name">Upstash Redis</div>
+                    <div class="cs-arch-node-desc">Server-side schedule state, push subscriptions, usage metering</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- === FEATURES === -->
+<div class="cs-content">
+    <section class="cs-section" id="features">
+        <span class="cs-label">03 / Feature highlights</span>
+        <div class="cs-divider"></div>
+        <h2 class="cs-section-heading">What it does</h2>
+
+        <div class="cs-features">
+            <div class="cs-feature cs-feature--wide">
+                <span class="cs-feature-num">01</span>
+                <h4>Smart Scheduling</h4>
+                <p>Schedule one-off or recurring messages. Enforces per-contact office hours so messages don't fire at 3am. Supports intelligent batch sending with staggered delays.</p>
+            </div>
+            <div class="cs-feature">
+                <span class="cs-feature-num">02</span>
+                <h4>AI Reply Suggestions</h4>
+                <p>Reads the context of the chat and suggests 3 replies instantly via Claude Haiku. Learns your personal emoji habits and tone.</p>
+            </div>
+            <div class="cs-feature">
+                <span class="cs-feature-num">03</span>
+                <h4>Tone Adjuster</h4>
+                <p>Draft quickly, then click to rewrite as formal, casual, or professional. Seamless context switching.</p>
+            </div>
+            <div class="cs-feature">
+                <span class="cs-feature-num">04</span>
+                <h4>Group Chat Summary</h4>
+                <p>Instantly summarise 30+ unread messages. Extracts decisions, assignees, and deadlines into structured bullets.</p>
+            </div>
+            <div class="cs-feature">
+                <span class="cs-feature-num">05</span>
+                <h4>Undo Send</h4>
+                <p>Intercepts messages with a 5-second countdown bar. Cancel anytime before it hits WhatsApp's servers.</p>
+            </div>
+            <div class="cs-feature">
+                <span class="cs-feature-num">06</span>
+                <h4>Follow-Up Reminders</h4>
+                <p>Flag messages to bounce back to your attention later. Set keyword alerts for terms like "urgent" or "deadline".</p>
+            </div>
+            <div class="cs-feature cs-feature--wide">
+                <span class="cs-feature-num">07</span>
+                <h4>Privacy-First</h4>
+                <p>All data stays in local Chrome storage. No sign-ups required. Bring your own API key or use the free tier proxy.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- === TECH STACK === -->
+    <section class="cs-section" id="stack">
+        <span class="cs-label">04 / Tech Stack</span>
+        <div class="cs-divider"></div>
+        <h2 class="cs-section-heading">What it's built with</h2>
+
+        <div class="cs-tech-grid">
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">React 19</div>
+                <div class="cs-tech-role">UI + state</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">TypeScript 5.9</div>
+                <div class="cs-tech-role">Type-safe code</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">WXT</div>
+                <div class="cs-tech-role">Extension framework</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Tailwind v4</div>
+                <div class="cs-tech-role">Utility styling</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Radix UI</div>
+                <div class="cs-tech-role">Accessible primitives</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Claude API</div>
+                <div class="cs-tech-role">Haiku + Sonnet</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Chrome Alarms</div>
+                <div class="cs-tech-role">Background scheduling</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">WPP / wa-js</div>
+                <div class="cs-tech-role">WhatsApp DOM access</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Hono</div>
+                <div class="cs-tech-role">Push + AI proxy</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Next.js 15</div>
+                <div class="cs-tech-role">Landing page</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Vite</div>
+                <div class="cs-tech-role">Build tooling</div>
+            </div>
+            <div class="cs-tech-item">
+                <div class="cs-tech-name">Upstash Redis</div>
+                <div class="cs-tech-role">Server state</div>
+            </div>
+        </div>
+    </section>
+        </div>
+    </div>
+</div>
+
+<!-- === SCREENSHOT CAROUSEL === -->
+<section class="cs-carousel">
+    <span class="cs-carousel-label">Screenshots</span>
+    <div class="cs-carousel-track" id="carouselTrack">
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/whatsapp-smart-ui.png" alt="Full extension UI alongside WhatsApp" loading="eager"></div>
+            <p class="cs-carousel-slide-caption">Full extension UI</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/mockup-whatsapp.png" alt="Extension mockup" loading="eager"></div>
+            <p class="cs-carousel-slide-caption">Extension mockup</p>
+        </div>
+        <!-- Duplicates for seamless loop -->
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/whatsapp-smart-ui.png" alt="Full extension UI alongside WhatsApp" loading="eager"></div>
+            <p class="cs-carousel-slide-caption">Full extension UI</p>
+        </div>
+        <div class="cs-carousel-slide">
+            <div class="cs-carousel-slide-img"><img src="../images/mockup-whatsapp.png" alt="Extension mockup" loading="eager"></div>
+            <p class="cs-carousel-slide-caption">Extension mockup</p>
+        </div>
+    </div>
+</section>
+
+<!-- Manifesto -->
+<section class="v5-manifesto">
+    <p class="v5-manifesto-text" id="manifestoText">Every WhatsApp extension I found was built for businesses. I just wanted to schedule a birthday message.</p>
+</section>
+
+<!-- === OTHER PROJECTS === -->
+<section class="cs-others">
+    <span class="cs-others-label">Other Projects</span>
+    <div class="cs-others-divider"></div>
+    <div class="cs-others-grid">
+        <a href="ajay-brain.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-card-img">
+                <img src="../images/card-brain.png" alt="OpsPilot dashboard" loading="lazy">
+            </div>
+            <div class="cs-other-card-body">
+                <span class="cs-other-card-badge">Production</span>
+                <h3 class="cs-other-card-title">OpsPilot</h3>
+                <p class="cs-other-card-desc">Enterprise version of the same AI-first thinking. 97k lines of Python, production infrastructure, Xero + HubSpot integration.</p>
+                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+        <a href="trading-bot.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-card-img">
+                <img src="../images/card-trading.png" alt="Trading Bot backtest" loading="lazy">
+            </div>
+            <div class="cs-other-card-body">
+                <span class="cs-other-card-badge">Paper Trading</span>
+                <h3 class="cs-other-card-title">Trading Bot</h3>
+                <p class="cs-other-card-desc">Multi-agent Python system with the same structured-output approach. Four agents, deterministic risk management.</p>
+                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+        <a href="uni-nation.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
+            <div class="cs-other-card-img">
+                <img src="../images/card-uninat.png" alt="Uni-Nation website" loading="lazy">
+            </div>
+            <div class="cs-other-card-body">
+                <span class="cs-other-card-badge">Live</span>
+                <h3 class="cs-other-card-title">Uni-Nation Digital</h3>
+                <p class="cs-other-card-desc">Full-stack Next.js site for the family textile business. Different domain, same build-from-scratch approach.</p>
+                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="v5-footer" id="contact">
+    <h2 class="v5-footer-title" id="footerH">Let's talk.</h2>
+    <p class="v5-footer-sub">See something interesting? Get in touch.</p>
+    <div class="v5-footer-links">
+        <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span>LinkedIn</span></a>
+        <a href="mailto:ajaysachdev2@gmail.com" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg><span>Email</span></a>
+        <a href="https://uni-nation.in" target="_blank" rel="noopener" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg><span>Uni-Nation</span></a>
+    </div>
+    <p class="v5-footer-copy">&copy; 2026 Ajay Sachdev</p>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.js"></script>
+
+<script>
+/* === GSAP Setup === */
+gsap.registerPlugin(ScrollTrigger);
+if(typeof SplitText!=='undefined') gsap.registerPlugin(SplitText);
+if(typeof CustomEase!=='undefined'){gsap.registerPlugin(CustomEase);CustomEase.create('smooth','M0,0 C0.25,0.1 0.25,1 1,1')}
+
+/* === Lenis === */
+const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t))});
+lenis.on('scroll',ScrollTrigger.update);
+gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
+
+/* === Start === */
+/* === Browser scaler === */
+function scaleBrowser(){
+    const vp=document.getElementById('browserViewport');
+    const sc=document.getElementById('browserScaler');
+    if(!vp||!sc) return;
+    sc.style.transform=`scale(${vp.offsetWidth/1440})`;
+}
+scaleBrowser();
+window.addEventListener('resize',scaleBrowser);
+
+/* === Browser reveal === */
+const browserEl=document.querySelector('.browser');
+if(browserEl){
+    gsap.fromTo(browserEl,
+        {opacity:0,y:40,scale:.97},
+        {opacity:1,y:0,scale:1,duration:.5,ease:'expo.out',
+         scrollTrigger:{trigger:'.cs-hero-img',start:'top 85%',once:true}});
+}
+
+lenis.start();heroReveal();
+
+/* === Hero Reveal === */
+function heroReveal(){
+    const tl=gsap.timeline({defaults:{ease:'expo.out'}});
+    tl.fromTo('.cs-hero-back',{opacity:0,x:-20},{opacity:1,x:0,duration:.25},.03);
+    tl.fromTo('.cs-hero-tag',{opacity:0,y:20},{opacity:1,y:0,duration:.3},.05);
+    if(typeof SplitText!=='undefined'){
+        const titleSplit=new SplitText('.cs-hero-title',{type:'lines,chars',mask:'lines'});
+        tl.set('.cs-hero-title',{opacity:1},.08);
+        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.007,duration:.3},.08);
+    } else {
+        tl.fromTo('.cs-hero-title',{opacity:0,y:50},{opacity:1,y:0,duration:.4},.08);
+    }
+    tl.fromTo('.cs-hero-desc',{opacity:0,y:24},{opacity:1,y:0,duration:.4},.2);
+    tl.fromTo('.cs-hero-meta',{opacity:0,y:20},{opacity:1,y:0,duration:.3},.27);
+}
+
+/* === Progress === */
+gsap.to('#progBar',{scaleX:1,ease:'none',scrollTrigger:{trigger:'body',start:'top top',end:'bottom bottom',scrub:true}});
+
+
+/* === Screenshot Carousel -- auto-scroll with velocity direction === */
+const cTrack=document.getElementById('carouselTrack');
+if(cTrack){
+    let cPos=0,cDir=-1,cSpeed=.6;
+    let resetWidth=0;
+
+    function calcResetWidth(){
+        const slides=cTrack.querySelectorAll('.cs-carousel-slide');
+        if(slides.length===0) return;
+        const slideCount=slides.length/2; /* original slides before duplicates */
+        const gap=parseFloat(getComputedStyle(cTrack).gap)||20;
+        resetWidth=0;
+        for(let i=0;i<slideCount;i++){resetWidth+=slides[i].offsetWidth+gap}
+    }
+    calcResetWidth();
+    window.addEventListener('resize',calcResetWidth);
+    window.addEventListener('load',calcResetWidth);
+
+    lenis.on('scroll',({velocity})=>{
+        cDir=velocity>0?-1:1;
+        cSpeed=Math.min(2,0.6+Math.abs(velocity)*0.05);
+    });
+
+    gsap.ticker.add(()=>{
+        cPos+=cDir*cSpeed;
+        if(cPos<-resetWidth) cPos+=resetWidth;
+        if(cPos>0) cPos-=resetWidth;
+        cTrack.style.transform='translateX('+cPos+'px)';
+    });
+
+    /* Drag */
+    let isDrag=false,startX=0,startPos=0;
+    cTrack.addEventListener('pointerdown',(e)=>{isDrag=true;startX=e.clientX;startPos=cPos;cTrack.setPointerCapture(e.pointerId)});
+    cTrack.addEventListener('pointermove',(e)=>{if(!isDrag)return;e.preventDefault();cPos=startPos+(e.clientX-startX)});
+    cTrack.addEventListener('pointerup',(e)=>{isDrag=false;cTrack.releasePointerCapture(e.pointerId)});
+}
+
+/* === Section scroll reveals === */
+gsap.utils.toArray('.cs-section').forEach(section=>{
+    const label=section.querySelector('.cs-label');
+    const divider=section.querySelector('.cs-divider');
+    const heading=section.querySelector('.cs-section-heading');
+    const proses=section.querySelectorAll('.cs-prose');
+
+    const els=[label,divider,heading,...proses].filter(Boolean);
+    els.forEach((el,i)=>{
+        gsap.from(el,{opacity:0,y:30,duration:.2,ease:'expo.out',delay:i*.05,
+            scrollTrigger:{trigger:el,start:'top 85%',once:true}
+        });
+    });
+});
+
+/* === Architecture nodes -- staggered reveal === */
+gsap.utils.toArray('.cs-arch-row').forEach(row=>{
+    const nodes=row.querySelectorAll('.cs-arch-node');
+    nodes.forEach((node,i)=>{
+        gsap.from(node,{opacity:0,y:25,scale:.97,duration:.25,ease:'expo.out',delay:i*.04,
+            scrollTrigger:{trigger:row,start:'top 88%',once:true}
+        });
+    });
+});
+gsap.utils.toArray('.cs-arch-arrows').forEach(arrows=>{
+    gsap.from(arrows,{opacity:0,duration:.2,
+        scrollTrigger:{trigger:arrows,start:'top 90%',once:true}
+    });
+});
+gsap.utils.toArray('.cs-arch-layer').forEach(layer=>{
+    gsap.from(layer,{opacity:0,x:-20,duration:.25,ease:'expo.out',
+        scrollTrigger:{trigger:layer,start:'top 90%',once:true}
+    });
+});
+
+/* === Feature cards -- staggered reveal + spotlight === */
+gsap.utils.toArray('.cs-feature').forEach(card=>{
+    gsap.from(card,{opacity:0,y:40,duration:.2,ease:'expo.out',
+        scrollTrigger:{trigger:card,start:'top 88%',once:true}
+    });
+    card.addEventListener('mousemove',(e)=>{
+        const rect=card.getBoundingClientRect();
+        card.style.setProperty('--mx',(((e.clientX-rect.left)/rect.width)*100)+'%');
+        card.style.setProperty('--my',(((e.clientY-rect.top)/rect.height)*100)+'%');
+    });
+});
+
+/* === Tech grid reveal === */
+gsap.utils.toArray('.cs-tech-item').forEach((item,i)=>{
+    gsap.from(item,{opacity:0,y:20,duration:.25,ease:'expo.out',delay:(i%4)*.03,
+        scrollTrigger:{trigger:item,start:'top 90%',once:true}
+    });
+});
+
+/* === Other project cards === */
+document.querySelectorAll('.cs-other-card').forEach(card=>{
+    const img=card.querySelector('img');
+    gsap.from(card,{opacity:0,y:40,duration:.2,ease:'expo.out',
+        scrollTrigger:{trigger:card,start:'top 88%',once:true}
+    });
+    if(img){
+        gsap.to(img,{yPercent:-6,ease:'none',
+            scrollTrigger:{trigger:card,start:'top bottom',end:'bottom top',scrub:true}
+        });
+    }
+});
+
+/* === Marquee and Carousel === */
+const mTrack=document.getElementById('marqueeTrack');
+if(mTrack){let mP=0,mD=-1;lenis.on('scroll',({velocity})=>{mD=velocity>0?-1:1});
+gsap.ticker.add(()=>{mP+=mD*.5;if(Math.abs(mP)>mTrack.scrollWidth/2)mP=0;mTrack.style.transform=`translateX(${mP}px)`})}
+
+/* === Manifesto -- word-by-word scroll reveal === */
+const mText=document.getElementById('manifestoText');
+if(mText&&typeof SplitText!=='undefined'){
+    const split=new SplitText(mText,{type:'words'});
+    gsap.set(split.words,{color:'var(--dim)'});
+    split.words.forEach((w,i)=>{
+        gsap.to(w,{color:'var(--text)',scrollTrigger:{
+            trigger:'.v5-manifesto',
+            start:()=>`top+=${(i/split.words.length)*60}% center`,
+            end:()=>`top+=${((i+1)/split.words.length)*60+10}% center`,
+            scrub:1
+        }});
+    });
+}
+
+/* === Scroll velocity skew === */
+lenis.on('scroll',({velocity})=>{
+    document.querySelectorAll('.cs-hero-img-wrap img, .cs-carousel-slide-img img').forEach(img=>{
+        gsap.to(img,{skewY:velocity*.1,duration:.6,overwrite:'auto'});
+    });
+});
+
+/* === Footer -- Masked SplitText === */
+const fH=document.getElementById('footerH');
+if(fH&&typeof SplitText!=='undefined'){
+    const fSplit=new SplitText(fH,{type:'chars',mask:'lines'});
+    gsap.set(fSplit.chars,{yPercent:110});
+    ScrollTrigger.create({trigger:fH,start:'top 82%',once:true,
+        onEnter:()=>{gsap.to(fSplit.chars,{yPercent:0,stagger:.03,duration:.9,ease:'smooth'})}
+    });
+}
+
+/* === Mouse Follower === */
+if(matchMedia('(pointer:fine)').matches&&typeof MouseFollower!=='undefined'){
+    MouseFollower.registerGSAP(gsap);
+    new MouseFollower({speed:.5,ease:'expo.out',skewing:2.5,skewingText:1.5});
+}
+
+/* === Page Transitions === */
+document.querySelectorAll('.cs-other-card, .cs-hero-back').forEach(link=>{
+    link.addEventListener('click',function(e){
+        e.preventDefault();const href=this.getAttribute('href');if(!href)return;
+        const s=document.createElement('div');s.style.cssText='position:fixed;inset:0;z-index:9999;pointer-events:none';
+        const b=document.createElement('div');b.style.cssText='position:absolute;inset:0;background:var(--bg);transform:translateY(100%);will-change:transform';
+        const c=document.createElement('div');c.style.cssText='position:absolute;top:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%';
+        b.appendChild(c);s.appendChild(b);document.body.appendChild(s);
+        gsap.timeline({onComplete:()=>{window.location.href=href}})
+            .to(b,{y:0,duration:.8,ease:'power4.inOut'},.1);
+    });
+});
+</script>
+</body>
+</html>

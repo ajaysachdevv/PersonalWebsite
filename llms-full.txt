@@ -1,0 +1,79 @@
+# Ajay Sachdev: Full Profile
+> Finance & Operations Manager at a B2B tech scale-up. CIMA finalist (Strategic Case Study sat May 2026). Builds production AI systems, Power BI dashboards, and financial models. Python, TypeScript, SQL. Based in Cambridge, UK.
+
+## Background
+Ajay Sachdev grew up in a Sindhi family from Mumbai. His dad ran a textile business (est. 1988). After studying Financial Markets at Jai Hind College (2015-18) and earning a Chartered Wealth Management certification from AAFM, he worked in the family business, leading a vertical integration into garment manufacturing and building its direct-to-consumer website (uni-nation.in).
+
+He moved to the UK for an MSc in Finance at Loughborough University (2020-21, 2:1), then joined a B2B tech scale-up in October 2021. He is now the sole finance & operations function, managing three entities across the UK, US, and Pakistan.
+
+He sat the CIMA Strategic Case Study in May 2026 and serves as a School Governor at a 250-pupil primary school.
+
+## Current Role: Finance & Operations Manager
+- Sole finance & operations function across UK, US, Pakistan (3 entities)
+- Board-level financial models and reporting
+- Built 50+ Power BI dashboards as sole data analyst
+- Manages 7 multi-currency bank accounts (GBP, USD, PKR)
+- Produces management accounts, VAT returns, payroll
+- Drafts contracts, NDAs, SoWs, supplier agreements
+- Reduced WiFi costs 50%, electricity 74%, software 30%+
+- Cut a core SaaS platform's cost 65% through a systematic audit
+- Redesigned the contract format from 15 pages to 2 with hyperlinked terms; six-month stalls became one-week signings
+- Saves 40+ hours/month through automation
+
+## Projects
+
+### OpsPilot: AI Executive Assistant
+An AI assistant that lives in Microsoft Teams: reads 6,124+ SharePoint documents, pulls live Xero and HubSpot data, and drafts replies approved with one click. Runs 24/7 in production.
+- 97,000 lines of code, 28 AI tools
+- 100% search accuracy on a 50-query test suite
+- Hybrid search (FAISS vector + BM25 keyword), reranking, sensitivity detection
+- Daily automated briefings, deal-health scoring, decision journal
+- Gemini primary with Claude fallback
+
+### Trading Bot: Multi-Agent FTSE 100 System
+An intraday trading system where four AI agents vote on every signal and a Risk Auditor holds an absolute veto.
+- 4 agents: Orchestrator, Context Lead, Analyst, Risk Auditor (Claude-powered)
+- Paper trading by design: 62 sessions, zero impulsive trades let through
+- Hard safety rails, kill switch, end-of-day liquidation
+
+### Uni-Nation Digital (uni-nation.in)
+Website, inventory system and analytics for the family fabric business running since 1988.
+- Inventory PWA tracking Rs 13.76cr of sales data, 1,955 products, 658 customers
+- Voice stock entry in mixed Hindi-English: the parser understands thaan, taaka, metre and Hindi numbers, and corrects speech-to-text on fabric names
+- Receivables tracking with WhatsApp follow-up generation
+
+### WhatsApp Smart: Chrome Extension Prototype
+Adds scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. Privacy-first: messages never leave the browser. 10 features built; unreleased prototype.
+
+### SCS Cockpit: Exam Study Engine
+A zero-dependency browser study tool he built to prepare for his own CIMA Strategic Case Study: timed drills, spaced repetition, 5-dimension debrief scoring. 4,200 lines of vanilla JavaScript.
+
+## Skills & Tools
+
+### Finance & Modelling
+Financial Modelling, Management Accounts, VAT & Payroll, Budgeting & Forecasting, Cash Management, Multi-entity consolidation, Board-level reporting, Scenario analysis
+
+### Data & Analytics
+Power BI (50+ dashboards), SQL, GA4, Firebase, Python data analysis
+
+### Systems & Automation
+Xero, HubSpot, Factorial, Onboarding/offboarding, ESOPs
+
+### AI & Engineering
+Python, TypeScript, Claude, GPT, Gemini, FAISS, BM25, RAG, voice interfaces (Deepgram), PII detection, API integrations
+
+### Commercial & Legal
+Contract drafting, NDAs, SoWs, Cost negotiation, Supplier agreements
+
+## Education
+- MSc Finance, Loughborough University (2020-21, 2:1)
+- M.Com (Year 1), University of Mumbai
+- Bachelor in Financial Markets, Jai Hind College, Mumbai (2015-18)
+- Diploma in Weaving Technology, Sasmira, Mumbai (2019-20)
+- CIMA finalist: Strategic Case Study sat May 2026
+- Chartered Wealth Management (AAFM, 2019)
+
+## Contact
+- Web: https://ajaysachdev.com
+- LinkedIn: https://www.linkedin.com/in/ajayy-sachdev/
+- Email: ajaysachdev2@gmail.com
