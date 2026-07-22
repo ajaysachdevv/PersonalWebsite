@@ -39,7 +39,7 @@ An intraday trading system where four AI agents vote on every signal and a Risk 
 
 ### Uni-Nation Digital (uni-nation.in)
 Website, inventory system and analytics for the family fabric business running since 1988.
-- Inventory PWA (~22,000 lines) tracking roughly $2m of sales data, 1,955 products, 658 customers
+- Inventory PWA (~22,000 lines) tracking roughly $2m of sales data, ~2,000 products, 650+ customers
 - Voice stock entry in mixed Hindi-English: the parser understands thaan, taaka, metre and Hindi numbers, and corrects speech-to-text on fabric names
 - Receivables tracking with WhatsApp follow-up generation
 
