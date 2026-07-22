@@ -1,1070 +1,474 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpsPilot | AI Executive OS | Ajay Sachdev</title>
-    <meta name="description" content="Production AI system in Microsoft Teams. Searches 6,124+ documents, pulls live Xero and HubSpot data, 28 AI tools, 11-page dashboard. 97,000+ lines of Python.">
-    <meta name="theme-color" content="#0c0c0c">
-    <meta name="robots" content="noindex, nofollow">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9a96d'/%3E%3Cstop offset='100%25' stop-color='%23e8e4de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23141414'/%3E%3Ctext x='16' y='23' font-family='system-ui' font-weight='700' font-size='18' fill='url(%23g)' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpsPilot | Entry 01 | Ajay Sachdev</title>
+<meta name="description" content="Case study: an AI operations layer that lives in Microsoft Teams. 97,000 lines of Python, 28 AI tools, 6,124+ documents indexed, 100% on a 50-query test suite. Built and run by one finance manager.">
+<meta property="og:title" content="OpsPilot | Entry 01 in the ledger">
+<meta property="og:description" content="The AI that answers a finance manager's messages: hybrid search over 6,124+ documents, live accounting and CRM data, drafts approved with one click.">
+<meta property="og:type" content="article">
+<link rel="canonical" href="https://ajaysachdev.com/projects/ajay-brain.html">
+<meta property="og:url" content="https://ajaysachdev.com/projects/ajay-brain.html">
+<meta property="og:image" content="https://ajaysachdev.com/images/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Ajay Sachdev">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OpsPilot | Entry 01 in the ledger">
+<meta name="twitter:description" content="The AI that answers a finance manager's messages: hybrid search over 6,124+ documents, live accounting and CRM data, drafts approved with one click.">
+<meta name="twitter:image" content="https://ajaysachdev.com/images/og.png">
+<meta name="theme-color" content="#0d0c0a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0c0a'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232fbf71'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+
+<link rel="preload" href="../vendor/fonts/inter-400-500-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../vendor/fonts/instrumentserif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-/* === V6 Case Study — Minhpham Principles + Clash Display === */
-:root{--bg:#0c0c0c;--surface:#141414;--text:#e8e4de;--muted:#8a857d;--dim:#706b63;--border:rgba(232,228,222,.06);--gold:#c9a96d;--font:'Inter',system-ui,sans-serif;--display:'Clash Display',sans-serif;--mono:'JetBrains Mono',monospace}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{-webkit-font-smoothing:antialiased;scrollbar-width:none}html::-webkit-scrollbar{display:none}
-body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
-a{color:inherit;text-decoration:none}
-
-/* Grain */
-.grain{position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E")}
-
-/* Cursor */
-.mf-cursor{z-index:9990}
-.mf-cursor-text{font-family:var(--mono)!important;font-size:.6rem!important;letter-spacing:1.5px;text-transform:uppercase}
-@media(pointer:coarse){.mf-cursor{display:none!important}}
-
-/* Progress */
-.v5-progress{position:fixed;top:0;left:0;height:1px;z-index:200;background:var(--gold);transform-origin:left;transform:scaleX(0)}
-
-/* Nav */
-.v5-nav{position:fixed;top:0;left:0;right:0;z-index:150;padding:28px clamp(2.5em,7vw,6em);display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference}
-.v5-nav-logo{font-family:var(--display);font-weight:500;font-size:.95rem;letter-spacing:-.3px;color:#fff}
-.v5-nav-links{display:flex;gap:32px;list-style:none}
-.v5-nav-links a{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.5px;transition:color .3s}
-.v5-nav-links a:hover{color:#fff}
-
-
-/* Scroll Cue */
-.v5-scroll-cue{position:absolute;bottom:36px;right:clamp(3em,8vw,8em);font-family:var(--mono);font-size:.5rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
-.v5-scroll-cue::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--dim),transparent);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.6;transform:scaleY(1)}50%{opacity:.15;transform:scaleY(.5)}}
-
-/* Marquee */
-.v5-marquee{padding:clamp(2em,4vh,4em) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;position:relative;z-index:2}
-.v5-marquee-track{display:flex;white-space:nowrap;will-change:transform}
-.v5-marquee-item{font-family:var(--display);font-size:clamp(.7rem,1vw,.85rem);font-weight:500;color:#706b63;letter-spacing:3px;text-transform:uppercase;padding:0 clamp(24px,3vw,48px);flex-shrink:0}
-.v5-marquee-item .sep{color:var(--gold);opacity:.4;margin:0 4px}
-
-/* Manifesto */
-.v5-manifesto{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:clamp(4em,10vh,8em) clamp(3em,8vw,8em);position:relative;z-index:2}
-.v5-manifesto-text{font-family:var(--display);font-size:clamp(2rem,4vw,3.4rem);font-weight:500;letter-spacing:-.03em;line-height:1.3;max-width:750px;text-align:center}
-
-/* === HERO === */
-.cs-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(3em,8vw,8em) clamp(4em,10vh,8em);position:relative;z-index:2}
-.cs-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:40px;transition:color .3s;opacity:0}
-.cs-back:hover{color:var(--gold)}
-.cs-back svg{width:14px;height:14px;transition:transform .3s}
-.cs-back:hover svg{transform:translateX(-3px)}
-.cs-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:28px;display:block;opacity:0}
-.cs-tag .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:10px;vertical-align:middle;animation:blink 2s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.cs-title{font-family:var(--display);font-size:clamp(4rem,10vw,8rem);font-weight:600;letter-spacing:-.04em;line-height:.9;margin-bottom:32px;opacity:0}
-.cs-title em{font-style:normal;color:var(--gold)}
-.cs-sub{font-size:clamp(.95rem,1.2vw,1.1rem);color:#b0aaa2;max-width:580px;line-height:1.85;font-weight:300;margin-bottom:48px;opacity:0}
-.cs-sub strong{color:var(--text);font-weight:400}
-
-/* Stats bar */
-.cs-stats{display:flex;gap:clamp(24px,4vw,48px);flex-wrap:wrap;opacity:0;margin-bottom:-1rem;position:relative;z-index:0}
-.cs-stat-item{text-align:left;position:relative}
-.cs-stat-item:hover .cs-stat-val{color:var(--gold);-webkit-text-stroke-color:var(--gold)}
-.cs-stat-val{font-family:var(--display);font-size:clamp(4rem,10vw,8rem);font-weight:600;color:transparent;-webkit-text-stroke:1.5px rgba(201,169,109,.55);letter-spacing:-.04em;display:block;line-height:0.85;margin-bottom:0;transition:color .4s,-webkit-text-stroke-color .4s}
-.cs-stat-label{font-family:var(--mono);font-size:.55rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-top:6px;position:relative;z-index:2}
-.cs-stat-label::before{content:'';width:16px;height:1px;background:var(--gold);opacity:.4;flex-shrink:0}
-
-/* === HERO IMAGE === */
-.cs-hero-img{padding:clamp(2em,4vw,4em) clamp(2em,6vw,6em);position:relative;z-index:2}
-.cs-img-caption{font-family:var(--mono);font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:center;margin-top:20px}
-
-/* Laptop frame */
-/* Laptop frame */
-.laptop{max-width:1100px;margin:0 auto}
-.laptop-lid{background:linear-gradient(180deg,#2c2c2e,#1c1c1e);border-radius:14px 14px 0 0;padding:10px 10px 0;border:1px solid #3a3a3c;border-bottom:none;box-shadow:0 -2px 60px rgba(0,0,0,.4)}
-.laptop-cam{width:6px;height:6px;border-radius:50%;background:#1a1a1a;border:1px solid #333;margin:0 auto 8px;position:relative}
-.laptop-cam::after{content:'';position:absolute;width:2px;height:2px;border-radius:50%;background:#2a4a2a;top:1px;left:1px}
-.laptop-viewport{border-radius:4px;overflow:hidden;aspect-ratio:16/10;background:#0b0b14;position:relative}
-.laptop-base{height:16px;background:linear-gradient(180deg,#2c2c2e,#222224);border-radius:0 0 8px 8px;border:1px solid #3a3a3c;border-top:1px solid #444;display:flex;align-items:center;justify-content:center}
-.laptop-base::before{content:'';width:18%;height:4px;background:#1a1a1c;border-radius:0 0 4px 4px;border:1px solid #333;border-top:none}
-.laptop-shadow{height:20px;margin:0 5%;background:radial-gradient(ellipse at center,rgba(0,0,0,.4) 0%,transparent 70%);border-radius:50%;filter:blur(6px)}
-
-/* Dashboard scaler -- renders at 1440x900, CSS scales to fit viewport */
-.dash-scaler{width:1440px;height:900px;transform-origin:top left;position:absolute;top:0;left:0}
-.dash{display:grid;grid-template-columns:220px 1fr;width:100%;height:100%;font-family:var(--font);color:#e8e4de}
-.dash *{box-sizing:border-box}
-
-/* Sidebar */
-.dash-side{background:linear-gradient(180deg,#0f0f1a,#0b0b14);border-right:1px solid rgba(255,255,255,.05);padding:28px 20px;display:flex;flex-direction:column}
-.dash-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px}
-.dash-logo-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:11px;flex-shrink:0;box-shadow:0 2px 8px rgba(139,92,246,.3)}
-.dash-logo-text{font-weight:500;font-size:14px;letter-spacing:-.02em}
-.dash-nav-group{margin-bottom:22px}
-.dash-nav-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#3d3852;margin-bottom:10px;font-weight:500;padding-left:10px}
-.dash-nav-item{padding:8px 10px;border-radius:6px;font-size:12px;color:#6a6578;margin-bottom:2px}
-.dash-nav-item.active{background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(99,102,241,.08));color:#c4b5fd;font-weight:500;box-shadow:0 1px 4px rgba(139,92,246,.1)}
-
-/* Main area */
-.dash-main{padding:24px 28px;display:grid;grid-template-rows:auto auto 1fr auto;gap:16px;overflow:hidden}
-.dash-header{display:flex;justify-content:space-between;align-items:center}
-.dash-title{font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:-.02em}
-.dash-header-actions{display:flex;gap:8px;align-items:center}
-.dash-btn{font-size:10px;padding:5px 12px;border-radius:4px;border:1px solid rgba(255,255,255,.08);color:#8a857d;background:transparent;letter-spacing:.03em;font-family:var(--font)}
-.dash-btn--gold{background:rgba(201,169,109,.1);border-color:rgba(201,169,109,.2);color:var(--gold)}
-
-/* KPI cards */
-.dash-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.dash-kpi{background:linear-gradient(135deg,#13131e,#101018);border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:16px 14px;position:relative;overflow:hidden}
-.dash-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.2),transparent);opacity:0.6}
-.dash-kpi-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#5a5565;margin-bottom:6px;font-weight:500}
-.dash-kpi-val{font-family:var(--display);font-size:22px;font-weight:600;letter-spacing:-.02em}
-.dash-kpi-change{font-size:9px;margin-top:4px;display:inline-block;font-weight:500}
-.dash-kpi-change.up{color:#34d399}
-.dash-kpi-change.down{color:#f87171}
-
-/* Charts row */
-.dash-charts{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;min-height:0}
-.dash-card{background:linear-gradient(135deg,#13131e,#101018);border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:14px;display:flex;flex-direction:column;overflow:hidden}
-.dash-card-title{font-size:11px;font-weight:500;margin-bottom:4px;letter-spacing:.02em;flex-shrink:0;text-transform:uppercase;color:#7a7584}
-.dash-chart-wrap{flex:1;min-height:0}
-
-/* Bottom row */
-.dash-bottom{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.dash-bal-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
-.dash-bal-row:last-child{border:none}
-.dash-bal-name{font-size:11px;font-weight:500;color:#c8c4be}
-.dash-bal-sub{font-size:8px;color:#4a4544;margin-top:2px;letter-spacing:.03em}
-.dash-bal-amt{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--gold);letter-spacing:-.01em}
-
-/* Queries */
-.dash-query{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03)}
-.dash-query:last-child{border:none}
-.dash-query-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;color:#fff;font-weight:600}
-.dash-query-icon.purple{background:rgba(139,92,246,.25);box-shadow:0 0 8px rgba(139,92,246,.15)}
-.dash-query-icon.green{background:rgba(52,211,153,.25);box-shadow:0 0 8px rgba(52,211,153,.15)}
-.dash-query-icon.blue{background:rgba(96,165,250,.25);box-shadow:0 0 8px rgba(96,165,250,.15)}
-.dash-query-text{font-size:10px;line-height:1.5;color:#b0aaa2}
-.dash-query-meta{font-size:8px;color:#4a4544;margin-top:2px;letter-spacing:.02em}
-
-/* Caption */
-.cs-img-caption .dummy-badge{display:inline-block;background:rgba(201,169,109,.12);border:1px solid rgba(201,169,109,.25);color:var(--gold);padding:2px 10px;border-radius:20px;font-weight:500;margin-left:6px}
-
-/* === MOBILE KPI CARD (replaces laptop on small screens) === */
-.dash-mobile-card{display:none;background:linear-gradient(135deg,#0f0f1a,#0b0b14);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;box-shadow:0 16px 60px rgba(0,0,0,.4)}
-.dash-mobile-header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.05)}
-.dash-mobile-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:.85rem;font-weight:500;letter-spacing:-.02em}
-.dash-mobile-logo span{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.55rem;flex-shrink:0}
-.dash-mobile-badge{font-family:var(--mono);font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:rgba(201,169,109,.1);border:1px solid rgba(201,169,109,.25);color:var(--gold)}
-.dash-mobile-kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.03)}
-.dash-mobile-kpi{background:linear-gradient(135deg,#0f0f1a,#0b0b14);padding:18px 16px;position:relative}
-.dash-mobile-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.15),transparent);opacity:.6}
-.dash-mobile-kpi-label{font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:#5a5565;margin-bottom:6px;font-weight:500}
-.dash-mobile-kpi-val{font-family:var(--display);font-size:1.3rem;font-weight:600;letter-spacing:-.02em;color:var(--text)}
-.dash-mobile-kpi-change{font-size:.52rem;margin-top:4px;display:inline-block;font-weight:500}
-.dash-mobile-kpi-change.up{color:#34d399}
-.dash-mobile-note{padding:12px 18px;text-align:center;font-family:var(--mono);font-size:.48rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);border-top:1px solid rgba(255,255,255,.04)}
-
-@media(max-width:600px){.cs-hero-img{padding:8px 16px}}
-
-/* === CONTENT SECTIONS === */
-.cs-content{max-width:900px;margin:0 auto;padding:0 clamp(3em,8vw,8em)}
-.cs-section{padding:clamp(2.5em,6vh,4.5em) 0}
-.cs-section:nth-child(even){background:var(--surface);border-radius:12px;padding:clamp(2.5em,6vh,4.5em) clamp(24px,3vw,36px);margin:0 -24px}
-@media(max-width:768px){.cs-section:nth-child(even){margin:0 -16px;padding-left:16px;padding-right:16px}}
-.cs-label{font-family:var(--mono);font-size:.55rem;letter-spacing:4px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:20px}
-.cs-divider{width:100%;height:1px;background:var(--border);margin-bottom:clamp(2em,5vh,4em)}
-.cs-heading{font-family:var(--display);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:600;letter-spacing:-.03em;line-height:1.1;margin-bottom:clamp(1.5em,3vh,2em)}
-.cs-prose{font-size:clamp(.88rem,1vw,1rem);color:#b0aaa2;line-height:1.9;max-width:720px}
-.cs-prose strong{color:var(--text);font-weight:500}
-.cs-prose+.cs-prose{margin-top:20px}
-
-/* Before / After */
-.cs-ba{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:clamp(2em,4vh,3em)}
-.cs-ba-col{padding:clamp(24px,3vw,36px);border-radius:10px;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15)}
-.cs-ba-col h4{font-family:var(--mono);font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(239,68,68,.8);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(239,68,68,.15);display:flex;align-items:center;gap:8px}
-.cs-ba-col h4::before{content:'';display:inline-block;width:14px;height:14px;flex-shrink:0;background-size:contain;background-repeat:no-repeat;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='2.5'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E")}
-.cs-ba-col.ba-after{background:rgba(52,211,153,.05);border-color:rgba(52,211,153,.18)}
-.cs-ba-col.ba-after h4{color:#34d399;border-bottom-color:rgba(52,211,153,.18)}
-.cs-ba-col.ba-after h4::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334d399' stroke-width='2.5'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E")}
-.cs-ba-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
-.cs-ba-col li{font-size:.85rem;color:#b0aaa2;line-height:1.6;padding-left:16px;position:relative}
-.cs-ba-col li::before{content:'';position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:rgba(239,68,68,.5)}
-.cs-ba-col.ba-after li::before{background:#34d399}
-
-/* Pipeline SVG */
-.cs-pipeline{margin-top:clamp(2em,4vh,3em);overflow-x:auto}
-.cs-pipeline svg{width:100%;max-width:700px;display:block;margin:0 auto}
-.cs-pipeline .stage-box{fill:var(--surface);stroke:var(--border);stroke-width:1;rx:6}
-.cs-pipeline .stage-box.hl{stroke:rgba(201,169,109,.2)}
-.cs-pipeline .stage-label{font-family:var(--mono);font-size:7px;fill:var(--gold);letter-spacing:1.5px;text-anchor:middle;dominant-baseline:central}
-.cs-pipeline .stage-text{font-family:var(--font);font-size:8px;fill:var(--muted);text-anchor:middle;dominant-baseline:central}
-.cs-pipeline .conn{stroke:rgba(232,228,222,.08);stroke-width:1;stroke-dasharray:4 3}
-
-/* Feature Grid */
-.cs-features{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:clamp(1em,2vh,1.5em)}
-.cs-feature{padding:clamp(24px,3vw,36px);border-radius:10px;background:var(--surface);border:1px solid var(--border);border-left:3px solid rgba(201,169,109,.2);transition:border-color .4s,box-shadow .4s;position:relative;overflow:hidden}
-.cs-feature::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(201,169,109,.05) 0%,transparent 60%);pointer-events:none;opacity:0;transition:opacity .3s}
-.cs-feature:hover::before{opacity:1}
-.cs-feature:hover{border-color:rgba(201,169,109,.22);box-shadow:0 16px 48px rgba(0,0,0,.3),0 0 40px rgba(201,169,109,.06)}
-.cs-feature h4{font-family:var(--display);font-size:clamp(1rem,1.3vw,1.2rem);font-weight:500;letter-spacing:-.02em;margin-bottom:12px;color:var(--text)}
-.cs-feature p{font-size:.82rem;color:var(--muted);line-height:1.8}
-
-/* Mockup wrapper + dummy tag */
-.teams-win-wrap{position:relative;max-width:640px;margin-top:clamp(1.5em,3vh,2em)}
-.dummy-tag{position:absolute;top:-12px;right:16px;z-index:2;font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:4px 14px;background:var(--surface);border:1px solid rgba(201,169,109,.2);border-radius:20px;backdrop-filter:blur(8px)}
-
-/* Mockup - Teams (realistic dark theme) */
-.teams-win{margin-top:clamp(1.5em,3vh,2em);max-width:640px;border-radius:8px;overflow:hidden;background:#292929;border:1px solid #3b3b3b;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-/* Title bar */
-.teams-titlebar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:#1f1f1f;border-bottom:1px solid #3b3b3b}
-.teams-titlebar-icon{width:16px;height:16px;opacity:.7}
-.teams-titlebar-text{font-size:.7rem;color:#c8c8c8;font-weight:500;flex:1}
-.teams-titlebar-dots{display:flex;gap:8px;margin-left:auto}
-.teams-titlebar-dots span{width:10px;height:10px;border-radius:50%;border:1px solid #555}
-/* Channel header */
-.teams-channel{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid #3b3b3b}
-.teams-channel-name{font-size:.75rem;font-weight:600;color:#d1d1d1}
-.teams-channel-desc{font-size:.62rem;color:#8b8b8b;margin-left:4px}
-/* Chat area */
-.teams-chat{padding:20px 16px;display:flex;flex-direction:column;gap:16px;background:#1e1e1e}
-/* User message (right aligned) */
-.teams-msg-user{display:flex;justify-content:flex-end}
-.teams-msg-user-bubble{max-width:75%;padding:10px 14px;border-radius:4px 4px 0 4px;background:#464775;color:#e0e0e0;font-size:.78rem;line-height:1.6}
-/* Bot message */
-.teams-msg-bot{display:flex;gap:10px;align-items:flex-start}
-.teams-bot-avatar{width:28px;height:28px;border-radius:50%;background:#6264a7;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;color:#fff;flex-shrink:0}
-.teams-bot-content{flex:1;min-width:0}
-.teams-bot-meta{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
-.teams-bot-name{font-size:.72rem;font-weight:600;color:#d1d1d1}
-.teams-bot-time{font-size:.58rem;color:#8b8b8b}
-/* Adaptive Card */
-.teams-card{background:#333;border-radius:4px;border-top:3px solid #6264a7;overflow:hidden;max-width:95%}
-.teams-card-body{padding:16px}
-.teams-card-title{font-size:.82rem;font-weight:600;color:#e8e8e8;margin-bottom:10px}
-.teams-card-text{font-size:.76rem;color:#c8c8c8;line-height:1.7;margin-bottom:14px}
-/* Fact set */
-.teams-facts{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;padding:10px 12px;background:rgba(255,255,255,.03);border-radius:4px}
-.teams-fact{display:flex;gap:12px;font-size:.7rem}
-.teams-fact-label{color:#8b8b8b;min-width:100px;flex-shrink:0}
-.teams-fact-value{color:#d1d1d1}
-/* Card actions */
-.teams-card-actions{display:flex;gap:8px;padding:12px 16px;border-top:1px solid #444}
-.teams-card-btn{font-size:.68rem;padding:6px 14px;border-radius:4px;border:1px solid #555;background:transparent;color:#c8c8c8;cursor:default;font-family:var(--font);letter-spacing:.2px}
-.teams-card-btn-primary{background:#6264a7;border-color:#6264a7;color:#fff}
-.teams-card-btn-danger{border-color:#c4314b;color:#c4314b}
-
-/* Tech Grid */
-.cs-tech{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin-top:clamp(1em,2vh,1.5em)}
-.cs-tech-item{padding:20px 24px;background:var(--surface)}
-.cs-tech-item-name{font-family:var(--display);font-size:.88rem;font-weight:500;letter-spacing:-.02em;margin-bottom:4px}
-.cs-tech-item-role{font-size:.72rem;color:var(--dim)}
-
-/* Other Work */
-.cs-others{padding:clamp(8em,16vh,12em) clamp(3em,8vw,8em);position:relative;z-index:2;max-width:1200px;margin:0 auto}
-.cs-others-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.cs-other-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .5s,box-shadow .5s,transform .5s cubic-bezier(.16,1,.3,1);text-decoration:none;color:inherit}
-.cs-other-card:hover{border-color:rgba(201,169,109,.12);box-shadow:0 24px 70px rgba(0,0,0,.35);transform:translateY(-4px)}
-.cs-other-card-img{position:relative;overflow:hidden;aspect-ratio:16/10;background:#161616}
-.cs-other-card-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) brightness(.92) sepia(.15);transition:transform .8s cubic-bezier(.16,1,.3,1),filter 1s}
-.cs-other-card:hover .cs-other-card-img img{transform:scale(1.05);filter:grayscale(0) brightness(1.05) sepia(0)}
-.cs-other-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,109,.06) 0%,transparent 50%,rgba(12,12,12,.3) 100%);pointer-events:none;transition:opacity 1s}
-.cs-other-card:hover .cs-other-card-img::after{opacity:.1}
-.cs-other-card-body{padding:24px}
-.cs-other-card-badge{font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.7;display:block;margin-bottom:10px}
-.cs-other-card-title{font-family:var(--display);font-size:1.2rem;font-weight:500;letter-spacing:-.02em;margin-bottom:8px}
-.cs-other-card-desc{font-size:.78rem;color:var(--muted);line-height:1.7}
-.cs-other-card-arrow{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:16px;transition:color .3s}
-.cs-other-card:hover .cs-other-card-arrow{color:var(--gold)}
-
-/* Footer */
-.v5-footer{padding:clamp(10em,18vh,14em) 0 48px;text-align:center;position:relative;z-index:2}
-.v5-footer::before{content:'';display:block;width:40px;height:1px;margin:0 auto 56px;background:var(--dim)}
-.v5-footer-title{font-family:var(--display);font-size:clamp(3rem,6vw,5rem);font-weight:600;letter-spacing:-.03em;margin-bottom:16px}
-.v5-footer-sub{color:var(--muted);font-size:.85rem;margin-bottom:44px}
-.v5-footer-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:60px}
-.v5-footer-link{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid var(--border);border-radius:60px;color:var(--muted);font-size:.78rem;transition:all .4s cubic-bezier(.16,1,.3,1)}
-.v5-footer-link:hover{color:var(--gold);border-color:rgba(201,169,109,.2);transform:translateY(-2px)}
-.v5-footer-copy{font-size:.6rem;color:var(--dim);letter-spacing:1px}
-
-/* === RESPONSIVE === */
-@media(max-width:900px){
-    .cs-features{grid-template-columns:1fr}
-    .cs-ba{grid-template-columns:1fr}
-    .cs-others-grid{grid-template-columns:1fr}
-    .cs-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px 32px}
-    .cs-stat-val{font-size:clamp(3rem,10vw,5rem)}
-}
-@media(max-width:768px){
-    .v5-nav-links{gap:20px}
-    .v5-nav-links a{font-size:.65rem}
-    .cs-title{font-size:clamp(3rem,12vw,5rem)}
-    .cs-sub{font-size:.92rem;line-height:1.75}
-    .cs-heading{font-size:clamp(1.6rem,5vw,2.4rem)}
-    .cs-prose{font-size:.88rem}
-    .cs-feature h4{font-size:1rem}
-    .cs-feature p{font-size:.8rem}
-    .cs-ba-col li{font-size:.82rem}
-    /* Laptop dashboard: hide full laptop, show mobile card */
-    .laptop{display:none}
-    .laptop-shadow{display:none}
-    .dash-mobile-card{display:block}
-    /* Teams mockup responsive */
-    .teams-msg-user-bubble{max-width:90%;font-size:.75rem}
-    .teams-card-text{font-size:.72rem}
-    .teams-facts{padding:8px 10px}
-    .teams-fact{font-size:.65rem}
-}
-@media(max-width:600px){
-    .cs-hero{padding:0 20px 36px;min-height:100svh}
-    .cs-back{font-size:.55rem;margin-bottom:32px}
-    .cs-tag{font-size:.5rem;letter-spacing:3px;margin-bottom:20px}
-    .cs-title{font-size:clamp(2.5rem,11vw,3.5rem);margin-bottom:24px}
-    .cs-sub{font-size:.88rem;max-width:100%;margin-bottom:36px}
-    .cs-stats{gap:16px 24px}
-    .cs-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
-    .cs-stat-val{font-size:clamp(2.5rem,14vw,4rem);margin-bottom:0}
-    .cs-stat-label{font-size:.48rem;margin-top:4px}
-    .cs-hero-img{padding:8px 16px}
-    .cs-img-caption{font-size:.5rem;margin-top:14px}
-    .cs-content{padding:0 20px}
-    .cs-section{padding:24px 0}
-    .cs-label{font-size:.5rem;margin-bottom:16px}
-    .cs-heading{font-size:clamp(1.4rem,5vw,2rem);margin-bottom:20px}
-    .cs-prose{font-size:.85rem;line-height:1.8}
-    .cs-ba-col{padding:20px}
-    .cs-ba-col h4{font-size:.55rem;margin-bottom:14px}
-    .cs-ba-col li{font-size:.8rem;line-height:1.55}
-    .cs-pipeline svg{max-width:100%}
-    .cs-pipeline .stage-label{font-size:5px}
-    .cs-pipeline .stage-text{font-size:6px}
-    .cs-feature{padding:24px 20px}
-    .cs-feature h4{font-size:.95rem;margin-bottom:10px}
-    .cs-feature p{font-size:.78rem;line-height:1.7}
-    .teams-win{max-width:100%}
-    .teams-titlebar-text{font-size:.62rem}
-    .teams-channel-name{font-size:.68rem}
-    .teams-msg-user-bubble{font-size:.72rem;padding:8px 12px}
-    .teams-card-body{padding:12px}
-    .teams-card-title{font-size:.75rem}
-    .teams-card-text{font-size:.7rem;line-height:1.6}
-    .teams-fact{font-size:.62rem;gap:8px}
-    .teams-fact-label{min-width:80px}
-    .teams-card-btn{font-size:.6rem;padding:5px 10px}
-    .cs-tech{grid-template-columns:1fr}
-    .cs-tech-item{padding:16px 20px}
-    .cs-others{padding:48px 20px}
-    .cs-other-card-title{font-size:1rem}
-    .cs-other-card-desc{font-size:.72rem}
-    .v5-manifesto{min-height:auto;padding:48px 20px}
-    .v5-manifesto-text{font-size:clamp(1.3rem,6vw,1.8rem)}
-    .v5-footer{padding:48px 20px 32px}
-    .v5-footer::before{margin-bottom:36px}
-    .v5-footer-title{font-size:clamp(2.2rem,9vw,3rem)}
-    .v5-footer-sub{font-size:.8rem;margin-bottom:32px}
-    .v5-footer-links{gap:10px;margin-bottom:40px}
-    .v5-footer-link{padding:10px 18px;font-size:.75rem}
-    .v5-nav{padding:10px 20px}
-    .v5-nav-links{gap:4px}
-    .v5-nav-links a{font-size:.6rem;padding:12px 10px;min-height:44px;display:inline-flex;align-items:center}
-    .v5-nav-logo{padding:10px 0;min-height:44px;display:inline-flex;align-items:center}
-    .v5-scroll-cue{display:none}
-    .v5-marquee{padding:clamp(1.2em,3vh,2em) 0}
-    .v5-footer-link{padding:12px 20px;min-height:44px}
-    /* Back link touch target */
-    .cs-back{padding:10px 0;min-height:44px;display:inline-flex;align-items:center}
-    /* Other project cards touch targets */
-    .cs-other-card{min-height:44px}
-    .cs-other-card-body{padding:18px}
-}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('../vendor/fonts/inter-400-500-800-latin.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 100 800; font-display: swap; src: url('../vendor/fonts/jetbrainsmono-400-500-700-latin.woff2') format('woff2'); }
 </style>
+
+<style>
+/* ================= Tokens: The Ledger, entry pages ================= */
+:root {
+  --ink: #0d0c0a;
+  --ink-2: #131210;
+  --paper: #ece7dc;
+  --paper-dim: rgba(236, 231, 220, 0.68);
+  --paper-faint: rgba(236, 231, 220, 0.55);
+  --rule: rgba(236, 231, 220, 0.13);
+  --credit: #2fbf71;
+  --amber: #e8b34b;
+  --debit: #d96459;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scrollbar-color: var(--paper-faint) var(--ink); overflow-x: clip; scroll-behavior: smooth; }
+body {
+  background: var(--ink); color: var(--paper); font-family: var(--sans);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+::selection { background: var(--credit); color: var(--ink); }
+a { color: inherit; }
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--credit); outline-offset: 3px; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: fixed; top: 0.9rem; left: 0.9rem; z-index: 200;
+  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--paper); background: var(--ink); border: 1px solid var(--credit);
+  padding: 0.7rem 1.1rem; text-decoration: none;
+  transform: translateY(calc(-100% - 1.5rem)); transition: transform 0.2s ease;
+}
+.skip-link:focus { transform: translateY(0); }
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 60; pointer-events: none; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+.wrap { max-width: 74rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
+
+/* ================= Nav ================= */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 1.2rem clamp(1.25rem, 4vw, 3rem);
+  background: rgba(13, 12, 10, 0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-mark { font-family: var(--serif); font-size: 1.25rem; text-decoration: none; }
+.nav-mark em { color: var(--credit); }
+.nav-links { display: flex; gap: 2rem; align-items: baseline; }
+.nav-links a {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--paper-dim); text-decoration: none; position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; width: 100%; height: 1px;
+  background: var(--credit); transform: scaleX(0); transform-origin: bottom right; transition: transform 0.35s ease;
+}
+.nav-links a:hover { color: var(--paper); }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+.nav-fy { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; color: var(--paper-faint); }
+@media (max-width: 720px) { .nav-fy { display: none; } .nav-links { gap: 1.2rem; } }
+@media (max-width: 480px) {
+  .nav-mark { font-size: 1.05rem; }
+  .nav-links { gap: 0.9rem; }
+  .nav-links a { font-size: 0.6rem; letter-spacing: 0.1em; }
+  .nav-links a[href="../index.html#about"] { display: none; }
+}
+
+/* ================= Entry head ================= */
+main { padding-top: clamp(7rem, 12vw, 10rem); }
+.crumb {
+  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--paper-faint);
+}
+.crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid var(--rule); transition: color 0.3s ease, border-color 0.3s ease; }
+.crumb a:hover { color: var(--credit); border-color: var(--credit); }
+h1 {
+  font-family: var(--serif); font-weight: 400; font-size: clamp(3.2rem, 9vw, 7.5rem);
+  line-height: 0.98; letter-spacing: -0.015em; margin-top: 1.6rem;
+}
+h1 em { color: var(--credit); }
+.entry-status {
+  display: flex; flex-wrap: wrap; gap: 0.6rem 1.6rem; align-items: baseline; margin-top: 1.5rem;
+  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-faint);
+}
+.l-status { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; color: var(--paper); }
+.l-status i {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 0.55rem;
+  background: var(--credit); box-shadow: 0 0 10px rgba(47, 191, 113, 0.6); animation: pulse 2.4s infinite;
+}
+.l-status.amber i { background: var(--amber); box-shadow: 0 0 10px rgba(232, 179, 75, 0.5); }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+.entry-lede {
+  margin-top: 2.2rem; font-family: var(--serif); font-size: clamp(1.35rem, 2.6vw, 2rem);
+  line-height: 1.4; color: var(--paper-dim); max-width: 42rem;
+}
+.entry-lede em { color: var(--credit); }
+.fig-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.2rem, 3vw, 2.5rem); margin-top: clamp(2.5rem, 5vw, 4rem); }
+.fig { border-top: 1px solid var(--rule); padding-top: 1rem; }
+.fig-num { display: block; font-family: var(--serif); font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.fig-num i { font-style: normal; font-family: var(--mono); font-size: 0.34em; letter-spacing: 0.05em; color: var(--credit); margin: 0 0.12em; }
+.fig-lab { display: block; margin-top: 0.65rem; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; line-height: 1.5; color: var(--paper-dim); text-transform: uppercase; }
+@media (max-width: 720px) { .fig-row { grid-template-columns: 1fr 1fr; } }
+
+/* ================= Notes (sections) ================= */
+.section-head {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--paper-dim); padding: 0.85rem 0; border-top: 2px solid var(--paper);
+  display: flex; justify-content: space-between; gap: 1rem; margin-top: clamp(4.5rem, 9vw, 7rem);
+}
+.section-head .right { color: var(--paper-faint); text-align: right; }
+.prose { margin-top: 1.6rem; max-width: 44rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; }
+.prose + .prose { margin-top: 1.1rem; }
+.prose b { color: var(--paper); font-weight: 500; }
+.pull {
+  margin-top: 2.2rem; font-family: var(--serif); font-style: italic; font-size: clamp(1.25rem, 2.3vw, 1.8rem);
+  line-height: 1.45; color: var(--paper-dim); max-width: 38rem;
+}
+.pull span { color: var(--credit); }
+
+/* Debit / credit comparison */
+.ba { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); margin-top: 2.4rem; }
+.ba h3 { font-family: var(--mono); font-weight: 400; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; padding-bottom: 0.8rem; border-bottom: 1px solid var(--rule); }
+.ba .deb h3 { color: var(--debit); }
+.ba .cred h3 { color: var(--credit); }
+.ba ul { list-style: none; }
+.ba li {
+  padding: 0.9rem 0; border-bottom: 1px solid var(--rule);
+  font-size: 0.85rem; line-height: 1.55; color: var(--paper-dim);
+}
+@media (max-width: 680px) { .ba { grid-template-columns: 1fr; } }
+
+/* Pipeline rows */
+.pipe { list-style: none; margin-top: 2.2rem; max-width: 44rem; counter-reset: stage; }
+.pipe li {
+  display: grid; grid-template-columns: 3.4rem 1fr; gap: 1.2rem; align-items: baseline;
+  padding: 0.85rem 0; border-bottom: 1px solid var(--rule);
+  font-size: 0.85rem; line-height: 1.55; color: var(--paper-dim);
+}
+.pipe li::before {
+  counter-increment: stage; content: "S" counter(stage);
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--paper-faint);
+}
+.pipe b { color: var(--paper); font-weight: 500; }
+.pipe .hl b { color: var(--credit); }
+
+/* Ledger tables */
+.ledger { width: 100%; border-collapse: collapse; margin-top: 2.2rem; }
+.ledger th {
+  font-family: var(--mono); font-weight: 400; font-size: 0.6rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--paper-faint); text-align: left;
+  padding: 0.9rem 0.5rem; border-bottom: 1px solid var(--rule);
+}
+.ledger th:last-child, .ledger td:last-child { text-align: right; }
+.ledger td { padding: 1rem 0.5rem; border-bottom: 1px solid var(--rule); vertical-align: baseline; font-size: 0.85rem; color: var(--paper-dim); }
+.ledger td.mono { font-family: var(--mono); font-size: 0.78rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ledger td .ok { color: var(--credit); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; }
+.ledger tfoot td {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; line-height: 1.6;
+  color: var(--paper-dim); border-bottom: 3px double var(--paper-faint); padding: 1.1rem 0.5rem;
+}
+
+/* Feature notes */
+.notes { list-style: none; margin-top: 2.2rem; }
+.notes li {
+  display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: baseline;
+  padding: 1.2rem 0; border-bottom: 1px solid var(--rule);
+  font-size: 0.88rem; line-height: 1.6; color: var(--paper-dim);
+}
+.notes li:first-child { border-top: 1px solid var(--rule); }
+.notes .n-ref { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--paper-faint); }
+.notes b { display: block; color: var(--paper); font-weight: 500; margin-bottom: 0.35rem; }
+
+/* Exhibit figure */
+.exhibit-fig { margin-top: 2.4rem; }
+.exhibit-fig figure { overflow: hidden; border: 1px solid var(--rule); background: var(--ink-2); }
+.exhibit-fig img { width: 100%; display: block; filter: saturate(0.8); }
+.exhibit-fig figcaption {
+  display: flex; justify-content: space-between; gap: 1rem; padding: 0.9rem 0.2rem 0;
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; color: var(--paper-faint); text-transform: uppercase;
+}
+
+/* Stack grid */
+.stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 2.2rem; border-top: 1px solid var(--rule); }
+.stack div { padding: 1.1rem 0.5rem; border-bottom: 1px solid var(--rule); }
+.stack .s-name { display: block; font-family: var(--mono); font-size: 0.74rem; color: var(--paper); }
+.stack .s-role { display: block; margin-top: 0.35rem; font-size: 0.74rem; line-height: 1.5; color: var(--paper-faint); }
+@media (max-width: 760px) { .stack { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .stack { grid-template-columns: 1fr; } }
+
+/* Other entries */
+.others { width: 100%; border-collapse: collapse; margin-top: 2.2rem; }
+.others td { padding: 1.3rem 0.5rem; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
+.others tr { cursor: pointer; transition: background 0.3s ease; }
+.others tr:hover { background: rgba(236, 231, 220, 0.035); }
+.o-ref { font-family: var(--mono); font-size: 0.7rem; color: var(--paper-faint); width: 3.5rem; }
+.o-name { font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1; transition: color 0.3s ease; white-space: nowrap; }
+.others tr:hover .o-name { font-style: italic; color: var(--credit); }
+.o-desc { font-size: 0.82rem; color: var(--paper-dim); max-width: 26rem; line-height: 1.55; }
+.o-status { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; white-space: nowrap; color: var(--paper-dim); }
+@media (max-width: 680px) { .o-desc { display: none; } }
+
+/* ================= Footer ================= */
+footer { padding: clamp(4rem, 8vw, 7rem) 0 2rem; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 2.5rem; }
+.foot-links a {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--paper-dim); text-decoration: none; border: 1px solid var(--rule); padding: 0.8rem 1.4rem;
+  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+.foot-links a:hover { color: var(--ink); background: var(--credit); border-color: var(--credit); }
+@media (max-width: 480px) { .foot-links a { flex: 1 1 40%; text-align: center; } }
+.foot-sign {
+  margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem 2rem;
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; color: var(--paper-faint); text-transform: uppercase;
+}
+
+/* ================= Reveal + motion prefs ================= */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.9s cubic-bezier(0.23, 1, 0.32, 1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+<noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
 </head>
 <body>
 
+<a class="skip-link" href="#entry">Skip to the entry</a>
 
-<div class="grain" aria-hidden="true"></div>
-<div class="v5-progress" id="progBar"></div>
-
-<!-- Nav -->
-<nav class="v5-nav">
-    <a href="../index.html" class="v5-nav-logo">Ajay Sachdev</a>
-    <ul class="v5-nav-links">
-        <li><a href="index.html">Work</a></li>
-        <li><a href="../index.html#about">About</a></li>
-        <li><a href="../index.html#contact">Contact</a></li>
-    </ul>
+<nav>
+  <a class="nav-mark" href="../index.html">Ajay<em>.</em>Sachdev</a>
+  <div class="nav-links">
+    <a href="../index.html#work">Work</a>
+    <a href="../index.html#about">About</a>
+    <a href="../index.html#contact">Contact</a>
+  </div>
+  <span class="nav-fy">SCHEDULE 1 / ENTRY 01</span>
 </nav>
 
-<!-- Hero -->
-<header class="cs-hero">
-    <a href="index.html" class="cs-back">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-        All projects
-    </a>
-    <span class="cs-tag"><span class="dot"></span>Autonomous AI &middot; Production 24/7</span>
-    <h1 class="cs-title">Ops<em>Pilot</em></h1>
-    <p class="cs-sub"><strong>I was drowning in context-switching across 5+ business systems,</strong> missing follow-ups, and spending hours pulling data that should have taken seconds. So I built an autonomous AI that monitors my work environment, surfaces what matters, and handles the operational overhead that used to eat my day. It runs 24/7 on production infrastructure, not as a demo.</p>
-    <div class="cs-stats">
-        <div class="cs-stat-item"><span class="cs-stat-val" data-target="25" data-suffix="+">0</span><span class="cs-stat-label">AI tools</span></div>
-        <div class="cs-stat-item"><span class="cs-stat-val" data-target="100" data-suffix="%">0</span><span class="cs-stat-label">Search accuracy</span></div>
-        <div class="cs-stat-item"><span class="cs-stat-val" data-target="6" data-suffix="k+">0</span><span class="cs-stat-label">Docs indexed</span></div>
-        <div class="cs-stat-item"><span class="cs-stat-val" data-target="5">0</span><span class="cs-stat-label">Data sources</span></div>
+<main id="entry" class="wrap">
+
+  <header>
+    <p class="crumb reveal"><a href="../index.html#work">The schedule</a> / Entry 01 / AI operations</p>
+    <h1 class="reveal">OpsPilot<em>.</em></h1>
+    <p class="entry-status reveal"><span class="l-status"><i></i>Production</span><span>In daily use since 2025 / Oracle Cloud, systemd</span></p>
+    <p class="entry-lede reveal">The AI from chapter 2. It lives in Teams, reads every document my company has ever filed, pulls live accounting and CRM data, and drafts answers in my voice. <em>Nothing sends without my approval.</em></p>
+    <div class="fig-row">
+      <div class="fig reveal"><span class="fig-num">97,000</span><span class="fig-lab">lines of Python</span></div>
+      <div class="fig reveal"><span class="fig-num">28</span><span class="fig-lab">AI tools, one orchestrator</span></div>
+      <div class="fig reveal"><span class="fig-num">6,124<i>+</i></span><span class="fig-lab">documents indexed</span></div>
+      <div class="fig reveal"><span class="fig-num">100<i>%</i></span><span class="fig-lab">on a 50-query test suite</span></div>
     </div>
-    <div class="v5-scroll-cue">Scroll</div>
-</header>
+  </header>
 
-<!-- Hero Image — CSS Laptop + Dashboard -->
-<div class="cs-hero-img">
-    <div class="laptop">
-        <div class="laptop-lid">
-            <div class="laptop-cam"></div>
-            <div class="laptop-viewport" id="laptopViewport">
-                <div class="dash-scaler" id="dashScaler">
-                    <div class="dash">
-                        <!-- Sidebar -->
-                        <aside class="dash-side">
-                            <div class="dash-logo">
-                                <div class="dash-logo-icon">OP</div>
-                                <span class="dash-logo-text">OpsPilot</span>
-                            </div>
-                            <nav class="dash-nav-group">
-                                <div class="dash-nav-label">Overview</div>
-                                <div class="dash-nav-item active">Dashboard</div>
-                                <div class="dash-nav-item">Analytics</div>
-                                <div class="dash-nav-item">Queries</div>
-                            </nav>
-                            <nav class="dash-nav-group">
-                                <div class="dash-nav-label">Data Sources</div>
-                                <div class="dash-nav-item">SharePoint</div>
-                                <div class="dash-nav-item">Xero</div>
-                                <div class="dash-nav-item">HubSpot</div>
-                            </nav>
-                            <nav class="dash-nav-group">
-                                <div class="dash-nav-label">System</div>
-                                <div class="dash-nav-item">Settings</div>
-                                <div class="dash-nav-item">Briefings</div>
-                            </nav>
-                        </aside>
-                        <!-- Main -->
-                        <div class="dash-main">
-                            <div class="dash-header">
-                                <div class="dash-title">Financial Overview</div>
-                                <div class="dash-header-actions">
-                                    <div class="dash-btn">Export Data</div>
-                                    <div class="dash-btn dash-btn--gold">Mar 2026</div>
-                                </div>
-                            </div>
-                            <!-- KPIs -->
-                            <div class="dash-kpis">
-                                <div class="dash-kpi"><div class="dash-kpi-label">Monthly Revenue</div><div class="dash-kpi-val">&pound;284k</div><span class="dash-kpi-change up">+12.3% vs Feb</span></div>
-                                <div class="dash-kpi"><div class="dash-kpi-label">Net Profit</div><div class="dash-kpi-val">&pound;41.2k</div><span class="dash-kpi-change up">+6.7% vs Feb</span></div>
-                                <div class="dash-kpi"><div class="dash-kpi-label">Deals Won</div><div class="dash-kpi-val">14</div><span class="dash-kpi-change up">+3 this month</span></div>
-                                <div class="dash-kpi"><div class="dash-kpi-label">Docs Indexed</div><div class="dash-kpi-val">7,241</div><span class="dash-kpi-change up">+124 new</span></div>
-                            </div>
-                            <!-- Charts (ApexCharts) -->
-                            <div class="dash-charts">
-                                <div class="dash-card"><div class="dash-card-title">Monthly Revenue</div><div class="dash-chart-wrap" id="chartRevenue"></div></div>
-                                <div class="dash-card"><div class="dash-card-title">HubSpot Pipeline</div><div class="dash-chart-wrap" id="chartPipeline"></div></div>
-                            </div>
-                            <!-- Bottom row -->
-                            <div class="dash-bottom">
-                                <div class="dash-card">
-                                    <div class="dash-card-title">Xero Bank Balances</div>
-                                    <div class="dash-bal-row"><div><div class="dash-bal-name">Business Current Account</div><div class="dash-bal-sub">Barclays ****4521</div></div><div class="dash-bal-amt">&pound;142,388</div></div>
-                                    <div class="dash-bal-row"><div><div class="dash-bal-name">Savings Reserve</div><div class="dash-bal-sub">Barclays ****7830</div></div><div class="dash-bal-amt">&pound;85,200</div></div>
-                                    <div class="dash-bal-row"><div><div class="dash-bal-name">VAT Holding</div><div class="dash-bal-sub">Barclays ****2104</div></div><div class="dash-bal-amt">&pound;28,740</div></div>
-                                </div>
-                                <div class="dash-card">
-                                    <div class="dash-card-title">Recent Queries</div>
-                                    <div class="dash-query"><div class="dash-query-icon purple">?</div><div><div class="dash-query-text">What's our current MRR and how does it compare to forecast?</div><div class="dash-query-meta">Today 09:14 -- 1.2s response</div></div></div>
-                                    <div class="dash-query"><div class="dash-query-icon green">?</div><div><div class="dash-query-text">Find the Q4 board deck and summarise the revenue section</div><div class="dash-query-meta">Today 08:46 -- 3.4s response</div></div></div>
-                                    <div class="dash-query"><div class="dash-query-icon blue">?</div><div><div class="dash-query-text">What's the HR policy on remote working days?</div><div class="dash-query-meta">Yesterday 16:22 -- 0.8s response</div></div></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="laptop-base"></div>
-        <div class="laptop-shadow"></div>
+  <section>
+    <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">Where the hours went</span></div>
+    <p class="prose reveal">I run finance and operations at a tech company. My day is split across Teams, SharePoint, Xero, HubSpot and email. Someone asks a question in one system, the answer lives in another, and the context for why it matters is in a third. I was spending hours just pulling data, missing follow-ups because nobody tracked who said what, and scrambling for context five minutes before meetings.</p>
+    <p class="prose reveal">"What does the contract say about payment terms?" That's a SharePoint search. "Who hasn't paid us?" That's Xero. "What deals is the sales team working on?" HubSpot. "Tell me about this customer." That needs all three. The information always existed. It was just scattered across 6,124+ files, multiple systems, and years of accumulated documents.</p>
+    <div class="ba reveal">
+      <div class="deb">
+        <h3>Debit: before</h3>
+        <ul>
+          <li>Dig through 6,124+ SharePoint files by hand</li>
+          <li>Log into Xero, HubSpot, email and calendar separately for every question</li>
+          <li>Miss follow-ups because nobody tracked who promised what</li>
+          <li>Scramble for context five minutes before a meeting</li>
+        </ul>
+      </div>
+      <div class="cred">
+        <h3>Credit: after</h3>
+        <ul>
+          <li>Ask a question in Teams, get an answer from any source in seconds</li>
+          <li>Morning briefing with everything that matters before 9am</li>
+          <li>Commitment tracker catches every promise, nudges when overdue</li>
+          <li>Pre-meeting brief lands 15 minutes before every call</li>
+        </ul>
+      </div>
     </div>
-    <p class="cs-img-caption">Vizro dashboard showing live KPIs, P&amp;L, pipeline, and bank balances <span class="dummy-badge">Dummy Data</span></p>
+  </section>
 
-    <!-- Mobile KPI card (shown at 768px and below) -->
-    <div class="dash-mobile-card">
-        <div class="dash-mobile-header">
-            <div class="dash-mobile-logo"><span>OP</span> OpsPilot Dashboard</div>
-            <div class="dash-mobile-badge">Dummy Data</div>
-        </div>
-        <div class="dash-mobile-kpis">
-            <div class="dash-mobile-kpi"><div class="dash-mobile-kpi-label">Monthly Revenue</div><div class="dash-mobile-kpi-val">&pound;284k</div><span class="dash-mobile-kpi-change up">+12.3% vs Feb</span></div>
-            <div class="dash-mobile-kpi"><div class="dash-mobile-kpi-label">Net Profit</div><div class="dash-mobile-kpi-val">&pound;41.2k</div><span class="dash-mobile-kpi-change up">+6.7% vs Feb</span></div>
-            <div class="dash-mobile-kpi"><div class="dash-mobile-kpi-label">Deals Won</div><div class="dash-mobile-kpi-val">14</div><span class="dash-mobile-kpi-change up">+3 this month</span></div>
-            <div class="dash-mobile-kpi"><div class="dash-mobile-kpi-label">Docs Indexed</div><div class="dash-mobile-kpi-val">7,241</div><span class="dash-mobile-kpi-change up">+124 new</span></div>
-        </div>
-        <div class="dash-mobile-note">Full 11-page dashboard best viewed on desktop</div>
+  <section>
+    <div class="section-head reveal"><span>Note 2: How it works</span><span class="right">Nine stages, one approval</span></div>
+    <p class="prose reveal">Someone asks a question in Teams. The pipeline triages it, figures out whether it needs documents, live accounting data, CRM data, or all three at once, and returns an answer as an Adaptive Card with approve, edit and reject buttons. Live data questions hit Xero or HubSpot directly, zero LLM cost. Document questions run a hybrid search. Cross-source questions go through a single orchestrator call with <b>28 combined tools</b>. A PII blocker sits in front of everything that leaves.</p>
+    <ol class="pipe reveal">
+      <li><span><b>Teams webhook</b> receives the message inside the Bot Framework turn</span></li>
+      <li><span><b>Dedup gate</b> drops repeats before they cost anything</span></li>
+      <li class="hl"><span><b>Smart triage</b>, two layers: keywords first, a fast model for the rest. Work, personal or noise</span></li>
+      <li class="hl"><span><b>Intent router</b> picks the source: documents, Xero, HubSpot, multi-source, reconciliation or journal</span></li>
+      <li class="hl"><span><b>Retrieval</b>: BM25 + FAISS hybrid with reciprocal rank fusion and an AI reranker for documents; direct API reads for live data</span></li>
+      <li><span><b>Multi-draft generation</b> in my writing style, several answer shapes to choose from</span></li>
+      <li class="hl"><span><b>Sensitivity gate</b>: UK PII detector, a hard blocker before anything can auto-send</span></li>
+      <li><span><b>Adaptive Card builder</b> formats the answer with sources and figures</span></li>
+      <li class="hl"><span><b>Approve, edit or reject</b>. A human signs every entry. That's the design, not a limitation</span></li>
+    </ol>
+    <table class="ledger reveal">
+      <thead><tr><th>Test suite</th><th>Scope</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Document search</td><td>50 production queries</td><td class="mono"><span class="ok">50/50</span></td></tr>
+        <tr><td>Triage</td><td>20 labelled messages</td><td class="mono"><span class="ok">20/20</span></td></tr>
+        <tr><td>Intent routing</td><td>45 queries across 6 sources</td><td class="mono"><span class="ok">45/45</span></td></tr>
+        <tr><td>Conversation follow-up</td><td>54 multi-turn cases</td><td class="mono"><span class="ok">54/54</span></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="2">The search pipeline is frozen at 100%</td><td>No changes until it misses</td></tr></tfoot>
+    </table>
+  </section>
+
+  <section>
+    <div class="section-head reveal"><span>Note 3: What it does</span><span class="right">Beyond answering</span></div>
+    <ul class="notes">
+      <li class="reveal"><span class="n-ref">F.1</span><span><b>Hybrid search</b>BM25 for keywords, FAISS for meaning, reciprocal rank fusion to merge them, then an AI reranker picks the top five. HyDE query expansion generates domain terms so vague questions still land on the right document.</span></li>
+      <li class="reveal"><span class="n-ref">F.2</span><span><b>Live data, no hallucination surface</b>"Who hasn't paid us?" reads Xero receivables directly. "What deals are open?" queries the HubSpot pipeline. 17 direct API actions where the LLM never touches the numbers: formatted figures, straight back. Xero access is read-only by design.</span></li>
+      <li class="reveal"><span class="n-ref">F.3</span><span><b>Autonomous monitoring</b>Morning briefing at 08:00, evening wrap at 17:30, deal-stage checks every five minutes in business hours. An invoice scanner reads PDFs from my inbox, extracts line items, matches them against Xero and flags duplicates and price drift. A commitment tracker detects promises in Teams and email and alerts when they slip.</span></li>
+      <li class="reveal"><span class="n-ref">F.4</span><span><b>Dashboard</b>A React dashboard on precomputed state: P&amp;L, cash position, pipeline, receivables, engagement. FastAPI serves it from SQLite so the page never waits on a third-party API.</span></li>
+      <li class="reveal"><span class="n-ref">F.5</span><span><b>Personal growth journal</b>Every evening it writes a first-person diary entry from the day's activity, then a behavioural layer flags blind spots: unreplied messages, tone drift, neglected relationships. Weekly digest on Fridays.</span></li>
+      <li class="reveal"><span class="n-ref">F.6</span><span><b>Conversation memory and approval</b>Per-user context with a two-hour window and ten-turn memory, so "what about their payment terms?" knows who "they" are. Every answer returns as options; nothing goes out unapproved. It learns which answer style I tend to pick.</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="section-head reveal"><span>Note 4: Exhibit</span><span class="right">Exhibit A</span></div>
+    <div class="exhibit-fig reveal">
+      <figure>
+        <picture>
+          <source srcset="../images/ajay-brain-dashboard.webp" type="image/webp">
+          <img src="../images/ajay-brain-dashboard.png" alt="OpsPilot dashboard showing finance and pipeline panels" loading="lazy" decoding="async">
+        </picture>
+        <figcaption><span>OpsPilot dashboard</span><span>Sample data, real figures stay private</span></figcaption>
+      </figure>
     </div>
-</div>
+  </section>
 
-<!-- Marquee -->
-<div class="v5-marquee">
-    <div class="v5-marquee-track" id="marqueeTrack">
-        <span class="v5-marquee-item">Agentic AI <span class="sep">/</span></span><span class="v5-marquee-item">Microsoft Teams <span class="sep">/</span></span><span class="v5-marquee-item">Python <span class="sep">/</span></span><span class="v5-marquee-item">Production <span class="sep">/</span></span><span class="v5-marquee-item">SharePoint <span class="sep">/</span></span><span class="v5-marquee-item">Xero <span class="sep">/</span></span><span class="v5-marquee-item">HubSpot <span class="sep">/</span></span><span class="v5-marquee-item">97k+ Lines <span class="sep">/</span></span><span class="v5-marquee-item">Agentic AI <span class="sep">/</span></span><span class="v5-marquee-item">Microsoft Teams <span class="sep">/</span></span><span class="v5-marquee-item">Python <span class="sep">/</span></span><span class="v5-marquee-item">Production <span class="sep">/</span></span><span class="v5-marquee-item">SharePoint <span class="sep">/</span></span><span class="v5-marquee-item">Xero <span class="sep">/</span></span><span class="v5-marquee-item">HubSpot <span class="sep">/</span></span><span class="v5-marquee-item">97k+ Lines <span class="sep">/</span></span>
+  <section>
+    <div class="section-head reveal"><span>Note 5: Stack</span><span class="right">Carrying values</span></div>
+    <div class="stack reveal">
+      <div><span class="s-name">Python 3.12</span><span class="s-role">97,000 lines, one codebase</span></div>
+      <div><span class="s-name">Gemini 2.5 Flash / Pro</span><span class="s-role">Primary models: triage, drafting, reasoning</span></div>
+      <div><span class="s-name">Claude</span><span class="s-role">Tool-use orchestration and fallback in the LLM cascade</span></div>
+      <div><span class="s-name">FAISS + BM25</span><span class="s-role">Hybrid retrieval with rank fusion</span></div>
+      <div><span class="s-name">Microsoft Graph</span><span class="s-role">Teams, SharePoint, calendar, email</span></div>
+      <div><span class="s-name">Bot Framework</span><span class="s-role">Teams webhook handler, aiohttp</span></div>
+      <div><span class="s-name">Xero API</span><span class="s-role">Accounting data, read-only by design</span></div>
+      <div><span class="s-name">HubSpot API</span><span class="s-role">CRM and sales pipeline</span></div>
+      <div><span class="s-name">React 19 + Vite</span><span class="s-role">Dashboard, TypeScript throughout</span></div>
+      <div><span class="s-name">FastAPI + SQLite</span><span class="s-role">Precomputed state, no live waits</span></div>
+      <div><span class="s-name">APScheduler</span><span class="s-role">Briefings and scheduled jobs</span></div>
+      <div><span class="s-name">Oracle Cloud</span><span class="s-role">Ubuntu VM, systemd, auto-deploy</span></div>
     </div>
-</div>
+    <p class="pull reveal">Nobody could find anything in 7,000 files. Now the files <span>answer back.</span></p>
+  </section>
 
-<!-- 01 / The Problem -->
-<div class="cs-content">
-<section class="cs-section">
-    <span class="cs-label">01 / The Problem</span>
-    <div class="cs-divider"></div>
-    <p class="cs-prose">I run finance and operations at a tech company. My day is split across Teams, SharePoint, Xero, HubSpot, and email. Someone asks a question in one system, the answer lives in another, and the context for why it matters is in a third. I was spending hours just pulling data, missing follow-ups because nobody tracked who said what, and scrambling for context before meetings.</p>
-    <p class="cs-prose">"What does the Customer X contract say about payment terms?" That's a SharePoint search. "Who hasn't paid us?" That's Xero. "What deals is the sales team working on?" HubSpot. "Tell me about Customer X." That needs all three. The information always existed. It was just scattered across 6,124+ files, multiple systems, and years of accumulated documents.</p>
+  <section>
+    <div class="section-head reveal"><span>Other entries</span><span class="right">Same ledger</span></div>
+    <table class="others reveal">
+      <tbody>
+        <tr data-href="trading-bot.html">
+          <td class="o-ref">02</td>
+          <td><span class="o-name">Trading Bot</span></td>
+          <td class="o-desc">Four AI agents that veto my trades. 62 sessions, zero impulsive trades let through.</td>
+          <td class="o-status">Paper trading</td>
+        </tr>
+        <tr data-href="uni-nation.html">
+          <td class="o-ref">03</td>
+          <td><span class="o-name">Uni-Nation Digital</span></td>
+          <td class="o-desc">Website, inventory PWA and Hindi voice stock entry for the family fabric business.</td>
+          <td class="o-status">Live</td>
+        </tr>
+        <tr data-href="whatsapp-smart.html">
+          <td class="o-ref">04</td>
+          <td><span class="o-name">WhatsApp Smart</span></td>
+          <td class="o-desc">A Chrome extension that gives WhatsApp scheduling, AI replies and summaries.</td>
+          <td class="o-status">Prototype</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 
-    <div class="cs-ba">
-        <div class="cs-ba-col">
-            <h4>Before</h4>
-            <ul>
-                <li>Dig through 6,124+ SharePoint files manually</li>
-                <li>Log into Xero, HubSpot, email, calendar separately for every question</li>
-                <li>Miss follow-ups because nobody tracked who promised what</li>
-                <li>Scramble for context 5 minutes before a meeting</li>
-            </ul>
-        </div>
-        <div class="cs-ba-col ba-after">
-            <h4>After</h4>
-            <ul>
-                <li>Ask a question in Teams, get an answer from any source in seconds</li>
-                <li>Morning briefing with everything that matters before 9am</li>
-                <li>Commitment tracker catches every promise, nudges when overdue</li>
-                <li>Pre-meeting brief lands 15 minutes before every call</li>
-            </ul>
-        </div>
-    </div>
-</section>
+</main>
 
-<!-- 02 / How It Works -->
-<section class="cs-section">
-    <span class="cs-label">02 / How It Works</span>
-    <div class="cs-divider"></div>
-    <h2 class="cs-heading">Nine-stage pipeline</h2>
-    <p class="cs-prose" style="margin-bottom:40px">Someone asks a question in Teams. The pipeline triages it, figures out whether it needs documents, live accounting data, CRM data, or all three at once, and returns an answer as an Adaptive Card with approve/edit/reject buttons. Live data questions hit Xero or HubSpot directly, zero LLM cost. Document questions run a hybrid search (BM25 + FAISS + reranker). Cross-source queries like "tell me about Customer X" pull from everything simultaneously. A PII blocker catches sensitive data before anything goes out.</p>
-
-    <div class="cs-pipeline">
-        <svg viewBox="0 0 700 460" fill="none">
-            <!-- Row 1: S1 -> S2 -> S3 -> S4 -->
-            <rect class="stage-box" x="10" y="10" width="150" height="42" rx="6"/>
-            <text class="stage-label" x="85" y="25">S1</text>
-            <text class="stage-text" x="85" y="39">Teams webhook</text>
-
-            <line class="conn" x1="160" y1="31" x2="180" y2="31"/>
-
-            <rect class="stage-box" x="180" y="10" width="150" height="42" rx="6"/>
-            <text class="stage-label" x="255" y="25">S2</text>
-            <text class="stage-text" x="255" y="39">Dedup gate</text>
-
-            <line class="conn" x1="330" y1="31" x2="350" y2="31"/>
-
-            <rect class="stage-box hl" x="350" y="10" width="150" height="42" rx="6"/>
-            <text class="stage-label" x="425" y="25">S3</text>
-            <text class="stage-text" x="425" y="39">Smart triage (2-layer)</text>
-
-            <line class="conn" x1="500" y1="31" x2="520" y2="31"/>
-
-            <rect class="stage-box hl" x="520" y="10" width="170" height="42" rx="6"/>
-            <text class="stage-label" x="605" y="25">S4</text>
-            <text class="stage-text" x="605" y="39">Intent router</text>
-
-            <!-- Vertical splits from S4 -->
-            <line class="conn" x1="570" y1="52" x2="570" y2="92"/>
-            <line class="conn" x1="640" y1="52" x2="640" y2="92"/>
-
-            <!-- Row 2: S5b (left) and S5a (right) -->
-            <rect class="stage-box hl" x="10" y="92" width="460" height="42" rx="6"/>
-            <text class="stage-label" x="240" y="107">S5b / DOC SEARCH</text>
-            <text class="stage-text" x="240" y="121">BM25 + FAISS hybrid + RRF + ROSES reranker</text>
-
-            <rect class="stage-box hl" x="490" y="92" width="200" height="42" rx="6"/>
-            <text class="stage-label" x="590" y="107">S5a / LIVE DATA</text>
-            <text class="stage-text" x="590" y="121">Xero (9) + HubSpot (8)</text>
-
-            <!-- Vertical from both rows to S6 -->
-            <line class="conn" x1="240" y1="134" x2="240" y2="174"/>
-            <line class="conn" x1="590" y1="134" x2="590" y2="174"/>
-
-            <!-- Row 3: S6 and S7 -->
-            <rect class="stage-box" x="120" y="174" width="240" height="42" rx="6"/>
-            <text class="stage-label" x="240" y="189">S6</text>
-            <text class="stage-text" x="240" y="203">Multi-draft generation</text>
-
-            <line class="conn" x1="360" y1="195" x2="470" y2="195"/>
-
-            <rect class="stage-box hl" x="470" y="174" width="220" height="42" rx="6"/>
-            <text class="stage-label" x="580" y="189">S7</text>
-            <text class="stage-text" x="580" y="203">PII sensitivity gate</text>
-
-            <!-- Vertical to S8 -->
-            <line class="conn" x1="240" y1="216" x2="240" y2="256"/>
-            <line class="conn" x1="580" y1="216" x2="580" y2="256"/>
-
-            <!-- Row 4: S8 and S9 -->
-            <rect class="stage-box" x="120" y="256" width="240" height="42" rx="6"/>
-            <text class="stage-label" x="240" y="271">S8</text>
-            <text class="stage-text" x="240" y="285">Adaptive Card builder</text>
-
-            <line class="conn" x1="360" y1="277" x2="470" y2="277"/>
-
-            <rect class="stage-box hl" x="470" y="256" width="220" height="42" rx="6"/>
-            <text class="stage-label" x="580" y="271">S9</text>
-            <text class="stage-text" x="580" y="285">Approve / Edit / Reject</text>
-
-            <!-- Unified Orchestrator box -->
-            <rect x="120" y="340" width="570" height="50" rx="8" fill="none" stroke="rgba(201,169,109,.2)" stroke-width="1" stroke-dasharray="6 4"/>
-            <text class="stage-label" x="405" y="360" style="font-size:7.5px">UNIFIED ORCHESTRATOR</text>
-            <text class="stage-text" x="405" y="376">Single model call with 28 combined tools for cross-source queries</text>
-        </svg>
-    </div>
-</section>
-
-<!-- 03 / What It Does -->
-<section class="cs-section">
-    <span class="cs-label">03 / What It Does</span>
-    <div class="cs-divider"></div>
-    <h2 class="cs-heading">What it does</h2>
-
-    <div class="cs-features">
-        <div class="cs-feature">
-            <h4>Hybrid Search</h4>
-            <p>BM25 for keywords, FAISS with E5-Large-Instruct for semantics, Reciprocal Rank Fusion merges rankings, then a ROSES AI reranker picks the top five. HyDE generates domain-specific terms so vague queries like "anything about the Customer X deal" still find the right documents. 100% accuracy on production tests. The search pipeline is frozen. No changes without explicit approval.</p>
-        </div>
-        <div class="cs-feature">
-            <h4>Cross-Source Intelligence</h4>
-            <p>"Who hasn't paid us?" pulls live Xero receivables. "What deals is David working on?" queries HubSpot pipeline data. "Find the employment contract template" searches SharePoint. Ask "tell me about Customer X" and it pulls from all three simultaneously. 17 direct API actions, and when a query routes to live data the LLM never touches it. Just formatted numbers, straight back.</p>
-        </div>
-        <div class="cs-feature">
-            <h4>11-Page Dashboard</h4>
-            <p>Built on McKinsey's Vizro framework. Covers the full picture: P&amp;L, cash position, sales pipeline, receivables, CRM activity, engagement trends. 40+ chart types. There's an AI chat overlay too, so you can ask Claude to recut any chart without leaving the page.</p>
-        </div>
-        <div class="cs-feature">
-            <h4>Autonomous Monitoring</h4>
-            <p>10+ scheduled jobs that run without any manual trigger. Morning and evening briefings land in Teams with calendar, email highlights, financial alerts, and follow-up reminders. Deal stage monitoring checks HubSpot every 5 minutes during business hours. An invoice scanner picks up PDFs from my inbox, uses Vision AI to extract line items, matches against Xero records, and flags duplicates or price drift. A commitment tracker detects promises in Teams and email, then alerts when they're overdue. Pre-meeting briefs generate 15 minutes before each call with attendee CRM history and open invoices.</p>
-        </div>
-        <div class="cs-feature">
-            <h4>Personal Growth Journal</h4>
-            <p>Every evening, it writes a first-person diary entry from the day's activity: Teams conversations, emails, calendar, deal changes, financial updates. A separate behavioural feedback system analyses my communication patterns and flags blind spots like unreplied messages, tone issues, or neglected relationships. Rolling memory tracks per-person interaction metrics and recurring feedback themes. Weekly digest every Friday with trends and self-review evidence.</p>
-        </div>
-        <div class="cs-feature">
-            <h4>Conversation Memory &amp; Approval</h4>
-            <p>It remembers what you were talking about. Per-user context with a 2-hour window and 10-turn memory. Ask about Customer X, then follow up with "what about their payment terms?" and it knows what you mean. Every answer comes back with options and nothing goes out without you approving it. It also learns which style of answer you tend to pick from your approval history.</p>
-        </div>
-    </div>
-</section>
-
-<!-- 04 / In Action -->
-<section class="cs-section">
-    <span class="cs-label">04 / In Action</span>
-    <div class="cs-divider"></div>
-    <h2 class="cs-heading">Teams Adaptive Card</h2>
-    <p class="cs-prose" style="margin-bottom:24px">Ask a question in Teams, pick an answer, click approve. Nothing gets sent without you seeing it first.</p>
-
-    <div class="teams-win-wrap">
-    <span class="dummy-tag">Sample data</span>
-    <div class="teams-win">
-        <!-- Title bar -->
-        <div class="teams-titlebar">
-            <svg class="teams-titlebar-icon" viewBox="0 0 24 24" fill="#7b83eb"><path d="M17.5 6.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM20 8h-5a1 1 0 0 0-1 1v5.5a.5.5 0 0 0 .5.5H20a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1zM9.5 7a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM13 9H6a2 2 0 0 0-2 2v6a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-6a2 2 0 0 0-2-2z"/></svg>
-            <span class="teams-titlebar-text">Microsoft Teams</span>
-            <div class="teams-titlebar-dots"><span></span><span></span><span></span></div>
-        </div>
-        <!-- Channel header -->
-        <div class="teams-channel">
-            <span class="teams-channel-name">OpsPilot</span>
-            <span class="teams-channel-desc">| General</span>
-        </div>
-        <!-- Chat -->
-        <div class="teams-chat">
-            <!-- User question -->
-            <div class="teams-msg-user">
-                <div class="teams-msg-user-bubble">What's our current MRR and how does it compare to forecast?</div>
-            </div>
-            <!-- Bot response -->
-            <div class="teams-msg-bot">
-                <div class="teams-bot-avatar">OP</div>
-                <div class="teams-bot-content">
-                    <div class="teams-bot-meta">
-                        <span class="teams-bot-name">OpsPilot</span>
-                        <span class="teams-bot-time">10:42 AM</span>
-                    </div>
-                    <div class="teams-card">
-                        <div class="teams-card-body">
-                            <div class="teams-card-title">Monthly Recurring Revenue</div>
-                            <div class="teams-card-text">MRR is &pound;127,400 as of March 2026, 4.2% above the Q1 forecast of &pound;122,300. Growth is driven by 3 new enterprise contracts closed in February. Churn held at 1.8%, below the 2.5% target.</div>
-                            <div class="teams-facts">
-                                <div class="teams-fact"><span class="teams-fact-label">Current MRR</span><span class="teams-fact-value">&pound;127,400</span></div>
-                                <div class="teams-fact"><span class="teams-fact-label">Q1 Forecast</span><span class="teams-fact-value">&pound;122,300</span></div>
-                                <div class="teams-fact"><span class="teams-fact-label">Variance</span><span class="teams-fact-value">+4.2% above target</span></div>
-                                <div class="teams-fact"><span class="teams-fact-label">Churn</span><span class="teams-fact-value">1.8% (target 2.5%)</span></div>
-                            </div>
-                        </div>
-                        <div class="teams-card-actions">
-                            <span class="teams-card-btn teams-card-btn-primary">Approve</span>
-                            <span class="teams-card-btn">Edit</span>
-                            <span class="teams-card-btn teams-card-btn-danger">Reject</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-</section>
-
-<!-- 05 / Built With -->
-<section class="cs-section">
-    <span class="cs-label">05 / Built With</span>
-    <div class="cs-divider"></div>
-    <h2 class="cs-heading">Tech stack</h2>
-
-    <div class="cs-tech">
-        <div class="cs-tech-item"><div class="cs-tech-item-name">Python 3.12</div><div class="cs-tech-item-role">97k+ lines of Python</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">Claude Sonnet</div><div class="cs-tech-item-role">Reasoning, synthesis, orchestration</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">Claude Haiku</div><div class="cs-tech-item-role">Triage, OCR, fast tasks</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">FAISS</div><div class="cs-tech-item-role">Vector similarity search</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">BM25</div><div class="cs-tech-item-role">Keyword search engine</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">MS Graph API</div><div class="cs-tech-item-role">Teams, SharePoint, Calendar, Email</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">Xero API</div><div class="cs-tech-item-role">Accounting data (read-only)</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">HubSpot API</div><div class="cs-tech-item-role">CRM &amp; sales pipeline</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">Bot Framework</div><div class="cs-tech-item-role">Teams webhook handler</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">Vizro</div><div class="cs-tech-item-role">11-page McKinsey dashboard</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">APScheduler</div><div class="cs-tech-item-role">11 automated briefing jobs</div></div>
-        <div class="cs-tech-item"><div class="cs-tech-item-name">Oracle Cloud</div><div class="cs-tech-item-role">Ubuntu VM, systemd, auto-deploy</div></div>
-    </div>
-</section>
-
-<!-- More Work -->
-<section class="cs-section">
-    <span class="cs-label">More Work</span>
-    <div class="cs-divider"></div>
-    <h2 class="cs-heading">Other projects</h2>
-</section>
-</div>
-
-<section class="cs-others">
-    <div class="cs-others-grid">
-        <a href="trading-bot.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
-            <div class="cs-other-card-img">
-                <img src="../images/card-trading.png" alt="Trading Bot backtest" loading="lazy">
-            </div>
-            <div class="cs-other-card-body">
-                <span class="cs-other-card-badge">Paper Trading</span>
-                <h3 class="cs-other-card-title">Trading Bot</h3>
-                <p class="cs-other-card-desc">Same multi-agent architecture, applied to markets. Four agents with deterministic kill-switches and risk veto.</p>
-                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
-            </div>
-        </a>
-        <a href="whatsapp-smart.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
-            <div class="cs-other-card-img">
-                <img src="../images/card-whatsapp.png" alt="WhatsApp Smart extension" loading="lazy">
-            </div>
-            <div class="cs-other-card-body">
-                <span class="cs-other-card-badge">Prototype</span>
-                <h3 class="cs-other-card-title">WhatsApp Smart</h3>
-                <p class="cs-other-card-desc">Different stack, same problem-first approach. TypeScript/React Chrome extension for WhatsApp productivity.</p>
-                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
-            </div>
-        </a>
-        <a href="uni-nation.html" class="cs-other-card" data-cursor="-text" data-cursor-text="View">
-            <div class="cs-other-card-img">
-                <img src="../images/card-uninat.png" alt="Uni-Nation website" loading="lazy">
-            </div>
-            <div class="cs-other-card-body">
-                <span class="cs-other-card-badge">Live</span>
-                <h3 class="cs-other-card-title">Uni-Nation Digital</h3>
-                <p class="cs-other-card-desc">Where I first learned that the best problems sit between departments. Family textile business, digital from scratch.</p>
-                <span class="cs-other-card-arrow">View case study <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
-            </div>
-        </a>
-    </div>
-</section>
-</div>
-
-<!-- Manifesto -->
-<section class="v5-manifesto">
-    <p class="v5-manifesto-text" id="manifestoText">Nobody could find anything in 7,000 files. Every question meant someone stopping their day to dig through folders.</p>
-</section>
-
-<!-- Footer -->
-<footer class="v5-footer" id="contact">
-    <h2 class="v5-footer-title" id="footerH">Let's talk.</h2>
-    <p class="v5-footer-sub">See something interesting? Get in touch.</p>
-    <div class="v5-footer-links">
-        <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span>LinkedIn</span></a>
-        <a href="mailto:ajay@ajaysachdev.com" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg><span>Email</span></a>
-        <a href="https://uni-nation.in" target="_blank" rel="noopener" class="v5-footer-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg><span>Uni-Nation</span></a>
-    </div>
-    <p class="v5-footer-copy">&copy; 2026 Ajay Sachdev</p>
+<footer class="wrap">
+  <div class="section-head"><span>Closing entry</span><span class="right">Correspondence</span></div>
+  <div class="foot-links reveal">
+    <a href="../index.html#work">Back to the schedule</a>
+    <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:ajay@ajaysachdev.com">Email</a>
+  </div>
+  <div class="foot-sign">
+    <span>Prepared without audit fees. Audited by production.</span>
+    <span>Ajay Sachdev, 2026</span>
+  </div>
 </footer>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mouse-follower@1/dist/mouse-follower.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
 <script>
-/* === GSAP Setup === */
-gsap.registerPlugin(ScrollTrigger);
-if(typeof SplitText!=='undefined') gsap.registerPlugin(SplitText);
-if(typeof CustomEase!=='undefined'){gsap.registerPlugin(CustomEase);CustomEase.create('smooth','M0,0 C0.25,0.1 0.25,1 1,1')}
+(function () {
+  'use strict';
 
-/* === Lenis === */
-const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t))});
-lenis.on('scroll',ScrollTrigger.update);
-gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);lenis.stop();
+  /* Analytics: GoatCounter (production only, no cookies, no PII) */
+  if (location.hostname === 'ajaysachdev.com' || location.hostname === 'www.ajaysachdev.com') {
+    var gc = document.createElement('script');
+    gc.async = true;
+    gc.src = 'https://gc.zgo.at/count.js';
+    gc.setAttribute('data-goatcounter', 'https://ajaysachdev.goatcounter.com/count');
+    document.head.appendChild(gc);
+  }
 
-/* === Dashboard scaler === */
-function scaleDash(){
-    const vp=document.getElementById('laptopViewport');
-    const sc=document.getElementById('dashScaler');
-    if(!vp||!sc) return;
-    const baseW=parseFloat(getComputedStyle(sc).width)||1440;
-    const s=vp.offsetWidth/baseW;
-    sc.style.transform=`scale(${s})`;
-}
-scaleDash();
-window.addEventListener('resize',scaleDash);
+  /* Reveals */
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reveals = document.querySelectorAll('.reveal');
+  if (reduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
 
-/* === ApexCharts === */
-if(typeof ApexCharts!=='undefined'){
-    const chartColors={bg:'transparent',card:'#12121c',grid:'rgba(255,255,255,.04)',text:'#8a857d'};
-
-    /* Revenue bar chart */
-    const chartRev = new ApexCharts(document.getElementById('chartRevenue'),{
-        chart:{type:'bar',height:'100%',background:chartColors.bg,toolbar:{show:false},
-            fontFamily:'Inter,system-ui,sans-serif',foreColor:chartColors.text,
-            animations:{enabled:true,easing:'easeinout',speed:1200,animateGradually:{enabled:true,delay:80}}},
-        series:[{name:'Revenue',data:[184,196,168,142,208,224,158,284]}],
-        xaxis:{categories:['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
-            axisBorder:{show:false},axisTicks:{show:false},
-            labels:{style:{fontSize:'10px'}},
-            crosshairs:{show:true,fill:{type:'solid',color:'rgba(255,255,255,.12)'},
-                stroke:{color:'rgba(255,255,255,.25)',width:1}}},
-        yaxis:{labels:{formatter:v=>'GBP '+Math.round(v)+'k',style:{fontSize:'10px'}},
-            min:0,max:300},
-        grid:{borderColor:chartColors.grid,strokeDashArray:0,padding:{left:4,right:4}},
-        plotOptions:{bar:{borderRadius:3,columnWidth:'55%',
-            colors:{ranges:[
-                {from:-1000,to:170,color:'#f87171'},
-                {from:170,to:1000,color:'#34d399'}
-            ]}}},
-        dataLabels:{enabled:false},
-        tooltip:{theme:'dark',y:{formatter:v=>'GBP '+v+'k'},style:{fontSize:'11px'}},
-        states:{hover:{filter:{type:'darken',value:.12}}}
+  /* Row navigation */
+  document.querySelectorAll('tr[data-href]').forEach(function (row) {
+    row.addEventListener('click', function () { location.href = row.dataset.href; });
+    row.setAttribute('tabindex', '0');
+    row.setAttribute('role', 'link');
+    row.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.href = row.dataset.href; }
     });
-
-    /* Pipeline horizontal bar */
-    const chartPipe = new ApexCharts(document.getElementById('chartPipeline'),{
-        chart:{type:'bar',height:'100%',background:chartColors.bg,toolbar:{show:false},
-            fontFamily:'Inter,system-ui,sans-serif',foreColor:chartColors.text,
-            animations:{enabled:true,easing:'easeinout',speed:1000,animateGradually:{enabled:true,delay:100}}},
-        series:[{name:'Deals',data:[847,422,89,34,54]}],
-        xaxis:{categories:['Leads','Qualified','Proposal','Negotiating','Won'],
-            labels:{show:false},axisBorder:{show:false},axisTicks:{show:false}},
-        yaxis:{labels:{style:{fontSize:'10px'},maxWidth:120,offsetX:-4},axisBorder:{show:false}},
-        grid:{borderColor:chartColors.grid,xaxis:{lines:{show:false}},yaxis:{lines:{show:false}},padding:{left:16,right:8}},
-        plotOptions:{bar:{horizontal:true,borderRadius:3,barHeight:'60%',distributed:true,
-            dataLabels:{position:'center'}}},
-        colors:['#8b5cf6','#6366f1','#3b82f6','#06b6d4','#10b981'],
-        dataLabels:{enabled:true,style:{fontSize:'10px',fontWeight:600},
-            formatter:v=>v.toLocaleString()},
-        legend:{show:false},
-        tooltip:{theme:'dark',y:{formatter:v=>v.toLocaleString()+' deals'},style:{fontSize:'11px'}},
-        states:{hover:{filter:{type:'darken',value:.15}}}
-    });
-
-    /* Render on scroll */
-    ScrollTrigger.create({
-        trigger: '#chartRevenue',
-        start: 'top 85%',
-        once: true,
-        onEnter: () => chartRev.render()
-    });
-    ScrollTrigger.create({
-        trigger: '#chartPipeline',
-        start: 'top 85%',
-        once: true,
-        onEnter: () => chartPipe.render()
-    });
-}
-
-/* === Start === */
-lenis.start();heroReveal();
-
-/* === Hero Reveal === */
-function heroReveal(){
-    const tl=gsap.timeline({defaults:{ease:'expo.out'}});
-    tl.fromTo('.cs-back',{opacity:0,x:-20},{opacity:1,x:0,duration:.3},.05);
-    tl.fromTo('.cs-tag',{opacity:0,y:10},{opacity:1,y:0,duration:.3},.1);
-
-    if(typeof SplitText!=='undefined'){
-        const titleSplit=new SplitText('.cs-title',{type:'lines,chars',mask:'lines'});
-        tl.set('.cs-title',{opacity:1},.15);
-        tl.fromTo(titleSplit.chars,{yPercent:110},{yPercent:0,stagger:.015,duration:.4},.15);
-    } else {
-        tl.fromTo('.cs-title',{opacity:0,y:30},{opacity:1,y:0,duration:.4},.15);
-    }
-
-    tl.fromTo('.cs-sub',{opacity:0,y:12},{opacity:1,y:0,duration:.3},.35);
-    tl.fromTo('.cs-stats',{opacity:0,y:12},{opacity:1,y:0,duration:.3},.45);
-
-    /* Counter animation */
-    tl.add(()=>{animateCounters();},.5);
-}
-
-function animateCounters(){
-    document.querySelectorAll('.cs-stat-val[data-target]').forEach(el=>{
-        const target=parseInt(el.dataset.target);
-        const suffix=el.dataset.suffix||'';
-        if(isNaN(target))return;
-        gsap.to({v:0},{v:target,duration:1.8,ease:'power2.out',
-            onUpdate:function(){el.textContent=Math.round(this.targets()[0].v)+suffix}
-        });
-    });
-}
-
-/* === Progress === */
-gsap.to('#progBar',{scaleX:1,ease:'none',scrollTrigger:{trigger:'body',start:'top top',end:'bottom bottom',scrub:true}});
-
-/* === Section scroll reveals === */
-gsap.utils.toArray('.cs-section').forEach(sec=>{
-    const label=sec.querySelector('.cs-label');
-    const divider=sec.querySelector('.cs-divider');
-    const heading=sec.querySelector('.cs-heading');
-    const prose=sec.querySelectorAll('.cs-prose');
-    const els=[label,divider,heading,...prose].filter(Boolean);
-
-    els.forEach((el,i)=>{
-        gsap.from(el,{opacity:0,y:16,duration:.2,ease:'expo.out',delay:i*.03,
-            scrollTrigger:{trigger:sec,start:'top 85%',once:true}
-        });
-    });
-});
-
-/* Hero laptop reveal */
-const laptopEl=document.querySelector('.laptop');
-if(laptopEl){
-    gsap.fromTo(laptopEl,
-        {scale:.95,opacity:0,y:40},
-        {scale:1,opacity:1,y:0,duration:.5,ease:'expo.out',delay:.1,
-         scrollTrigger:{trigger:'.cs-hero-img',start:'top 90%',once:true}
-        }
-    );
-    /* Subtle parallax on scroll */
-    gsap.to(laptopEl,{yPercent:-4,ease:'none',
-        scrollTrigger:{trigger:'.cs-hero-img',start:'top bottom',end:'bottom top',scrub:true}
-    });
-}
-
-/* Before/After reveal */
-gsap.utils.toArray('.cs-ba-col').forEach((col,i)=>{
-    gsap.from(col,{opacity:0,y:16,duration:.2,ease:'expo.out',delay:i*.05,
-        scrollTrigger:{trigger:'.cs-ba',start:'top 82%',once:true}
-    });
-});
-
-/* Pipeline reveal */
-gsap.utils.toArray('.cs-pipeline svg > *').forEach((el,i)=>{
-    gsap.from(el,{opacity:0,y:8,duration:.2,ease:'expo.out',delay:i*.02,
-        scrollTrigger:{trigger:'.cs-pipeline',start:'top 82%',once:true}
-    });
-});
-
-/* Feature cards reveal */
-gsap.utils.toArray('.cs-feature').forEach((card,i)=>{
-    gsap.from(card,{opacity:0,y:16,duration:.25,ease:'expo.out',delay:i*.04,
-        scrollTrigger:{trigger:card,start:'top 88%',once:true}
-    });
-});
-
-/* Mockup reveal */
-const mockup=document.querySelector('.teams-win-wrap');
-if(mockup){
-    gsap.from(mockup,{opacity:0,y:16,duration:.3,ease:'expo.out',
-        scrollTrigger:{trigger:mockup,start:'top 85%',once:true}
-    });
-}
-
-/* Tech grid reveal */
-gsap.utils.toArray('.cs-tech-item').forEach((item,i)=>{
-    gsap.from(item,{opacity:0,duration:.5,delay:i*.03,ease:'expo.out',
-        scrollTrigger:{trigger:'.cs-tech',start:'top 85%',once:true}
-    });
-});
-
-/* Other cards reveal */
-gsap.utils.toArray('.cs-other-card').forEach((card,i)=>{
-    gsap.from(card,{opacity:0,y:12,duration:.25,ease:'expo.out',delay:i*.04,
-        scrollTrigger:{trigger:'.cs-other',start:'top 85%',once:true}
-    });
-});
-
-/* === Marquee === */
-const mTrack=document.getElementById('marqueeTrack');
-if(mTrack){let mP=0,mD=-1;lenis.on('scroll',({velocity})=>{mD=velocity>0?-1:1});
-gsap.ticker.add(()=>{mP+=mD*.5;if(Math.abs(mP)>mTrack.scrollWidth/2)mP=0;mTrack.style.transform=`translateX(${mP}px)`})}
-
-/* === Manifesto -- word-by-word scroll reveal === */
-const mText=document.getElementById('manifestoText');
-if(mText&&typeof SplitText!=='undefined'){
-    const split=new SplitText(mText,{type:'words'});
-    gsap.set(split.words,{color:'var(--dim)'});
-    split.words.forEach((w,i)=>{
-        gsap.to(w,{color:'var(--text)',scrollTrigger:{
-            trigger:'.v5-manifesto',
-            start:()=>`top+=${(i/split.words.length)*60}% center`,
-            end:()=>`top+=${((i+1)/split.words.length)*60+10}% center`,
-            scrub:1
-        }});
-    });
-}
-
-
-/* Footer reveal */
-const fH=document.getElementById('footerH');
-if(fH&&typeof SplitText!=='undefined'){
-    const fSplit=new SplitText(fH,{type:'chars',mask:'lines'});
-    gsap.set(fSplit.chars,{yPercent:110});
-    ScrollTrigger.create({trigger:fH,start:'top 82%',once:true,
-        onEnter:()=>{gsap.to(fSplit.chars,{yPercent:0,stagger:.03,duration:.9,ease:'smooth'})}
-    });
-}
-
-/* === Mouse Follower === */
-if(matchMedia('(pointer:fine)').matches&&typeof MouseFollower!=='undefined'){
-    MouseFollower.registerGSAP(gsap);
-    new MouseFollower({speed:.5,ease:'expo.out',skewing:2.5,skewingText:1.5});
-}
-
-/* === Page Transitions === */
-document.querySelectorAll('.cs-other-card, .cs-back').forEach(card=>{
-    card.addEventListener('click',function(e){
-        e.preventDefault();const href=this.getAttribute('href');if(!href)return;
-        const s=document.createElement('div');s.style.cssText='position:fixed;inset:0;z-index:9999;pointer-events:none';
-        const b=document.createElement('div');b.style.cssText='position:absolute;inset:0;background:var(--bg);transform:translateY(100%);will-change:transform';
-        const c=document.createElement('div');c.style.cssText='position:absolute;top:-50%;left:-25%;width:150%;height:100%;background:var(--bg);border-radius:50%';
-        b.appendChild(c);s.appendChild(b);document.body.appendChild(s);
-        gsap.timeline({onComplete:()=>{window.location.href=href}})
-            .to(this,{scale:.97,duration:.3,ease:'power2.in'})
-            .to(b,{y:0,duration:.8,ease:'power4.inOut'},.15);
-    });
-});
+  });
+})();
 </script>
 </body>
 </html>
