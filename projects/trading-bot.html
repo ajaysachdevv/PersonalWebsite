@@ -111,7 +111,7 @@ main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
   font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--paper-faint);
 }
-.crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid var(--rule); transition: color 0.3s ease, border-color 0.3s ease; }
+.crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid rgba(236, 231, 220, 0.35); transition: color 0.3s ease, border-color 0.3s ease; }
 .crumb a:hover { color: var(--credit); border-color: var(--credit); }
 h1 {
   font-family: var(--serif); font-weight: 400; font-size: clamp(3.2rem, 9vw, 7.5rem);
@@ -237,8 +237,8 @@ header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 .others tr { cursor: pointer; transition: background 0.3s ease; }
 .others tr:hover { background: rgba(236, 231, 220, 0.035); }
 .o-ref { font-family: var(--mono); font-size: 0.7rem; color: var(--paper-faint); width: 3.5rem; }
-.o-name { font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1; transition: color 0.3s ease; white-space: nowrap; }
-.others tr:hover .o-name { font-style: italic; color: var(--credit); }
+.o-name { font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1; transition: color 0.3s ease, border-color 0.3s ease; white-space: nowrap; border-bottom: 1px solid rgba(236, 231, 220, 0.3); padding-bottom: 3px; }
+.others tr:hover .o-name { font-style: italic; color: var(--credit); border-bottom-color: var(--credit); }
 .o-desc { font-size: 0.82rem; color: var(--paper-dim); max-width: 26rem; line-height: 1.55; }
 .o-status { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; white-space: nowrap; color: var(--paper-dim); }
 @media (max-width: 680px) { .o-desc { display: none; } }

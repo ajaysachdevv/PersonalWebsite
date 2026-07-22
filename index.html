@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ajay Sachdev | Finance & Operations Manager who ships software</title>
-<meta name="description" content="A finance manager's portfolio told as a journey: an AI that answers his messages, trading agents that veto his trades, and the digital backbone of a 31-year-old family fabric business. Every figure is real.">
+<meta name="description" content="Finance and operations manager who ships software. An AI that answers his messages, four agents that veto his trades, a family fabric business gone digital. Every figure is real.">
 <meta property="og:title" content="Ajay Sachdev | A Statement of Work">
 <meta property="og:description" content="Scroll the journey. Place a trade and get vetoed by four AI agents. Every system is real.">
 <meta property="og:type" content="website">
@@ -501,9 +501,10 @@ nav.solid { background: rgba(13, 12, 10, 0.82); backdrop-filter: blur(10px); -we
 .ledger tbody tr { transition: background 0.3s ease; }
 .ledger tbody tr[data-href] { cursor: pointer; }
 .ledger tbody tr:hover { background: rgba(236, 231, 220, 0.035); }
-.ledger tbody tr[data-href]:hover .l-name { font-style: italic; color: var(--credit); }
+.ledger tbody tr[data-href]:hover .l-name { font-style: italic; color: var(--credit); border-bottom-color: var(--credit); }
 .l-ref { font-family: var(--mono); font-size: var(--ms-3); color: var(--paper-faint); width: 3.5rem; }
-.l-name { font-family: var(--serif); font-size: clamp(1.45rem, 2.7vw, 2.2rem); line-height: 1; transition: color 0.3s ease; white-space: nowrap; }
+.l-name { font-family: var(--serif); font-size: clamp(1.45rem, 2.7vw, 2.2rem); line-height: 1; transition: color 0.3s ease, border-color 0.3s ease; white-space: nowrap; }
+.ledger tbody tr[data-href] .l-name { border-bottom: 1px solid rgba(236, 231, 220, 0.3); padding-bottom: 3px; }
 .l-desc { font-size: 0.84rem; color: var(--paper-dim); max-width: 24rem; line-height: 1.55; }
 .l-metric { font-family: var(--mono); font-size: 0.84rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .l-status { font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-1); text-transform: uppercase; white-space: nowrap; }
@@ -543,8 +544,8 @@ nav.solid { background: rgba(13, 12, 10, 0.82); backdrop-filter: blur(10px); -we
 }
 .exhibit:hover img { transform: scale(1.05); filter: saturate(1) contrast(1); }
 .exhibit figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.9rem 0.2rem 0; }
-.exhibit .cap-name { font-family: var(--serif); font-size: 1.35rem; transition: color 0.3s ease; }
-.exhibit:hover .cap-name { font-style: italic; color: var(--credit); }
+.exhibit .cap-name { font-family: var(--serif); font-size: 1.35rem; transition: color 0.3s ease, border-color 0.3s ease; border-bottom: 1px solid rgba(236, 231, 220, 0.3); padding-bottom: 2px; }
+.exhibit:hover .cap-name { font-style: italic; color: var(--credit); border-bottom-color: var(--credit); }
 .exhibit .cap-ref { font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-2); color: var(--paper-faint); text-transform: uppercase; }
 @media (max-width: 720px) { .exhibits { grid-template-columns: 1fr; } }
 
@@ -569,7 +570,7 @@ nav.solid { background: rgba(13, 12, 10, 0.82); backdrop-filter: blur(10px); -we
   margin-top: 1.6rem; font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.9rem);
   line-height: 1.45; color: var(--paper-dim); max-width: 36rem;
 }
-.reach-line a { color: var(--credit); text-decoration: none; border-bottom: 1px solid var(--rule); transition: border-color 0.3s ease; }
+.reach-line a { color: var(--credit); text-decoration: none; border-bottom: 1px solid rgba(47, 191, 113, 0.4); transition: border-color 0.3s ease; }
 .reach-line a:hover { border-color: var(--credit); }
 
 /* ================= Operating results (the day job) ================= */
@@ -680,12 +681,12 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   <div class="open-name" aria-hidden="true">Ajay Sachdev</div>
   <div class="open-inner">
     <div class="credit-line c1">Ajay Sachdev presents</div>
-    <div class="credit-line c2">A statement of work, in four chapters and one schedule</div>
+    <div class="credit-line c2">A finance and operations manager's statement of work, in four chapters and one schedule</div>
     <h1>
       <span class="row"><span>Every system</span></span>
       <span class="row"><span>has a <em>story.</em></span></span>
     </h1>
-    <p class="open-sub">I run finance and operations by day. By night I build the systems the numbers run on. Everything you are about to scroll through is real, in production, and verifiable. Three of them, you can play with.</p>
+    <p class="open-sub">I run finance and operations by day. By night I build the systems the numbers run on. Everything you're about to scroll through is real, in production, and verifiable. Three of them, you can play with.</p>
     <div class="open-cue">Scroll to begin the audit</div>
     <a class="open-skip" href="#work">In a hurry? Jump straight to the schedule</a>
   </div>
@@ -847,7 +848,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
     </svg>
   </div>
   <div class="sim office">
-    <div class="sim-bar"><span>OPSPILOT / MICROSOFT TEAMS</span><span><b>PRODUCTION</b> / 24-7</span></div>
+    <div class="sim-bar"><span>OPSPILOT / MICROSOFT TEAMS</span><span><b>PRODUCTION</b> / 24/7</span></div>
     <div class="office-grid">
       <div class="office-left">
         <div class="msg"><span class="from">Colleague / 09:14</span>Hey Ajay, where's the signed Acme master agreement? Client call in 20 minutes.</div>
@@ -855,7 +856,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
         <div class="opscard" id="opscard" aria-live="polite">
           <span class="from">OpsPilot / draft for approval</span>
           Found it: <b>Acme_MSA_signed.pdf</b> in Contracts/2024, countersigned 12 Mar.<br>
-          Drafted reply with the file link and the two clauses they will ask about.
+          Drafted reply with the file link and the two clauses they'll ask about.
           <button class="approve" id="approve">Approve & send</button>
         </div>
       </div>
@@ -947,7 +948,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
         <div class="stamp" id="stamp"><span aria-hidden="true">VETOED</span><span class="visually-hidden" id="stamp-sr" role="status"></span></div>
       </div>
     </div>
-    <div class="sim-foot"><span id="desk-foot" role="status">62 sessions. 0 impulsive trades let through.</span><span>Your trade would have been no. <b>63</b></span><button class="sim-replay" id="replay-desk" type="button">Replay</button></div>
+    <div class="sim-foot"><span id="desk-foot" role="status">62 sessions. 0 impulsive trades let through.</span><span>That would have been trade no. <b>63</b></span><button class="sim-replay" id="replay-desk" type="button">Replay</button></div>
   </div>
 </section>
 
@@ -965,7 +966,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   <div class="reveal">
     <div class="num">04 / 04 <b>HERITAGE</b></div>
     <h2>Stock-take, <em>in Hindi.</em></h2>
-    <p>My family's fabric business ran on paper and memory since 1988. Now warehouse workers count stock by speaking to their phones, fabric rolls in one hand. Hold the mic and listen.</p>
+    <p>My family's fabric business ran on paper and memory from 1988. Now warehouse workers count stock by speaking to their phones, fabric rolls in one hand. Tap the mic and watch.</p>
   </div>
 </section>
 
@@ -1031,7 +1032,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
         <tr class="reveal" data-href="projects/trading-bot.html">
           <td class="l-ref">02</td>
           <td class="l-name-cell"><span class="l-name">Trading Bot</span></td>
-          <td class="l-desc">The four agents that just vetoed you. 62 sessions in: zero impulsive trades let through. That is the point.</td>
+          <td class="l-desc">The four agents that just vetoed you. 62 sessions in: zero impulsive trades let through. That's the point.</td>
           <td class="l-status-cell"><span class="l-status"><i></i>Paper trading</span></td>
           <td class="l-metric">0 bad trades</td>
         </tr>
@@ -1052,7 +1053,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
         <tr class="reveal">
           <td class="l-ref">05</td>
           <td class="l-name-cell"><span class="l-name">SCS Cockpit</span></td>
-          <td class="l-desc">The study engine I built to pass my own CIMA strategic case study: timed drills, spaced repetition, zero dependencies. Sat the exam in May 2026.</td>
+          <td class="l-desc">The study engine I built to pass my own CIMA Strategic Case Study: timed drills, spaced repetition, zero dependencies. Sat the exam in May 2026.</td>
           <td class="l-status-cell"><span class="l-status idle"><i></i>Retired, job done</span></td>
           <td class="l-metric">4,200 lines / 0 deps</td>
         </tr>
@@ -1563,7 +1564,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
     });
     approveBtn.addEventListener('click', function () {
       this.disabled = true;
-      this.textContent = 'Sent. 4.6s end to end.';
+      this.textContent = 'Sent. 3.6s end to end.';
       track('sim-office-approved');
       foot.textContent = 'Answered before the kettle boiled. 100% search accuracy, frozen until it misses.';
       blip(760, 0.3);
