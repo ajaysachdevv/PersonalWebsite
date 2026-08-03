@@ -107,6 +107,11 @@ nav {
 
 /* ================= Entry head ================= */
 main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
+main.wrap > header { position: relative; z-index: 0; }
+main.wrap > header::before {
+  content: ''; position: absolute; inset: -9rem -18% -2rem; pointer-events: none; z-index: -1;
+  background: radial-gradient(ellipse 55% 48% at 76% 4%, rgba(217, 100, 89, 0.08), transparent 70%);
+}
 .crumb {
   font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--paper-faint);

@@ -107,6 +107,11 @@ nav {
 
 /* ================= Entry head ================= */
 main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
+main.wrap > header { position: relative; z-index: 0; }
+main.wrap > header::before {
+  content: ''; position: absolute; inset: -9rem -18% -2rem; pointer-events: none; z-index: -1;
+  background: radial-gradient(ellipse 55% 48% at 76% 4%, rgba(232, 179, 75, 0.08), transparent 70%);
+}
 .crumb {
   font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--paper-faint);
@@ -280,7 +285,27 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   </section>
 
   <section>
-    <div class="section-head reveal"><span>Note 2: How it works</span><span class="right">Three layers, local first</span></div>
+    <div class="section-head reveal"><span>Note 2: Exhibit</span><span class="right">Exhibit D</span></div>
+    <div class="exhibits reveal">
+      <figure>
+        <picture>
+          <source srcset="../images/whatsapp-smart-ui.webp" type="image/webp">
+          <img src="../images/whatsapp-smart-ui.png" alt="WhatsApp Smart extension panel inside WhatsApp Web" loading="lazy" decoding="async">
+        </picture>
+        <figcaption><span>Extension UI</span><span>Exhibit D.1</span></figcaption>
+      </figure>
+      <figure>
+        <picture>
+          <source srcset="../images/mockup-whatsapp.webp" type="image/webp">
+          <img src="../images/mockup-whatsapp.png" alt="WhatsApp Smart scheduling interface mockup" loading="lazy" decoding="async">
+        </picture>
+        <figcaption><span>Scheduling flow</span><span>Exhibit D.2</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head reveal"><span>Note 3: How it works</span><span class="right">Three layers, local first</span></div>
     <p class="prose reveal">You open WhatsApp Web and the extension is already there: a small toolbar next to the compose box with AI suggestions, a tone adjuster and a schedule button. A content script injects the UI via shadow DOM so it never clashes with WhatsApp's own styles. A background service worker handles scheduling through Chrome Alarms, so messages go out even if the tab isn't focused. Message access comes from an open-source WhatsApp Web API library, not brittle DOM scraping. <b>No server required for core features. No sign-up.</b></p>
 
     <div class="reveal">
@@ -310,7 +335,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   </section>
 
   <section>
-    <div class="section-head reveal"><span>Note 3: What it does</span><span class="right">Ten features</span></div>
+    <div class="section-head reveal"><span>Note 4: What it does</span><span class="right">Ten features</span></div>
     <ul class="notes">
       <li class="reveal"><span class="n-ref">F.1</span><span><b>Smart scheduling</b>One-off or recurring messages, per-contact office hours so nothing fires at 3am, staggered batch sending.</span></li>
       <li class="reveal"><span class="n-ref">F.2</span><span><b>AI reply suggestions</b>Reads the chat context and suggests three replies instantly. Learns your emoji habits and tone.</span></li>
@@ -320,31 +345,15 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
       <li class="reveal"><span class="n-ref">F.6</span><span><b>Follow-up reminders</b>Flag messages to bounce back later; keyword alerts for terms like "urgent" or "deadline".</span></li>
       <li class="reveal"><span class="n-ref">F.7</span><span><b>Privacy first</b>All data in local Chrome storage. No sign-up. Messages never leave the browser; AI prompts are ephemeral.</span></li>
     </ul>
-    <div class="exhibits reveal">
-      <figure>
-        <picture>
-          <source srcset="../images/whatsapp-smart-ui.webp" type="image/webp">
-          <img src="../images/whatsapp-smart-ui.png" alt="WhatsApp Smart extension panel inside WhatsApp Web" loading="lazy" decoding="async">
-        </picture>
-        <figcaption><span>Extension UI</span><span>Exhibit D.1</span></figcaption>
-      </figure>
-      <figure>
-        <picture>
-          <source srcset="../images/mockup-whatsapp.webp" type="image/webp">
-          <img src="../images/mockup-whatsapp.png" alt="WhatsApp Smart scheduling interface mockup" loading="lazy" decoding="async">
-        </picture>
-        <figcaption><span>Scheduling flow</span><span>Exhibit D.2</span></figcaption>
-      </figure>
-    </div>
   </section>
 
   <section>
-    <div class="section-head reveal"><span>Note 4: The honest entry</span><span class="right">Status: prototype</span></div>
+    <div class="section-head reveal"><span>Note 5: The honest entry</span><span class="right">Status: prototype</span></div>
     <p class="prose reveal">This one carries an amber dot. Ten features built, the architecture proven, the privacy model sound. It was never launched, and this ledger doesn't pretend otherwise. It earns its place here for the engineering: shadow DOM isolation inside a hostile host page, OS-level scheduling that survives a sleeping service worker, and an AI layer that works without ever holding your messages.</p>
   </section>
 
   <section>
-    <div class="section-head reveal"><span>Note 5: Stack</span><span class="right">Carrying values</span></div>
+    <div class="section-head reveal"><span>Note 6: Stack</span><span class="right">Carrying values</span></div>
     <div class="stack reveal">
       <div><span class="s-name">React 19</span><span class="s-role">UI and state, 50+ components</span></div>
       <div><span class="s-name">TypeScript 5.9</span><span class="s-role">~16,000 lines, strict</span></div>

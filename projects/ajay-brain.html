@@ -107,6 +107,11 @@ nav {
 
 /* ================= Entry head ================= */
 main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
+main.wrap > header { position: relative; z-index: 0; }
+main.wrap > header::before {
+  content: ''; position: absolute; inset: -9rem -18% -2rem; pointer-events: none; z-index: -1;
+  background: radial-gradient(ellipse 55% 48% at 76% 4%, rgba(47, 191, 113, 0.07), transparent 70%);
+}
 .crumb {
   font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--paper-faint);
@@ -171,17 +176,38 @@ header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 }
 @media (max-width: 680px) { .ba { grid-template-columns: 1fr; } }
 
-/* Pipeline rows */
-.pipe { list-style: none; margin-top: 2.2rem; max-width: 44rem; counter-reset: stage; }
+/* Pipeline: a drawn vertical rail, stages stamp in as it draws */
+.pipe { list-style: none; margin-top: 2.2rem; max-width: 44rem; counter-reset: stage; position: relative; padding-left: 1.7rem; }
+.pipe::before {
+  content: ''; position: absolute; left: 3px; top: 1.4rem; bottom: 1.4rem; width: 1.5px;
+  background: linear-gradient(180deg, var(--credit), rgba(47, 191, 113, 0.12));
+  transform: scaleY(0); transform-origin: top;
+  transition: transform 1.7s cubic-bezier(0.23, 1, 0.32, 1) 0.15s;
+}
+.pipe.in::before { transform: scaleY(1); }
 .pipe li {
   display: grid; grid-template-columns: 3.4rem 1fr; gap: 1.2rem; align-items: baseline;
   padding: 0.85rem 0; border-bottom: 1px solid var(--rule);
   font-size: 0.85rem; line-height: 1.55; color: var(--paper-dim);
+  position: relative; opacity: 0; transform: translateX(-10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
+.pipe.in li { opacity: 1; transform: none; }
+.pipe li:nth-child(1) { transition-delay: 0.15s; } .pipe li:nth-child(2) { transition-delay: 0.3s; }
+.pipe li:nth-child(3) { transition-delay: 0.45s; } .pipe li:nth-child(4) { transition-delay: 0.6s; }
+.pipe li:nth-child(5) { transition-delay: 0.75s; } .pipe li:nth-child(6) { transition-delay: 0.9s; }
+.pipe li:nth-child(7) { transition-delay: 1.05s; } .pipe li:nth-child(8) { transition-delay: 1.2s; }
+.pipe li:nth-child(9) { transition-delay: 1.35s; }
 .pipe li::before {
   counter-increment: stage; content: "S" counter(stage);
   font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--paper-faint);
 }
+.pipe li::after {
+  content: ''; position: absolute; left: calc(-1.7rem + 0.5px); top: 1.25rem;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ink); border: 1px solid var(--paper-faint);
+}
+.pipe li.hl::after { border-color: var(--credit); background: rgba(47, 191, 113, 0.35); }
 .pipe b { color: var(--paper); font-weight: 500; }
 .pipe .hl b { color: var(--credit); }
 
@@ -263,10 +289,12 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .reveal { opacity: 1; transform: none; }
+  .pipe li { opacity: 1; transform: none; }
+  .pipe::before { transform: scaleY(1); }
   html { scroll-behavior: auto; }
 }
 </style>
-<noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
+<noscript><style>.reveal { opacity: 1; transform: none; } .pipe li { opacity: 1; transform: none; } .pipe::before { transform: scaleY(1); }</style></noscript>
 </head>
 <body>
 
@@ -350,19 +378,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   </section>
 
   <section>
-    <div class="section-head reveal"><span>Note 3: What it does</span><span class="right">Beyond answering</span></div>
-    <ul class="notes">
-      <li class="reveal"><span class="n-ref">F.1</span><span><b>Hybrid search</b>BM25 for keywords, FAISS for meaning, reciprocal rank fusion to merge them, then an AI reranker picks the top five. HyDE query expansion generates domain terms so vague questions still land on the right document.</span></li>
-      <li class="reveal"><span class="n-ref">F.2</span><span><b>Live data, no hallucination surface</b>"Who hasn't paid us?" reads Xero receivables directly. "What deals are open?" queries the HubSpot pipeline. 17 direct API actions where the LLM never touches the numbers: formatted figures, straight back. Xero access is read-only by design.</span></li>
-      <li class="reveal"><span class="n-ref">F.3</span><span><b>Autonomous monitoring</b>Morning briefing at 08:00, evening wrap at 17:30, deal-stage checks every five minutes in business hours. An invoice scanner reads PDFs from my inbox, extracts line items, matches them against Xero and flags duplicates and price drift. A commitment tracker detects promises in Teams and email and alerts when they slip.</span></li>
-      <li class="reveal"><span class="n-ref">F.4</span><span><b>Dashboard</b>A React dashboard on precomputed state: P&amp;L, cash position, pipeline, receivables, engagement. FastAPI serves it from SQLite so the page never waits on a third-party API.</span></li>
-      <li class="reveal"><span class="n-ref">F.5</span><span><b>Personal growth journal</b>Every evening it writes a first-person diary entry from the day's activity, then a behavioural layer flags blind spots: unreplied messages, tone drift, neglected relationships. Weekly digest on Fridays.</span></li>
-      <li class="reveal"><span class="n-ref">F.6</span><span><b>Conversation memory and approval</b>Per-user context with a two-hour window and ten-turn memory, so "what about their payment terms?" knows who "they" are. Every answer returns as options; nothing goes out unapproved. It learns which answer style I tend to pick.</span></li>
-    </ul>
-  </section>
-
-  <section>
-    <div class="section-head reveal"><span>Note 4: Exhibit</span><span class="right">Exhibit A</span></div>
+    <div class="section-head reveal"><span>Note 3: Exhibit</span><span class="right">Exhibit A</span></div>
     <div class="exhibit-fig reveal">
       <figure>
         <picture>
@@ -372,6 +388,18 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
         <figcaption><span>OpsPilot dashboard</span><span>Sample data, real figures stay private</span></figcaption>
       </figure>
     </div>
+  </section>
+
+  <section>
+    <div class="section-head reveal"><span>Note 4: What it does</span><span class="right">Beyond answering</span></div>
+    <ul class="notes">
+      <li class="reveal"><span class="n-ref">F.1</span><span><b>Hybrid search</b>BM25 for keywords, FAISS for meaning, reciprocal rank fusion to merge them, then an AI reranker picks the top five. HyDE query expansion generates domain terms so vague questions still land on the right document.</span></li>
+      <li class="reveal"><span class="n-ref">F.2</span><span><b>Live data, no hallucination surface</b>"Who hasn't paid us?" reads Xero receivables directly. "What deals are open?" queries the HubSpot pipeline. 17 direct API actions where the LLM never touches the numbers: formatted figures, straight back. Xero access is read-only by design.</span></li>
+      <li class="reveal"><span class="n-ref">F.3</span><span><b>Autonomous monitoring</b>Morning briefing at 08:00, evening wrap at 17:30, deal-stage checks every five minutes in business hours. An invoice scanner reads PDFs from my inbox, extracts line items, matches them against Xero and flags duplicates and price drift. A commitment tracker detects promises in Teams and email and alerts when they slip.</span></li>
+      <li class="reveal"><span class="n-ref">F.4</span><span><b>Dashboard</b>A React dashboard on precomputed state: P&amp;L, cash position, pipeline, receivables, engagement. FastAPI serves it from SQLite so the page never waits on a third-party API.</span></li>
+      <li class="reveal"><span class="n-ref">F.5</span><span><b>Personal growth journal</b>Every evening it writes a first-person diary entry from the day's activity, then a behavioural layer flags blind spots: unreplied messages, tone drift, neglected relationships. Weekly digest on Fridays.</span></li>
+      <li class="reveal"><span class="n-ref">F.6</span><span><b>Conversation memory and approval</b>Per-user context with a two-hour window and ten-turn memory, so "what about their payment terms?" knows who "they" are. Every answer returns as options; nothing goes out unapproved. It learns which answer style I tend to pick.</span></li>
+    </ul>
   </section>
 
   <section>
