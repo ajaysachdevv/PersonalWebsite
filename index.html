@@ -28,6 +28,8 @@
 
 <link rel="preload" href="vendor/fonts/inter-400-500-800-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="vendor/fonts/instrumentserif-400-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="vendor/fonts/instrumentserif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="vendor/fonts/jetbrainsmono-400-500-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('vendor/fonts/instrumentserif-400-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
@@ -1397,12 +1399,15 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
     else if (a.classList.contains('open-skip') || a.classList.contains('skip-link')) track('skip-to-schedule');
   });
 
-  /* ---------- Sound toggle + palette flash ---------- */
+  /* ---------- Sound toggle + palette flash (preference persists) ---------- */
   var muted = false;
+  try { muted = localStorage.getItem('ledger-snd') === 'off'; } catch (e) { /* private mode */ }
   var sndBtn = document.getElementById('snd');
+  sndBtn.textContent = muted ? 'SOUND: OFF' : 'SOUND: ON';
   sndBtn.addEventListener('click', function () {
     muted = !muted;
     sndBtn.textContent = muted ? 'SOUND: OFF' : 'SOUND: ON';
+    try { localStorage.setItem('ledger-snd', muted ? 'off' : 'on'); } catch (e) { /* private mode */ }
   });
   var flashEl = document.getElementById('flash');
   var flashTimer = null;
@@ -1864,7 +1869,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
       foot.textContent = FOOT0;
       replay.classList.remove('show');
     }
-    replay.addEventListener('click', reset);
+    replay.addEventListener('click', function () { reset(); track('sim-office-replayed'); });
     btn.addEventListener('click', function () {
       if (played) return;
       played = true;
@@ -1951,7 +1956,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
       foot.textContent = FOOT0;
       replay.classList.remove('show');
     }
-    replay.addEventListener('click', reset);
+    replay.addEventListener('click', function () { reset(); track('sim-desk-replayed'); });
     btn.addEventListener('click', function () {
       if (played) return;
       played = true;
@@ -2012,7 +2017,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
       if (addedNote) { addedNote.remove(); addedNote = null; }
       replay.classList.remove('show');
     }
-    replay.addEventListener('click', reset);
+    replay.addEventListener('click', function () { reset(); track('sim-mill-replayed'); });
     mic.addEventListener('click', function () {
       if (played) return;
       played = true;
@@ -2209,7 +2214,28 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
     document.querySelectorAll('[data-term]').forEach(function (el) { el.textContent = 'Tap for terminal'; });
   }
   document.getElementById('term-close').addEventListener('click', closeTerm);
-  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { run(input.value); input.value = ''; } });
+  /* command history: any real terminal answers the up arrow */
+  var histBuf = [], histIdx = -1, histDraft = '';
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      if (input.value.trim()) { histBuf.push(input.value); }
+      histIdx = -1; histDraft = '';
+      run(input.value); input.value = '';
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!histBuf.length) return;
+      if (histIdx === -1) { histDraft = input.value; histIdx = histBuf.length - 1; }
+      else if (histIdx > 0) { histIdx -= 1; }
+      input.value = histBuf[histIdx];
+      setTimeout(function () { input.setSelectionRange(input.value.length, input.value.length); }, 0);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (histIdx === -1) return;
+      histIdx += 1;
+      if (histIdx >= histBuf.length) { histIdx = -1; input.value = histDraft; }
+      else { input.value = histBuf[histIdx]; }
+    }
+  });
   addEventListener('keydown', function (e) {
     var typing = document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA');
     if (e.key === 'Escape' && term.classList.contains('open')) { closeTerm(); return; }
