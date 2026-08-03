@@ -55,6 +55,11 @@ body {
   overflow-x: clip;
 }
 ::selection { background: var(--credit); color: var(--ink); }
+/* Cross-document view transitions: pairs with the homepage ledger (Chromium; others hard-cut) */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.35s; }
+::view-transition-old(entry-title), ::view-transition-new(entry-title) { animation-duration: 0.45s; }
 a { color: inherit; }
 a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--credit); outline-offset: 3px; }
 .visually-hidden {
@@ -119,6 +124,7 @@ main.wrap > header::before {
 .crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid rgba(236, 231, 220, 0.35); transition: color 0.3s ease, border-color 0.3s ease; }
 .crumb a:hover { color: var(--credit); border-color: var(--credit); }
 h1 {
+  view-transition-name: entry-title;
   font-family: var(--serif); font-weight: 400; font-size: clamp(3.2rem, 9vw, 7.5rem);
   line-height: 0.98; letter-spacing: -0.015em; margin-top: 1.6rem;
 }
@@ -155,7 +161,7 @@ h1 em { color: var(--credit); }
 .section-head .right { color: var(--paper-faint); text-align: right; }
 /* First note sits tighter: the entry head's fig row already provides the air */
 header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
-.prose { margin-top: 1.6rem; max-width: 62rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; }
+.prose { margin-top: 1.6rem; max-width: 62rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; text-wrap: pretty; }
 .prose + .prose { margin-top: 1.1rem; }
 .prose b { color: var(--paper); font-weight: 500; }
 .pull {
@@ -210,6 +216,38 @@ header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 .pipe li.hl::after { border-color: var(--credit); background: rgba(47, 191, 113, 0.35); }
 .pipe b { color: var(--paper); font-weight: 500; }
 .pipe .hl b { color: var(--credit); }
+
+/* Adaptive Card mock: the answer format, drawn not screenshotted */
+.adcard {
+  margin-top: 2.4rem; max-width: 34rem; border: 1px solid rgba(47, 191, 113, 0.3); border-radius: 8px;
+  background: var(--ink-2); padding: 1.1rem 1.2rem; font-size: 0.85rem; line-height: 1.6; color: var(--paper-dim);
+}
+.adcard > div { opacity: 0; transform: translateY(8px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.adcard.in > div { opacity: 1; transform: none; }
+.adcard.in > div:nth-child(1) { transition-delay: 0.1s; }
+.adcard.in > div:nth-child(2) { transition-delay: 0.3s; }
+.adcard.in > div:nth-child(3) { transition-delay: 0.55s; }
+.adcard.in > div:nth-child(4) { transition-delay: 0.8s; }
+.adcard.in > div:nth-child(5) { transition-delay: 1.05s; }
+.ac-head {
+  display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 0.8rem;
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.ac-head span:first-child { color: var(--credit); }
+.ac-head span:last-child { color: var(--paper-faint); }
+.ac-q { font-family: var(--serif); font-style: italic; font-size: 1.02rem; color: var(--paper); }
+.ac-a { margin-top: 0.7rem; }
+.ac-a b { color: var(--paper); font-weight: 500; }
+.ac-file {
+  margin-top: 0.8rem; display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid var(--rule); border-radius: 3px;
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--paper-faint);
+}
+.ac-btns { margin-top: 0.9rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.ac-btns span {
+  padding: 0.45rem 0.9rem; border-radius: 3px; border: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-dim);
+}
+.ac-btns .go { background: var(--credit); border-color: var(--credit); color: var(--ink); font-weight: 700; }
 
 /* Ledger tables */
 .ledger { width: 100%; border-collapse: collapse; margin-top: 2.2rem; }
@@ -375,6 +413,13 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
       </tbody>
       <tfoot><tr><td colspan="2">The search pipeline is frozen at 100%</td><td>No changes until it misses</td></tr></tfoot>
     </table>
+    <div class="adcard reveal" role="img" aria-label="Illustration of the Adaptive Card answer format in Teams">
+      <div class="ac-head"><span>OpsPilot / draft for approval</span><span>Adaptive Card</span></div>
+      <div class="ac-q">"Where's the signed Acme master agreement? Client call in 20 minutes."</div>
+      <div class="ac-a">Found it: <b>Acme_MSA_signed.pdf</b> in Contracts/2024, countersigned 12 Mar. Drafted the reply with the file link and the two clauses they'll ask about.</div>
+      <div class="ac-file">PDF / CONTRACTS/2024 / 1.2 MB</div>
+      <div class="ac-btns" aria-hidden="true"><span class="go">Approve &amp; send</span><span>Edit</span><span>Reject</span></div>
+    </div>
   </section>
 
   <section>
@@ -491,7 +536,11 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 
   /* Row navigation */
   document.querySelectorAll('tr[data-href]').forEach(function (row) {
-    row.addEventListener('click', function () { location.href = row.dataset.href; });
+    row.addEventListener('click', function () {
+      var n = row.querySelector('.o-name');
+      if (n) n.style.viewTransitionName = 'entry-title';
+      location.href = row.dataset.href;
+    });
     row.setAttribute('tabindex', '0');
     row.setAttribute('role', 'link');
     row.addEventListener('keydown', function (e) {
