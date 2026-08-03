@@ -741,6 +741,27 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
 }
 #cur.hit { width: 20px; height: 20px; margin: -10px 0 0 -10px; }
 
+/* ================= Print: the statement of work on actual paper ================= */
+@media print {
+  body { background: #fff !important; color: #1c160d; }
+  body::after, nav, .rail, .scroll-prog, #cur, #flash, .terminal,
+  .open canvas, .topo, .open-name, .open-cue, .open-skip, .open-readout,
+  .map-scene, .sim-scene, .zero-scene, .ch-motif, .scene-bg, .sim-replay { display: none !important; }
+  .open { min-height: auto; padding: 2rem 0; }
+  .chapter { min-height: auto; padding: 1.2rem 0; overflow: visible; }
+  .open h1, .chapter h2, .about h2, .foot-cta, .l-name, .op-num { color: #1c160d !important; }
+  .open h1 em, .chapter h2 em, .about h2 em, .foot-cta em { color: #1f7a4d !important; }
+  .jrnl, .credit-line, .open-sub, .chapter p, .l-desc, .about-lede, .notes li, .op-lab,
+  .section-head, .ledger th, .ledger td, .foot-sign, .reach-line, .signed, .about-pull { color: #3a332a !important; }
+  .total-rule { border-color: #3a332a; }
+  .section-head { border-top-color: #1c160d; }
+  .ledger td, .ledger th, .notes li, .op-fig { border-color: rgba(28, 22, 13, 0.25) !important; }
+  .reveal, .jrnl span, .open-sub, .open h1 .row span { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .exhibits { display: none; }
+  .foot-links a { border-color: rgba(28, 22, 13, 0.4); color: #1c160d; }
+  a { text-decoration: none; }
+}
+
 /* ================= Reveal + motion prefs ================= */
 .reveal { opacity: 0; transform: translateY(26px); }
 @media (prefers-reduced-motion: reduce) {
@@ -1257,7 +1278,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
 
   <section id="reach">
     <div class="section-head"><span>Want the detail behind any of these?</span><span class="right">Correspondence</span></div>
-    <p class="reach-line reveal">Happy to walk through how any of these were built. <a href="mailto:ajay@ajaysachdev.com">Email me</a>, or find me on <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+    <p class="reach-line reveal">Happy to walk through how any of these were built. <a href="mailto:ajay@ajaysachdev.com?subject=Re%3A%20the%20ledger">Email me</a>, or find me on <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>.</p>
   </section>
 
   <section id="about">
@@ -1286,14 +1307,15 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
   <p class="foot-cta reveal">Got a problem that sits <em>between departments?</em></p>
   <div class="foot-links reveal">
     <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="mailto:ajay@ajaysachdev.com">Email</a>
+    <a href="mailto:ajay@ajaysachdev.com?subject=Re%3A%20the%20ledger">Email</a>
     <a href="https://uni-nation.in" target="_blank" rel="noopener">Uni-Nation</a>
   </div>
   <p class="signed reveal">Start where you are. Build what's missing. <span>signed, Ajay</span></p>
   <div class="foot-sign">
     <span>Prepared without audit fees. Audited by production.</span>
+    <button type="button" class="term-hint" id="basis-link">Basis of preparation</button>
     <button type="button" class="term-hint" data-term>Press T for terminal</button>
-    <span>Ajay Sachdev, 2026</span>
+    <span>Ajay Sachdev / books last audited 03/08/2026</span>
   </div>
 </footer>
 
@@ -2091,7 +2113,13 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
   function echo(cmd) { tprint('<span class="in">visitor@ajaysachdev.com:~$</span> ' + esc(cmd)); }
   var COMMANDS = {
     help: function () {
-      tprint('<b>Available commands</b><br>ls projects        list the schedule of assets<br>cat about          who prepared these statements<br>status             system status board<br>uptime             how long the books have been open<br>open &lt;project&gt;     inspect a case study<br>contact            correspondence details<br>clear              wipe the ledger<br>exit               close the terminal');
+      tprint('<b>Available commands</b><br>ls projects        list the schedule of assets<br>cat about          who prepared these statements<br>status             system status board<br>uptime             how long the books have been open<br>log                the audit trail of this site<br>basis              basis of preparation (how it is built)<br>open &lt;project&gt;     inspect a case study<br>contact            correspondence details<br>clear              wipe the ledger<br>exit               close the terminal');
+    },
+    basis: function () {
+      tprint('<b>Basis of preparation</b><br>One hand-written HTML file per page. No framework, no build step, no npm.<br>Type: Instrument Serif, Inter, JetBrains Mono. Subset and self-hosted.<br>Motion: GSAP + ScrollTrigger + Lenis, vendored, SRI-pinned.<br>Analytics: GoatCounter. No cookies, nothing personal collected.<br>Figures: verified against production, or honestly marked approximate.<br>Also on file: <b>humans.txt</b>, <b>llms.txt</b>, and a 404 that balances.');
+    },
+    log: function () {
+      tprint('<b>Audit trail</b><br>2015-18    BSc, Mumbai. Commercial instinct precedes the qualifications<br>2021       sole finance function across three countries<br>2025       OpsPilot answers its first message in production<br>12/06/26   the Ledger: full redesign begins<br>22/07/26   v2 ships as a single clean commit<br>03/08/26   craft pass: the books learn to move');
     },
     ls: function (arg) {
       if (arg && arg.indexOf('project') !== 0) { tprint('ls: cannot access \'' + esc(arg) + '\': only projects/ here'); return; }
@@ -2169,6 +2197,14 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
     else if (focusables.indexOf(document.activeElement) === -1) { e.preventDefault(); first.focus(); }
   });
   document.querySelectorAll('[data-term]').forEach(function (el) { el.addEventListener('click', openTerm); });
+  var basisLink = document.getElementById('basis-link');
+  if (basisLink) {
+    basisLink.addEventListener('click', function () {
+      var firstBoot = !opened;
+      openTerm();
+      setTimeout(function () { run('basis'); }, firstBoot ? 1250 : 150);
+    });
+  }
   if (window.matchMedia('(pointer: coarse)').matches) {
     document.querySelectorAll('[data-term]').forEach(function (el) { el.textContent = 'Tap for terminal'; });
   }

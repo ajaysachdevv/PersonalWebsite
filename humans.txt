@@ -1,0 +1,22 @@
+/* THE OPERATOR */
+Name: Ajay Sachdev
+Role: Finance & Operations Manager who ships software
+Base: Cambridge, UK
+Contact: ajay@ajaysachdev.com
+
+/* THE LEDGER */
+This site is prepared like an audited statement of work.
+Every figure on it is real, in production, or honestly
+labelled as not being. Paper trading is called paper
+trading. The prototype that never launched says so.
+
+/* BASIS OF PREPARATION */
+One hand-written HTML file per page. No framework, no
+build step, no npm. Type: Instrument Serif, Inter and
+JetBrains Mono, subset and self-hosted. Motion: GSAP and
+Lenis, vendored with SRI. Analytics: GoatCounter, no
+cookies. Press T on the homepage for the terminal.
+
+/* STANDARDS */
+Dates DD/MM/YYYY. Currency GBP first. No em dashes,
+no emojis, no inflated verbs.
