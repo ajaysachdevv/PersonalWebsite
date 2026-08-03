@@ -223,6 +223,15 @@ header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
   color: var(--paper-dim); border-bottom: 3px double var(--paper-faint); padding: 1.1rem 0.5rem;
 }
 
+/* Exhibit figure */
+.exhibit-fig { margin-top: 2.4rem; }
+.exhibit-fig figure { overflow: hidden; border: 1px solid var(--rule); background: var(--ink-2); }
+.exhibit-fig img { width: 100%; display: block; filter: saturate(0.8); }
+.exhibit-fig figcaption {
+  display: flex; justify-content: space-between; gap: 1rem; padding: 0.9rem 0.2rem 0;
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; color: var(--paper-faint); text-transform: uppercase;
+}
+
 /* Stack grid */
 .stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 2.2rem; border-top: 1px solid var(--rule); }
 .stack div { padding: 1.1rem 0.5rem; border-bottom: 1px solid var(--rule); }
@@ -369,7 +378,20 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   </section>
 
   <section>
-    <div class="section-head reveal"><span>Note 6: Stack</span><span class="right">Carrying values</span></div>
+    <div class="section-head reveal"><span>Note 6: Exhibit</span><span class="right">Exhibit B</span></div>
+    <div class="exhibit-fig reveal">
+      <figure>
+        <picture>
+          <source srcset="../images/trading-bot-backtest.webp" type="image/webp">
+          <img src="../images/trading-bot-backtest.png" alt="Walk-forward backtest report for the FTSE 100 multi-agent strategy" loading="lazy" decoding="async">
+        </picture>
+        <figcaption><span>Walk-forward backtest report</span><span>Dummy data, paper trading by design</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head reveal"><span>Note 7: Stack</span><span class="right">Carrying values</span></div>
     <div class="stack reveal">
       <div><span class="s-name">Python 3.12</span><span class="s-role">7,000+ lines across 33 files</span></div>
       <div><span class="s-name">Claude Opus</span><span class="s-role">Risk auditor, the final veto</span></div>
