@@ -47,7 +47,7 @@ Website, inventory system and analytics for the family fabric business running s
 Adds scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. Privacy-first: messages stay in the browser unless the user sends one to the AI. 11 features built; unreleased prototype.
 
 ### SCS Cockpit: Exam Study Engine
-A zero-dependency browser study tool he built for his own CIMA Strategic Case Study: timed drills, spaced repetition, 5-dimension debrief scoring. 11,584 lines, no build step, 166 study items, 23 frameworks, 54 source PDFs normalised. He passed. Retired, job done.
+A zero-dependency browser study tool he built for his own CIMA Strategic Case Study: timed drills, spaced repetition, 5-dimension debrief scoring. 11,584 lines, no build step, 166 study items, 23 frameworks, 54 source PDFs normalised. He passed. Retired, job done. Case study: https://ajaysachdev.com/projects/scs-cockpit.html
 
 ## Skills & Tools
 

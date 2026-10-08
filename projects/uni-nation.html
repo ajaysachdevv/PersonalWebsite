@@ -31,6 +31,10 @@
 @font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('../vendor/fonts/inter-400-500-800-latin.woff2') format('woff2'); }
 @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 100 800; font-display: swap; src: url('../vendor/fonts/jetbrainsmono-400-500-700-latin.woff2') format('woff2'); }
+/* Metric-matched fallbacks (size-adjust): no layout shift when the webfonts swap in. Measured with fontTools against the Windows system faces, 08/10/2026 */
+@font-face { font-family: 'Instrument Serif Fallback'; src: local('Georgia'); size-adjust: 76.92%; ascent-override: 128.71%; descent-override: 40.3%; line-gap-override: 0%; }
+@font-face { font-family: 'Inter Fallback'; src: local('Arial'), local('Helvetica'); size-adjust: 107.48%; ascent-override: 90.14%; descent-override: 22.44%; line-gap-override: 0%; }
+@font-face { font-family: 'JetBrains Mono Fallback'; src: local('Consolas'); size-adjust: 109.13%; ascent-override: 93.47%; descent-override: 27.49%; line-gap-override: 0%; }
 </style>
 
 <style>
@@ -45,9 +49,9 @@
   --credit: #1f7a4d;
   --amber: #8a610f;
   --debit: #b04a40;
-  --serif: 'Instrument Serif', Georgia, serif;
-  --sans: 'Inter', -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', Consolas, monospace;
+  --serif: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
+  --sans: 'Inter', 'Inter Fallback', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'JetBrains Mono Fallback', Consolas, monospace;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scrollbar-color: var(--paper-faint) var(--ink); overflow-x: clip; scroll-behavior: smooth; }
@@ -122,7 +126,7 @@ main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
 .crumb a:hover { color: var(--credit); border-color: var(--credit); }
 h1 {
   view-transition-name: entry-title;
-  font-family: var(--serif); font-weight: 400; font-size: clamp(3rem, 9vw, 7.5rem);
+  font-family: var(--serif); font-weight: 400; font-size: clamp(3rem, 9.5vw, 8.5rem);
   line-height: 0.98; letter-spacing: -0.015em; margin-top: 1.6rem;
 }
 h1 em { color: var(--credit); }
@@ -141,7 +145,7 @@ h1 em { color: var(--credit); }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 .entry-lede {
   margin-top: 2.2rem; font-family: var(--serif); font-size: clamp(1.35rem, 2.6vw, 2rem);
-  line-height: 1.4; color: var(--paper-dim); max-width: 42rem;
+  line-height: 1.4; color: var(--paper-dim); max-width: 62ch;
 }
 .entry-lede em { color: var(--credit); }
 .fig-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.2rem, 3vw, 2.5rem); margin-top: clamp(2.5rem, 5vw, 4rem); }
@@ -162,7 +166,7 @@ h1 em { color: var(--credit); }
 .wrong .section-head > span:first-child { color: var(--debit); }
 .wrong .pull span { color: var(--debit); }
 /* First note sits tighter: the entry head's fig row already provides the air */
-header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
+header + section .section-head, .notes-col > section:first-child .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 .prose { margin-top: 1.6rem; max-width: 62rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; text-wrap: pretty; }
 .prose + .prose { margin-top: 1.1rem; }
 .prose b { color: var(--paper); font-weight: 500; }
@@ -246,6 +250,40 @@ header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 .o-status { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; white-space: nowrap; color: var(--paper-dim); }
 @media (max-width: 680px) { .o-desc { display: none; } }
 
+/* ================= v4 body grid + margin rail (brief 3.1) =================
+   >=1024px: notes in columns 1-7, sticky rail in 9-12. The rail holds a ledger
+   index that ticks as each note enters, and one marginal panel per note that
+   swaps with a 0.3s fade. Below 1024px the rail is hidden; with JS off the
+   first panel shows. */
+.rail { display: none; }
+@media (min-width: 1024px) {
+  .body-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(1.25rem, 2vw, 2rem); }
+  .notes-col { grid-column: 1 / 8; min-width: 0; }
+  .rail { display: block; grid-column: 9 / 13; }
+  .rail-inner { position: sticky; top: 6.5rem; margin-top: clamp(2.8rem, 5.5vw, 4.2rem); padding-top: 0.85rem; border-top: 2px solid var(--paper); }
+}
+.rail-head { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--paper-faint); }
+.rail-ref { list-style: none; margin-top: 1.1rem; border-top: 1px solid var(--rule); }
+.rail-ref li {
+  display: grid; grid-template-columns: 1.1rem 2.6rem 1fr; align-items: baseline; gap: 0.3rem;
+  padding: 0.5rem 0; border-bottom: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--paper-faint); transition: color 0.3s ease;
+}
+.rail-ref li b { font-weight: 400; }
+/* The tick: drawn, not a glyph. Ticked = read, active = being read */
+.rail-ref li i { width: 0.42rem; height: 0.68rem; border: solid transparent; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg) translate(-1px, -2px); transition: border-color 0.3s ease; }
+.rail-ref li.ticked i { border-color: var(--paper-faint); }
+.rail-ref li.on { color: var(--paper); }
+.rail-ref li.on i { border-color: var(--credit); }
+.rail-ref li.on.debit i { border-color: var(--debit); }
+.rail-panels { display: grid; margin-top: 2rem; }
+.rp { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s; }
+.rp.on { opacity: 1; visibility: visible; }
+.rp-num { display: block; font-family: var(--serif); font-size: clamp(3.6rem, 5.6vw, 5.4rem); line-height: 0.95; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--paper); }
+.rp.debit .rp-num { color: var(--debit); }
+.rp-lab { display: block; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; line-height: 1.6; text-transform: uppercase; color: var(--paper-dim); max-width: 18rem; }
+
 /* ================= Footer ================= */
 footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 2.5rem; }
@@ -302,82 +340,105 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
       <div class="fig reveal"><span class="fig-num"><i>~$</i>2m</span><span class="fig-lab">of sales data managed</span></div>
     </div>
   </header>
+  <div class="body-grid">
+    <div class="notes-col">
 
-  <section>
-    <div class="section-head reveal"><span>Note 1: Origin</span><span class="right">Since 1988</span></div>
-    <p class="prose reveal"><b>P. Ashok Kumar</b>, that's the business name, after my grandfather. Started in Ulhasnagar, Maharashtra, manufacturing uniform fabrics: school uniforms, corporate uniforms, industrial workwear. The factory is still in Ulhasnagar. The office is in Kalbadevi, Mumbai. My dad built it up over three decades. I grew up around the looms, the dye lots, and the buyers who wanted the same shade of navy they got last year.</p>
-    <p class="prose reveal">After college I joined full-time as Accounting and Sales Manager. I handled the books, managed client relationships, and pushed us into garment manufacturing: finished uniforms, not just the raw fabric. That stretch taught me more about running a business than any degree. Eventually I moved to the UK for my master's, but I never really left. I still help with the bigger finance and strategy calls, and I built and run everything digital.</p>
-  </section>
+    <section data-note="1">
+      <div class="section-head reveal"><span>Note 1: Origin</span><span class="right">Since 1988</span></div>
+      <p class="prose reveal"><b>P. Ashok Kumar</b>, that's the business name, after my grandfather. Started in Ulhasnagar, Maharashtra, manufacturing uniform fabrics: school uniforms, corporate uniforms, industrial workwear. The factory is still in Ulhasnagar. The office is in Kalbadevi, Mumbai. My dad built it up over three decades. I grew up around the looms, the dye lots, and the buyers who wanted the same shade of navy they got last year.</p>
+      <p class="prose reveal">After college I joined full-time as Accounting and Sales Manager. I handled the books, managed client relationships, and pushed us into garment manufacturing: finished uniforms, not just the raw fabric. That stretch taught me more about running a business than any degree. Eventually I moved to the UK for my master's, but I never really left. I still help with the bigger finance and strategy calls, and I built and run everything digital.</p>
+    </section>
 
-  <section>
-    <div class="section-head reveal"><span>Note 2: The catalogue</span><span class="right">uni-nation.in</span></div>
-    <p class="prose reveal">The business ran on word-of-mouth and trade relationships for decades. No website, no digital catalogue, no way for new customers to find us. <a href="https://uni-nation.in" target="_blank" rel="noopener">uni-nation.in</a> changed that: fabric detail pages, colour swatch selectors, downloadable shade cards, and enough SEO to actually show up when someone searches for uniform fabric manufacturers in India.</p>
-    <ul class="notes">
-      <li class="reveal"><span class="n-ref">C.1</span><span><b>Digital swatch selector</b>Distributors used to rely on physical swatch books shipped across the country. The digital catalogue filters hundreds of variants by composition, GSM and weave, instantly.</span></li>
-      <li class="reveal"><span class="n-ref">C.2</span><span><b>Static and fast</b>Next.js static generation keeps the catalogue under 400ms on India's wildly uneven mobile networks. Each product page renders its own weave pattern in CSS: knit loops for Matty, diagonal twill for Samray.</span></li>
-      <li class="reveal"><span class="n-ref">C.3</span><span><b>B2B lead pipeline</b>The sample-request flow routes distributor leads straight to the sales team's inbox and WhatsApp. Lead capture through Formspree, eighteen shade card PDFs behind it.</span></li>
-    </ul>
-    <div class="exhibits reveal">
-      <figure>
-        <picture>
-          <source srcset="../images/uni-nation-homepage-desktop.webp" type="image/webp">
-          <img src="../images/uni-nation-homepage-desktop.png" alt="Uni-Nation catalogue site on desktop" loading="lazy" decoding="async">
-        </picture>
-        <figcaption><span>uni-nation.in</span><span>Exhibit C.1 / desktop</span></figcaption>
-      </figure>
-      <figure>
-        <picture>
-          <source srcset="../images/uni-nation-homepage-mobile.webp" type="image/webp">
-          <img src="../images/uni-nation-homepage-mobile.png" alt="Uni-Nation catalogue site on a phone" loading="lazy" decoding="async">
-        </picture>
-        <figcaption><span>Mobile</span><span>Exhibit C.2</span></figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-head reveal"><span>Note 3: The inventory system</span><span class="right">Voice first, Hindi first</span></div>
-    <p class="prose reveal">The stock ledger lived in notebooks and in people's heads. Around 2,000 products across four fabric lines and their colourways, and the only person who knew what was actually on the shelf was whoever last walked past it. Standard inventory software failed here for one physical reason: <b>warehouse workers hold fabric rolls in both hands.</b> Nobody is stopping to type into a form.</p>
-    <p class="prose reveal">So voice is the input. A worker taps once, says what came in or went out, in Hindi, and the system does the rest. The parser understands fabric units like thaan, taaka and metre, reads Hindi numbers, and corrects the speech-to-text errors that fabric names always cause. Behind it sits a 30,000+ line PWA with the sales history cut into dashboards: which lines move, which customers slow-pay, what to weave next. About $2m of sales data, tracked properly for the first time.</p>
-    <div class="voice reveal">
-      <div class="voice-head"><span>Voice stock entry</span><span>Sample exchange</span></div>
-      <p class="voice-line"><span class="say">"Samray navy blue, teen thaan aaya"</span> &nbsp;(three rolls of Samray navy came in)</p>
-      <div class="voice-row">
-        <span class="ok">PARSED</span>&nbsp; product: SAMRAY / NAVY &nbsp;|&nbsp; qty: +3 thaan &nbsp;|&nbsp; type: inward &nbsp;|&nbsp; <span class="ok">STOCK UPDATED</span>
+    <section data-note="2">
+      <div class="section-head reveal"><span>Note 2: The catalogue</span><span class="right">uni-nation.in</span></div>
+      <p class="prose reveal">The business ran on word-of-mouth and trade relationships for decades. No website, no digital catalogue, no way for new customers to find us. <a href="https://uni-nation.in" target="_blank" rel="noopener">uni-nation.in</a> changed that: fabric detail pages, colour swatch selectors, downloadable shade cards, and enough SEO to actually show up when someone searches for uniform fabric manufacturers in India.</p>
+      <ul class="notes">
+        <li class="reveal"><span class="n-ref">C.1</span><span><b>Digital swatch selector</b>Distributors used to rely on physical swatch books shipped across the country. The digital catalogue filters hundreds of variants by composition, GSM and weave, instantly.</span></li>
+        <li class="reveal"><span class="n-ref">C.2</span><span><b>Static and fast</b>Next.js static generation keeps the catalogue under 400ms on India's wildly uneven mobile networks. Each product page renders its own weave pattern in CSS: knit loops for Matty, diagonal twill for Samray.</span></li>
+        <li class="reveal"><span class="n-ref">C.3</span><span><b>B2B lead pipeline</b>The sample-request flow routes distributor leads straight to the sales team's inbox and WhatsApp. Lead capture through Formspree, eighteen shade card PDFs behind it.</span></li>
+      </ul>
+      <div class="exhibits reveal">
+        <figure>
+          <picture>
+            <source srcset="../images/uni-nation-homepage-desktop.webp" type="image/webp">
+            <img src="../images/uni-nation-homepage-desktop.png" alt="Uni-Nation catalogue site on desktop" loading="lazy" decoding="async">
+          </picture>
+          <figcaption><span>uni-nation.in</span><span>Exhibit C.1 / desktop</span></figcaption>
+        </figure>
+        <figure>
+          <picture>
+            <source srcset="../images/uni-nation-homepage-mobile.webp" type="image/webp">
+            <img src="../images/uni-nation-homepage-mobile.png" alt="Uni-Nation catalogue site on a phone" loading="lazy" decoding="async">
+          </picture>
+          <figcaption><span>Mobile</span><span>Exhibit C.2</span></figcaption>
+        </figure>
       </div>
-    </div>
-    <p class="prose reveal">You can play with a working replica of this in <a href="../index.html#mill">chapter 4 of the homepage</a>.</p>
-  </section>
+    </section>
 
-  <section>
-    <div class="section-head reveal"><span>Note 4: The product</span><span class="right">Four fabric lines</span></div>
-    <table class="ledger reveal">
-      <thead><tr><th>Line</th><th class="hide-m">Construction</th><th>Used for</th><th>Spec</th></tr></thead>
-      <tbody>
-        <tr><td class="f-name">Matty</td><td class="hide-m">Pique-knit, 100% polyester</td><td>School polos, sportswear, event tees. The workhorse</td><td class="mono">180 GSM / 58"</td></tr>
-        <tr><td class="f-name">Samray</td><td class="hide-m">Twill, poly-rayon 65/35</td><td>School trousers, blazers, formal sets. The best-seller, nineteen colours</td><td class="mono">220 GSM / 58"</td></tr>
-        <tr><td class="f-name">Trovine</td><td class="hide-m">Plain weave, poly-viscose 70/30</td><td>Hospital scrubs, industrial workwear, government contracts</td><td class="mono">200 GSM / 60"</td></tr>
-        <tr><td class="f-name">Filafil</td><td class="hide-m">End-on-end, poly-cotton 80/20</td><td>Dress shirts and office wear. Looks more expensive than it is</td><td class="mono">160 GSM / 58"</td></tr>
-      </tbody>
-      <tfoot><tr><td colspan="2">Four lines, one family</td><td colspan="2" style="text-align:right">Distribution across India</td></tr></tfoot>
-    </table>
-  </section>
+    <section data-note="3">
+      <div class="section-head reveal"><span>Note 3: The inventory system</span><span class="right">Voice first, Hindi first</span></div>
+      <p class="prose reveal">The stock ledger lived in notebooks and in people's heads. Around 2,000 products across four fabric lines and their colourways, and the only person who knew what was actually on the shelf was whoever last walked past it. Standard inventory software failed here for one physical reason: <b>warehouse workers hold fabric rolls in both hands.</b> Nobody is stopping to type into a form.</p>
+      <p class="prose reveal">So voice is the input. A worker taps once, says what came in or went out, in Hindi, and the system does the rest. The parser understands fabric units like thaan, taaka and metre, reads Hindi numbers, and corrects the speech-to-text errors that fabric names always cause. Behind it sits a 30,000+ line PWA with the sales history cut into dashboards: which lines move, which customers slow-pay, what to weave next. About $2m of sales data, tracked properly for the first time.</p>
+      <div class="voice reveal">
+        <div class="voice-head"><span>Voice stock entry</span><span>Sample exchange</span></div>
+        <p class="voice-line"><span class="say">"Samray navy blue, teen thaan aaya"</span> &nbsp;(three rolls of Samray navy came in)</p>
+        <div class="voice-row">
+          <span class="ok">PARSED</span>&nbsp; product: SAMRAY / NAVY &nbsp;|&nbsp; qty: +3 thaan &nbsp;|&nbsp; type: inward &nbsp;|&nbsp; <span class="ok">STOCK UPDATED</span>
+        </div>
+      </div>
+      <p class="prose reveal">You can play with a working replica of this in <a href="../index.html#mill">chapter 4 of the homepage</a>.</p>
+    </section>
 
-  <section>
-    <div class="section-head reveal"><span>Note 5: Stack</span><span class="right">Carrying values</span></div>
-    <div class="stack reveal">
-      <div><span class="s-name">Next.js 16</span><span class="s-role">Catalogue site: App Router, server components</span></div>
-      <div><span class="s-name">Tailwind v4</span><span class="s-role">Styling on both surfaces</span></div>
-      <div><span class="s-name">GSAP</span><span class="s-role">Catalogue scroll animations</span></div>
-      <div><span class="s-name">Whisper</span><span class="s-role">Hindi speech-to-text</span></div>
-      <div><span class="s-name">Python</span><span class="s-role">Voice parser: units, numbers, corrections</span></div>
-      <div><span class="s-name">PostgreSQL</span><span class="s-role">Stock ledger and sales history</span></div>
-      <div><span class="s-name">Node.js</span><span class="s-role">PWA backend</span></div>
-      <div><span class="s-name">Vercel</span><span class="s-role">Catalogue hosting and deploys</span></div>
-      <div><span class="s-name">Google Cloud</span><span class="s-role">PWA and voice infrastructure</span></div>
+    <section data-note="4">
+      <div class="section-head reveal"><span>Note 4: The product</span><span class="right">Four fabric lines</span></div>
+      <table class="ledger reveal">
+        <thead><tr><th>Line</th><th class="hide-m">Construction</th><th>Used for</th><th>Spec</th></tr></thead>
+        <tbody>
+          <tr><td class="f-name">Matty</td><td class="hide-m">Pique-knit, 100% polyester</td><td>School polos, sportswear, event tees. The workhorse</td><td class="mono">180 GSM / 58"</td></tr>
+          <tr><td class="f-name">Samray</td><td class="hide-m">Twill, poly-rayon 65/35</td><td>School trousers, blazers, formal sets. The best-seller, nineteen colours</td><td class="mono">220 GSM / 58"</td></tr>
+          <tr><td class="f-name">Trovine</td><td class="hide-m">Plain weave, poly-viscose 70/30</td><td>Hospital scrubs, industrial workwear, government contracts</td><td class="mono">200 GSM / 60"</td></tr>
+          <tr><td class="f-name">Filafil</td><td class="hide-m">End-on-end, poly-cotton 80/20</td><td>Dress shirts and office wear. Looks more expensive than it is</td><td class="mono">160 GSM / 58"</td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="2">Four lines, one family</td><td colspan="2" style="text-align:right">Distribution across India</td></tr></tfoot>
+      </table>
+    </section>
+
+    <section data-note="5">
+      <div class="section-head reveal"><span>Note 5: Stack</span><span class="right">Carrying values</span></div>
+      <div class="stack reveal">
+        <div><span class="s-name">Next.js 16</span><span class="s-role">Catalogue site: App Router, server components</span></div>
+        <div><span class="s-name">Tailwind v4</span><span class="s-role">Styling on both surfaces</span></div>
+        <div><span class="s-name">GSAP</span><span class="s-role">Catalogue scroll animations</span></div>
+        <div><span class="s-name">Whisper</span><span class="s-role">Hindi speech-to-text</span></div>
+        <div><span class="s-name">Python</span><span class="s-role">Voice parser: units, numbers, corrections</span></div>
+        <div><span class="s-name">PostgreSQL</span><span class="s-role">Stock ledger and sales history</span></div>
+        <div><span class="s-name">Node.js</span><span class="s-role">PWA backend</span></div>
+        <div><span class="s-name">Vercel</span><span class="s-role">Catalogue hosting and deploys</span></div>
+        <div><span class="s-name">Google Cloud</span><span class="s-role">PWA and voice infrastructure</span></div>
+      </div>
+      <p class="pull reveal">The family business is where I first learned that the best problems live between departments, <span>in the gaps no one owns.</span></p>
+    </section>
     </div>
-    <p class="pull reveal">The family business is where I first learned that the best problems live between departments, <span>in the gaps no one owns.</span></p>
-  </section>
+    <aside class="rail" aria-label="Margin notes">
+      <div class="rail-inner">
+        <div class="rail-head"><span>Ref</span><span>Entry 03 / Margin</span></div>
+        <ol class="rail-ref">
+          <li data-n="1" class="on"><i></i><b>N.1</b><span>Origin</span></li>
+          <li data-n="2" class=""><i></i><b>N.2</b><span>The catalogue</span></li>
+          <li data-n="3" class=""><i></i><b>N.3</b><span>The inventory system</span></li>
+          <li data-n="4" class=""><i></i><b>N.4</b><span>The product</span></li>
+          <li data-n="5" class=""><i></i><b>N.5</b><span>Stack</span></li>
+        </ol>
+        <div class="rail-panels">
+          <div class="rp on" data-n="1"><span class="rp-num">1988</span><span class="rp-lab">established</span></div>
+          <div class="rp" data-n="2"><span class="rp-num">~2,000</span><span class="rp-lab">products in the catalogue</span></div>
+          <div class="rp" data-n="3"><span class="rp-num">19</span><span class="rp-lab">single-purpose screens, voice first, Hindi first</span></div>
+          <div class="rp" data-n="4"><span class="rp-num">11</span><span class="rp-lab">UX principles written before the build</span></div>
+          <div class="rp" data-n="5"><span class="rp-num">150</span><span class="rp-lab">end-to-end test cases</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
 
   <section>
     <div class="section-head reveal"><span>Other entries</span><span class="right">Same ledger</span></div>
@@ -400,6 +461,12 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
           <td><span class="o-name">WhatsApp Smart</span></td>
           <td class="o-desc">A Chrome extension that gives WhatsApp scheduling, AI replies and summaries.</td>
           <td class="o-status">Prototype</td>
+        </tr>
+        <tr data-href="scs-cockpit.html">
+          <td class="o-ref">05</td>
+          <td><span class="o-name">SCS Cockpit</span></td>
+          <td class="o-desc">The study engine I built for my own CIMA Strategic Case Study. I passed.</td>
+          <td class="o-status">Retired, job done</td>
         </tr>
       </tbody>
     </table>
@@ -446,6 +513,25 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
     reveals.forEach(function (el) { io.observe(el); });
+  }
+
+  /* Margin rail: index ticks and the marginal panel swaps as each note enters (brief 3.1) */
+  var notes = document.querySelectorAll('[data-note]');
+  var refs = document.querySelectorAll('.rail-ref li');
+  var panels = document.querySelectorAll('.rp');
+  function setNote(n) {
+    refs.forEach(function (li) {
+      var k = +li.dataset.n;
+      li.classList.toggle('on', k === n);
+      li.classList.toggle('ticked', k < n);
+    });
+    panels.forEach(function (p) { p.classList.toggle('on', +p.dataset.n === n); });
+  }
+  if (notes.length && 'IntersectionObserver' in window) {
+    var railIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) setNote(+en.target.dataset.note); });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    notes.forEach(function (s) { railIo.observe(s); });
   }
 
   /* Row navigation */

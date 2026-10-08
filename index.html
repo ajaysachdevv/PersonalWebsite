@@ -35,6 +35,10 @@
 @font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('vendor/fonts/inter-400-500-800-latin.woff2') format('woff2'); }
 @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 100 800; font-display: swap; src: url('vendor/fonts/jetbrainsmono-400-500-700-latin.woff2') format('woff2'); }
+/* Metric-matched fallbacks (size-adjust): no layout shift when the webfonts swap in. Measured with fontTools against the Windows system faces, 08/10/2026 */
+@font-face { font-family: 'Instrument Serif Fallback'; src: local('Georgia'); size-adjust: 76.92%; ascent-override: 128.71%; descent-override: 40.3%; line-gap-override: 0%; }
+@font-face { font-family: 'Inter Fallback'; src: local('Arial'), local('Helvetica'); size-adjust: 107.48%; ascent-override: 90.14%; descent-override: 22.44%; line-gap-override: 0%; }
+@font-face { font-family: 'JetBrains Mono Fallback'; src: local('Consolas'); size-adjust: 109.13%; ascent-override: 93.47%; descent-override: 27.49%; line-gap-override: 0%; }
 </style>
 
 <style>
@@ -49,9 +53,9 @@
   --credit: #2fbf71;
   --amber: #e8b34b;
   --debit: #d96459;
-  --serif: 'Instrument Serif', Georgia, serif;
-  --sans: 'Inter', -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', Consolas, monospace;
+  --serif: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
+  --sans: 'Inter', 'Inter Fallback', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'JetBrains Mono Fallback', Consolas, monospace;
   /* Mono micro-type scale (V-T1): 4 sizes, 4 trackings. Every mono label uses these */
   --ms-1: 0.58rem; --ms-2: 0.62rem; --ms-3: 0.68rem; --ms-4: 0.72rem;
   --tr-1: 0.08em; --tr-2: 0.14em; --tr-3: 0.22em; --tr-4: 0.3em;
@@ -1229,7 +1233,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
           <td class="l-status-cell"><span class="l-status amber"><i></i>Prototype</span></td>
           <td class="l-metric">11 features built</td>
         </tr>
-        <tr class="reveal">
+        <tr class="reveal" data-href="projects/scs-cockpit.html">
           <td class="l-ref">05</td>
           <td class="l-name-cell"><span class="l-name">SCS Cockpit</span></td>
           <td class="l-desc">The study engine I built for my own CIMA Strategic Case Study: timed drills, spaced repetition, zero dependencies. I passed. Job done.</td>
@@ -2105,7 +2109,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
     'trading-bot': { page: 'projects/trading-bot.html', line: 'trading-bot/     paper-mode    4 agents, 115+ sessions, 0 bad trades' },
     'uni-nation': { page: 'projects/uni-nation.html', line: 'uni-nation/      live          ~$2m sales data, Hindi voice entry' },
     'whatsapp-smart': { page: 'projects/whatsapp-smart.html', line: 'whatsapp-smart/  prototype     11 features, privacy-first' },
-    'scs-cockpit': { page: null, line: 'scs-cockpit/     retired       11,584 lines, 0 dependencies, passed' }
+    'scs-cockpit': { page: 'projects/scs-cockpit.html', line: 'scs-cockpit/     retired       11,584 lines, 0 dependencies, passed' }
   };
   function tprint(html, cls) {
     var div = document.createElement('div');

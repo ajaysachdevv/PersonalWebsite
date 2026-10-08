@@ -17,7 +17,7 @@
 - Trading Bot: FTSE 100 intraday system with four AI agents and an absolute-veto risk auditor. 7,000+ lines. Paper trading: 115+ sessions, zero impulsive trades let through. Case study: https://ajaysachdev.com/projects/trading-bot.html
 - Uni-Nation Digital (uni-nation.in): website, inventory PWA (30,000+ lines) and Hindi voice stock entry for the family fabric business. Roughly $2m of sales data, ~2,000 products, 650+ customers. Case study: https://ajaysachdev.com/projects/uni-nation.html
 - WhatsApp Smart: Chrome extension prototype adding scheduling, AI replies and summaries to WhatsApp Web. 11 features built, privacy-first (messages stay in the browser unless sent to the AI), unreleased. Case study: https://ajaysachdev.com/projects/whatsapp-smart.html
-- SCS Cockpit: zero-dependency study engine he built for his own CIMA Strategic Case Study. 11,584 lines, 166 study items, 23 frameworks. He passed. Retired, job done.
+- SCS Cockpit: zero-dependency study engine he built for his own CIMA Strategic Case Study. 11,584 lines, 166 study items, 23 frameworks. He passed. Retired, job done. Case study: https://ajaysachdev.com/projects/scs-cockpit.html
 
 ## Key Metrics
 - Board-level financial models and reporting

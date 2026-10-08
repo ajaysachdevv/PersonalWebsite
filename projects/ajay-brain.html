@@ -31,6 +31,10 @@
 @font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('../vendor/fonts/inter-400-500-800-latin.woff2') format('woff2'); }
 @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 100 800; font-display: swap; src: url('../vendor/fonts/jetbrainsmono-400-500-700-latin.woff2') format('woff2'); }
+/* Metric-matched fallbacks (size-adjust): no layout shift when the webfonts swap in. Measured with fontTools against the Windows system faces, 08/10/2026 */
+@font-face { font-family: 'Instrument Serif Fallback'; src: local('Georgia'); size-adjust: 76.92%; ascent-override: 128.71%; descent-override: 40.3%; line-gap-override: 0%; }
+@font-face { font-family: 'Inter Fallback'; src: local('Arial'), local('Helvetica'); size-adjust: 107.48%; ascent-override: 90.14%; descent-override: 22.44%; line-gap-override: 0%; }
+@font-face { font-family: 'JetBrains Mono Fallback'; src: local('Consolas'); size-adjust: 109.13%; ascent-override: 93.47%; descent-override: 27.49%; line-gap-override: 0%; }
 </style>
 
 <style>
@@ -45,9 +49,9 @@
   --credit: #2fbf71;
   --amber: #e8b34b;
   --debit: #d96459;
-  --serif: 'Instrument Serif', Georgia, serif;
-  --sans: 'Inter', -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', Consolas, monospace;
+  --serif: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
+  --sans: 'Inter', 'Inter Fallback', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'JetBrains Mono Fallback', Consolas, monospace;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scrollbar-color: var(--paper-faint) var(--ink); overflow-x: clip; scroll-behavior: smooth; }
@@ -127,7 +131,7 @@ main.wrap > header::before {
 .crumb a:hover { color: var(--credit); border-color: var(--credit); }
 h1 {
   view-transition-name: entry-title;
-  font-family: var(--serif); font-weight: 400; font-size: clamp(3.2rem, 9vw, 7.5rem);
+  font-family: var(--serif); font-weight: 400; font-size: clamp(3.2rem, 9.5vw, 8.5rem);
   line-height: 0.98; letter-spacing: -0.015em; margin-top: 1.6rem;
 }
 h1 em { color: var(--credit); }
@@ -144,7 +148,7 @@ h1 em { color: var(--credit); }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 .entry-lede {
   margin-top: 2.2rem; font-family: var(--serif); font-size: clamp(1.35rem, 2.6vw, 2rem);
-  line-height: 1.4; color: var(--paper-dim); max-width: 42rem;
+  line-height: 1.4; color: var(--paper-dim); max-width: 62ch;
 }
 .entry-lede em { color: var(--credit); }
 .fig-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.2rem, 3vw, 2.5rem); margin-top: clamp(2.5rem, 5vw, 4rem); }
@@ -165,7 +169,7 @@ h1 em { color: var(--credit); }
 .wrong .section-head > span:first-child { color: var(--debit); }
 .wrong .pull span { color: var(--debit); }
 /* First note sits tighter: the entry head's fig row already provides the air */
-header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
+header + section .section-head, .notes-col > section:first-child .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 .prose { margin-top: 1.6rem; max-width: 62rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; text-wrap: pretty; }
 .prose + .prose { margin-top: 1.1rem; }
 .prose b { color: var(--paper); font-weight: 500; }
@@ -310,6 +314,40 @@ header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 .o-status { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; white-space: nowrap; color: var(--paper-dim); }
 @media (max-width: 680px) { .o-desc { display: none; } }
 
+/* ================= v4 body grid + margin rail (brief 3.1) =================
+   >=1024px: notes in columns 1-7, sticky rail in 9-12. The rail holds a ledger
+   index that ticks as each note enters, and one marginal panel per note that
+   swaps with a 0.3s fade. Below 1024px the rail is hidden; with JS off the
+   first panel shows. */
+.rail { display: none; }
+@media (min-width: 1024px) {
+  .body-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(1.25rem, 2vw, 2rem); }
+  .notes-col { grid-column: 1 / 8; min-width: 0; }
+  .rail { display: block; grid-column: 9 / 13; }
+  .rail-inner { position: sticky; top: 6.5rem; margin-top: clamp(2.8rem, 5.5vw, 4.2rem); padding-top: 0.85rem; border-top: 2px solid var(--paper); }
+}
+.rail-head { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--paper-faint); }
+.rail-ref { list-style: none; margin-top: 1.1rem; border-top: 1px solid var(--rule); }
+.rail-ref li {
+  display: grid; grid-template-columns: 1.1rem 2.6rem 1fr; align-items: baseline; gap: 0.3rem;
+  padding: 0.5rem 0; border-bottom: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--paper-faint); transition: color 0.3s ease;
+}
+.rail-ref li b { font-weight: 400; }
+/* The tick: drawn, not a glyph. Ticked = read, active = being read */
+.rail-ref li i { width: 0.42rem; height: 0.68rem; border: solid transparent; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg) translate(-1px, -2px); transition: border-color 0.3s ease; }
+.rail-ref li.ticked i { border-color: var(--paper-faint); }
+.rail-ref li.on { color: var(--paper); }
+.rail-ref li.on i { border-color: var(--credit); }
+.rail-ref li.on.debit i { border-color: var(--debit); }
+.rail-panels { display: grid; margin-top: 2rem; }
+.rp { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s; }
+.rp.on { opacity: 1; visibility: visible; }
+.rp-num { display: block; font-family: var(--serif); font-size: clamp(3.6rem, 5.6vw, 5.4rem); line-height: 0.95; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--paper); }
+.rp.debit .rp-num { color: var(--debit); }
+.rp-lab { display: block; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; line-height: 1.6; text-transform: uppercase; color: var(--paper-dim); max-width: 18rem; }
+
 /* ================= Footer ================= */
 footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 2.5rem; }
@@ -367,115 +405,140 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
       <div class="fig reveal"><span class="fig-num">100<i>%</i></span><span class="fig-lab">on a 50-query test suite</span></div>
     </div>
   </header>
+  <div class="body-grid">
+    <div class="notes-col">
 
-  <section>
-    <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">Where the hours went</span></div>
-    <p class="prose reveal">I run finance and operations at a tech company. My day is split across Teams, SharePoint, Xero, HubSpot and email. Someone asks a question in one system, the answer lives in another, and the context for why it matters is in a third. I was spending hours just pulling data, missing follow-ups because nobody tracked who said what, and scrambling for context five minutes before meetings.</p>
-    <p class="prose reveal">"What does the contract say about payment terms?" That's a SharePoint search. "Who hasn't paid us?" That's Xero. "What deals is the sales team working on?" HubSpot. "Tell me about this customer." That needs all three. The information always existed. It was just scattered across 6,124+ files, multiple systems, and years of accumulated documents.</p>
-    <div class="ba reveal">
-      <div class="deb">
-        <h3>Debit: before</h3>
-        <ul>
-          <li>Dig through 6,124+ SharePoint files by hand</li>
-          <li>Log into Xero, HubSpot, email and calendar separately for every question</li>
-          <li>Miss follow-ups because nobody tracked who promised what</li>
-          <li>Scramble for context five minutes before a meeting</li>
-        </ul>
+    <section data-note="1">
+      <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">Where the hours went</span></div>
+      <p class="prose reveal">I run finance and operations at a tech company. My day is split across Teams, SharePoint, Xero, HubSpot and email. Someone asks a question in one system, the answer lives in another, and the context for why it matters is in a third. I was spending hours just pulling data, missing follow-ups because nobody tracked who said what, and scrambling for context five minutes before meetings.</p>
+      <p class="prose reveal">"What does the contract say about payment terms?" That's a SharePoint search. "Who hasn't paid us?" That's Xero. "What deals is the sales team working on?" HubSpot. "Tell me about this customer." That needs all three. The information always existed. It was just scattered across 6,124+ files, multiple systems, and years of accumulated documents.</p>
+      <div class="ba reveal">
+        <div class="deb">
+          <h3>Debit: before</h3>
+          <ul>
+            <li>Dig through 6,124+ SharePoint files by hand</li>
+            <li>Log into Xero, HubSpot, email and calendar separately for every question</li>
+            <li>Miss follow-ups because nobody tracked who promised what</li>
+            <li>Scramble for context five minutes before a meeting</li>
+          </ul>
+        </div>
+        <div class="cred">
+          <h3>Credit: after</h3>
+          <ul>
+            <li>Ask a question in Teams, get an answer from any source in seconds</li>
+            <li>Morning briefing with everything that matters before 9am</li>
+            <li>Commitment tracker catches every promise, nudges when overdue</li>
+            <li>Pre-meeting brief lands 15 minutes before every call</li>
+          </ul>
+        </div>
       </div>
-      <div class="cred">
-        <h3>Credit: after</h3>
-        <ul>
-          <li>Ask a question in Teams, get an answer from any source in seconds</li>
-          <li>Morning briefing with everything that matters before 9am</li>
-          <li>Commitment tracker catches every promise, nudges when overdue</li>
-          <li>Pre-meeting brief lands 15 minutes before every call</li>
-        </ul>
+    </section>
+
+    <section data-note="2">
+      <div class="section-head reveal"><span>Note 2: How it works</span><span class="right">Nine stages, one approval</span></div>
+      <p class="prose reveal">Someone asks a question in Teams. The pipeline triages it, figures out whether it needs documents, live accounting data, CRM data, or all three at once, and returns an answer as an Adaptive Card with approve, edit and reject buttons. Live data questions hit Xero or HubSpot directly, zero LLM cost. Document questions run a hybrid search. Cross-source questions go through a single orchestrator call with <b>25 orchestrator tools</b>. A PII blocker sits in front of everything that leaves.</p>
+      <ol class="pipe reveal">
+        <li><span><b>Teams webhook</b> receives the message inside the Bot Framework turn</span></li>
+        <li><span><b>Dedup gate</b> drops repeats before they cost anything</span></li>
+        <li class="hl"><span><b>Smart triage</b>, two layers: keywords first, a fast model for the rest. Work, personal or noise</span></li>
+        <li class="hl"><span><b>Intent router</b> picks the source: documents, Xero, HubSpot, multi-source, reconciliation or journal</span></li>
+        <li class="hl"><span><b>Retrieval</b>: BM25 + FAISS hybrid with reciprocal rank fusion and an AI reranker for documents; direct API reads for live data</span></li>
+        <li><span><b>Multi-draft generation</b> in my writing style, several answer shapes to choose from</span></li>
+        <li class="hl"><span><b>Sensitivity gate</b>: UK PII detector, a hard blocker before anything can auto-send</span></li>
+        <li><span><b>Adaptive Card builder</b> formats the answer with sources and figures</span></li>
+        <li class="hl"><span><b>Approve, edit or reject</b>. A human signs every entry. That's the design, not a limitation</span></li>
+      </ol>
+      <table class="ledger reveal">
+        <thead><tr><th>Test suite</th><th>Scope</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Document search</td><td>50 production queries</td><td class="mono"><span class="ok">50/50</span></td></tr>
+          <tr><td>Triage</td><td>20 labelled messages</td><td class="mono"><span class="ok">20/20</span></td></tr>
+          <tr><td>Intent routing</td><td>45 queries across 6 sources</td><td class="mono"><span class="ok">45/45</span></td></tr>
+          <tr><td>Conversation follow-up</td><td>54 multi-turn cases</td><td class="mono"><span class="ok">54/54</span></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="2">The search pipeline is frozen at 100%</td><td>No changes until it misses</td></tr></tfoot>
+      </table>
+      <div class="adcard reveal" role="img" aria-label="Illustration of the Adaptive Card answer format in Teams">
+        <div class="ac-head"><span>OpsPilot / draft for approval</span><span>Adaptive Card</span></div>
+        <div class="ac-q">"Where's the signed Acme master agreement? Client call in 20 minutes."</div>
+        <div class="ac-a">Found it: <b>Acme_MSA_signed.pdf</b> in Contracts/2024, countersigned 12 Mar. Drafted the reply with the file link and the two clauses they'll ask about.</div>
+        <div class="ac-file">PDF / CONTRACTS/2024 / 1.2 MB</div>
+        <div class="ac-btns" aria-hidden="true"><span class="go">Approve &amp; send</span><span>Edit</span><span>Reject</span></div>
       </div>
+    </section>
+
+    <section data-note="3">
+      <div class="section-head reveal"><span>Note 3: Exhibit</span><span class="right">Exhibit A</span></div>
+      <div class="exhibit-fig reveal">
+        <figure>
+          <picture>
+            <source srcset="../images/ajay-brain-dashboard.webp" type="image/webp">
+            <img src="../images/ajay-brain-dashboard.png" alt="OpsPilot dashboard showing finance and pipeline panels" loading="lazy" decoding="async">
+          </picture>
+          <figcaption><span>OpsPilot dashboard</span><span>Sample data, real figures stay private</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section data-note="4">
+      <div class="section-head reveal"><span>Note 4: What it does</span><span class="right">Beyond answering</span></div>
+      <ul class="notes">
+        <li class="reveal"><span class="n-ref">F.1</span><span><b>Hybrid search</b>BM25 for keywords, FAISS for meaning, reciprocal rank fusion to merge them, then an AI reranker picks the top five. HyDE query expansion generates domain terms so vague questions still land on the right document.</span></li>
+        <li class="reveal"><span class="n-ref">F.2</span><span><b>Live data, no hallucination surface</b>"Who hasn't paid us?" reads Xero receivables directly. "What deals are open?" queries the HubSpot pipeline. 17 direct API actions where the LLM never touches the numbers: formatted figures, straight back. Xero access is read-only by design.</span></li>
+        <li class="reveal"><span class="n-ref">F.3</span><span><b>Autonomous monitoring</b>Morning briefing at 08:00, evening wrap at 17:30, deal-stage checks every five minutes in business hours. An invoice scanner reads PDFs from my inbox, extracts line items, matches them against Xero and flags duplicates and price drift. A commitment tracker detects promises in Teams and email and alerts when they slip.</span></li>
+        <li class="reveal"><span class="n-ref">F.4</span><span><b>Dashboard</b>A React dashboard on precomputed state: P&amp;L, cash position, pipeline, receivables, engagement. FastAPI serves it from SQLite so the page never waits on a third-party API.</span></li>
+        <li class="reveal"><span class="n-ref">F.5</span><span><b>Personal growth journal</b>Every evening it writes a first-person diary entry from the day's activity, then a behavioural layer flags blind spots: unreplied messages, tone drift, neglected relationships. Weekly digest on Fridays.</span></li>
+        <li class="reveal"><span class="n-ref">F.6</span><span><b>Conversation memory and approval</b>Per-user context with a two-hour window and ten-turn memory, so "what about their payment terms?" knows who "they" are. Every answer returns as options; nothing goes out unapproved. It learns which answer style I tend to pick.</span></li>
+      </ul>
+    </section>
+
+    <section class="wrong" data-note="5">
+      <div class="section-head reveal"><span>Note 5: What went wrong</span><span class="right">The 1am journal</span></div>
+      <p class="prose reveal">OpsPilot writes me a daily journal from my own mail, calendar and chats. One week it told me I'd been online at 1am, then 2am. I hadn't. The sent-mail query used Graph's <b>/messages</b> endpoint with a date filter, and that endpoint returns mail from every folder, not just Sent Items. Automated notifications landing overnight were being counted as mail I'd sent. The fix was to ask the Sent Items folder directly, and the rule now is never to assume an endpoint filters by folder.</p>
+      <p class="pull reveal">A wrong number that looks wrong gets caught. One that describes <span>a believable bad week</span> doesn't.</p>
+    </section>
+
+    <section data-note="6">
+      <div class="section-head reveal"><span>Note 6: Stack</span><span class="right">Carrying values</span></div>
+      <div class="stack reveal">
+        <div><span class="s-name">Python 3.12</span><span class="s-role">Most of 95,000+ lines, one codebase</span></div>
+        <div><span class="s-name">Gemini 2.5 Flash / Pro</span><span class="s-role">Primary models: triage, drafting, reasoning</span></div>
+        <div><span class="s-name">Claude</span><span class="s-role">Tool-use orchestration and fallback in the LLM cascade</span></div>
+        <div><span class="s-name">FAISS + BM25</span><span class="s-role">Hybrid retrieval with rank fusion</span></div>
+        <div><span class="s-name">Microsoft Graph</span><span class="s-role">Teams, SharePoint, calendar, email</span></div>
+        <div><span class="s-name">Bot Framework</span><span class="s-role">Teams webhook handler, aiohttp</span></div>
+        <div><span class="s-name">Xero API</span><span class="s-role">Accounting data, read-only by design</span></div>
+        <div><span class="s-name">HubSpot API</span><span class="s-role">CRM and sales pipeline</span></div>
+        <div><span class="s-name">React 19 + Vite</span><span class="s-role">Dashboard, TypeScript throughout</span></div>
+        <div><span class="s-name">FastAPI + SQLite</span><span class="s-role">Precomputed state, no live waits</span></div>
+        <div><span class="s-name">APScheduler</span><span class="s-role">Briefings and scheduled jobs</span></div>
+        <div><span class="s-name">Oracle Cloud</span><span class="s-role">Ubuntu VM, systemd, auto-deploy</span></div>
+      </div>
+      <p class="pull reveal">Nobody could find anything in 6,124 files. Now the files <span>answer back.</span></p>
+    </section>
     </div>
-  </section>
-
-  <section>
-    <div class="section-head reveal"><span>Note 2: How it works</span><span class="right">Nine stages, one approval</span></div>
-    <p class="prose reveal">Someone asks a question in Teams. The pipeline triages it, figures out whether it needs documents, live accounting data, CRM data, or all three at once, and returns an answer as an Adaptive Card with approve, edit and reject buttons. Live data questions hit Xero or HubSpot directly, zero LLM cost. Document questions run a hybrid search. Cross-source questions go through a single orchestrator call with <b>25 orchestrator tools</b>. A PII blocker sits in front of everything that leaves.</p>
-    <ol class="pipe reveal">
-      <li><span><b>Teams webhook</b> receives the message inside the Bot Framework turn</span></li>
-      <li><span><b>Dedup gate</b> drops repeats before they cost anything</span></li>
-      <li class="hl"><span><b>Smart triage</b>, two layers: keywords first, a fast model for the rest. Work, personal or noise</span></li>
-      <li class="hl"><span><b>Intent router</b> picks the source: documents, Xero, HubSpot, multi-source, reconciliation or journal</span></li>
-      <li class="hl"><span><b>Retrieval</b>: BM25 + FAISS hybrid with reciprocal rank fusion and an AI reranker for documents; direct API reads for live data</span></li>
-      <li><span><b>Multi-draft generation</b> in my writing style, several answer shapes to choose from</span></li>
-      <li class="hl"><span><b>Sensitivity gate</b>: UK PII detector, a hard blocker before anything can auto-send</span></li>
-      <li><span><b>Adaptive Card builder</b> formats the answer with sources and figures</span></li>
-      <li class="hl"><span><b>Approve, edit or reject</b>. A human signs every entry. That's the design, not a limitation</span></li>
-    </ol>
-    <table class="ledger reveal">
-      <thead><tr><th>Test suite</th><th>Scope</th><th>Result</th></tr></thead>
-      <tbody>
-        <tr><td>Document search</td><td>50 production queries</td><td class="mono"><span class="ok">50/50</span></td></tr>
-        <tr><td>Triage</td><td>20 labelled messages</td><td class="mono"><span class="ok">20/20</span></td></tr>
-        <tr><td>Intent routing</td><td>45 queries across 6 sources</td><td class="mono"><span class="ok">45/45</span></td></tr>
-        <tr><td>Conversation follow-up</td><td>54 multi-turn cases</td><td class="mono"><span class="ok">54/54</span></td></tr>
-      </tbody>
-      <tfoot><tr><td colspan="2">The search pipeline is frozen at 100%</td><td>No changes until it misses</td></tr></tfoot>
-    </table>
-    <div class="adcard reveal" role="img" aria-label="Illustration of the Adaptive Card answer format in Teams">
-      <div class="ac-head"><span>OpsPilot / draft for approval</span><span>Adaptive Card</span></div>
-      <div class="ac-q">"Where's the signed Acme master agreement? Client call in 20 minutes."</div>
-      <div class="ac-a">Found it: <b>Acme_MSA_signed.pdf</b> in Contracts/2024, countersigned 12 Mar. Drafted the reply with the file link and the two clauses they'll ask about.</div>
-      <div class="ac-file">PDF / CONTRACTS/2024 / 1.2 MB</div>
-      <div class="ac-btns" aria-hidden="true"><span class="go">Approve &amp; send</span><span>Edit</span><span>Reject</span></div>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-head reveal"><span>Note 3: Exhibit</span><span class="right">Exhibit A</span></div>
-    <div class="exhibit-fig reveal">
-      <figure>
-        <picture>
-          <source srcset="../images/ajay-brain-dashboard.webp" type="image/webp">
-          <img src="../images/ajay-brain-dashboard.png" alt="OpsPilot dashboard showing finance and pipeline panels" loading="lazy" decoding="async">
-        </picture>
-        <figcaption><span>OpsPilot dashboard</span><span>Sample data, real figures stay private</span></figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-head reveal"><span>Note 4: What it does</span><span class="right">Beyond answering</span></div>
-    <ul class="notes">
-      <li class="reveal"><span class="n-ref">F.1</span><span><b>Hybrid search</b>BM25 for keywords, FAISS for meaning, reciprocal rank fusion to merge them, then an AI reranker picks the top five. HyDE query expansion generates domain terms so vague questions still land on the right document.</span></li>
-      <li class="reveal"><span class="n-ref">F.2</span><span><b>Live data, no hallucination surface</b>"Who hasn't paid us?" reads Xero receivables directly. "What deals are open?" queries the HubSpot pipeline. 17 direct API actions where the LLM never touches the numbers: formatted figures, straight back. Xero access is read-only by design.</span></li>
-      <li class="reveal"><span class="n-ref">F.3</span><span><b>Autonomous monitoring</b>Morning briefing at 08:00, evening wrap at 17:30, deal-stage checks every five minutes in business hours. An invoice scanner reads PDFs from my inbox, extracts line items, matches them against Xero and flags duplicates and price drift. A commitment tracker detects promises in Teams and email and alerts when they slip.</span></li>
-      <li class="reveal"><span class="n-ref">F.4</span><span><b>Dashboard</b>A React dashboard on precomputed state: P&amp;L, cash position, pipeline, receivables, engagement. FastAPI serves it from SQLite so the page never waits on a third-party API.</span></li>
-      <li class="reveal"><span class="n-ref">F.5</span><span><b>Personal growth journal</b>Every evening it writes a first-person diary entry from the day's activity, then a behavioural layer flags blind spots: unreplied messages, tone drift, neglected relationships. Weekly digest on Fridays.</span></li>
-      <li class="reveal"><span class="n-ref">F.6</span><span><b>Conversation memory and approval</b>Per-user context with a two-hour window and ten-turn memory, so "what about their payment terms?" knows who "they" are. Every answer returns as options; nothing goes out unapproved. It learns which answer style I tend to pick.</span></li>
-    </ul>
-  </section>
-
-  <section class="wrong">
-    <div class="section-head reveal"><span>Note 5: What went wrong</span><span class="right">The 1am journal</span></div>
-    <p class="prose reveal">OpsPilot writes me a daily journal from my own mail, calendar and chats. One week it told me I'd been online at 1am, then 2am. I hadn't. The sent-mail query used Graph's <b>/messages</b> endpoint with a date filter, and that endpoint returns mail from every folder, not just Sent Items. Automated notifications landing overnight were being counted as mail I'd sent. The fix was to ask the Sent Items folder directly, and the rule now is never to assume an endpoint filters by folder.</p>
-    <p class="pull reveal">A wrong number that looks wrong gets caught. One that describes <span>a believable bad week</span> doesn't.</p>
-  </section>
-
-  <section>
-    <div class="section-head reveal"><span>Note 6: Stack</span><span class="right">Carrying values</span></div>
-    <div class="stack reveal">
-      <div><span class="s-name">Python 3.12</span><span class="s-role">Most of 95,000+ lines, one codebase</span></div>
-      <div><span class="s-name">Gemini 2.5 Flash / Pro</span><span class="s-role">Primary models: triage, drafting, reasoning</span></div>
-      <div><span class="s-name">Claude</span><span class="s-role">Tool-use orchestration and fallback in the LLM cascade</span></div>
-      <div><span class="s-name">FAISS + BM25</span><span class="s-role">Hybrid retrieval with rank fusion</span></div>
-      <div><span class="s-name">Microsoft Graph</span><span class="s-role">Teams, SharePoint, calendar, email</span></div>
-      <div><span class="s-name">Bot Framework</span><span class="s-role">Teams webhook handler, aiohttp</span></div>
-      <div><span class="s-name">Xero API</span><span class="s-role">Accounting data, read-only by design</span></div>
-      <div><span class="s-name">HubSpot API</span><span class="s-role">CRM and sales pipeline</span></div>
-      <div><span class="s-name">React 19 + Vite</span><span class="s-role">Dashboard, TypeScript throughout</span></div>
-      <div><span class="s-name">FastAPI + SQLite</span><span class="s-role">Precomputed state, no live waits</span></div>
-      <div><span class="s-name">APScheduler</span><span class="s-role">Briefings and scheduled jobs</span></div>
-      <div><span class="s-name">Oracle Cloud</span><span class="s-role">Ubuntu VM, systemd, auto-deploy</span></div>
-    </div>
-    <p class="pull reveal">Nobody could find anything in 6,124 files. Now the files <span>answer back.</span></p>
-  </section>
+    <aside class="rail" aria-label="Margin notes">
+      <div class="rail-inner">
+        <div class="rail-head"><span>Ref</span><span>Entry 01 / Margin</span></div>
+        <ol class="rail-ref">
+          <li data-n="1" class="on"><i></i><b>N.1</b><span>The problem</span></li>
+          <li data-n="2" class=""><i></i><b>N.2</b><span>How it works</span></li>
+          <li data-n="3" class=""><i></i><b>N.3</b><span>Exhibit</span></li>
+          <li data-n="4" class=""><i></i><b>N.4</b><span>What it does</span></li>
+          <li data-n="5" class="debit"><i></i><b>N.5</b><span>What went wrong</span></li>
+          <li data-n="6" class=""><i></i><b>N.6</b><span>Stack</span></li>
+        </ol>
+        <div class="rail-panels">
+          <div class="rp on" data-n="1"><span class="rp-num">6,124+</span><span class="rp-lab">documents nobody could find. Now they answer back</span></div>
+          <div class="rp" data-n="2"><span class="rp-num">50/50</span><span class="rp-lab">frozen retrieval suite. No changes until it misses</span></div>
+          <div class="rp" data-n="3"><span class="rp-num">10</span><span class="rp-lab">architecture invariants, written down before they were needed</span></div>
+          <div class="rp" data-n="4"><span class="rp-num">43</span><span class="rp-lab">features live</span></div>
+          <div class="rp debit" data-n="5"><span class="rp-num">1am</span><span class="rp-lab">when the journal said I was working. I wasn't</span></div>
+          <div class="rp" data-n="6"><span class="rp-num">327</span><span class="rp-lab">commits in seven months</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
 
   <section>
     <div class="section-head reveal"><span>Other entries</span><span class="right">Same ledger</span></div>
@@ -498,6 +561,12 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
           <td><span class="o-name">WhatsApp Smart</span></td>
           <td class="o-desc">A Chrome extension that gives WhatsApp scheduling, AI replies and summaries.</td>
           <td class="o-status">Prototype</td>
+        </tr>
+        <tr data-href="scs-cockpit.html">
+          <td class="o-ref">05</td>
+          <td><span class="o-name">SCS Cockpit</span></td>
+          <td class="o-desc">The study engine I built for my own CIMA Strategic Case Study. I passed.</td>
+          <td class="o-status">Retired, job done</td>
         </tr>
       </tbody>
     </table>
@@ -543,6 +612,25 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
     reveals.forEach(function (el) { io.observe(el); });
+  }
+
+  /* Margin rail: index ticks and the marginal panel swaps as each note enters (brief 3.1) */
+  var notes = document.querySelectorAll('[data-note]');
+  var refs = document.querySelectorAll('.rail-ref li');
+  var panels = document.querySelectorAll('.rp');
+  function setNote(n) {
+    refs.forEach(function (li) {
+      var k = +li.dataset.n;
+      li.classList.toggle('on', k === n);
+      li.classList.toggle('ticked', k < n);
+    });
+    panels.forEach(function (p) { p.classList.toggle('on', +p.dataset.n === n); });
+  }
+  if (notes.length && 'IntersectionObserver' in window) {
+    var railIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) setNote(+en.target.dataset.note); });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    notes.forEach(function (s) { railIo.observe(s); });
   }
 
   /* Row navigation */

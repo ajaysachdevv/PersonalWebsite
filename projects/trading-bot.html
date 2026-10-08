@@ -31,6 +31,10 @@
 @font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('../vendor/fonts/inter-400-500-800-latin.woff2') format('woff2'); }
 @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 100 800; font-display: swap; src: url('../vendor/fonts/jetbrainsmono-400-500-700-latin.woff2') format('woff2'); }
+/* Metric-matched fallbacks (size-adjust): no layout shift when the webfonts swap in. Measured with fontTools against the Windows system faces, 08/10/2026 */
+@font-face { font-family: 'Instrument Serif Fallback'; src: local('Georgia'); size-adjust: 76.92%; ascent-override: 128.71%; descent-override: 40.3%; line-gap-override: 0%; }
+@font-face { font-family: 'Inter Fallback'; src: local('Arial'), local('Helvetica'); size-adjust: 107.48%; ascent-override: 90.14%; descent-override: 22.44%; line-gap-override: 0%; }
+@font-face { font-family: 'JetBrains Mono Fallback'; src: local('Consolas'); size-adjust: 109.13%; ascent-override: 93.47%; descent-override: 27.49%; line-gap-override: 0%; }
 </style>
 
 <style>
@@ -45,9 +49,9 @@
   --credit: #2fbf71;
   --amber: #e8b34b;
   --debit: #d96459;
-  --serif: 'Instrument Serif', Georgia, serif;
-  --sans: 'Inter', -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', Consolas, monospace;
+  --serif: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
+  --sans: 'Inter', 'Inter Fallback', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'JetBrains Mono Fallback', Consolas, monospace;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scrollbar-color: var(--paper-faint) var(--ink); overflow-x: clip; scroll-behavior: smooth; }
@@ -127,7 +131,7 @@ main.wrap > header::before {
 .crumb a:hover { color: var(--credit); border-color: var(--credit); }
 h1 {
   view-transition-name: entry-title;
-  font-family: var(--serif); font-weight: 400; font-size: clamp(3.2rem, 9vw, 7.5rem);
+  font-family: var(--serif); font-weight: 400; font-size: clamp(3.2rem, 9.5vw, 8.5rem);
   line-height: 0.98; letter-spacing: -0.015em; margin-top: 1.6rem;
 }
 h1 em { color: var(--credit); }
@@ -144,7 +148,7 @@ h1 em { color: var(--credit); }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 .entry-lede {
   margin-top: 2.2rem; font-family: var(--serif); font-size: clamp(1.35rem, 2.6vw, 2rem);
-  line-height: 1.4; color: var(--paper-dim); max-width: 42rem;
+  line-height: 1.4; color: var(--paper-dim); max-width: 62ch;
 }
 .entry-lede em { color: var(--credit); }
 .fig-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.2rem, 3vw, 2.5rem); margin-top: clamp(2.5rem, 5vw, 4rem); }
@@ -165,7 +169,7 @@ h1 em { color: var(--credit); }
 .wrong .section-head > span:first-child { color: var(--debit); }
 .wrong .pull span { color: var(--debit); }
 /* First note sits tighter: the entry head's fig row already provides the air */
-header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
+header + section .section-head, .notes-col > section:first-child .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 .prose { margin-top: 1.6rem; max-width: 62rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; text-wrap: pretty; }
 .prose + .prose { margin-top: 1.1rem; }
 .prose b { color: var(--paper); font-weight: 500; }
@@ -268,6 +272,40 @@ header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 .o-status { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; white-space: nowrap; color: var(--paper-dim); }
 @media (max-width: 680px) { .o-desc { display: none; } }
 
+/* ================= v4 body grid + margin rail (brief 3.1) =================
+   >=1024px: notes in columns 1-7, sticky rail in 9-12. The rail holds a ledger
+   index that ticks as each note enters, and one marginal panel per note that
+   swaps with a 0.3s fade. Below 1024px the rail is hidden; with JS off the
+   first panel shows. */
+.rail { display: none; }
+@media (min-width: 1024px) {
+  .body-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(1.25rem, 2vw, 2rem); }
+  .notes-col { grid-column: 1 / 8; min-width: 0; }
+  .rail { display: block; grid-column: 9 / 13; }
+  .rail-inner { position: sticky; top: 6.5rem; margin-top: clamp(2.8rem, 5.5vw, 4.2rem); padding-top: 0.85rem; border-top: 2px solid var(--paper); }
+}
+.rail-head { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--paper-faint); }
+.rail-ref { list-style: none; margin-top: 1.1rem; border-top: 1px solid var(--rule); }
+.rail-ref li {
+  display: grid; grid-template-columns: 1.1rem 2.6rem 1fr; align-items: baseline; gap: 0.3rem;
+  padding: 0.5rem 0; border-bottom: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--paper-faint); transition: color 0.3s ease;
+}
+.rail-ref li b { font-weight: 400; }
+/* The tick: drawn, not a glyph. Ticked = read, active = being read */
+.rail-ref li i { width: 0.42rem; height: 0.68rem; border: solid transparent; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg) translate(-1px, -2px); transition: border-color 0.3s ease; }
+.rail-ref li.ticked i { border-color: var(--paper-faint); }
+.rail-ref li.on { color: var(--paper); }
+.rail-ref li.on i { border-color: var(--credit); }
+.rail-ref li.on.debit i { border-color: var(--debit); }
+.rail-panels { display: grid; margin-top: 2rem; }
+.rp { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s; }
+.rp.on { opacity: 1; visibility: visible; }
+.rp-num { display: block; font-family: var(--serif); font-size: clamp(3.6rem, 5.6vw, 5.4rem); line-height: 0.95; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--paper); }
+.rp.debit .rp-num { color: var(--debit); }
+.rp-lab { display: block; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; line-height: 1.6; text-transform: uppercase; color: var(--paper-dim); max-width: 18rem; }
+
 /* ================= Footer ================= */
 footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 2.5rem; }
@@ -323,110 +361,139 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
       <div class="fig reveal"><span class="fig-num">750<i>GBP</i></span><span class="fig-lab">hard notional cap, in code</span></div>
     </div>
   </header>
+  <div class="body-grid">
+    <div class="notes-col">
 
-  <section>
-    <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">The operator was the risk</span></div>
-    <p class="prose reveal">I studied financial markets at Jai Hind College and hold a Chartered Wealth Manager certification. I understood markets. But understanding them and trading them profitably turned out to be two different things. I'd watch a stock I'd researched all week drop 2% on a single announcement and sell within five minutes, then watch it recover by close. I'd spot a FTSE dip and buy in, convinced it was the bottom, only for it to keep sliding. After a red day I'd jump into something I hadn't even properly analysed, just to make the loss back.</p>
-    <p class="prose reveal"><b>The analysis was usually fine. It was the real-time decisions that killed it.</b> I'd override my own rules the moment I felt any pressure. So the question became: could I build something that kept the analysis but removed me from the execution?</p>
-  </section>
+    <section data-note="1">
+      <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">The operator was the risk</span></div>
+      <p class="prose reveal">I studied financial markets at Jai Hind College and hold a Chartered Wealth Manager certification. I understood markets. But understanding them and trading them profitably turned out to be two different things. I'd watch a stock I'd researched all week drop 2% on a single announcement and sell within five minutes, then watch it recover by close. I'd spot a FTSE dip and buy in, convinced it was the bottom, only for it to keep sliding. After a red day I'd jump into something I hadn't even properly analysed, just to make the loss back.</p>
+      <p class="prose reveal"><b>The analysis was usually fine. It was the real-time decisions that killed it.</b> I'd override my own rules the moment I felt any pressure. So the question became: could I build something that kept the analysis but removed me from the execution?</p>
+    </section>
 
-  <section>
-    <div class="section-head reveal"><span>Note 2: The trading day</span><span class="right">No human input</span></div>
-    <p class="prose reveal">Every weekday at 10:35 GMT, thirty minutes after London open once the opening noise has settled, the system runs. APScheduler fires five jobs through the day. Nothing is held overnight.</p>
-    <ol class="sched reveal">
-      <li><span class="t">10:30</span><span>Start 5-minute candle collection via Lightstreamer</span></li>
-      <li class="hot"><span class="t">10:35</span><span>Full four-agent evaluation across the top 20 FTSE tickers. The only entry window of the day</span></li>
-      <li><span class="t">12:00</span><span>Regime recheck: close everything if the FTSE is below -1%</span></li>
-      <li><span class="t">14:00</span><span>Second regime recheck</span></li>
-      <li class="hot"><span class="t">16:00</span><span>Liquidate everything. No overnight gap risk, ever</span></li>
-    </ol>
-  </section>
+    <section data-note="2">
+      <div class="section-head reveal"><span>Note 2: The trading day</span><span class="right">No human input</span></div>
+      <p class="prose reveal">Every weekday at 10:35 GMT, thirty minutes after London open once the opening noise has settled, the system runs. APScheduler fires five jobs through the day. Nothing is held overnight.</p>
+      <ol class="sched reveal">
+        <li><span class="t">10:30</span><span>Start 5-minute candle collection via Lightstreamer</span></li>
+        <li class="hot"><span class="t">10:35</span><span>Full four-agent evaluation across the top 20 FTSE tickers. The only entry window of the day</span></li>
+        <li><span class="t">12:00</span><span>Regime recheck: close everything if the FTSE is below -1%</span></li>
+        <li><span class="t">14:00</span><span>Second regime recheck</span></li>
+        <li class="hot"><span class="t">16:00</span><span>Liquidate everything. No overnight gap risk, ever</span></li>
+      </ol>
+    </section>
 
-  <section>
-    <div class="section-head reveal"><span>Note 3: The floor</span><span class="right">Four agents, one veto</span></div>
-    <p class="prose reveal">First thing each session: kill-switch and market regime check. If either fails, nothing else runs. News gets scanned and classified by tier before the technical check: EMA-50, VWAP, RSI. Only setups that pass everything reach the quality gate, where Claude Sonnet rates them against a strict JSON schema. The last word belongs to Claude Opus as risk auditor. <b>If it vetoes, the trade dies.</b> The rails live in code, not prompts: the agents can assess and recommend, they cannot override the config.</p>
-    <div class="agents reveal">
-      <div class="agent"><span class="who">Orchestrator</span><span class="verdict ok">GATE</span><br>Kill-switch and regime check. If the equity floor is breached or the FTSE is off more than 0.5%, the session never starts.</div>
-      <div class="agent"><span class="who">Context Lead</span><span class="verdict hmm">SCAN</span><br>Same-day RNS announcements, classified Tier A (earnings, M&amp;A), Tier B (upgrades, buybacks) or Tier C (skip). No catalyst, no conviction.</div>
-      <div class="agent"><span class="who">Analyst</span><span class="verdict hmm">RATE</span><br>Technical quality gate. EMA-50, VWAP, RSI-14, then a structured 1 to 5 rating. Marginal setups score exactly what they deserve.</div>
-      <div class="agent"><span class="who">Risk Auditor</span><span class="verdict no">VETO</span><br>Absolute veto, no appeal. Correlation risk, position sizing, session context. 115+ sessions, and nothing has got past the floor.</div>
-    </div>
-    <div class="term reveal">
-      <div class="term-bar"><span>trading-bot : session record</span><span>Sample output</span></div>
-      <div class="term-body">
-<span class="t-dim">10:35:01</span> <span class="t-ok">SCAN</span>  Kill-switch OK, equity above floor<br>
-<span class="t-dim">10:35:02</span> <span class="t-ok">SCAN</span>  FTSE 100: +0.12%, session active<br>
-<span class="t-dim">10:35:04</span> <span class="t-ok">PASS</span>  AZN: EMA OK, VWAP OK, RSI 42<br>
-<span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  SHEL: RSI 78, overbought<br>
-<span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  ULVR: below EMA-50<br>
-<span class="t-dim">10:35:05</span> <span class="t-warn">RATE</span>  AZN quality gate: 3/5, no catalyst<br>
-<span class="t-dim">10:35:06</span> <span class="t-no">VETO</span>  Risk audit: marginal setup, capital preserved<br>
-<span class="t-dim">10:35:07</span> <span class="t-dim">DONE</span>  Session 115 closed flat. Trades placed: 0
+    <section data-note="3">
+      <div class="section-head reveal"><span>Note 3: The floor</span><span class="right">Four agents, one veto</span></div>
+      <p class="prose reveal">First thing each session: kill-switch and market regime check. If either fails, nothing else runs. News gets scanned and classified by tier before the technical check: EMA-50, VWAP, RSI. Only setups that pass everything reach the quality gate, where Claude Sonnet rates them against a strict JSON schema. The last word belongs to Claude Opus as risk auditor. <b>If it vetoes, the trade dies.</b> The rails live in code, not prompts: the agents can assess and recommend, they cannot override the config.</p>
+      <div class="agents reveal">
+        <div class="agent"><span class="who">Orchestrator</span><span class="verdict ok">GATE</span><br>Kill-switch and regime check. If the equity floor is breached or the FTSE is off more than 0.5%, the session never starts.</div>
+        <div class="agent"><span class="who">Context Lead</span><span class="verdict hmm">SCAN</span><br>Same-day RNS announcements, classified Tier A (earnings, M&amp;A), Tier B (upgrades, buybacks) or Tier C (skip). No catalyst, no conviction.</div>
+        <div class="agent"><span class="who">Analyst</span><span class="verdict hmm">RATE</span><br>Technical quality gate. EMA-50, VWAP, RSI-14, then a structured 1 to 5 rating. Marginal setups score exactly what they deserve.</div>
+        <div class="agent"><span class="who">Risk Auditor</span><span class="verdict no">VETO</span><br>Absolute veto, no appeal. Correlation risk, position sizing, session context. 115+ sessions, and nothing has got past the floor.</div>
       </div>
+      <div class="term reveal">
+        <div class="term-bar"><span>trading-bot : session record</span><span>Sample output</span></div>
+        <div class="term-body">
+  <span class="t-dim">10:35:01</span> <span class="t-ok">SCAN</span>  Kill-switch OK, equity above floor<br>
+  <span class="t-dim">10:35:02</span> <span class="t-ok">SCAN</span>  FTSE 100: +0.12%, session active<br>
+  <span class="t-dim">10:35:04</span> <span class="t-ok">PASS</span>  AZN: EMA OK, VWAP OK, RSI 42<br>
+  <span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  SHEL: RSI 78, overbought<br>
+  <span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  ULVR: below EMA-50<br>
+  <span class="t-dim">10:35:05</span> <span class="t-warn">RATE</span>  AZN quality gate: 3/5, no catalyst<br>
+  <span class="t-dim">10:35:06</span> <span class="t-no">VETO</span>  Risk audit: marginal setup, capital preserved<br>
+  <span class="t-dim">10:35:07</span> <span class="t-dim">DONE</span>  Session 115 closed flat. Trades placed: 0
+        </div>
+      </div>
+    </section>
+
+    <section data-note="4">
+      <div class="section-head reveal"><span>Note 4: Hard rails</span><span class="right">Config, not prompts</span></div>
+      <table class="ledger reveal">
+        <thead><tr><th>Rail</th><th>Rule</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Max notional</td><td>Per trade, absolute</td><td class="mono">GBP 750</td></tr>
+          <tr><td>Stop loss / take profit</td><td>1:2 risk-reward, fixed</td><td class="mono">3% / 6%</td></tr>
+          <tr><td>Positions</td><td>One at a time, no pyramiding</td><td class="mono">MAX 1</td></tr>
+          <tr><td>Kill switch</td><td>Equity floor: liquidate and stop until manual reset</td><td class="mono">GBP 750</td></tr>
+          <tr><td>Leverage</td><td>None</td><td class="mono">0</td></tr>
+          <tr><td>Overnight exposure</td><td>Everything liquidated at 16:00</td><td class="mono">0</td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="2">Every parameter lives in config.py</td><td>The agents cannot touch it</td></tr></tfoot>
+      </table>
+    </section>
+
+    <section data-note="5">
+      <div class="section-head reveal"><span>Note 5: Engineering</span><span class="right">The parts that mattered</span></div>
+      <ul class="notes">
+        <li class="reveal"><span class="n-ref">E.1</span><span><b>Structured outputs, no fallback holes</b>The quality gate used to run on a model whose JSON sometimes failed to parse, and the fallback defaulted the score to 3: a safety hole that could let marginal trades through. Switched to Claude Sonnet with a guaranteed schema. No parse failures, no fallback needed. Prompt caching across parallel scans cut token spend by about 90%.</span></li>
+        <li class="reveal"><span class="n-ref">E.2</span><span><b>News before numbers</b>Each ticker's RNS gets checked before the technical scan. One API call finds same-day announcements and classifies them by tier. This replaced a screen scraper that kept breaking; the scraper survives only as the fallback.</span></li>
+        <li class="reveal"><span class="n-ref">E.3</span><span><b>Walk-forward backtesting</b>60-day default, up to two years. Evaluates at 10:35 on each historical day with no lookahead bias and a 0.2% round-trip spread cost deducted.</span></li>
+        <li class="reveal"><span class="n-ref">E.4</span><span><b>Atomic state, full audit trail</b>A file-locked state manager prevents race conditions between the order manager and the kill switch. Every decision writes to a JSONL audit trail: timestamp, session, stage, ticker, outcome. The whole system is one long paper trail, which is how I like my systems.</span></li>
+      </ul>
+      <p class="pull reveal">A trading bot whose proudest metric is the trades it <span>refused to place.</span></p>
+    </section>
+
+    <section class="wrong" data-note="6">
+      <div class="section-head reveal"><span>Note 6: What went wrong</span><span class="right">The backtests said no</span></div>
+      <p class="prose reveal">I built this bot to trade. Then I ran the walk-forward backtests, no lookahead, spread costs deducted, and they didn't make the case for going live. So it hasn't gone live. That's not the project failing. It's the same rule that vetoes an impulsive trade, applied to an impulsive launch.</p>
+      <p class="pull reveal">The bot agrees with <span>its own data.</span></p>
+    </section>
+
+    <section data-note="7">
+      <div class="section-head reveal"><span>Note 7: Exhibit</span><span class="right">Exhibit B</span></div>
+      <div class="exhibit-fig reveal">
+        <figure>
+          <picture>
+            <source srcset="../images/trading-bot-backtest.webp" type="image/webp">
+            <img src="../images/trading-bot-backtest.png" alt="Walk-forward backtest report for the FTSE 100 multi-agent strategy" loading="lazy" decoding="async">
+          </picture>
+          <figcaption><span>Walk-forward backtest report</span><span>Dummy data, paper trading by design</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section data-note="8">
+      <div class="section-head reveal"><span>Note 8: Stack</span><span class="right">Carrying values</span></div>
+      <div class="stack reveal">
+        <div><span class="s-name">Python 3.12</span><span class="s-role">7,000+ lines across 33 files</span></div>
+        <div><span class="s-name">Claude Opus</span><span class="s-role">Risk auditor, the final veto</span></div>
+        <div><span class="s-name">Claude Sonnet</span><span class="s-role">Quality gate, structured outputs</span></div>
+        <div><span class="s-name">IG REST API</span><span class="s-role">Demo account, spread betting</span></div>
+        <div><span class="s-name">Lightstreamer</span><span class="s-role">Real-time 5-minute candles</span></div>
+        <div><span class="s-name">pandas-ta</span><span class="s-role">EMA, VWAP, RSI indicators</span></div>
+        <div><span class="s-name">APScheduler</span><span class="s-role">Weekday-only job scheduling</span></div>
+        <div><span class="s-name">yfinance + Parquet</span><span class="s-role">Cached history for backtests</span></div>
+        <div><span class="s-name">Tenacity + filelock</span><span class="s-role">Retries and atomic state</span></div>
+        <div><span class="s-name">Oracle Cloud</span><span class="s-role">Ubuntu VM, systemd, auto-deploy</span></div>
+      </div>
+    </section>
     </div>
-  </section>
-
-  <section>
-    <div class="section-head reveal"><span>Note 4: Hard rails</span><span class="right">Config, not prompts</span></div>
-    <table class="ledger reveal">
-      <thead><tr><th>Rail</th><th>Rule</th><th>Value</th></tr></thead>
-      <tbody>
-        <tr><td>Max notional</td><td>Per trade, absolute</td><td class="mono">GBP 750</td></tr>
-        <tr><td>Stop loss / take profit</td><td>1:2 risk-reward, fixed</td><td class="mono">3% / 6%</td></tr>
-        <tr><td>Positions</td><td>One at a time, no pyramiding</td><td class="mono">MAX 1</td></tr>
-        <tr><td>Kill switch</td><td>Equity floor: liquidate and stop until manual reset</td><td class="mono">GBP 750</td></tr>
-        <tr><td>Leverage</td><td>None</td><td class="mono">0</td></tr>
-        <tr><td>Overnight exposure</td><td>Everything liquidated at 16:00</td><td class="mono">0</td></tr>
-      </tbody>
-      <tfoot><tr><td colspan="2">Every parameter lives in config.py</td><td>The agents cannot touch it</td></tr></tfoot>
-    </table>
-  </section>
-
-  <section>
-    <div class="section-head reveal"><span>Note 5: Engineering</span><span class="right">The parts that mattered</span></div>
-    <ul class="notes">
-      <li class="reveal"><span class="n-ref">E.1</span><span><b>Structured outputs, no fallback holes</b>The quality gate used to run on a model whose JSON sometimes failed to parse, and the fallback defaulted the score to 3: a safety hole that could let marginal trades through. Switched to Claude Sonnet with a guaranteed schema. No parse failures, no fallback needed. Prompt caching across parallel scans cut token spend by about 90%.</span></li>
-      <li class="reveal"><span class="n-ref">E.2</span><span><b>News before numbers</b>Each ticker's RNS gets checked before the technical scan. One API call finds same-day announcements and classifies them by tier. This replaced a screen scraper that kept breaking; the scraper survives only as the fallback.</span></li>
-      <li class="reveal"><span class="n-ref">E.3</span><span><b>Walk-forward backtesting</b>60-day default, up to two years. Evaluates at 10:35 on each historical day with no lookahead bias and a 0.2% round-trip spread cost deducted.</span></li>
-      <li class="reveal"><span class="n-ref">E.4</span><span><b>Atomic state, full audit trail</b>A file-locked state manager prevents race conditions between the order manager and the kill switch. Every decision writes to a JSONL audit trail: timestamp, session, stage, ticker, outcome. The whole system is one long paper trail, which is how I like my systems.</span></li>
-    </ul>
-    <p class="pull reveal">A trading bot whose proudest metric is the trades it <span>refused to place.</span></p>
-  </section>
-
-  <section class="wrong">
-    <div class="section-head reveal"><span>Note 6: What went wrong</span><span class="right">The backtests said no</span></div>
-    <p class="prose reveal">I built this bot to trade. Then I ran the walk-forward backtests, no lookahead, spread costs deducted, and they didn't make the case for going live. So it hasn't gone live. That's not the project failing. It's the same rule that vetoes an impulsive trade, applied to an impulsive launch.</p>
-    <p class="pull reveal">The bot agrees with <span>its own data.</span></p>
-  </section>
-
-  <section>
-    <div class="section-head reveal"><span>Note 7: Exhibit</span><span class="right">Exhibit B</span></div>
-    <div class="exhibit-fig reveal">
-      <figure>
-        <picture>
-          <source srcset="../images/trading-bot-backtest.webp" type="image/webp">
-          <img src="../images/trading-bot-backtest.png" alt="Walk-forward backtest report for the FTSE 100 multi-agent strategy" loading="lazy" decoding="async">
-        </picture>
-        <figcaption><span>Walk-forward backtest report</span><span>Dummy data, paper trading by design</span></figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-head reveal"><span>Note 8: Stack</span><span class="right">Carrying values</span></div>
-    <div class="stack reveal">
-      <div><span class="s-name">Python 3.12</span><span class="s-role">7,000+ lines across 33 files</span></div>
-      <div><span class="s-name">Claude Opus</span><span class="s-role">Risk auditor, the final veto</span></div>
-      <div><span class="s-name">Claude Sonnet</span><span class="s-role">Quality gate, structured outputs</span></div>
-      <div><span class="s-name">IG REST API</span><span class="s-role">Demo account, spread betting</span></div>
-      <div><span class="s-name">Lightstreamer</span><span class="s-role">Real-time 5-minute candles</span></div>
-      <div><span class="s-name">pandas-ta</span><span class="s-role">EMA, VWAP, RSI indicators</span></div>
-      <div><span class="s-name">APScheduler</span><span class="s-role">Weekday-only job scheduling</span></div>
-      <div><span class="s-name">yfinance + Parquet</span><span class="s-role">Cached history for backtests</span></div>
-      <div><span class="s-name">Tenacity + filelock</span><span class="s-role">Retries and atomic state</span></div>
-      <div><span class="s-name">Oracle Cloud</span><span class="s-role">Ubuntu VM, systemd, auto-deploy</span></div>
-    </div>
-  </section>
+    <aside class="rail" aria-label="Margin notes">
+      <div class="rail-inner">
+        <div class="rail-head"><span>Ref</span><span>Entry 02 / Margin</span></div>
+        <ol class="rail-ref">
+          <li data-n="1" class="on"><i></i><b>N.1</b><span>The problem</span></li>
+          <li data-n="2" class=""><i></i><b>N.2</b><span>The trading day</span></li>
+          <li data-n="3" class=""><i></i><b>N.3</b><span>The floor</span></li>
+          <li data-n="4" class=""><i></i><b>N.4</b><span>Hard rails</span></li>
+          <li data-n="5" class=""><i></i><b>N.5</b><span>Engineering</span></li>
+          <li data-n="6" class="debit"><i></i><b>N.6</b><span>What went wrong</span></li>
+          <li data-n="7" class=""><i></i><b>N.7</b><span>Exhibit</span></li>
+          <li data-n="8" class=""><i></i><b>N.8</b><span>Stack</span></li>
+        </ol>
+        <div class="rail-panels">
+          <div class="rp on" data-n="1"><span class="rp-num">0</span><span class="rp-lab">impulsive trades let through</span></div>
+          <div class="rp" data-n="2"><span class="rp-num">10:35</span><span class="rp-lab">the one decision window in the trading day</span></div>
+          <div class="rp" data-n="3"><span class="rp-num">4</span><span class="rp-lab">agents. One absolute veto, no appeal</span></div>
+          <div class="rp" data-n="4"><span class="rp-num">GBP 750</span><span class="rp-lab">hard notional cap, in code, not in a prompt</span></div>
+          <div class="rp" data-n="5"><span class="rp-num">7,000+</span><span class="rp-lab">lines of Python</span></div>
+          <div class="rp debit" data-n="6"><span class="rp-num">0</span><span class="rp-lab">days live. The backtests said no</span></div>
+          <div class="rp" data-n="7"><span class="rp-num">115+</span><span class="rp-lab">sessions run, paper by design</span></div>
+          <div class="rp" data-n="8"><span class="rp-num">0</span><span class="rp-lab">trades placed</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
 
   <section>
     <div class="section-head reveal"><span>Other entries</span><span class="right">Same ledger</span></div>
@@ -449,6 +516,12 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
           <td><span class="o-name">WhatsApp Smart</span></td>
           <td class="o-desc">A Chrome extension that gives WhatsApp scheduling, AI replies and summaries.</td>
           <td class="o-status">Prototype</td>
+        </tr>
+        <tr data-href="scs-cockpit.html">
+          <td class="o-ref">05</td>
+          <td><span class="o-name">SCS Cockpit</span></td>
+          <td class="o-desc">The study engine I built for my own CIMA Strategic Case Study. I passed.</td>
+          <td class="o-status">Retired, job done</td>
         </tr>
       </tbody>
     </table>
@@ -494,6 +567,25 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
     reveals.forEach(function (el) { io.observe(el); });
+  }
+
+  /* Margin rail: index ticks and the marginal panel swaps as each note enters (brief 3.1) */
+  var notes = document.querySelectorAll('[data-note]');
+  var refs = document.querySelectorAll('.rail-ref li');
+  var panels = document.querySelectorAll('.rp');
+  function setNote(n) {
+    refs.forEach(function (li) {
+      var k = +li.dataset.n;
+      li.classList.toggle('on', k === n);
+      li.classList.toggle('ticked', k < n);
+    });
+    panels.forEach(function (p) { p.classList.toggle('on', +p.dataset.n === n); });
+  }
+  if (notes.length && 'IntersectionObserver' in window) {
+    var railIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) setNote(+en.target.dataset.note); });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    notes.forEach(function (s) { railIo.observe(s); });
   }
 
   /* Row navigation */
