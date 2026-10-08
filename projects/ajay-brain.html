@@ -348,6 +348,55 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .rp.debit .rp-num { color: var(--debit); }
 .rp-lab { display: block; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; line-height: 1.6; text-transform: uppercase; color: var(--paper-dim); max-width: 18rem; }
 
+/* ================= v4 signature moment kit (brief 3.2) ================= */
+.mo-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 1rem; }
+.mo-btn {
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.6rem 1rem; border-radius: 3px; border: 1px solid var(--credit); background: transparent;
+  color: var(--credit); cursor: pointer; transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.mo-btn:hover:not(:disabled) { background: var(--credit); color: var(--ink); }
+.mo-btn:disabled { opacity: 0.45; cursor: default; }
+.mo-btn.ghost { border-color: var(--rule); color: var(--paper-dim); }
+.mo-btn.ghost:hover:not(:disabled) { background: transparent; border-color: var(--paper-dim); color: var(--paper); }
+.mo-replay, .mo-hide { display: none; }
+.mo-replay.show { display: inline-block; }
+.mo-hint { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-faint); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* OpsPilot moment: the card is live */
+.adcard { position: relative; }
+.ac-btns button {
+  padding: 0.45rem 0.9rem; border-radius: 3px; border: 1px solid var(--rule); background: transparent; cursor: pointer;
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-dim);
+  transition: border-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+}
+.ac-btns button:hover:not(:disabled) { border-color: var(--paper-dim); color: var(--paper); }
+.ac-btns button.go { background: var(--credit); border-color: var(--credit); color: var(--ink); font-weight: 700; }
+.ac-btns button:disabled { opacity: 0.35; cursor: default; }
+.adcard.editing .ac-a { outline: 1px dashed rgba(47, 191, 113, 0.6); outline-offset: 5px; border-radius: 2px; color: var(--paper); }
+.adcard.filed > div { opacity: 0.4; transition: opacity 0.4s ease; }
+.ac-stamp {
+  position: absolute; right: 1.4rem; top: 38%; pointer-events: none;
+  font-family: var(--mono); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.35rem 1rem; border: 3px solid currentColor; border-radius: 4px; background: rgba(19, 18, 16, 0.75);
+  opacity: 0; transform: rotate(-8deg) scale(1.35);
+}
+.ac-stamp.sent { color: var(--credit); }
+.ac-stamp.declined { color: var(--debit); }
+.ac-stamp.on { animation: acStamp 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+@keyframes acStamp { to { opacity: 1; transform: rotate(-8deg) scale(1); } }
+.ac-log { max-width: 34rem; min-height: 1rem; }
+.ac-row {
+  display: grid; grid-template-columns: 2.4rem 3.2rem 1fr auto; gap: 0.6rem; align-items: baseline; margin-top: 1rem;
+  padding: 0.7rem 0 0.6rem; border-top: 1px solid var(--rule); border-bottom: 3px double var(--paper-faint);
+  font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.06em; line-height: 1.5; color: var(--paper-dim);
+  opacity: 0; transform: translateY(-6px); transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.ac-row.in { opacity: 1; transform: none; }
+.ac-row b { font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.ac-row.sent b { color: var(--credit); }
+.ac-row.declined b { color: var(--debit); }
+
 /* ================= Footer ================= */
 footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 2.5rem; }
@@ -375,7 +424,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   html { scroll-behavior: auto; }
 }
 </style>
-<noscript><style>.reveal { opacity: 1; transform: none; } .pipe li { opacity: 1; transform: none; } .pipe::before { transform: scaleY(1); }</style></noscript>
+<noscript><style>.reveal { opacity: 1; transform: none; } .adcard > div { opacity: 1; transform: none; } .pipe li { opacity: 1; transform: none; } .pipe::before { transform: scaleY(1); }</style></noscript>
 </head>
 <body>
 
@@ -458,13 +507,16 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
         </tbody>
         <tfoot><tr><td colspan="2">The search pipeline is frozen at 100%</td><td>No changes until it misses</td></tr></tfoot>
       </table>
-      <div class="adcard reveal" role="img" aria-label="Illustration of the Adaptive Card answer format in Teams">
+      <div class="adcard reveal" id="adcard" role="group" aria-label="Working replica of an OpsPilot draft card: approve, edit or reject it">
         <div class="ac-head"><span>OpsPilot / draft for approval</span><span>Adaptive Card</span></div>
         <div class="ac-q">"Where's the signed Acme master agreement? Client call in 20 minutes."</div>
-        <div class="ac-a">Found it: <b>Acme_MSA_signed.pdf</b> in Contracts/2024, countersigned 12 Mar. Drafted the reply with the file link and the two clauses they'll ask about.</div>
+        <div class="ac-a" id="ac-a">Found it: <b>Acme_MSA_signed.pdf</b> in Contracts/2024, countersigned 12 Mar. Drafted the reply with the file link and the two clauses they'll ask about.</div>
         <div class="ac-file">PDF / CONTRACTS/2024 / 1.2 MB</div>
-        <div class="ac-btns" aria-hidden="true"><span class="go">Approve &amp; send</span><span>Edit</span><span>Reject</span></div>
+        <div class="ac-btns"><button type="button" class="go" id="ac-approve">Approve &amp; send</button><button type="button" id="ac-edit">Edit</button><button type="button" id="ac-reject">Reject</button></div>
+        <span class="ac-stamp" id="ac-stamp" aria-hidden="true"></span>
       </div>
+      <div class="ac-log" id="ac-log" role="status"></div>
+      <div class="mo-bar"><span class="mo-hint">It's live. Approve it, edit it, or reject it.</span><button class="mo-btn ghost mo-replay" id="ac-replay" type="button">Replay</button></div>
     </section>
 
     <section data-note="3">
@@ -632,6 +684,84 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
     }, { rootMargin: '-35% 0px -60% 0px' });
     notes.forEach(function (s) { railIo.observe(s); });
   }
+
+  /* ---------- Signature moment kit: sound only on a click, fire-once events ---------- */
+  var muted = false;
+  try { muted = localStorage.getItem('ledger-snd') === 'off'; } catch (e) { /* private mode */ }
+  var actx = null;
+  function blip(freq, dur, type, vol) {
+    if (muted) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.type = type || 'sine'; o.frequency.value = freq;
+      g.gain.setValueAtTime(vol || 0.07, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + dur);
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime + dur);
+    } catch (e) { /* audio optional */ }
+  }
+  var tracked = {};
+  function track(name) {
+    if (tracked[name]) return;
+    tracked[name] = true;
+    if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, event: true });
+  }
+
+  /* ---------- Signature moment: the draft card, live (approve / edit / reject) ---------- */
+  (function () {
+    var card = document.getElementById('adcard');
+    if (!card) return;
+    var ans = document.getElementById('ac-a'), stamp = document.getElementById('ac-stamp'), log = document.getElementById('ac-log');
+    var bA = document.getElementById('ac-approve'), bE = document.getElementById('ac-edit'), bR = document.getElementById('ac-reject');
+    var rp = document.getElementById('ac-replay');
+    var ORIG = ans.innerHTML, edited = false;
+    function lock(on) { [bA, bE, bR].forEach(function (b) { b.disabled = on; }); }
+    function endEdit() {
+      if (ans.isContentEditable) { ans.contentEditable = 'false'; bE.textContent = 'Edit'; card.classList.remove('editing'); }
+    }
+    function file(kind, label, what) {
+      stamp.textContent = label;
+      stamp.className = 'ac-stamp ' + kind + (reduced ? '' : ' on');
+      if (reduced) { stamp.style.opacity = '1'; stamp.style.transform = 'rotate(-8deg)'; }
+      card.classList.add('filed');
+      var row = document.createElement('div');
+      row.className = 'ac-row ' + kind;
+      row.innerHTML = '<span>S.1</span><span>09:15</span><span>' + what + '</span><b>' + label + '</b>';
+      log.innerHTML = '';
+      log.appendChild(row);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { row.classList.add('in'); }); });
+      rp.classList.add('show');
+    }
+    bA.addEventListener('click', function () {
+      endEdit(); lock(true);
+      file('sent', 'Sent', 'Reply to colleague: Acme MSA' + (edited ? ', edited by me' : '') + ', file attached');
+      blip(760, 0.2); setTimeout(function () { blip(1140, 0.28, 'sine', 0.05); }, 90);
+      track('sim-opspilot-approved');
+    });
+    bR.addEventListener('click', function () {
+      endEdit(); lock(true);
+      file('declined', 'Declined', 'Draft discarded. Nothing left the building');
+      blip(220, 0.25, 'triangle', 0.08);
+      track('sim-opspilot-declined');
+    });
+    bE.addEventListener('click', function () {
+      if (ans.isContentEditable) { endEdit(); bA.focus(); return; }
+      ans.contentEditable = 'true'; edited = true;
+      card.classList.add('editing'); bE.textContent = 'Done editing';
+      ans.focus();
+      var r = document.createRange(); r.selectNodeContents(ans); r.collapse(false);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      track('sim-opspilot-edited');
+    });
+    rp.addEventListener('click', function () {
+      ans.innerHTML = ORIG; edited = false;
+      stamp.className = 'ac-stamp'; stamp.textContent = ''; stamp.removeAttribute('style');
+      card.classList.remove('filed'); log.innerHTML = '';
+      lock(false); rp.classList.remove('show'); bA.focus();
+      track('sim-opspilot-replayed');
+    });
+  })();
 
   /* Row navigation */
   document.querySelectorAll('tr[data-href]').forEach(function (row) {

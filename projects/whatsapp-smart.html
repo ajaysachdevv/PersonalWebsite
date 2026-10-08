@@ -270,6 +270,50 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .rp.debit .rp-num { color: var(--debit); }
 .rp-lab { display: block; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; line-height: 1.6; text-transform: uppercase; color: var(--paper-dim); max-width: 18rem; }
 
+/* ================= v4 signature moment kit (brief 3.2) ================= */
+.mo-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 1rem; }
+.mo-btn {
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.6rem 1rem; border-radius: 3px; border: 1px solid var(--credit); background: transparent;
+  color: var(--credit); cursor: pointer; transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.mo-btn:hover:not(:disabled) { background: var(--credit); color: var(--ink); }
+.mo-btn:disabled { opacity: 0.45; cursor: default; }
+.mo-btn.ghost { border-color: var(--rule); color: var(--paper-dim); }
+.mo-btn.ghost:hover:not(:disabled) { background: transparent; border-color: var(--paper-dim); color: var(--paper); }
+.mo-replay, .mo-hide { display: none; }
+.mo-replay.show { display: inline-block; }
+.mo-hint { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-faint); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* WhatsApp moment: a real five-second undo window. Amber, because it's a prototype */
+.undo { margin-top: 2.4rem; max-width: 34rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--ink-2); padding: 1.1rem 1.2rem 1.2rem; }
+.un-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--paper-faint); }
+.un-stamp { color: var(--amber); border: 1px solid var(--amber); border-radius: 3px; padding: 0.2rem 0.5rem; transform: rotate(-2deg); }
+.un-chat { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; min-height: 5.2rem; }
+.un-msg { max-width: 80%; padding: 0.55rem 0.8rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.45; }
+.un-msg.them { align-self: flex-start; background: rgba(236, 231, 220, 0.07); color: var(--paper); }
+.un-msg.me { align-self: flex-end; background: rgba(232, 179, 75, 0.14); color: var(--paper); animation: tlIn 0.3s ease-out; }
+.un-msg.me small { display: block; margin-top: 0.25rem; font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); text-align: right; }
+@keyframes tlIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.un-bar {
+  position: relative; overflow: hidden; display: grid; grid-template-columns: auto 1fr auto auto; gap: 0.7rem; align-items: center;
+  margin-top: 0.8rem; padding: 0.6rem 0.75rem 0.75rem; border: 1px solid rgba(232, 179, 75, 0.45); border-radius: 6px; background: rgba(232, 179, 75, 0.06);
+}
+.un-bar[hidden] { display: none; }
+.un-count { font-family: var(--mono); font-size: 0.95rem; color: var(--amber); font-variant-numeric: tabular-nums; }
+.un-prev { font-size: 0.78rem; color: var(--paper-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.un-bar button { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.45rem 0.75rem; border-radius: 3px; cursor: pointer; }
+.un-now { background: transparent; border: 1px solid var(--rule); color: var(--paper-dim); }
+.un-undo { background: var(--amber); border: 1px solid var(--amber); color: var(--ink); font-weight: 700; }
+.un-prog { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--amber); transform-origin: left; }
+.un-compose { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+.un-compose input { flex: 1; min-width: 0; padding: 0.6rem 0.75rem; border-radius: 6px; border: 1px solid var(--rule); background: transparent; color: var(--paper); font: inherit; font-size: 0.85rem; }
+.un-compose input:focus { outline: none; border-color: var(--amber); }
+.undo .mo-btn { border-color: var(--amber); color: var(--amber); }
+.undo .mo-btn:hover:not(:disabled) { background: var(--amber); color: var(--ink); }
+.undo .mo-btn.ghost { border-color: var(--rule); color: var(--paper-dim); }
+@media (max-width: 480px) { .un-bar { grid-template-columns: auto 1fr; } .un-prev { display: none; } }
+
 /* ================= Footer ================= */
 footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 2.5rem; }
@@ -396,6 +440,19 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
         <li class="reveal"><span class="n-ref">F.6</span><span><b>Follow-up reminders</b>Flag messages to bounce back later; keyword alerts for terms like "urgent" or "deadline".</span></li>
         <li class="reveal"><span class="n-ref">F.7</span><span><b>Privacy first</b>All data in local Chrome storage. No sign-up. Messages stay in the browser; only text you send to the AI leaves it, and those prompts are not stored.</span></li>
       </ul>
+      <div class="undo reveal" id="undo">
+        <div class="un-head"><span>F.5 / Undo send, working replica</span><span class="un-stamp">Prototype</span></div>
+        <div class="un-chat" id="un-chat"><div class="un-msg them">Are we still on for tonight?</div></div>
+        <div class="un-bar" id="un-bar">
+          <span class="un-count"><b id="un-n">5</b>s</span>
+          <span class="un-prev" id="un-prev">Yes, see you there. I'll bring the contracts.</span>
+          <button type="button" class="un-now" id="un-now">Send now</button>
+          <button type="button" class="un-undo" id="un-undo">Undo</button>
+          <i class="un-prog" id="un-prog"></i>
+        </div>
+        <div class="un-compose"><input id="un-input" type="text" value="Yes, see you there. I'll bring the contracts." aria-label="Message to send"><button class="mo-btn" id="un-send" type="button">Send</button></div>
+        <div class="mo-bar"><span class="mo-hint" id="un-note" role="status">Press send, then try to take it back.</span><button class="mo-btn ghost mo-replay" id="un-reset" type="button">Reset</button></div>
+      </div>
     </section>
 
     <section data-note="5">
@@ -540,6 +597,80 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
     }, { rootMargin: '-35% 0px -60% 0px' });
     notes.forEach(function (s) { railIo.observe(s); });
   }
+
+  /* ---------- Signature moment kit: sound only on a click, fire-once events ---------- */
+  var muted = false;
+  try { muted = localStorage.getItem('ledger-snd') === 'off'; } catch (e) { /* private mode */ }
+  var actx = null;
+  function blip(freq, dur, type, vol) {
+    if (muted) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.type = type || 'sine'; o.frequency.value = freq;
+      g.gain.setValueAtTime(vol || 0.07, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + dur);
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime + dur);
+    } catch (e) { /* audio optional */ }
+  }
+  var tracked = {};
+  function track(name) {
+    if (tracked[name]) return;
+    tracked[name] = true;
+    if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, event: true });
+  }
+
+  /* ---------- Signature moment: send, then try to take it back (five seconds) ---------- */
+  (function () {
+    var box = document.getElementById('undo');
+    if (!box) return;
+    var chat = document.getElementById('un-chat'), bar = document.getElementById('un-bar'), n = document.getElementById('un-n');
+    var prev = document.getElementById('un-prev'), prog = document.getElementById('un-prog'), input = document.getElementById('un-input');
+    var send = document.getElementById('un-send'), now = document.getElementById('un-now'), undo = document.getElementById('un-undo');
+    var note = document.getElementById('un-note'), reset = document.getElementById('un-reset');
+    var DRAFT = input.value, NOTE0 = note.textContent, timer = null, left = 0, pending = '';
+    bar.hidden = true;
+    function stop() { clearInterval(timer); timer = null; prog.style.transition = 'none'; prog.style.transform = 'scaleX(1)'; }
+    function deliver() {
+      stop(); bar.hidden = true;
+      var m = document.createElement('div'); m.className = 'un-msg me';
+      m.textContent = pending;
+      var s = document.createElement('small'); s.textContent = 'Sent'; m.appendChild(s);
+      chat.appendChild(m);
+      note.textContent = "Sent. WhatsApp has it now. That's the five seconds you get.";
+      blip(660, 0.12); setTimeout(function () { blip(990, 0.16, 'sine', 0.05); }, 80);
+      send.disabled = true; reset.classList.add('show'); track('sim-whatsapp-sent');
+    }
+    send.addEventListener('click', function () {
+      if (timer || !input.value.trim()) return;
+      pending = input.value.trim(); input.value = ''; prev.textContent = pending;
+      left = 5; n.textContent = left; bar.hidden = false; send.disabled = true;
+      note.textContent = 'Held in your browser. It has not gone anywhere yet.';
+      prog.style.transition = 'none'; prog.style.transform = 'scaleX(1)';
+      if (!reduced) { void prog.offsetWidth; prog.style.transition = 'transform 5s linear'; prog.style.transform = 'scaleX(0)'; }
+      blip(440, 0.06, 'sine', 0.04);
+      timer = setInterval(function () {
+        left -= 1; n.textContent = left;
+        if (reduced) prog.style.transform = 'scaleX(' + (left / 5) + ')';
+        if (left <= 0) deliver();
+      }, 1000);
+      undo.focus(); track('sim-whatsapp-played');
+    });
+    now.addEventListener('click', function () { if (timer) deliver(); });
+    undo.addEventListener('click', function () {
+      if (!timer) return;
+      stop(); bar.hidden = true; input.value = pending; send.disabled = false;
+      note.textContent = 'Pulled back. Nothing reached WhatsApp.';
+      blip(300, 0.14, 'triangle', 0.07); reset.classList.add('show'); input.focus();
+      track('sim-whatsapp-undone');
+    });
+    reset.addEventListener('click', function () {
+      stop(); bar.hidden = true; input.value = DRAFT; send.disabled = false; note.textContent = NOTE0;
+      chat.querySelectorAll('.un-msg.me').forEach(function (m) { m.remove(); });
+      reset.classList.remove('show'); send.focus();
+    });
+  })();
 
   /* Row navigation */
   document.querySelectorAll('tr[data-href]').forEach(function (row) {

@@ -367,6 +367,40 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .rp.debit .rp-num { color: var(--debit); }
 .rp-lab { display: block; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; line-height: 1.6; text-transform: uppercase; color: var(--paper-dim); max-width: 18rem; }
 
+/* ================= v4 signature moment kit (brief 3.2) ================= */
+.mo-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 1rem; }
+.mo-btn {
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.6rem 1rem; border-radius: 3px; border: 1px solid var(--credit); background: transparent;
+  color: var(--credit); cursor: pointer; transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.mo-btn:hover:not(:disabled) { background: var(--credit); color: var(--ink); }
+.mo-btn:disabled { opacity: 0.45; cursor: default; }
+.mo-btn.ghost { border-color: var(--rule); color: var(--paper-dim); }
+.mo-btn.ghost:hover:not(:disabled) { background: transparent; border-color: var(--paper-dim); color: var(--paper); }
+.mo-replay, .mo-hide { display: none; }
+.mo-replay.show { display: inline-block; }
+.mo-hint { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-faint); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* SCS moment: a timed drill, then the five bars draw themselves */
+.dr-run { display: none; margin-top: 1.1rem; }
+.js .dr-run { display: block; }
+.dr-clock { font-family: var(--mono); font-size: 1.7rem; line-height: 1; font-variant-numeric: tabular-nums; color: var(--credit); transition: color 0.4s ease; }
+.dr-clock small { font-size: 0.5em; margin-left: 0.15em; color: var(--paper-faint); }
+.dr-clock.mid { color: var(--amber); }
+.dr-clock.low { color: var(--debit); }
+#dr-ans { display: block; width: 100%; margin-top: 0.7rem; padding: 0.7rem 0.8rem; border: 1px solid var(--rule); border-radius: 4px; background: transparent; color: var(--paper); font: inherit; font-size: 0.85rem; line-height: 1.55; resize: vertical; }
+#dr-ans:focus { outline: none; border-color: var(--credit); }
+#dr-ans:disabled { opacity: 0.55; }
+.dr-bars i::after { transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
+.dr-bars b { transition: opacity 0.3s ease; }
+.drill.armed .dr-bars li:not(.drawn) i::after { width: 0; }
+.drill.armed .dr-bars li:not(.drawn) b { opacity: 0; }
+.dr-debrief, .dr-retired { transition: opacity 0.5s ease; }
+.drill.armed .dr-debrief:not(.show), .drill.armed .dr-retired:not(.show) { opacity: 0; }
+.dr-retired { margin-top: 0.9rem; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-dim); }
+.dr-retired i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--paper-faint); margin-right: 0.55rem; }
+
 /* ================= Footer ================= */
 footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 2.5rem; }
@@ -453,6 +487,11 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
           <div class="dr-head"><span>Drill / Judgement</span><span class="dr-stamp">Sample data</span></div>
           <p class="dr-mail"><b>From: Finance Director, Northmoor Composites plc</b>Our largest customer wants 90-day payment terms instead of 30, in return for a three-year volume commitment. The board meets tomorrow. Recommend whether we accept, and what we'd need in place to protect ourselves.</p>
           <p class="dr-verb"><span>Verb: recommend</span>Make a call, give the reason, say what has to be true for it to work.</p>
+          <div class="dr-run" id="dr-run">
+            <div class="dr-clock" id="dr-clock"><span id="dr-t">60</span><small>s</small></div>
+            <textarea id="dr-ans" rows="4" placeholder="Your recommendation. Not stored, not sent, not marked." aria-label="Your answer. It is not stored, sent or marked" disabled></textarea>
+            <div class="mo-bar"><button class="mo-btn" id="dr-start" type="button">Start the 60-second drill</button><button class="mo-btn ghost mo-hide" id="dr-stop" type="button">Finish early</button><button class="mo-btn ghost mo-replay" id="dr-replay" type="button">Run it again</button><span class="visually-hidden" id="dr-sr" role="status"></span></div>
+          </div>
           <ol class="dr-bars" aria-label="Sample marking on the five dimensions">
             <li style="--v: 0.8"><span>Role fit</span><i></i><b>4/5</b></li>
             <li style="--v: 0.6"><span>Application</span><i></i><b>3/5</b></li>
@@ -461,8 +500,9 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
             <li class="low" style="--v: 0.4"><span>Ethics</span><i></i><b>2/5</b></li>
           </ol>
           <p class="dr-debrief">Debrief: clear recommendation, good structure. Ethics bolted on at the end. Thread it through.</p>
+          <p class="dr-retired"><i></i>Retired, job done. The real exam: passed.</p>
         </div>
-        <p class="exhibit-note reveal">A made-up company and a sample marking, built for this page. The real drills used the exam's own case material, which stays with CIMA.</p>
+        <p class="exhibit-note reveal">A made-up company and a sample marking, built for this page. It doesn't read what you type. The real drills used the exam's own case material, which stays with CIMA.</p>
       </section>
 
       <section class="wrong" data-note="4">
@@ -596,6 +636,71 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
     }, { rootMargin: '-35% 0px -60% 0px' });
     notes.forEach(function (s) { railIo.observe(s); });
   }
+
+  /* ---------- Signature moment kit: sound only on a click, fire-once events ---------- */
+  var muted = false;
+  try { muted = localStorage.getItem('ledger-snd') === 'off'; } catch (e) { /* private mode */ }
+  var actx = null;
+  function blip(freq, dur, type, vol) {
+    if (muted) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.type = type || 'sine'; o.frequency.value = freq;
+      g.gain.setValueAtTime(vol || 0.07, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + dur);
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime + dur);
+    } catch (e) { /* audio optional */ }
+  }
+  var tracked = {};
+  function track(name) {
+    if (tracked[name]) return;
+    tracked[name] = true;
+    if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, event: true });
+  }
+
+  /* ---------- Signature moment: sixty seconds, then the marking draws itself ---------- */
+  (function () {
+    var drill = document.getElementById('drill');
+    if (!drill) return;
+    document.documentElement.classList.add('js');
+    var clock = document.getElementById('dr-clock'), tEl = document.getElementById('dr-t'), ans = document.getElementById('dr-ans');
+    var start = document.getElementById('dr-start'), stopB = document.getElementById('dr-stop'), rp = document.getElementById('dr-replay');
+    var sr = document.getElementById('dr-sr'), bars = drill.querySelectorAll('.dr-bars li');
+    var deb = drill.querySelector('.dr-debrief'), ret = drill.querySelector('.dr-retired');
+    var timer = null, left = 60, gen = 0;
+    function paint() { tEl.textContent = left; clock.className = 'dr-clock' + (left <= 10 ? ' low' : left <= 30 ? ' mid' : ''); }
+    function arm() {
+      gen++; clearInterval(timer); timer = null; left = 60; paint();
+      drill.classList.add('armed'); bars.forEach(function (b) { b.classList.remove('drawn'); });
+      deb.classList.remove('show'); ret.classList.remove('show');
+      ans.value = ''; ans.disabled = true;
+      start.classList.remove('mo-hide'); start.disabled = false; stopB.classList.add('mo-hide'); rp.classList.remove('show'); sr.textContent = '';
+    }
+    function mark() {
+      var g = gen; clearInterval(timer); timer = null;
+      ans.disabled = true; stopB.classList.add('mo-hide'); start.classList.add('mo-hide');
+      sr.textContent = 'Time. Sample marking on the five dimensions follows.';
+      track('sim-scs-finished');
+      var step = reduced ? 0 : 320;
+      bars.forEach(function (b, k) {
+        setTimeout(function () { if (g !== gen) return; b.classList.add('drawn'); blip(330 + k * 80, 0.08, 'sine', 0.04); }, 400 + k * step);
+      });
+      setTimeout(function () { if (g === gen) deb.classList.add('show'); }, 400 + bars.length * step + 300);
+      setTimeout(function () { if (g === gen) { ret.classList.add('show'); rp.classList.add('show'); blip(170, 0.09); blip(88, 0.16, 'triangle', 0.1); } }, 400 + bars.length * step + 1100);
+    }
+    start.addEventListener('click', function () {
+      if (timer) return;
+      start.classList.add('mo-hide'); stopB.classList.remove('mo-hide');
+      ans.disabled = false; ans.focus();
+      blip(520, 0.08, 'sine', 0.04); track('sim-scs-started');
+      timer = setInterval(function () { left -= 1; paint(); if (left <= 0) mark(); }, 1000);
+    });
+    stopB.addEventListener('click', mark);
+    rp.addEventListener('click', function () { arm(); start.focus(); track('sim-scs-replayed'); });
+    arm();
+  })();
 
   /* Row navigation */
   document.querySelectorAll('tr[data-href]').forEach(function (row) {

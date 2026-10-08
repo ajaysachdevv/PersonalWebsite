@@ -306,6 +306,47 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .rp.debit .rp-num { color: var(--debit); }
 .rp-lab { display: block; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; line-height: 1.6; text-transform: uppercase; color: var(--paper-dim); max-width: 18rem; }
 
+/* ================= v4 signature moment kit (brief 3.2) ================= */
+.mo-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 1rem; }
+.mo-btn {
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.6rem 1rem; border-radius: 3px; border: 1px solid var(--credit); background: transparent;
+  color: var(--credit); cursor: pointer; transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.mo-btn:hover:not(:disabled) { background: var(--credit); color: var(--ink); }
+.mo-btn:disabled { opacity: 0.45; cursor: default; }
+.mo-btn.ghost { border-color: var(--rule); color: var(--paper-dim); }
+.mo-btn.ghost:hover:not(:disabled) { background: transparent; border-color: var(--paper-dim); color: var(--paper); }
+.mo-replay, .mo-hide { display: none; }
+.mo-replay.show { display: inline-block; }
+.mo-hint { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-faint); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* Trading moment: the session replays, ending in the one violent stamp */
+.term { position: relative; }
+.term-body { position: relative; overflow: hidden; }
+.tb-clock { font-weight: 500; color: var(--paper); font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }
+.tb-ready { display: none; color: var(--paper-faint); }
+.term.armed .tb-ready { display: block; }
+.term.armed .tl, .tl.wait { display: none; }
+.tl { white-space: pre-wrap; }
+.tl.fresh { animation: tlIn 0.28s ease-out; }
+@keyframes tlIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+.tb-total { margin-top: 0.5rem; padding: 0.35rem 0 0.25rem; border-top: 1px solid var(--rule); border-bottom: 3px double var(--paper-faint); color: var(--paper); }
+.tb-total b { color: var(--credit); font-weight: 700; }
+.term.hit { box-shadow: 0 0 0 1px var(--debit), 0 0 44px rgba(217, 100, 89, 0.18); transition: box-shadow 0.5s ease; }
+.tb-ctl { padding: 0 1.3rem 1.2rem; margin-top: 0; }
+.stamp { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.stamp span {
+  font-family: var(--mono); font-weight: 700; font-size: clamp(1.4rem, 3.4vw, 2.3rem); letter-spacing: 0.18em;
+  color: var(--debit); border: 4px solid var(--debit); padding: 0.45rem 1.4rem; border-radius: 5px;
+  background: rgba(19, 18, 16, 0.6); text-shadow: 0 0 30px rgba(217, 100, 89, 0.4);
+  transform: rotate(-12deg) scale(3); opacity: 0;
+}
+.stamp.on span { opacity: 1; transform: rotate(-12deg) scale(1); }
+/* the veto bezier: the one violent moment on this page */
+.stamp.slam span { animation: slam 0.45s cubic-bezier(0.16, 1.2, 0.4, 1) forwards; }
+@keyframes slam { 0% { opacity: 0; transform: rotate(-12deg) scale(3); } 60% { opacity: 1; transform: rotate(-12deg) scale(0.96); } 100% { opacity: 1; transform: rotate(-12deg) scale(1); } }
+
 /* ================= Footer ================= */
 footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 2.5rem; }
@@ -391,18 +432,21 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
         <div class="agent"><span class="who">Analyst</span><span class="verdict hmm">RATE</span><br>Technical quality gate. EMA, VWAP and RSI checks, then a structured 1 to 5 rating. Marginal setups score exactly what they deserve.</div>
         <div class="agent"><span class="who">Risk Auditor</span><span class="verdict no">VETO</span><br>Absolute veto, no appeal. Correlation risk, position sizing, session context. 115+ sessions, and nothing has got past the floor.</div>
       </div>
-      <div class="term reveal">
-        <div class="term-bar"><span>trading-bot : session record</span><span>Sample output</span></div>
-        <div class="term-body">
-  <span class="t-dim">10:35:01</span> <span class="t-ok">SCAN</span>  Kill-switch OK, equity above floor<br>
-  <span class="t-dim">10:35:02</span> <span class="t-ok">SCAN</span>  FTSE 100: +0.12%, session active<br>
-  <span class="t-dim">10:35:04</span> <span class="t-ok">PASS</span>  AZN: EMA OK, VWAP OK, RSI OK<br>
-  <span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  SHEL: RSI overbought<br>
-  <span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  ULVR: below trend<br>
-  <span class="t-dim">10:35:05</span> <span class="t-warn">RATE</span>  AZN quality gate: 3/5, no catalyst<br>
-  <span class="t-dim">10:35:06</span> <span class="t-no">VETO</span>  Risk audit: marginal setup, capital preserved<br>
-  <span class="t-dim">10:35:07</span> <span class="t-dim">DONE</span>  Session 115 closed flat. Trades placed: 0
+      <div class="term reveal" id="session">
+        <div class="term-bar"><span>trading-bot : session record</span><span><b class="tb-clock" id="tb-clock">10:35:07.000</b> / Sample output</span></div>
+        <div class="term-body" id="tb-body">
+          <div class="tb-ready">Session 115 is on file. Run it to watch the 10:35 window replay.</div>
+          <div class="tl" data-t="1.0"><span class="t-dim">10:35:01</span> <span class="t-ok">SCAN</span>  Kill-switch OK, equity above floor</div>
+          <div class="tl" data-t="2.0"><span class="t-dim">10:35:02</span> <span class="t-ok">SCAN</span>  FTSE 100: +0.12%, session active</div>
+          <div class="tl" data-t="4.0"><span class="t-dim">10:35:04</span> <span class="t-ok">PASS</span>  AZN: EMA OK, VWAP OK, RSI OK</div>
+          <div class="tl" data-t="4.3"><span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  SHEL: RSI overbought</div>
+          <div class="tl" data-t="4.6"><span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  ULVR: below trend</div>
+          <div class="tl" data-t="5.0"><span class="t-dim">10:35:05</span> <span class="t-warn">RATE</span>  AZN quality gate: 3/5, no catalyst</div>
+          <div class="tl veto" data-t="6.0"><span class="t-dim">10:35:06</span> <span class="t-no">VETO</span>  Risk audit: marginal setup, capital preserved</div>
+          <div class="tl tb-total" data-t="7.0"><span class="t-dim">10:35:07</span> Session 115 closed flat. Trades placed: <b>0</b></div>
+          <div class="stamp on" id="tb-stamp" aria-hidden="true"><span>VETOED</span></div>
         </div>
+        <div class="mo-bar tb-ctl"><button class="mo-btn" id="tb-run" type="button">Run the session</button><button class="mo-btn ghost mo-replay" id="tb-replay" type="button">Replay</button><span class="visually-hidden" id="tb-sr" role="status"></span></div>
       </div>
     </section>
 
@@ -587,6 +631,82 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
     }, { rootMargin: '-35% 0px -60% 0px' });
     notes.forEach(function (s) { railIo.observe(s); });
   }
+
+  /* ---------- Signature moment kit: sound only on a click, fire-once events ---------- */
+  var muted = false;
+  try { muted = localStorage.getItem('ledger-snd') === 'off'; } catch (e) { /* private mode */ }
+  var actx = null;
+  function blip(freq, dur, type, vol) {
+    if (muted) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.type = type || 'sine'; o.frequency.value = freq;
+      g.gain.setValueAtTime(vol || 0.07, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + dur);
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime + dur);
+    } catch (e) { /* audio optional */ }
+  }
+  var tracked = {};
+  function track(name) {
+    if (tracked[name]) return;
+    tracked[name] = true;
+    if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, event: true });
+  }
+
+  /* ---------- Signature moment: the session replays line by line, ending in the veto ---------- */
+  (function () {
+    var term = document.getElementById('session');
+    if (!term) return;
+    var lines = term.querySelectorAll('.tl'), stamp = document.getElementById('tb-stamp');
+    var clock = document.getElementById('tb-clock'), run = document.getElementById('tb-run');
+    var rp = document.getElementById('tb-replay'), sr = document.getElementById('tb-sr');
+    var gen = 0;
+    function fmt(s) { var ms = Math.min(7000, Math.round(s * 1000)); return '10:35:0' + Math.floor(ms / 1000) + '.' + ('00' + (ms % 1000)).slice(-3); }
+    function arm() {
+      gen++;
+      term.classList.add('armed'); term.classList.remove('hit');
+      stamp.className = 'stamp'; clock.textContent = fmt(0);
+      lines.forEach(function (l) { l.classList.add('wait'); l.classList.remove('fresh'); });
+      run.disabled = false; run.classList.remove('mo-hide'); rp.classList.remove('show'); sr.textContent = '';
+    }
+    function finish() {
+      lines.forEach(function (l) { l.classList.remove('wait'); });
+      stamp.className = 'stamp on'; clock.textContent = fmt(7);
+      run.classList.add('mo-hide'); rp.classList.add('show');
+      sr.textContent = 'Session 115: the risk auditor vetoed the only candidate. Trades placed: 0.';
+    }
+    function play() {
+      var g = ++gen;
+      term.classList.remove('armed'); run.disabled = true;
+      track('sim-trading-played');
+      if (reduced) { finish(); return; }
+      var t0 = performance.now(), SPEED = 0.72, shown = 0;
+      (function tick(now) {
+        if (g !== gen) return;
+        var s = (now - t0) / 1000 / SPEED;
+        clock.textContent = fmt(s);
+        while (shown < lines.length && s >= parseFloat(lines[shown].dataset.t)) {
+          var l = lines[shown++];
+          l.classList.remove('wait'); l.classList.add('fresh');
+          if (l.classList.contains('veto')) {
+            stamp.className = 'stamp slam'; term.classList.add('hit');
+            blip(64, 0.4, 'square', 0.08); blip(140, 0.12, 'triangle', 0.1);
+          } else if (l.classList.contains('tb-total')) {
+            blip(170, 0.09); blip(88, 0.16, 'triangle', 0.1);
+          } else {
+            blip(520 + shown * 30, 0.05, 'sine', 0.03);
+          }
+        }
+        if (shown < lines.length) requestAnimationFrame(tick);
+        else { setTimeout(function () { if (g === gen) finish(); }, 400); }
+      })(t0);
+    }
+    run.addEventListener('click', play);
+    rp.addEventListener('click', function () { arm(); track('sim-trading-replayed'); run.focus(); });
+    arm();
+  })();
 
   /* Row navigation */
   document.querySelectorAll('tr[data-href]').forEach(function (row) {
