@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OpsPilot | Entry 01 | Ajay Sachdev</title>
-<meta name="description" content="Case study: an AI operations layer that lives in Microsoft Teams. 97,000 lines of Python, 28 AI tools, 6,124+ documents indexed, 100% on a 50-query test suite. Built and run by one finance manager.">
+<meta name="description" content="Case study: an AI operations layer that lives in Microsoft Teams. 95,000+ lines of code, 43 features live, 6,124+ documents indexed, 100% on a 50-query test suite. Built and run by one finance manager.">
 <meta property="og:title" content="OpsPilot | Entry 01 in the ledger">
 <meta property="og:description" content="The AI that answers a finance manager's messages: hybrid search over 6,124+ documents, live accounting and CRM data, drafts approved with one click.">
 <meta property="og:type" content="article">
@@ -161,6 +161,9 @@ h1 em { color: var(--credit); }
   display: flex; justify-content: space-between; gap: 1rem; margin-top: clamp(4.5rem, 9vw, 7rem);
 }
 .section-head .right { color: var(--paper-faint); text-align: right; }
+/* What went wrong: one failure per entry, told straight. Debit red label (brief 2.5) */
+.wrong .section-head > span:first-child { color: var(--debit); }
+.wrong .pull span { color: var(--debit); }
 /* First note sits tighter: the entry head's fig row already provides the air */
 header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 .prose { margin-top: 1.6rem; max-width: 62rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; text-wrap: pretty; }
@@ -358,8 +361,8 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
     <p class="entry-status reveal"><span class="l-status"><i></i>Production</span><span>In daily use since 2025 / Oracle Cloud, systemd</span></p>
     <p class="entry-lede reveal">The AI from chapter 2. It lives in Teams, reads every document my company has ever filed, pulls live accounting and CRM data, and drafts answers in my voice. <em>Nothing sends without my approval.</em></p>
     <div class="fig-row">
-      <div class="fig reveal"><span class="fig-num">97,000</span><span class="fig-lab">lines of Python</span></div>
-      <div class="fig reveal"><span class="fig-num">28</span><span class="fig-lab">AI tools, one orchestrator</span></div>
+      <div class="fig reveal"><span class="fig-num">95,000+</span><span class="fig-lab">lines of code</span></div>
+      <div class="fig reveal"><span class="fig-num">43</span><span class="fig-lab">features live</span></div>
       <div class="fig reveal"><span class="fig-num">6,124<i>+</i></span><span class="fig-lab">documents indexed</span></div>
       <div class="fig reveal"><span class="fig-num">100<i>%</i></span><span class="fig-lab">on a 50-query test suite</span></div>
     </div>
@@ -393,7 +396,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 
   <section>
     <div class="section-head reveal"><span>Note 2: How it works</span><span class="right">Nine stages, one approval</span></div>
-    <p class="prose reveal">Someone asks a question in Teams. The pipeline triages it, figures out whether it needs documents, live accounting data, CRM data, or all three at once, and returns an answer as an Adaptive Card with approve, edit and reject buttons. Live data questions hit Xero or HubSpot directly, zero LLM cost. Document questions run a hybrid search. Cross-source questions go through a single orchestrator call with <b>28 combined tools</b>. A PII blocker sits in front of everything that leaves.</p>
+    <p class="prose reveal">Someone asks a question in Teams. The pipeline triages it, figures out whether it needs documents, live accounting data, CRM data, or all three at once, and returns an answer as an Adaptive Card with approve, edit and reject buttons. Live data questions hit Xero or HubSpot directly, zero LLM cost. Document questions run a hybrid search. Cross-source questions go through a single orchestrator call with <b>25 orchestrator tools</b>. A PII blocker sits in front of everything that leaves.</p>
     <ol class="pipe reveal">
       <li><span><b>Teams webhook</b> receives the message inside the Bot Framework turn</span></li>
       <li><span><b>Dedup gate</b> drops repeats before they cost anything</span></li>
@@ -449,10 +452,16 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
     </ul>
   </section>
 
+  <section class="wrong">
+    <div class="section-head reveal"><span>Note 5: What went wrong</span><span class="right">The 1am journal</span></div>
+    <p class="prose reveal">OpsPilot writes me a daily journal from my own mail, calendar and chats. One week it told me I'd been online at 1am, then 2am. I hadn't. The sent-mail query used Graph's <b>/messages</b> endpoint with a date filter, and that endpoint returns mail from every folder, not just Sent Items. Automated notifications landing overnight were being counted as mail I'd sent. The fix was to ask the Sent Items folder directly, and the rule now is never to assume an endpoint filters by folder.</p>
+    <p class="pull reveal">A wrong number that looks wrong gets caught. One that describes <span>a believable bad week</span> doesn't.</p>
+  </section>
+
   <section>
-    <div class="section-head reveal"><span>Note 5: Stack</span><span class="right">Carrying values</span></div>
+    <div class="section-head reveal"><span>Note 6: Stack</span><span class="right">Carrying values</span></div>
     <div class="stack reveal">
-      <div><span class="s-name">Python 3.12</span><span class="s-role">97,000 lines, one codebase</span></div>
+      <div><span class="s-name">Python 3.12</span><span class="s-role">Most of 95,000+ lines, one codebase</span></div>
       <div><span class="s-name">Gemini 2.5 Flash / Pro</span><span class="s-role">Primary models: triage, drafting, reasoning</span></div>
       <div><span class="s-name">Claude</span><span class="s-role">Tool-use orchestration and fallback in the LLM cascade</span></div>
       <div><span class="s-name">FAISS + BM25</span><span class="s-role">Hybrid retrieval with rank fusion</span></div>
@@ -482,7 +491,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
           <td class="o-ref">03</td>
           <td><span class="o-name">Uni-Nation Digital</span></td>
           <td class="o-desc">Website, inventory PWA and Hindi voice stock entry for the family fabric business.</td>
-          <td class="o-status">Live</td>
+          <td class="o-status">Being repaired</td>
         </tr>
         <tr data-href="whatsapp-smart.html">
           <td class="o-ref">04</td>

@@ -1,5 +1,5 @@
 # Ajay Sachdev
-> Finance & Operations Manager at a B2B tech scale-up. CIMA finalist (Strategic Case Study sat May 2026). Builds production AI systems, Power BI dashboards, and financial models. Python, TypeScript, SQL. Based in Cambridge, UK.
+> Finance & Operations Manager at a B2B tech scale-up. ACMA CGMA (CIMA), qualified 2026. Builds production AI systems, Power BI dashboards, and financial models. Python, TypeScript, SQL. Based in Cambridge, UK.
 
 ## Background
 - Sindhi family from Mumbai; grew up in the family textile business (est. 1988)
@@ -8,16 +8,16 @@
 - Diploma in Weaving Technology, Sasmira, Mumbai
 - Chartered Wealth Management (AAFM, 2019)
 - MSc Finance, Loughborough University (2020-21, 2:1)
-- CIMA finalist: Strategic Case Study sat May 2026
+- ACMA CGMA (CIMA), qualified 2026
 - Joined a B2B tech scale-up in October 2021; now sole finance & ops function across UK, US, Pakistan
 - School Governor at a 250-pupil primary school
 
 ## Projects
-- OpsPilot: AI executive assistant in Microsoft Teams. 97,000 lines, 28 AI tools, 6,124+ documents indexed, 100% search accuracy on a 50-query suite. In production 24/7. Case study: https://ajaysachdev.com/projects/ajay-brain.html
+- OpsPilot: AI executive assistant in Microsoft Teams. 95,000+ lines, 43 features live, 6,124+ documents indexed, 100% search accuracy on a 50-query suite. In production 24/7. Case study: https://ajaysachdev.com/projects/ajay-brain.html
 - Trading Bot: FTSE 100 intraday system with four AI agents and an absolute-veto risk auditor. 7,000+ lines. Paper trading: 62 sessions, zero impulsive trades let through. Case study: https://ajaysachdev.com/projects/trading-bot.html
-- Uni-Nation Digital (uni-nation.in): website, inventory PWA (~22,000 lines) and Hindi voice stock entry for the family fabric business. Roughly $2m of sales data, ~2,000 products, 650+ customers. Case study: https://ajaysachdev.com/projects/uni-nation.html
-- WhatsApp Smart: Chrome extension prototype adding scheduling, AI replies and summaries to WhatsApp Web. 10 features built, privacy-first, unreleased. Case study: https://ajaysachdev.com/projects/whatsapp-smart.html
-- SCS Cockpit: zero-dependency study engine built to prepare for his own CIMA case study. 4,200 lines
+- Uni-Nation Digital (uni-nation.in): website, inventory PWA (30,000+ lines) and Hindi voice stock entry for the family fabric business. Roughly $2m of sales data, ~2,000 products, 650+ customers. Case study: https://ajaysachdev.com/projects/uni-nation.html
+- WhatsApp Smart: Chrome extension prototype adding scheduling, AI replies and summaries to WhatsApp Web. 10 features built, privacy-first (messages stay in the browser unless sent to the AI), unreleased. Case study: https://ajaysachdev.com/projects/whatsapp-smart.html
+- SCS Cockpit: zero-dependency study engine he built for his own CIMA Strategic Case Study. 11,584 lines, 166 study items, 23 frameworks. He passed. Retired, job done.
 
 ## Key Metrics
 - Board-level financial models and reporting

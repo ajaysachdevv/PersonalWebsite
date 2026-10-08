@@ -161,6 +161,9 @@ h1 em { color: var(--credit); }
   display: flex; justify-content: space-between; gap: 1rem; margin-top: clamp(4.5rem, 9vw, 7rem);
 }
 .section-head .right { color: var(--paper-faint); text-align: right; }
+/* What went wrong: one failure per entry, told straight. Debit red label (brief 2.5) */
+.wrong .section-head > span:first-child { color: var(--debit); }
+.wrong .pull span { color: var(--debit); }
 /* First note sits tighter: the entry head's fig row already provides the air */
 header + section .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
 .prose { margin-top: 1.6rem; max-width: 62rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; text-wrap: pretty; }
@@ -384,14 +387,20 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
     <ul class="notes">
       <li class="reveal"><span class="n-ref">E.1</span><span><b>Structured outputs, no fallback holes</b>The quality gate used to run on a model whose JSON sometimes failed to parse, and the fallback defaulted the score to 3: a safety hole that could let marginal trades through. Switched to Claude Sonnet with a guaranteed schema. No parse failures, no fallback needed. Prompt caching across parallel scans cut token spend by about 90%.</span></li>
       <li class="reveal"><span class="n-ref">E.2</span><span><b>News before numbers</b>Each ticker's RNS gets checked before the technical scan. One API call finds same-day announcements and classifies them by tier. This replaced a screen scraper that kept breaking; the scraper survives only as the fallback.</span></li>
-      <li class="reveal"><span class="n-ref">E.3</span><span><b>Walk-forward backtesting</b>60-day default, up to two years. Evaluates at 10:35 on each historical day with no lookahead bias and a 0.2% round-trip spread cost deducted. The honest finding: the backtests did not make the case for going live. So it has not gone live. The bot agrees with its own data.</span></li>
+      <li class="reveal"><span class="n-ref">E.3</span><span><b>Walk-forward backtesting</b>60-day default, up to two years. Evaluates at 10:35 on each historical day with no lookahead bias and a 0.2% round-trip spread cost deducted.</span></li>
       <li class="reveal"><span class="n-ref">E.4</span><span><b>Atomic state, full audit trail</b>A file-locked state manager prevents race conditions between the order manager and the kill switch. Every decision writes to a JSONL audit trail: timestamp, session, stage, ticker, outcome. The whole system is one long paper trail, which is how I like my systems.</span></li>
     </ul>
     <p class="pull reveal">A trading bot whose proudest metric is the trades it <span>refused to place.</span></p>
   </section>
 
+  <section class="wrong">
+    <div class="section-head reveal"><span>Note 6: What went wrong</span><span class="right">The backtests said no</span></div>
+    <p class="prose reveal">I built this bot to trade. Then I ran the walk-forward backtests, no lookahead, spread costs deducted, and they didn't make the case for going live. So it hasn't gone live. That's not the project failing. It's the same rule that vetoes an impulsive trade, applied to an impulsive launch.</p>
+    <p class="pull reveal">The bot agrees with <span>its own data.</span></p>
+  </section>
+
   <section>
-    <div class="section-head reveal"><span>Note 6: Exhibit</span><span class="right">Exhibit B</span></div>
+    <div class="section-head reveal"><span>Note 7: Exhibit</span><span class="right">Exhibit B</span></div>
     <div class="exhibit-fig reveal">
       <figure>
         <picture>
@@ -404,7 +413,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   </section>
 
   <section>
-    <div class="section-head reveal"><span>Note 7: Stack</span><span class="right">Carrying values</span></div>
+    <div class="section-head reveal"><span>Note 8: Stack</span><span class="right">Carrying values</span></div>
     <div class="stack reveal">
       <div><span class="s-name">Python 3.12</span><span class="s-role">7,000+ lines across 33 files</span></div>
       <div><span class="s-name">Claude Opus</span><span class="s-role">Risk auditor, the final veto</span></div>
@@ -433,7 +442,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
           <td class="o-ref">03</td>
           <td><span class="o-name">Uni-Nation Digital</span></td>
           <td class="o-desc">Website, inventory PWA and Hindi voice stock entry for the family fabric business.</td>
-          <td class="o-status">Live</td>
+          <td class="o-status">Being repaired</td>
         </tr>
         <tr data-href="whatsapp-smart.html">
           <td class="o-ref">04</td>

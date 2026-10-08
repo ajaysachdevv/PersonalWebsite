@@ -2,6 +2,7 @@
 Name: Ajay Sachdev
 Role: Finance & Operations Manager who ships software
 Base: Cambridge, UK
+Qualified: ACMA CGMA (CIMA), 2026
 Contact: ajay@ajaysachdev.com
 
 /* THE LEDGER */
