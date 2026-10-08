@@ -1112,7 +1112,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
     <div class="desk-grid">
       <div class="chart-pane">
         <canvas id="chart" width="640" height="230" role="img" aria-label="Candlestick chart of an intraday BARC.L rally"></canvas>
-        <div class="signal"><b>BARC.L</b> / Barclays PLC<br>price 302.4 / RSI 63.8 / above EMA-50<br>momentum: <b>tempting</b></div>
+        <div class="signal"><b>BARC.L</b> / Barclays PLC<br>price 302.4 / RSI stretched / above trend<br>momentum: <b>tempting</b></div>
         <button class="sim-btn" id="trade" style="margin-top:1.1rem">Place trade</button>
       </div>
       <div class="agents" id="agents" aria-live="polite">
@@ -1123,7 +1123,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
         <div class="agent-idle" aria-hidden="true"><span class="who">Risk Auditor</span><span class="verdict">STANDING BY</span></div>
         <div class="agent" id="a1"><span class="who">Orchestrator</span><span class="verdict ok">SESSION OPEN</span><br><span class="a-body">Regime check passed. FTSE flat. Forwarding signal to the floor.</span></div>
         <div class="agent" id="a2"><span class="who">Context Lead</span><span class="verdict hmm">CAUTION</span><br><span class="a-body">No fresh RNS catalyst on BARC. This move is running on vibes, not news.</span></div>
-        <div class="agent" id="a3"><span class="who">Analyst</span><span class="verdict hmm">BORDERLINE</span><br><span class="a-body">RSI 63.8 sits at the top of my band. Quality gate score: 4/10. I've seen this movie.</span></div>
+        <div class="agent" id="a3"><span class="who">Analyst</span><span class="verdict hmm">BORDERLINE</span><br><span class="a-body">RSI sits at the top of my band. Quality gate score: 3/5. I've seen this movie.</span></div>
         <div class="agent" id="a4"><span class="who">Risk Auditor</span><span class="verdict no">VETO</span><br><span class="a-body">Two cautions and no catalyst. Capital preserved. Try again tomorrow, human.</span></div>
         <div class="stamp" id="stamp"><span aria-hidden="true">VETOED</span><span class="visually-hidden" id="stamp-sr" role="status"></span></div>
       </div>
@@ -2010,7 +2010,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
     var TRANSCRIPT0 = transcript.innerHTML;
     var played = false;
     var addedRow = null, addedNote = null;
-    var line = '"siyaram matty, lot bayalees... paanch thaan... athaarah metre, bais metre, unnees metre..."';
+    var line = '"matty navy, lot bayalees... paanch thaan... athaarah metre, bais metre, unnees metre..."';
     function reset() {
       played = false;
       mic.disabled = false; mic.classList.remove('listening'); mic.innerHTML = 'Tap to<br>speak';
@@ -2046,7 +2046,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
       })();
       function addRow() {
         var tr = document.createElement('tr');
-        tr.innerHTML = '<td>Siyaram Matty</td><td>42</td><td>5 thaan</td><td>59.0<span class="posted">Posted</span></td>';
+        tr.innerHTML = '<td>Matty Navy</td><td>42</td><td>5 thaan</td><td>59.0<span class="posted">Posted</span></td>';
         document.getElementById('stockbody').appendChild(tr);
         addedRow = tr;
         function land() {
@@ -2071,7 +2071,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
         if (window.gsap && !reduced) {
           tr.style.visibility = 'hidden';
           var srcR = transcript.getBoundingClientRect();
-          var toks = ['Siyaram Matty', '42', '5 thaan', '59.0'];
+          var toks = ['Matty Navy', '42', '5 thaan', '59.0'];
           var cells = tr.querySelectorAll('td');
           var landed = 0;
           toks.forEach(function (t, i) {

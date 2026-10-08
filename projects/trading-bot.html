@@ -384,11 +384,11 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 
     <section data-note="3">
       <div class="section-head reveal"><span>Note 3: The floor</span><span class="right">Four agents, one veto</span></div>
-      <p class="prose reveal">First thing each session: kill-switch and market regime check. If either fails, nothing else runs. News gets scanned and classified by tier before the technical check: EMA-50, VWAP, RSI. Only setups that pass everything reach the quality gate, where Claude Sonnet rates them against a strict JSON schema. The last word belongs to Claude Opus as risk auditor. <b>If it vetoes, the trade dies.</b> The rails live in code, not prompts: the agents can assess and recommend, they cannot override the config.</p>
+      <p class="prose reveal">First thing each session: kill-switch and market regime check. If either fails, nothing else runs. News gets scanned and classified by tier before the technical check: EMA, VWAP, RSI. Only setups that pass everything reach the quality gate, where Claude Sonnet rates them against a strict JSON schema. The last word belongs to Claude Opus as risk auditor. <b>If it vetoes, the trade dies.</b> The rails live in code, not prompts: the agents can assess and recommend, they cannot override the config.</p>
       <div class="agents reveal">
-        <div class="agent"><span class="who">Orchestrator</span><span class="verdict ok">GATE</span><br>Kill-switch and regime check. If the equity floor is breached or the FTSE is off more than 0.5%, the session never starts.</div>
+        <div class="agent"><span class="who">Orchestrator</span><span class="verdict ok">GATE</span><br>Kill-switch and regime check. If the equity floor is breached or the FTSE fails its regime gate, the session never starts.</div>
         <div class="agent"><span class="who">Context Lead</span><span class="verdict hmm">SCAN</span><br>Same-day RNS announcements, classified Tier A (earnings, M&amp;A), Tier B (upgrades, buybacks) or Tier C (skip). No catalyst, no conviction.</div>
-        <div class="agent"><span class="who">Analyst</span><span class="verdict hmm">RATE</span><br>Technical quality gate. EMA-50, VWAP, RSI-14, then a structured 1 to 5 rating. Marginal setups score exactly what they deserve.</div>
+        <div class="agent"><span class="who">Analyst</span><span class="verdict hmm">RATE</span><br>Technical quality gate. EMA, VWAP and RSI checks, then a structured 1 to 5 rating. Marginal setups score exactly what they deserve.</div>
         <div class="agent"><span class="who">Risk Auditor</span><span class="verdict no">VETO</span><br>Absolute veto, no appeal. Correlation risk, position sizing, session context. 115+ sessions, and nothing has got past the floor.</div>
       </div>
       <div class="term reveal">
@@ -396,9 +396,9 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
         <div class="term-body">
   <span class="t-dim">10:35:01</span> <span class="t-ok">SCAN</span>  Kill-switch OK, equity above floor<br>
   <span class="t-dim">10:35:02</span> <span class="t-ok">SCAN</span>  FTSE 100: +0.12%, session active<br>
-  <span class="t-dim">10:35:04</span> <span class="t-ok">PASS</span>  AZN: EMA OK, VWAP OK, RSI 42<br>
-  <span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  SHEL: RSI 78, overbought<br>
-  <span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  ULVR: below EMA-50<br>
+  <span class="t-dim">10:35:04</span> <span class="t-ok">PASS</span>  AZN: EMA OK, VWAP OK, RSI OK<br>
+  <span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  SHEL: RSI overbought<br>
+  <span class="t-dim">10:35:04</span> <span class="t-warn">SKIP</span>  ULVR: below trend<br>
   <span class="t-dim">10:35:05</span> <span class="t-warn">RATE</span>  AZN quality gate: 3/5, no catalyst<br>
   <span class="t-dim">10:35:06</span> <span class="t-no">VETO</span>  Risk audit: marginal setup, capital preserved<br>
   <span class="t-dim">10:35:07</span> <span class="t-dim">DONE</span>  Session 115 closed flat. Trades placed: 0
@@ -412,7 +412,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
         <thead><tr><th>Rail</th><th>Rule</th><th>Value</th></tr></thead>
         <tbody>
           <tr><td>Max notional</td><td>Per trade, absolute</td><td class="mono">GBP 750</td></tr>
-          <tr><td>Stop loss / take profit</td><td>1:2 risk-reward, fixed</td><td class="mono">3% / 6%</td></tr>
+          <tr><td>Stop loss / take profit</td><td>Fixed levels, set in config</td><td class="mono">IN CODE</td></tr>
           <tr><td>Positions</td><td>One at a time, no pyramiding</td><td class="mono">MAX 1</td></tr>
           <tr><td>Kill switch</td><td>Equity floor: liquidate and stop until manual reset</td><td class="mono">GBP 750</td></tr>
           <tr><td>Leverage</td><td>None</td><td class="mono">0</td></tr>

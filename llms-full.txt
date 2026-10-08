@@ -35,7 +35,7 @@ An intraday trading system where four AI agents vote on every signal and a Risk 
 - 4 agents: Orchestrator, Context Lead, Analyst, Risk Auditor (Claude-powered)
 - Paper trading by design: 115+ sessions, zero impulsive trades let through
 - 7,000+ lines of Python
-- Hard safety rails in code, not prompts: GBP 750 max notional, 3% stop loss, 6% take profit, one position at a time, kill switch, end-of-day liquidation
+- Hard safety rails in code, not prompts: GBP 750 max notional, fixed stop loss and take profit, one position at a time, kill switch, end-of-day liquidation
 
 ### Uni-Nation Digital (uni-nation.in)
 Website, inventory system and analytics for the family fabric business running since 1988.
