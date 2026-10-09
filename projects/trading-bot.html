@@ -407,7 +407,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 
     <section data-note="1">
       <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">The operator was the risk</span></div>
-      <p class="prose reveal">I studied financial markets at Jai Hind College and hold a Chartered Wealth Manager certification. I understood markets. But understanding them and trading them profitably turned out to be two different things. I'd watch a stock I'd researched all week drop 2% on a single announcement and sell within five minutes, then watch it recover by close. I'd spot a FTSE dip and buy in, convinced it was the bottom, only for it to keep sliding. After a red day I'd jump into something I hadn't even properly analysed, just to make the loss back.</p>
+      <p class="prose reveal">I studied financial markets at Jai Hind College and hold a Chartered Wealth Manager certification. I understood markets. But understanding them and trading them profitably turned out to be two different things. I'd watch a stock I'd researched all week drop sharply on a single announcement and sell within five minutes, then watch it recover by close. I'd spot a FTSE dip and buy in, convinced it was the bottom, only for it to keep sliding. After a red day I'd jump into something I hadn't even properly analysed, just to make the loss back.</p>
       <p class="prose reveal"><b>The analysis was usually fine. It was the real-time decisions that killed it.</b> I'd override my own rules the moment I felt any pressure. So the question became: could I build something that kept the analysis but removed me from the execution?</p>
     </section>
 
@@ -416,7 +416,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
       <p class="prose reveal">Every weekday at 10:35 GMT, thirty minutes after London open once the opening noise has settled, the system runs. APScheduler fires five jobs through the day. Nothing is held overnight.</p>
       <ol class="sched reveal">
         <li><span class="t">10:30</span><span>Start 5-minute candle collection via Lightstreamer</span></li>
-        <li class="hot"><span class="t">10:35</span><span>Full four-agent evaluation across the top 20 FTSE tickers. The only entry window of the day</span></li>
+        <li class="hot"><span class="t">10:35</span><span>Full four-agent evaluation across its FTSE watchlist. The only entry window of the day</span></li>
         <li><span class="t">12:00</span><span>Regime recheck: close everything if the FTSE is below -1%</span></li>
         <li><span class="t">14:00</span><span>Second regime recheck</span></li>
         <li class="hot"><span class="t">16:00</span><span>Liquidate everything. No overnight gap risk, ever</span></li>
