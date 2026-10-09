@@ -181,9 +181,9 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 
 /* Debit / credit comparison */
 .ba { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); margin-top: 2.4rem; }
-.ba h3 { font-family: var(--mono); font-weight: 400; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; padding-bottom: 0.8rem; border-bottom: 1px solid var(--rule); }
-.ba .deb h3 { color: var(--debit); }
-.ba .cred h3 { color: var(--credit); }
+.ba h2 { font-family: var(--mono); font-weight: 400; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; padding-bottom: 0.8rem; border-bottom: 1px solid var(--rule); }
+.ba .deb h2 { color: var(--debit); }
+.ba .cred h2 { color: var(--credit); }
 .ba ul { list-style: none; }
 .ba li {
   padding: 0.9rem 0; border-bottom: 1px solid var(--rule);
@@ -463,7 +463,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
       <p class="prose reveal">"What does the contract say about payment terms?" That's a SharePoint search. "Who hasn't paid us?" That's Xero. "What deals is the sales team working on?" HubSpot. "Tell me about this customer." That needs all three. The information always existed. It was just scattered across 6,124+ files, multiple systems, and years of accumulated documents.</p>
       <div class="ba reveal">
         <div class="deb">
-          <h3>Debit: before</h3>
+          <h2>Debit: before</h2>
           <ul>
             <li>Dig through 6,124+ SharePoint files by hand</li>
             <li>Log into Xero, HubSpot, email and calendar separately for every question</li>
@@ -472,7 +472,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
           </ul>
         </div>
         <div class="cred">
-          <h3>Credit: after</h3>
+          <h2>Credit: after</h2>
           <ul>
             <li>Ask a question in Teams, get an answer from any source in seconds</li>
             <li>Morning briefing with everything that matters before 9am</li>
@@ -595,6 +595,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   <section>
     <div class="section-head reveal"><span>Other entries</span><span class="right">Same ledger</span></div>
     <table class="others reveal">
+      <thead class="visually-hidden"><tr><th scope="col">Ref</th><th scope="col">Project</th><th scope="col">Summary</th><th scope="col">Status</th></tr></thead>
       <tbody>
         <tr data-href="trading-bot.html">
           <td class="o-ref">02</td>

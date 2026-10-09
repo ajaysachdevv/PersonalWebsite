@@ -41,6 +41,8 @@
 @font-face { font-family: 'JetBrains Mono Fallback'; src: local('Consolas'); size-adjust: 109.13%; ascent-override: 93.47%; descent-override: 27.49%; line-gap-override: 0%; }
 </style>
 
+<script>/* Reserve the cold open before first paint so it never shifts the hero in (CLS). Undone below if GSAP fails to load */
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('tb-on');</script>
 <style>
 /* ================= Tokens: The Ledger, filmed ================= */
 :root {
@@ -79,7 +81,7 @@ body.scene-mill nav.solid .nav-mark, body.scene-mill nav.solid .nav-links a { co
 body.scene-mill nav.solid .nav-mark em { color: #1f7a4d; }
 body.scene-mill nav.solid .nav-links a:hover { color: #1c160d; }
 body.scene-mill nav.solid .nav-fy { color: rgba(28, 22, 13, 0.62); }
-body.scene-mill .rail span { color: rgba(28, 22, 13, 0.5); }
+body.scene-mill .rail span { color: rgba(28, 22, 13, 0.66); }
 body.scene-mill .rail span.on { color: #1f7a4d; }
 #ch4 .num, #ch4 .num b, #ch4 h2, #ch4 h2 em, #ch4 p, nav .nav-mark, nav .nav-links a, .rail span { transition: color 0.7s ease, border-color 0.7s ease; }
 body.scene-mill #ch4 .num { color: rgba(28, 22, 13, 0.55); border-color: rgba(28, 22, 13, 0.18); }
@@ -163,8 +165,8 @@ nav.solid { background: rgba(13, 12, 10, 0.82); backdrop-filter: blur(10px); -we
   display: flex; flex-direction: column; gap: 0.9rem;
   font-family: var(--mono); font-size: var(--ms-3); letter-spacing: var(--tr-2); color: var(--paper-faint);
 }
-.rail span { writing-mode: vertical-rl; opacity: 0.62; transition: opacity 0.4s, color 0.4s; cursor: pointer; }
-.rail span:hover { opacity: 1; }
+.rail span { writing-mode: vertical-rl; transition: color 0.4s; cursor: pointer; }
+.rail span:hover { color: var(--paper-dim); }
 .rail span.on { opacity: 1; color: var(--credit); }
 @media (max-width: 860px) { .rail { display: none; } }
 
@@ -178,7 +180,7 @@ nav.solid { background: rgba(13, 12, 10, 0.82); backdrop-filter: blur(10px); -we
 /* ================= v4 cold open: the trial balance (brief 3.3) =================
    Scrubbed to scroll. Columns settle, the difference closes to a double-ruled
    0.00, the zero resolves into the name, then the hero. Skipped entirely for
-   reduced motion and no-JS (html.tb-on is only set when GSAP is present). */
+   reduced motion and no-JS (html.tb-on is set in <head> before first paint, removed if GSAP fails). */
 .tb { display: none; position: relative; height: 190vh; }
 html.tb-on .tb { display: block; }
 .tb-stick { position: sticky; top: 0; height: 100svh; display: grid; place-items: center; overflow: hidden; }
@@ -2392,8 +2394,7 @@ GROUP BY 1 ORDER BY 1;</div>
     var tb = document.getElementById('tb');
     var html = document.documentElement;
     function heroGo() { html.classList.add('hero-go'); }
-    if (!tb || reduced || !window.gsap || !window.ScrollTrigger) { heroGo(); return; }
-    html.classList.add('tb-on');
+    if (!tb || reduced || !window.gsap || !window.ScrollTrigger) { html.classList.remove('tb-on'); heroGo(); return; }
     var rows = tb.querySelectorAll('.tb-row'), sheet = tb.querySelector('.tb-sheet');
     var dEl = document.getElementById('tb-d'), drEl = document.getElementById('tb-dr'), crEl = document.getElementById('tb-cr');
     var diff = document.getElementById('tb-diff'), zero = tb.querySelector('.tb-o'), name = tb.querySelector('.tb-name'), cue = tb.querySelector('.tb-cue');
