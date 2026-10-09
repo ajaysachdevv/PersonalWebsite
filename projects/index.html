@@ -3,23 +3,572 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Projects | Ajay Sachdev</title>
-<meta name="description" content="The project gallery moved into the ledger on the homepage.">
-<meta name="robots" content="noindex">
-<link rel="canonical" href="https://ajaysachdev.com/#work">
-<meta http-equiv="refresh" content="0; url=../index.html#work">
+<title>The schedule | Projects | Ajay Sachdev</title>
+<meta name="description" content="Every system I have built, on one ledger: five public projects with honest statuses and a What went wrong note each, and five tools built at work. Finance and operations by day, production software by night.">
+<meta property="og:title" content="The schedule | projects under management">
+<meta property="og:description" content="Ten systems on one ledger. Five public, five built at work. Every status as it really is, every failure written down.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://ajaysachdev.com/projects/">
+<meta property="og:url" content="https://ajaysachdev.com/projects/">
+<meta property="og:image" content="https://ajaysachdev.com/images/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Ajay Sachdev">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The schedule | projects under management">
+<meta name="twitter:description" content="Ten systems on one ledger. Five public, five built at work. Every status as it really is, every failure written down.">
+<meta name="twitter:image" content="https://ajaysachdev.com/images/og.png">
 <meta name="theme-color" content="#0d0c0a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0c0a'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232fbf71'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+
+<link rel="preload" href="../vendor/fonts/inter-400-500-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../vendor/fonts/instrumentserif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../vendor/fonts/instrumentserif-400-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../vendor/fonts/jetbrainsmono-400-500-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-body {
-  background: #0d0c0a; color: rgba(236, 231, 220, 0.68);
-  font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.8rem; letter-spacing: 0.08em;
-  display: grid; place-items: center; min-height: 100vh; margin: 0; text-align: center;
-}
-a { color: #2fbf71; }
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('../vendor/fonts/inter-400-500-800-latin.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 100 800; font-display: swap; src: url('../vendor/fonts/jetbrainsmono-400-500-700-latin.woff2') format('woff2'); }
+/* Metric-matched fallbacks (size-adjust): no layout shift when the webfonts swap in. Measured with fontTools against the Windows system faces, 08/10/2026 */
+@font-face { font-family: 'Instrument Serif Fallback'; src: local('Georgia'); size-adjust: 76.92%; ascent-override: 128.71%; descent-override: 40.3%; line-gap-override: 0%; }
+@font-face { font-family: 'Inter Fallback'; src: local('Arial'), local('Helvetica'); size-adjust: 107.48%; ascent-override: 90.14%; descent-override: 22.44%; line-gap-override: 0%; }
+@font-face { font-family: 'JetBrains Mono Fallback'; src: local('Consolas'); size-adjust: 109.13%; ascent-override: 93.47%; descent-override: 27.49%; line-gap-override: 0%; }
 </style>
+
+<style>
+/* Source of truth for shared blocks: tokens/nav/footer from projects/*.html, ledger + drawer from index.html. No build step, so they are duplicated here on purpose. */
+/* ================= Tokens: The Ledger, entry pages ================= */
+:root {
+  --ink: #0d0c0a;
+  --ink-2: #131210;
+  --paper: #ece7dc;
+  --paper-dim: rgba(236, 231, 220, 0.68);
+  --paper-faint: rgba(236, 231, 220, 0.55);
+  --rule: rgba(236, 231, 220, 0.13);
+  --credit: #2fbf71;
+  --amber: #e8b34b;
+  --debit: #d96459;
+  --serif: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
+  --sans: 'Inter', 'Inter Fallback', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'JetBrains Mono Fallback', Consolas, monospace;
+  /* homepage micro-type scale, so the lifted ledger + drawer components render identically */
+  --ms-1: 0.66rem; --ms-2: 0.7rem; --ms-3: 0.74rem; --ms-4: 0.78rem;
+  --tr-1: 0.08em; --tr-2: 0.14em; --tr-3: 0.22em; --tr-4: 0.3em;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scrollbar-color: var(--paper-faint) var(--ink); overflow-x: clip; scroll-behavior: smooth; }
+body {
+  background: var(--ink); color: var(--paper); font-family: var(--sans);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+::selection { background: var(--credit); color: var(--ink); }
+/* Cross-document view transitions: pairs with the homepage ledger (Chromium; others hard-cut) */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.35s; }
+::view-transition-old(entry-title), ::view-transition-new(entry-title) { animation-duration: 0.45s; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--credit); outline-offset: 3px; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: fixed; top: 0.9rem; left: 0.9rem; z-index: 200;
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--paper); background: var(--ink); border: 1px solid var(--credit);
+  padding: 0.7rem 1.1rem; text-decoration: none;
+  transform: translateY(calc(-100% - 1.5rem)); transition: transform 0.2s ease;
+}
+.skip-link:focus { transform: translateY(0); }
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 60; pointer-events: none; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+.wrap { max-width: 74rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
+
+/* ================= Nav ================= */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 1.2rem clamp(1.25rem, 4vw, 3rem);
+  background: rgba(13, 12, 10, 0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-mark { font-family: var(--serif); font-size: 1.25rem; text-decoration: none; }
+.nav-mark em { color: var(--credit); }
+.nav-links { display: flex; gap: 2rem; align-items: baseline; }
+.nav-links a {
+  font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--paper-dim); text-decoration: none; position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; width: 100%; height: 1px;
+  background: var(--credit); transform: scaleX(0); transform-origin: bottom right; transition: transform 0.35s ease;
+}
+.nav-links a:hover { color: var(--paper); }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+.nav-fy { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; color: var(--paper-faint); }
+@media (max-width: 720px) { .nav-fy { display: none; } .nav-links { gap: 1.2rem; } }
+@media (max-width: 480px) {
+  .nav-mark { font-size: 1.05rem; }
+  .nav-links { gap: 0.9rem; }
+  .nav-links a { font-size: 0.66rem; letter-spacing: 0.1em; }
+  .nav-links a[href="../#about"] { display: none; }
+}
+
+
+/* ================= Dossier head ================= */
+main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
+.crumb {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--paper-faint);
+}
+.crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid rgba(236, 231, 220, 0.35); transition: color 0.3s ease, border-color 0.3s ease; }
+.crumb a:hover { color: var(--credit); border-color: var(--credit); }
+@media (max-width: 480px) { .crumb { letter-spacing: 0.1em; } }
+.dossier-h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(3.4rem, 9vw, 7rem); line-height: 0.96; margin-top: 1.2rem; letter-spacing: -0.01em; }
+.dossier-h1 em { font-style: normal; color: var(--credit); }
+.dossier-lede { margin-top: 1.6rem; max-width: 62ch; font-family: var(--serif); font-size: clamp(1.25rem, 2.2vw, 1.6rem); line-height: 1.45; color: var(--paper-dim); }
+.dossier-lede em { color: var(--credit); }
+#work.first .section-head { margin-top: clamp(3rem, 6vw, 4.5rem); }
+
+/* ================= Ledger sections (the books) ================= */
+.section-head {
+  font-family: var(--mono); font-size: var(--ms-3); letter-spacing: var(--tr-3); text-transform: uppercase;
+  color: var(--paper-dim); padding: 0.85rem 0; border-top: 2px solid var(--paper);
+  display: flex; justify-content: space-between; gap: 1rem; margin-top: clamp(5rem, 10vw, 8rem);
+}
+.section-head .right { color: var(--paper-faint); }
+.ledger { width: 100%; border-collapse: collapse; }
+.ledger th {
+  font-family: var(--mono); font-weight: 400; font-size: var(--ms-2); letter-spacing: var(--tr-2);
+  text-transform: uppercase; color: var(--paper-faint); text-align: left;
+  padding: 0.9rem 0.5rem; border-bottom: 1px solid var(--rule);
+}
+.ledger th:last-child, .ledger td:last-child { text-align: right; }
+.ledger td { padding: 1.5rem 0.5rem; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
+.ledger tbody tr { transition: background 0.3s ease; }
+.ledger tbody tr[data-href] { cursor: pointer; }
+.ledger tbody tr:hover { background: rgba(236, 231, 220, 0.035); }
+.ledger tbody tr[data-href]:hover .l-name { font-style: italic; color: var(--credit); border-bottom-color: var(--credit); }
+.ledger tbody tr[data-href]:hover .l-ref { color: var(--credit); }
+.ledger tbody tr[data-href]:hover .l-metric { color: var(--credit); }
+.l-ref { font-family: var(--mono); font-size: var(--ms-3); color: var(--paper-faint); width: 3.5rem; }
+.l-name { font-family: var(--serif); font-size: clamp(1.45rem, 2.7vw, 2.2rem); line-height: 1; transition: color 0.3s ease, border-color 0.3s ease; white-space: nowrap; }
+.ledger tbody tr[data-href] .l-name { border-bottom: 1px solid rgba(236, 231, 220, 0.3); padding-bottom: 3px; }
+.l-desc { font-size: 0.84rem; color: var(--paper-dim); max-width: 24rem; line-height: 1.55; }
+.l-metric { font-family: var(--mono); font-size: 0.84rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.l-status { font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-1); text-transform: uppercase; white-space: nowrap; }
+.l-status i {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 0.55rem;
+  background: var(--credit); box-shadow: 0 0 10px rgba(47, 191, 113, 0.6); animation: pulse 2.4s infinite;
+}
+.l-status.amber i { background: var(--amber); box-shadow: 0 0 10px rgba(232, 179, 75, 0.5); }
+.l-status.idle i { background: var(--paper-faint); box-shadow: none; animation: none; }
+.ledger tfoot td {
+  font-family: var(--mono); font-size: var(--ms-4); letter-spacing: var(--tr-1); line-height: 1.6;
+  color: var(--paper-dim); border-bottom: 3px double var(--paper-faint); padding: 1.1rem 0.5rem;
+}
+@media (min-width: 861px) {
+  .ledger td.l-name-cell { padding-right: 1.4rem; }
+  .ledger tfoot td:last-child { white-space: nowrap; }
+}
+@media (max-width: 860px) {
+  /* Table + groups as blocks so the ledger can never be wider than the column (nowrap names used to push it past 390px and the right edge got clipped) */
+  .ledger, .ledger tbody, .ledger tfoot { display: block; width: 100%; }
+  .ledger thead { display: none; }
+  .ledger tbody tr { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.2rem 1rem; padding: 1.3rem 0; border-bottom: 1px solid var(--rule); }
+  .ledger td { display: block; padding: 0; border: none; }
+  .l-ref { grid-row: 1; }
+  td.l-name-cell { grid-column: 2; grid-row: 1; }
+  .l-desc { grid-column: 2; grid-row: 3; max-width: none; margin-top: 0.4rem; }
+  /* Status sits under the name, so the name gets the full width and the chip never collides with the edge */
+  td.l-status-cell { grid-column: 2; grid-row: 2; text-align: left; margin-top: 0.45rem; }
+  .l-status { white-space: nowrap; font-size: var(--ms-1); letter-spacing: var(--tr-1); display: inline-block; line-height: 1.4; }
+  .l-metric { grid-column: 2; grid-row: 4; margin-top: 0.5rem; color: var(--paper-dim); text-align: left; }
+  .l-name { white-space: normal; }
+  .ledger tfoot tr { display: block; padding: 1.1rem 0; border-bottom: 3px double var(--paper-faint); }
+  .ledger tfoot td { display: block; border: none; text-align: left !important; }
+}
+
+
+/* Exhibit thumbnail inside each schedule row: the evidence sits with the entry it evidences */
+.l-thumb { display: block; margin-top: 1rem; width: min(16rem, 100%); aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid var(--rule); background: var(--ink-2); }
+.l-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; filter: saturate(0.75); transition: filter 0.5s ease; }
+.ledger tbody tr[data-href]:hover .l-thumb img { filter: none; }
+.sched-note { margin-top: 1.3rem; max-width: 46rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; }
+.sched-note .wr { color: var(--debit); }
+.sched-more { color: var(--credit); text-decoration: none; border-bottom: 1px solid rgba(47, 191, 113, 0.4); }
+.sched-more:hover { border-color: var(--credit); }
+
+/* ================= Work tools drawer (lifted from the homepage) ================= */
+#drawer .ledger td.l-metric { white-space: nowrap; }
+.drawer-note { margin-top: 1.4rem; max-width: 40rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; }
+/* Screen strip: one frame per drawer row, click to enlarge. K.3/K.4 are CSS reconstructions sized in cqw so they scale with the frame */
+.kstrip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(0.8rem, 1.6vw, 1.4rem); margin-top: 2.2rem; }
+.kshot { all: unset; display: block; cursor: zoom-in; min-width: 0; container-type: inline-size; }
+#kv-slot { container-type: inline-size; }
+.kshot:focus-visible { outline: 1px solid var(--credit); outline-offset: 4px; }
+.kshot figure, .kview figure { aspect-ratio: 16 / 10; min-height: 0; overflow: hidden; border: 1px solid var(--rule); background: var(--ink-2); }
+.kshot img, .kview img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+.kshot img { filter: saturate(0.7) contrast(0.98); transition: filter 0.6s ease; }
+.kshot:hover img, .kshot:focus-visible img { filter: none; }
+.k-cap { display: flex; gap: 0.6rem; align-items: baseline; padding-top: 0.7rem; font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-2); text-transform: uppercase; color: var(--paper-faint); }
+.k-cap b { font-weight: 400; color: var(--paper-dim); transition: color 0.3s ease; }
+.kshot:hover .k-cap b, .kshot:focus-visible .k-cap b { color: var(--credit); }
+.k-legend { margin-top: 1.1rem; font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-1); color: var(--paper-faint); line-height: 1.7; }
+figure.kmock { background: #f4f1ea; color: #1c160d; font-family: var(--sans); font-size: 2.3cqw; line-height: 1.35; padding: 1.75em 1.95em; display: flex; flex-direction: column; gap: 1.1em; }
+.kmock .km-row { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.3em; align-items: start; }
+.kmock .km-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--mono); font-size: 0.83em; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(28, 22, 13, 0.6); }
+.kmock .km-tag { color: #9a6a12; }
+.kmock .km-q { align-self: flex-end; max-width: 78%; background: #1c160d; color: #f4f1ea; padding: 0.7em 1.05em; border-radius: 0.7em 0.7em 0.15em 0.7em; }
+.kmock .km-sql { font-family: var(--mono); font-size: 0.74em; background: #fff; border: 1px solid rgba(28, 22, 13, 0.14); padding: 0.95em 1.2em; color: #2b4a3a; white-space: pre; overflow: hidden; }
+.kmock table { width: 100%; border-collapse: collapse; font-size: 0.96em; }
+.kmock th { text-align: left; font-family: var(--mono); font-weight: 400; font-size: 0.77em; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(28, 22, 13, 0.55); padding: 0 0 0.6em; border-bottom: 1px solid rgba(28, 22, 13, 0.2); }
+.kmock td { padding: 0.55em 0; border-bottom: 1px solid rgba(28, 22, 13, 0.1); }
+.kmock td.n, .kmock th.n { text-align: right; font-family: var(--mono); }
+.kmock .km-chips { display: flex; gap: 0.6em; flex-wrap: wrap; }
+.kmock .km-chip { font-family: var(--mono); font-size: 0.74em; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.35em 0.8em; border: 1px solid currentColor; border-radius: 99px; white-space: nowrap; }
+.kmock .km-foot { margin-top: auto; font-family: var(--mono); font-size: 0.74em; letter-spacing: 0.08em; text-transform: uppercase; }
+.kmock .km-chips.km-foot { font-size: 1em; }
+.kmock .c-ok { color: #1f7a4d; } .kmock .c-amb { color: #9a6a12; } .kmock .c-deb { color: #b0443a; } .kmock .c-dim { color: rgba(28, 22, 13, 0.5); }
+#kv-slot figure.kmock { font-size: max(2.3cqw, 12px); }
+@container (max-width: 560px) {
+  #kv-slot figure.kmock { aspect-ratio: auto; }
+  #kv-slot .km-row { grid-template-columns: 1fr; }
+}
+.kview { margin: auto; border: 1px solid var(--rule); background: var(--ink); color: var(--paper); padding: 0; width: min(1100px, calc(100vw - 32px), calc((100dvh - 110px) * 1.6)); max-width: none; max-height: calc(100dvh - 32px); overflow: auto; }
+.kview::backdrop { background: rgba(7, 7, 6, 0.86); }
+.kview .kv-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.7rem 1rem; font-family: var(--mono); font-size: var(--ms-3); letter-spacing: var(--tr-2); text-transform: uppercase; color: var(--paper-dim); border-bottom: 1px solid var(--rule); }
+.kview .kv-close { all: unset; cursor: pointer; color: var(--paper); padding: 0.2rem 0.4rem; }
+.kview .kv-close:focus-visible { outline: 1px solid var(--credit); }
+.kview figure { border: 0; }
+@media (max-width: 1000px) { .kstrip { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 720px) { .kstrip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Phones: the strip becomes a list of full-width tappable rows (thumbnails at 390px were postage stamps) */
+@media (max-width: 720px) {
+  .kstrip { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--rule); }
+  .kshot { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); align-items: center; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid var(--rule); }
+  .kshot .k-cap { padding-top: 0; }
+  .kshot .k-cap b { color: var(--paper); }
+  /* mocks size in cqw of the whole row here, so pin them to the 7.5rem thumbnail instead */
+  .kshot figure.kmock { font-size: calc(7.5rem * 0.023); }
+}
+
+/* ================= Mid-page reach line ================= */
+.reach-line {
+  margin-top: 1.6rem; font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  line-height: 1.45; color: var(--paper-dim); max-width: 36rem;
+}
+.reach-line a { color: var(--credit); text-decoration: none; border-bottom: 1px solid rgba(47, 191, 113, 0.4); transition: border-color 0.3s ease; }
+.reach-line a:hover { border-color: var(--credit); }
+
+
+/* ================= Footer ================= */
+footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 2.5rem; }
+.foot-links a {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--paper-dim); text-decoration: none; border: 1px solid var(--rule); padding: 0.8rem 1.4rem;
+  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+.foot-links a:hover { color: var(--ink); background: var(--credit); border-color: var(--credit); }
+@media (max-width: 480px) { .foot-links a { flex: 1 1 40%; text-align: center; } }
+.foot-sign {
+  margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem 2rem;
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; color: var(--paper-faint); text-transform: uppercase;
+}
+
+/* ================= Reveal + motion prefs ================= */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.9s cubic-bezier(0.23, 1, 0.32, 1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ================= Reveal + motion prefs ================= */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.9s cubic-bezier(0.23, 1, 0.32, 1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+<noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
 </head>
 <body>
-<p>This page moved into the ledger.<br><a href="../index.html#work">Continue to the projects</a></p>
+
+<a class="skip-link" href="#work">Skip to the schedule</a>
+
+<nav id="nav" aria-label="Main">
+  <a class="nav-mark" href="../">Ajay<em>.</em>Sachdev</a>
+  <div class="nav-links">
+    <a href="../">Story</a>
+    <a href="./" aria-current="page">Projects</a>
+    <a href="../#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <span class="nav-fy">FY 2021 TO DATE</span>
+</nav>
+
+<main class="wrap" id="schedule">
+  <header>
+    <p class="crumb reveal"><a href="../">The story</a> / Schedule 1 / Projects under management</p>
+    <h1 class="dossier-h1 reveal">The schedule<em>.</em></h1>
+    <p class="dossier-lede reveal">Ten systems on one ledger. Five public ones I built on my own time, 160,000+ lines between them, and five built at work that the business runs on. Every status is as it really is, and <em>every failure is written down.</em></p>
+  </header>
+
+  <section id="work" class="first">
+    <div class="section-head"><span>The schedule: projects under management</span><span class="right">Note: all built solo</span></div>
+    <table class="ledger">
+      <thead>
+        <tr><th>Ref</th><th>Asset</th><th>Description</th><th>Status</th><th>Carrying value</th></tr>
+      </thead>
+      <tbody>
+        <tr class="reveal" data-href="opspilot.html">
+          <td class="l-ref">01</td>
+          <td class="l-name-cell"><span class="l-name">OpsPilot</span></td>
+          <td class="l-desc">Nobody could find anything in 6,124+ files. An AI that lives in Teams, searches them, pulls live finance data and drafts answers I approve with one click.<span class="l-thumb"><picture><source srcset="../images/card-brain.webp" type="image/webp"><img src="../images/card-brain.png" alt="OpsPilot overview, reconstructed with sample items" loading="lazy" decoding="async"></picture></span></td>
+          <td class="l-status-cell"><span class="l-status"><i></i>Production</span></td>
+          <td class="l-metric">6,124+ docs answering back</td>
+        </tr>
+        <tr class="reveal" data-href="trading-bot.html">
+          <td class="l-ref">02</td>
+          <td class="l-name-cell"><span class="l-name">Trading Bot</span></td>
+          <td class="l-desc">I kept overriding my own trading rules. Four AI agents now rate every setup and hold an absolute veto: 115+ sessions, zero impulsive trades let through.<span class="l-thumb"><picture><source srcset="../images/card-trading.webp" type="image/webp"><img src="../images/card-trading.png" alt="Trading Bot session ledger, reconstructed" loading="lazy" decoding="async"></picture></span></td>
+          <td class="l-status-cell"><span class="l-status amber"><i></i>Paper trading</span></td>
+          <td class="l-metric">0 bad trades</td>
+        </tr>
+        <tr class="reveal" data-href="uni-nation.html">
+          <td class="l-ref">03</td>
+          <td class="l-name-cell"><span class="l-name">Uni-Nation Digital</span></td>
+          <td class="l-desc">Warehouse staff hold fabric rolls in both hands, so stock entry had to work by voice. Website, inventory PWA and Hindi voice entry for the family fabric business, running since 1988.<span class="l-thumb"><picture><source srcset="../images/card-uninat.webp" type="image/webp"><img src="../images/card-uninat.png" alt="Uni-Nation website on desktop and phone" loading="lazy" decoding="async"></picture></span></td>
+          <td class="l-status-cell"><!-- STATUS:uni-nation (A7) --><span class="l-status amber"><i></i>Being repaired</span></td>
+          <td class="l-metric">~$2m tracked</td>
+        </tr>
+        <tr class="reveal" data-href="whatsapp-smart.html">
+          <td class="l-ref">04</td>
+          <td class="l-name-cell"><span class="l-name">WhatsApp Smart</span></td>
+          <td class="l-desc">I wanted to schedule a birthday message and WhatsApp couldn't. A Chrome extension for scheduling, AI replies and summaries. Never launched, and honest about it.<span class="l-thumb"><picture><source srcset="../images/card-whatsapp.webp" type="image/webp"><img src="../images/card-whatsapp.png" alt="WhatsApp Smart extension UI in a browser frame" loading="lazy" decoding="async"></picture></span></td>
+          <td class="l-status-cell"><span class="l-status amber"><i></i>Prototype</span></td>
+          <td class="l-metric">11 features, never launched</td>
+        </tr>
+        <tr class="reveal" data-href="scs-cockpit.html">
+          <td class="l-ref">05</td>
+          <td class="l-name-cell"><span class="l-name">SCS Cockpit</span></td>
+          <td class="l-desc">The exam fails people for generic theory and missed facts. The study engine I built for my own CIMA Strategic Case Study: timed drills, spaced repetition, zero dependencies. I passed.</td>
+          <td class="l-status-cell"><span class="l-status idle"><i></i>Retired, job done</span></td>
+          <td class="l-metric">Passed. ACMA CGMA</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="3">Total: five public systems. Five more built at work, <a class="sched-more" href="#drawer">listed below</a></td><td colspan="2" style="text-align:right">All in production use, or honest about not being</td></tr>
+      </tfoot>
+    </table>
+    <p class="sched-note reveal">The failures are on the books too: every entry carries a <span class="wr">What went wrong</span> note, told straight. <button type="button" class="sched-term" data-term-run="impairments">Run <b>impairments</b> in the terminal</button></p>
+  </section>
+    <p class="sched-note reveal">The failures are on the books too: every public entry carries a <span class="wr">What went wrong</span> note, told straight.</p>
+
+  <section id="drawer">
+    <div class="section-head"><span>Built at Krank</span><span class="right">The tools behind the day job</span></div>
+    <p class="drawer-note reveal">The day job runs on software I built for it. These belong to Krank, so every screen uses dummy data, and the figures are build facts, not business ones.</p>
+    <table class="ledger reveal">
+      <thead><tr><th>Ref</th><th>Tool</th><th>What it does</th><th>Status</th><th>Build fact</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="l-ref">K.1</td>
+          <td class="l-name-cell"><span class="l-name">Expense app</span></td>
+          <td class="l-desc">Card spend sat unjustified for weeks. I built a full expense system: receipt reading, two-stage approval, card sync.</td>
+          <td class="l-status-cell"><span class="l-status"><i></i>In daily use</span></td>
+          <td class="l-metric">52 features / 41 days</td>
+        </tr>
+        <tr>
+          <td class="l-ref">K.2</td>
+          <td class="l-name-cell"><span class="l-name">Proposal builder</span></td>
+          <td class="l-desc">Sales pasted prices from a spreadsheet into a paid template tool. I built a calculator that works out tiered pricing and generates branded proposals.</td>
+          <td class="l-status-cell"><span class="l-status"><i></i>In daily use</span></td>
+          <td class="l-metric">533 tests</td>
+        </tr>
+        <tr>
+          <td class="l-ref">K.3</td>
+          <td class="l-name-cell"><span class="l-name">Ask-the-data bot</span></td>
+          <td class="l-desc">Non-technical staff queued behind engineers for database answers. A Teams bot now writes SQL from plain English, runs it read-only and screens results for personal data.</td>
+          <td class="l-status-cell"><span class="l-status"><i></i>Live</span></td>
+          <td class="l-metric">0 credentials held</td>
+        </tr>
+        <tr>
+          <td class="l-ref">K.4</td>
+          <td class="l-name-cell"><span class="l-name">Ops Monitor</span></td>
+          <td class="l-desc">Contract deadlines were invisible until they renewed themselves. A register with 90/60/30/7-day alerts, plus an ops dashboard.</td>
+          <td class="l-status-cell"><span class="l-status"><i></i>In daily use</span></td>
+          <td class="l-metric">9 systems, 1 dashboard</td>
+        </tr>
+        <tr>
+          <td class="l-ref">K.5</td>
+          <td class="l-name-cell"><span class="l-name">Contract generator</span></td>
+          <td class="l-desc">Order forms were hand-edited and signers could alter commercial terms. Teams form to signed document, pricing locked into the text, two approvals before the customer sees it.</td>
+          <td class="l-status-cell"><span class="l-status"><i></i>Live</span></td>
+          <td class="l-metric">2 doc types / 8 days</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="3">Five tools built at Krank, in use inside the business</td><td colspan="2" style="text-align:right">Dummy data on every screen</td></tr>
+      </tfoot>
+    </table>
+    <div class="kstrip">
+      <button type="button" class="kshot reveal" aria-label="Enlarge K.1, expense app dashboard">
+        <figure><picture><source srcset="../images/krank-expense.webp" type="image/webp"><img src="../images/krank-expense.png" alt="Expense app dashboard for a seeded test employee: VAT, mileage, claims in flight and card payments awaiting receipts" width="1440" height="900" loading="lazy" decoding="async"></picture></figure>
+        <span class="k-cap">K.1 <b>Expense app</b></span>
+      </button>
+      <button type="button" class="kshot reveal" aria-label="Enlarge K.2, proposal builder">
+        <figure><picture><source srcset="../images/krank-proposal.webp" type="image/webp"><img src="../images/krank-proposal.png" alt="Proposal builder: contact form and section list beside a live Inspeq proposal preview for a fictional customer" width="1600" height="1000" loading="lazy" decoding="async"></picture></figure>
+        <span class="k-cap">K.2 <b>Proposal builder</b></span>
+      </button>
+      <button type="button" class="kshot reveal" aria-label="Enlarge K.3, ask-the-data bot reconstruction">
+        <figure class="kmock" role="img" aria-label="Reconstruction: a plain-English question becomes read-only SQL, results are screened for personal data before they are shown">
+          <div class="km-top"><span>Ask the data</span><span class="km-tag">Sample data</span></div>
+          <div class="km-q">Demo accounts created per month this quarter?</div>
+          <div class="km-row">
+            <div class="km-sql">SELECT date_trunc('month', created_at),
+       count(*)
+FROM demo_accounts
+WHERE created_at &gt;= '2026-07-01'
+GROUP BY 1 ORDER BY 1;</div>
+            <table><thead><tr><th>Month</th><th class="n">Accounts</th></tr></thead>
+              <tbody><tr><td>July</td><td class="n">12</td></tr><tr><td>August</td><td class="n">15</td></tr><tr><td>September</td><td class="n">9</td></tr></tbody></table>
+          </div>
+          <div class="km-chips km-foot"><span class="km-chip c-ok">Read-only</span><span class="km-chip c-ok">Personal data: none</span></div>
+        </figure>
+        <span class="k-cap">K.3 <b>Ask-the-data bot</b></span>
+      </button>
+      <button type="button" class="kshot reveal" aria-label="Enlarge K.4, Ops Monitor reconstruction">
+        <figure class="kmock" role="img" aria-label="Reconstruction: a renewals register where each contract carries a 90, 60, 30 or 7-day alert band">
+          <div class="km-top"><span>Renewals register</span><span class="km-tag">Sample data</span></div>
+          <table><thead><tr><th>Contract</th><th class="n">Renews in</th><th class="n">Alert</th></tr></thead>
+            <tbody>
+              <tr><td>Sample: CRM seats</td><td class="n">7 days</td><td class="n"><span class="km-chip c-deb">7-day</span></td></tr>
+              <tr><td>Sample: cloud hosting</td><td class="n">29 days</td><td class="n"><span class="km-chip c-amb">30-day</span></td></tr>
+              <tr><td>Sample: design licences</td><td class="n">60 days</td><td class="n"><span class="km-chip c-amb">60-day</span></td></tr>
+              <tr><td>Sample: payroll service</td><td class="n">89 days</td><td class="n"><span class="km-chip c-dim">90-day</span></td></tr>
+              <tr><td>Sample: office lease</td><td class="n">212 days</td><td class="n"><span class="km-chip c-ok">Clear</span></td></tr>
+            </tbody></table>
+          <div class="km-foot c-dim">Alerts at 90, 60, 30 and 7 days before renewal</div>
+        </figure>
+        <span class="k-cap">K.4 <b>Ops Monitor</b></span>
+      </button>
+      <button type="button" class="kshot reveal" aria-label="Enlarge K.5, contract signing flow">
+        <figure><picture><source srcset="../images/krank-contract.webp" type="image/webp"><img src="../images/krank-contract.png" alt="Automation canvas: a signing event triggers a condition that routes the signed document onward" width="919" height="575" loading="lazy" decoding="async"></picture></figure>
+        <span class="k-cap">K.5 <b>Contract generator</b></span>
+      </button>
+    </div>
+    <p class="k-legend reveal">K.1, K.2, K.5: real screens, test accounts and invented customers. K.3, K.4: reconstructions of the real tools, sample data. Open any frame to enlarge it.</p>
+    <dialog class="kview" id="kview" aria-label="Enlarged screen">
+      <div class="kv-bar"><span id="kv-title"></span><button type="button" class="kv-close" aria-label="Close">Close [Esc]</button></div>
+      <div id="kv-slot"></div>
+    </dialog>
+  </section>
+
+  <section id="reach">
+    <div class="section-head"><span>Want the detail behind any of these?</span><span class="right">Correspondence</span></div>
+    <p class="reach-line reveal">Happy to walk through how any of these were built. <a href="mailto:ajay@ajaysachdev.com?subject=Re%3A%20the%20ledger">Email me</a>, or find me on <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+  </section>
+</main>
+
+<footer class="wrap" id="contact">
+  <div class="section-head"><span>Closing entry</span><span class="right">Correspondence</span></div>
+  <div class="foot-links reveal">
+    <a href="../">Back to the story</a>
+    <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:ajay@ajaysachdev.com?subject=Re%3A%20the%20ledger">Email</a>
+  </div>
+  <div class="foot-sign">
+    <span>Prepared without audit fees. Audited by production.</span>
+    <span>Ajay Sachdev, 2026</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  /* Analytics: GoatCounter (production only, no cookies, no PII) */
+  if (location.hostname === 'ajaysachdev.com' || location.hostname === 'www.ajaysachdev.com') {
+    var gc = document.createElement('script');
+    gc.async = true;
+    gc.src = 'https://gc.zgo.at/count.js';
+    gc.setAttribute('data-goatcounter', 'https://ajaysachdev.goatcounter.com/count');
+    document.head.appendChild(gc);
+  }
+  var tracked = {};
+  function track(name) {
+    if (tracked[name]) return;
+    tracked[name] = true;
+    if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, event: true });
+  }
+  window.addEventListener('load', function () { setTimeout(function () { track('projects-view'); }, 1500); });
+  /* Reveals */
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reveals = document.querySelectorAll('.reveal');
+  if (reduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+  /* Schedule rows open their entry; the name morphs into the case-page title (shared view-transition name) */
+  document.querySelectorAll('tr[data-href]').forEach(function (row) {
+    function go() {
+      var n = row.querySelector('.l-name');
+      if (n) n.style.viewTransitionName = 'entry-title';
+      location.href = row.dataset.href;
+    }
+    row.addEventListener('click', function (e) { if (!e.target.closest('a')) go(); });
+    row.setAttribute('tabindex', '0');
+    row.setAttribute('role', 'link');
+    row.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+  /* Drawer reached at all: one event per visit */
+  var drawer = document.getElementById('drawer');
+  if (drawer && 'IntersectionObserver' in window) {
+    var dio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { track('drawer-open'); dio.disconnect(); } }, { threshold: 0.25 });
+    dio.observe(drawer);
+  }
+  /* Work-tools strip: enlarge a frame in a native modal dialog */
+  (function () {
+    var dlg = document.getElementById('kview');
+    if (!dlg || typeof dlg.showModal !== 'function') return;
+    var slot = document.getElementById('kv-slot');
+    var title = document.getElementById('kv-title');
+    document.querySelectorAll('.kshot').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var fig = b.querySelector('figure').cloneNode(true);
+        fig.querySelectorAll('img').forEach(function (i) { i.loading = 'eager'; });
+        slot.replaceChildren(fig);
+        title.textContent = b.querySelector('.k-cap').textContent;
+        dlg.showModal();
+        /* Own history entry: browser Back closes the frame instead of leaving the site */
+        history.pushState({ kview: true }, '');
+        track('screen-dialog');
+      });
+    });
+    dlg.querySelector('.kv-close').addEventListener('click', function () { dlg.close(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('close', function () { if (history.state && history.state.kview) history.back(); });
+    addEventListener('popstate', function () { if (dlg.open) dlg.close(); });
+  })();
+
+})();
+</script>
 </body>
 </html>

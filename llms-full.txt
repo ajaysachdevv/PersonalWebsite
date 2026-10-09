@@ -76,5 +76,6 @@ Contract drafting, NDAs, SoWs, Cost negotiation, Supplier agreements
 
 ## Contact
 - Web: https://ajaysachdev.com
+- Projects: https://ajaysachdev.com/projects/ (the full schedule: five public projects with status and a What went wrong note each, plus five tools built at work, shown with dummy data)
 - LinkedIn: https://www.linkedin.com/in/ajayy-sachdev/
 - Email: ajay@ajaysachdev.com

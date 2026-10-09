@@ -248,9 +248,9 @@ html.tb-on:not(.hero-go) .open-cue, html.tb-on:not(.hero-go) .open-skip { animat
 }
 body.scene-mill .nav-pos { color: rgba(28, 22, 13, 0.72); background: rgba(239, 232, 213, 0.92); border-color: rgba(28, 22, 13, 0.16); }
 
-/* ================= v4 Built at Krank drawer ================= */
-#drawer .ledger td.l-metric { white-space: nowrap; }
-.drawer-note { margin-top: 1.4rem; max-width: 40rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; }
+/* ================= v4 schedule notes ================= */
+.sched-more { color: var(--credit); text-decoration: none; border-bottom: 1px solid rgba(47, 191, 113, 0.4); }
+.sched-more:hover { border-color: var(--credit); }
 /* Schedule impairments line: puts "publishes his own failures" on the homepage, not only on case pages */
 .sched-note { margin-top: 1.3rem; max-width: 46rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; }
 .sched-note .wr { color: var(--debit); }
@@ -258,47 +258,6 @@ body.scene-mill .nav-pos { color: rgba(28, 22, 13, 0.72); background: rgba(239, 
 .sched-term b { color: var(--paper); font-weight: 500; text-transform: none; letter-spacing: 0; }
 .sched-term:hover, .sched-term:focus-visible { color: var(--credit); border-color: var(--credit); }
 .sched-term:focus-visible { outline: 2px solid var(--credit); outline-offset: 3px; }
-/* Screen strip: one frame per drawer row, click to enlarge. K.3/K.4 are CSS reconstructions sized in cqw so they scale with the frame */
-.kstrip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(0.8rem, 1.6vw, 1.4rem); margin-top: 2.2rem; }
-.kshot { all: unset; display: block; cursor: zoom-in; min-width: 0; container-type: inline-size; }
-#kv-slot { container-type: inline-size; }
-.kshot:focus-visible { outline: 1px solid var(--credit); outline-offset: 4px; }
-.kshot figure, .kview figure { aspect-ratio: 16 / 10; min-height: 0; overflow: hidden; border: 1px solid var(--rule); background: var(--ink-2); }
-.kshot img, .kview img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
-.kshot img { filter: saturate(0.7) contrast(0.98); transition: filter 0.6s ease; }
-.kshot:hover img, .kshot:focus-visible img { filter: none; }
-.k-cap { display: flex; gap: 0.6rem; align-items: baseline; padding-top: 0.7rem; font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-2); text-transform: uppercase; color: var(--paper-faint); }
-.k-cap b { font-weight: 400; color: var(--paper-dim); transition: color 0.3s ease; }
-.kshot:hover .k-cap b, .kshot:focus-visible .k-cap b { color: var(--credit); }
-.k-legend { margin-top: 1.1rem; font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-1); color: var(--paper-faint); line-height: 1.7; }
-figure.kmock { background: #f4f1ea; color: #1c160d; font-family: var(--sans); font-size: 2.3cqw; line-height: 1.35; padding: 1.75em 1.95em; display: flex; flex-direction: column; gap: 1.1em; }
-.kmock .km-row { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.3em; align-items: start; }
-.kmock .km-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--mono); font-size: 0.83em; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(28, 22, 13, 0.6); }
-.kmock .km-tag { color: #9a6a12; }
-.kmock .km-q { align-self: flex-end; max-width: 78%; background: #1c160d; color: #f4f1ea; padding: 0.7em 1.05em; border-radius: 0.7em 0.7em 0.15em 0.7em; }
-.kmock .km-sql { font-family: var(--mono); font-size: 0.74em; background: #fff; border: 1px solid rgba(28, 22, 13, 0.14); padding: 0.95em 1.2em; color: #2b4a3a; white-space: pre; overflow: hidden; }
-.kmock table { width: 100%; border-collapse: collapse; font-size: 0.96em; }
-.kmock th { text-align: left; font-family: var(--mono); font-weight: 400; font-size: 0.77em; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(28, 22, 13, 0.55); padding: 0 0 0.6em; border-bottom: 1px solid rgba(28, 22, 13, 0.2); }
-.kmock td { padding: 0.55em 0; border-bottom: 1px solid rgba(28, 22, 13, 0.1); }
-.kmock td.n, .kmock th.n { text-align: right; font-family: var(--mono); }
-.kmock .km-chips { display: flex; gap: 0.6em; flex-wrap: wrap; }
-.kmock .km-chip { font-family: var(--mono); font-size: 0.74em; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.35em 0.8em; border: 1px solid currentColor; border-radius: 99px; white-space: nowrap; }
-.kmock .km-foot { margin-top: auto; font-family: var(--mono); font-size: 0.74em; letter-spacing: 0.08em; text-transform: uppercase; }
-.kmock .km-chips.km-foot { font-size: 1em; }
-.kmock .c-ok { color: #1f7a4d; } .kmock .c-amb { color: #9a6a12; } .kmock .c-deb { color: #b0443a; } .kmock .c-dim { color: rgba(28, 22, 13, 0.5); }
-#kv-slot figure.kmock { font-size: max(2.3cqw, 12px); }
-@container (max-width: 560px) {
-  #kv-slot figure.kmock { aspect-ratio: auto; }
-  #kv-slot .km-row { grid-template-columns: 1fr; }
-}
-.kview { margin: auto; border: 1px solid var(--rule); background: var(--ink); color: var(--paper); padding: 0; width: min(1100px, calc(100vw - 32px), calc((100dvh - 110px) * 1.6)); max-width: none; max-height: calc(100dvh - 32px); overflow: auto; }
-.kview::backdrop { background: rgba(7, 7, 6, 0.86); }
-.kview .kv-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.7rem 1rem; font-family: var(--mono); font-size: var(--ms-3); letter-spacing: var(--tr-2); text-transform: uppercase; color: var(--paper-dim); border-bottom: 1px solid var(--rule); }
-.kview .kv-close { all: unset; cursor: pointer; color: var(--paper); padding: 0.2rem 0.4rem; }
-.kview .kv-close:focus-visible { outline: 1px solid var(--credit); }
-.kview figure { border: 0; }
-@media (max-width: 1000px) { .kstrip { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 720px) { .kstrip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* ================= v4 footer terminal prompt (brief 3.3) ================= */
 .foot-prompt {
@@ -765,21 +724,6 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
   .ledger tfoot td { display: block; border: none; text-align: left !important; }
 }
 
-/* ================= Exhibits ================= */
-.exhibits { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.2rem, 3vw, 2.5rem); margin-top: 2.5rem; }
-.exhibit { text-decoration: none; display: block; }
-.exhibit figure { aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid var(--rule); background: var(--ink-2); }
-.exhibit img {
-  width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;
-  filter: saturate(0.7) contrast(0.98); transform: scale(1.01);
-  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease;
-}
-.exhibit:hover img { transform: scale(1.05); filter: saturate(1) contrast(1); }
-.exhibit figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.9rem 0.2rem 0; }
-.exhibit .cap-name { font-family: var(--serif); font-size: 1.35rem; transition: color 0.3s ease, border-color 0.3s ease; border-bottom: 1px solid rgba(236, 231, 220, 0.3); padding-bottom: 2px; }
-.exhibit:hover .cap-name { font-style: italic; color: var(--credit); border-bottom-color: var(--credit); }
-.exhibit .cap-ref { font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-2); color: var(--paper-faint); text-transform: uppercase; }
-@media (max-width: 720px) { .exhibits { grid-template-columns: 1fr; } }
 
 /* ================= About / Notes ================= */
 .about { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); margin-top: 2.5rem; }
@@ -873,7 +817,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 
 /* ================= Custom cursor (fine pointers, motion allowed) ================= */
 html.has-cur, html.has-cur a, html.has-cur button, html.has-cur tr[data-href],
-html.has-cur .rail span, html.has-cur .exhibit { cursor: none; }
+html.has-cur .rail span { cursor: none; }
 html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
 #cur {
   position: fixed; left: 0; top: 0; z-index: 250; pointer-events: none; opacity: 0;
@@ -903,7 +847,6 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
   .section-head { border-top-color: #1c160d; }
   .ledger td, .ledger th, .notes li, .op-fig { border-color: rgba(28, 22, 13, 0.25) !important; }
   .reveal, .jrnl span, .open-sub, .open h1 .row span { opacity: 1 !important; transform: none !important; animation: none !important; }
-  .exhibits, .kstrip, .k-legend { display: none; }
   .foot-links a { border-color: rgba(28, 22, 13, 0.4); color: #1c160d; }
   a { text-decoration: none; }
 }
@@ -935,7 +878,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
   <a class="nav-mark" href="#top">Ajay<em>.</em>Sachdev</a>
   <div class="nav-links">
     <a href="#ch1">Story</a>
-    <a href="#work">Projects</a>
+    <a href="projects/">Projects</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </div>
@@ -1377,7 +1320,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
         <tr><th>Ref</th><th>Asset</th><th>Description</th><th>Status</th><th>Carrying value</th></tr>
       </thead>
       <tbody>
-        <tr class="reveal" data-href="projects/ajay-brain.html">
+        <tr class="reveal" data-href="projects/opspilot.html">
           <td class="l-ref">01</td>
           <td class="l-name-cell"><span class="l-name">OpsPilot</span></td>
           <td class="l-desc">The AI from chapter 2. Lives in Teams, reads 6,124+ documents, pulls live finance data, drafts answers I approve with one click.</td>
@@ -1414,109 +1357,10 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
         </tr>
       </tbody>
       <tfoot>
-        <tr><td colspan="3">Total: five public systems. Five more built at work, listed below</td><td colspan="2" style="text-align:right">All in production use, or honest about not being</td></tr>
+        <tr><td colspan="3">Total: five public systems. Five more built at work, <a class="sched-more" href="projects/#drawer">on the full schedule</a></td><td colspan="2" style="text-align:right">All in production use, or honest about not being</td></tr>
       </tfoot>
     </table>
     <p class="sched-note reveal">The failures are on the books too: every entry carries a <span class="wr">What went wrong</span> note, told straight. <button type="button" class="sched-term" data-term-run="impairments">Run <b>impairments</b> in the terminal</button></p>
-  </section>
-
-  <section id="drawer">
-    <div class="section-head"><span>Built at Krank</span><span class="right">The tools behind the day job</span></div>
-    <p class="drawer-note reveal">The day job runs on software I built for it. These belong to Krank, so every screen uses dummy data, and the figures are build facts, not business ones.</p>
-    <table class="ledger reveal">
-      <thead><tr><th>Ref</th><th>Tool</th><th>What it does</th><th>Status</th><th>Build fact</th></tr></thead>
-      <tbody>
-        <tr>
-          <td class="l-ref">K.1</td>
-          <td class="l-name-cell"><span class="l-name">Expense app</span></td>
-          <td class="l-desc">Card spend sat unjustified for weeks. I built a full expense system: receipt reading, two-stage approval, card sync.</td>
-          <td class="l-status-cell"><span class="l-status"><i></i>In daily use</span></td>
-          <td class="l-metric">52 features / 41 days</td>
-        </tr>
-        <tr>
-          <td class="l-ref">K.2</td>
-          <td class="l-name-cell"><span class="l-name">Proposal builder</span></td>
-          <td class="l-desc">Sales pasted prices from a spreadsheet into a paid template tool. I built a calculator that works out tiered pricing and generates branded proposals.</td>
-          <td class="l-status-cell"><span class="l-status"><i></i>In daily use</span></td>
-          <td class="l-metric">533 tests</td>
-        </tr>
-        <tr>
-          <td class="l-ref">K.3</td>
-          <td class="l-name-cell"><span class="l-name">Ask-the-data bot</span></td>
-          <td class="l-desc">Non-technical staff queued behind engineers for database answers. A Teams bot now writes SQL from plain English, runs it read-only and screens results for personal data.</td>
-          <td class="l-status-cell"><span class="l-status"><i></i>Live</span></td>
-          <td class="l-metric">0 credentials held</td>
-        </tr>
-        <tr>
-          <td class="l-ref">K.4</td>
-          <td class="l-name-cell"><span class="l-name">Ops Monitor</span></td>
-          <td class="l-desc">Contract deadlines were invisible until they renewed themselves. A register with 90/60/30/7-day alerts, plus an ops dashboard.</td>
-          <td class="l-status-cell"><span class="l-status"><i></i>In daily use</span></td>
-          <td class="l-metric">9 systems, 1 dashboard</td>
-        </tr>
-        <tr>
-          <td class="l-ref">K.5</td>
-          <td class="l-name-cell"><span class="l-name">Contract generator</span></td>
-          <td class="l-desc">Order forms were hand-edited and signers could alter commercial terms. Teams form to signed document, pricing locked into the text, two approvals before the customer sees it.</td>
-          <td class="l-status-cell"><span class="l-status"><i></i>Live</span></td>
-          <td class="l-metric">2 doc types / 8 days</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr><td colspan="3">Five tools built at Krank, in use inside the business</td><td colspan="2" style="text-align:right">Dummy data on every screen</td></tr>
-      </tfoot>
-    </table>
-    <div class="kstrip">
-      <button type="button" class="kshot reveal" aria-label="Enlarge K.1, expense app dashboard">
-        <figure><picture><source srcset="images/krank-expense.webp" type="image/webp"><img src="images/krank-expense.png" alt="Expense app dashboard for a seeded test employee: VAT, mileage, claims in flight and card payments awaiting receipts" width="1440" height="900" loading="lazy" decoding="async"></picture></figure>
-        <span class="k-cap">K.1 <b>Expense app</b></span>
-      </button>
-      <button type="button" class="kshot reveal" aria-label="Enlarge K.2, proposal builder">
-        <figure><picture><source srcset="images/krank-proposal.webp" type="image/webp"><img src="images/krank-proposal.png" alt="Proposal builder: contact form and section list beside a live Inspeq proposal preview for a fictional customer" width="1600" height="1000" loading="lazy" decoding="async"></picture></figure>
-        <span class="k-cap">K.2 <b>Proposal builder</b></span>
-      </button>
-      <button type="button" class="kshot reveal" aria-label="Enlarge K.3, ask-the-data bot reconstruction">
-        <figure class="kmock" role="img" aria-label="Reconstruction: a plain-English question becomes read-only SQL, results are screened for personal data before they are shown">
-          <div class="km-top"><span>Ask the data</span><span class="km-tag">Sample data</span></div>
-          <div class="km-q">Demo accounts created per month this quarter?</div>
-          <div class="km-row">
-            <div class="km-sql">SELECT date_trunc('month', created_at),
-       count(*)
-FROM demo_accounts
-WHERE created_at &gt;= '2026-07-01'
-GROUP BY 1 ORDER BY 1;</div>
-            <table><thead><tr><th>Month</th><th class="n">Accounts</th></tr></thead>
-              <tbody><tr><td>July</td><td class="n">12</td></tr><tr><td>August</td><td class="n">15</td></tr><tr><td>September</td><td class="n">9</td></tr></tbody></table>
-          </div>
-          <div class="km-chips km-foot"><span class="km-chip c-ok">Read-only</span><span class="km-chip c-ok">Personal data: none</span></div>
-        </figure>
-        <span class="k-cap">K.3 <b>Ask-the-data bot</b></span>
-      </button>
-      <button type="button" class="kshot reveal" aria-label="Enlarge K.4, Ops Monitor reconstruction">
-        <figure class="kmock" role="img" aria-label="Reconstruction: a renewals register where each contract carries a 90, 60, 30 or 7-day alert band">
-          <div class="km-top"><span>Renewals register</span><span class="km-tag">Sample data</span></div>
-          <table><thead><tr><th>Contract</th><th class="n">Renews in</th><th class="n">Alert</th></tr></thead>
-            <tbody>
-              <tr><td>Sample: CRM seats</td><td class="n">7 days</td><td class="n"><span class="km-chip c-deb">7-day</span></td></tr>
-              <tr><td>Sample: cloud hosting</td><td class="n">29 days</td><td class="n"><span class="km-chip c-amb">30-day</span></td></tr>
-              <tr><td>Sample: design licences</td><td class="n">60 days</td><td class="n"><span class="km-chip c-amb">60-day</span></td></tr>
-              <tr><td>Sample: payroll service</td><td class="n">89 days</td><td class="n"><span class="km-chip c-dim">90-day</span></td></tr>
-              <tr><td>Sample: office lease</td><td class="n">212 days</td><td class="n"><span class="km-chip c-ok">Clear</span></td></tr>
-            </tbody></table>
-          <div class="km-foot c-dim">Alerts at 90, 60, 30 and 7 days before renewal</div>
-        </figure>
-        <span class="k-cap">K.4 <b>Ops Monitor</b></span>
-      </button>
-      <button type="button" class="kshot reveal" aria-label="Enlarge K.5, contract signing flow">
-        <figure><picture><source srcset="images/krank-contract.webp" type="image/webp"><img src="images/krank-contract.png" alt="Automation canvas: a signing event triggers a condition that routes the signed document onward" width="919" height="575" loading="lazy" decoding="async"></picture></figure>
-        <span class="k-cap">K.5 <b>Contract generator</b></span>
-      </button>
-    </div>
-    <p class="k-legend reveal">K.1, K.2, K.5: real screens, test accounts and invented customers. K.3, K.4: reconstructions of the real tools, sample data. Click any frame to enlarge.</p>
-    <dialog class="kview" id="kview" aria-label="Enlarged screen">
-      <div class="kv-bar"><span id="kv-title"></span><button type="button" class="kv-close" aria-label="Close">Close [Esc]</button></div>
-      <div id="kv-slot"></div>
-    </dialog>
   </section>
 
   <section id="operating">
@@ -1529,28 +1373,6 @@ GROUP BY 1 ORDER BY 1;</div>
       <div class="op-fig reveal"><span class="op-num">65<i>%</i></span><span class="op-lab">cut from a core platform's cost by working the numbers</span></div>
       <div class="op-fig reveal"><span class="op-num">26<i>to</i>3</span><span class="op-lab">page contract redesign: six-month stalls became one-week signings</span></div>
       <div class="op-fig reveal"><span class="op-num">7</span><span class="op-lab">multi-currency accounts, GBP USD PKR</span></div>
-    </div>
-  </section>
-
-  <section id="exhibits">
-    <div class="section-head"><span>Supporting exhibits</span><span class="right">Click to inspect</span></div>
-    <div class="exhibits">
-      <a class="exhibit reveal" href="projects/ajay-brain.html">
-        <figure><picture><source srcset="images/card-brain.webp" type="image/webp"><img src="images/card-brain.png" alt="OpsPilot overview, reconstructed with sample items: 6,124+ documents indexed, 50 of 50 on the retrieval suite, 43 features, drafts waiting for approval" loading="lazy" decoding="async"></picture></figure>
-        <figcaption><span class="cap-name">OpsPilot</span><span class="cap-ref">Exhibit A / AI operations</span></figcaption>
-      </a>
-      <a class="exhibit reveal" href="projects/trading-bot.html">
-        <figure><picture><source srcset="images/card-trading.webp" type="image/webp"><img src="images/card-trading.png" alt="Trading Bot session ledger, reconstructed: 115+ sessions, 0 impulsive trades, GBP 750 hard cap, a walk-forward backtest that did not make the case for going live, and a sample session ending in no trade" loading="lazy" decoding="async"></picture></figure>
-        <figcaption><span class="cap-name">Trading Bot</span><span class="cap-ref">Exhibit B / Multi-agent AI</span></figcaption>
-      </a>
-      <a class="exhibit reveal" href="projects/uni-nation.html">
-        <figure><picture><source srcset="images/card-uninat.webp" type="image/webp"><img src="images/card-uninat.png" alt="Uni-Nation website on desktop and phone" loading="lazy" decoding="async"></picture></figure>
-        <figcaption><span class="cap-name">Uni-Nation Digital</span><span class="cap-ref">Exhibit C / Family business</span></figcaption>
-      </a>
-      <a class="exhibit reveal" href="projects/whatsapp-smart.html">
-        <figure><picture><source srcset="images/card-whatsapp.webp" type="image/webp"><img src="images/card-whatsapp.png" alt="WhatsApp Smart extension UI in a browser frame" loading="lazy" decoding="async"></picture></figure>
-        <figcaption><span class="cap-name">WhatsApp Smart</span><span class="cap-ref">Exhibit D / Chrome extension</span></figcaption>
-      </a>
     </div>
   </section>
 
@@ -1662,38 +1484,6 @@ GROUP BY 1 ORDER BY 1;</div>
     });
   }
 
-  /* Exhibit cards join the shared-element transition */
-  document.querySelectorAll('.exhibit').forEach(function (a) {
-    a.addEventListener('click', function () {
-      var n = a.querySelector('.cap-name');
-      if (n) n.style.viewTransitionName = 'entry-title';
-    });
-  });
-
-  /* Built at Krank strip: enlarge a frame in a native modal dialog */
-  (function () {
-    var dlg = document.getElementById('kview');
-    if (!dlg || typeof dlg.showModal !== 'function') return;
-    var slot = document.getElementById('kv-slot');
-    var title = document.getElementById('kv-title');
-    document.querySelectorAll('.kshot').forEach(function (b) {
-      b.addEventListener('click', function () {
-        var fig = b.querySelector('figure').cloneNode(true);
-        fig.querySelectorAll('img').forEach(function (i) { i.loading = 'eager'; });
-        slot.replaceChildren(fig);
-        title.textContent = b.querySelector('.k-cap').textContent;
-        dlg.showModal();
-        /* Own history entry: browser Back closes the frame instead of leaving the site */
-        history.pushState({ kview: true }, '');
-        track('krank-shot-opened');
-      });
-    });
-    dlg.querySelector('.kv-close').addEventListener('click', function () { dlg.close(); });
-    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
-    dlg.addEventListener('close', function () { if (history.state && history.state.kview) history.back(); });
-    addEventListener('popstate', function () { if (dlg.open) dlg.close(); });
-  })();
-
   /* Contact intent */
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a');
@@ -1776,7 +1566,7 @@ GROUP BY 1 ORDER BY 1;</div>
     addEventListener('pointermove', function (e) {
       tx = e.clientX; ty = e.clientY;
       cur.style.opacity = '1';
-      var t = e.target.closest && e.target.closest('a, button, tr[data-href], .rail span, .exhibit, input[type="range"]');
+      var t = e.target.closest && e.target.closest('a, button, tr[data-href], .rail span, input[type="range"]');
       cur.classList.toggle('ring', !!t);
     }, { passive: true });
     document.documentElement.addEventListener('mouseleave', function () { cur.style.opacity = '0'; });
@@ -2447,7 +2237,7 @@ GROUP BY 1 ORDER BY 1;</div>
     var pos = document.getElementById('nav-pos');
     if (!pos) return;
     var marks = [['top', 'Opening'], ['ch1', 'Ch.1 Origins'], ['ch2', 'Ch.2 The office'], ['ch3', 'Ch.3 The desk'], ['ch4', 'Ch.4 The mill'],
-      ['work', 'Schedule'], ['drawer', 'Built at Krank'], ['operating', 'The day job'], ['exhibits', 'Exhibits'], ['about', 'The operator'], ['contact', 'Closing entry']]
+      ['work', 'Schedule'], ['operating', 'The day job'], ['about', 'The operator'], ['contact', 'Closing entry']]
       .map(function (m) { return [document.getElementById(m[0]), m[1]]; }).filter(function (m) { return m[0]; });
     var entryRows = document.querySelectorAll('#work tbody tr');
     var ticking = false, last = '';
@@ -2472,7 +2262,7 @@ GROUP BY 1 ORDER BY 1;</div>
   var input = document.getElementById('term-cmd');
   var opened = false;
   var PROJECTS = {
-    'opspilot': { page: 'projects/ajay-brain.html', line: 'opspilot/        production    95,000+ lines, 43 features' },
+    'opspilot': { page: 'projects/opspilot.html', line: 'opspilot/        production    95,000+ lines, 43 features' },
     'trading-bot': { page: 'projects/trading-bot.html', line: 'trading-bot/     paper-mode    4 agents, 115+ sessions, 0 bad trades' },
     'uni-nation': { page: 'projects/uni-nation.html', line: 'uni-nation/      repairing     ~$2m sales data, Hindi voice entry' }, /* STATUS:uni-nation (A7) */
     'whatsapp-smart': { page: 'projects/whatsapp-smart.html', line: 'whatsapp-smart/  prototype     11 features, privacy-first' },
@@ -2489,7 +2279,7 @@ GROUP BY 1 ORDER BY 1;</div>
   function echo(cmd) { tprint('<span class="in">visitor@ajaysachdev.com:~$</span> ' + esc(cmd)); }
   var COMMANDS = {
     help: function () {
-      tprint('<b>Available commands</b><br>ls projects        list the schedule of assets<br>cat about          who prepared these statements<br>status             system status board<br>uptime             how long the books have been open<br>log                the audit trail of this site<br>basis              basis of preparation (how it is built)<br>open &lt;project&gt;     inspect a case study<br>schedule &lt;n&gt;       read entry n off the schedule (1 to 5)<br>impairments        what went wrong, written down<br>cgma               the qualification<br>guardrails         how my AI tools are kept on a leash<br>contact            correspondence details<br>clear              wipe the ledger<br>exit               close the terminal');
+      tprint('<b>Available commands</b><br>ls projects        list the schedule of assets<br>cat about          who prepared these statements<br>status             system status board<br>uptime             how long the books have been open<br>log                the audit trail of this site<br>basis              basis of preparation (how it is built)<br>open &lt;project&gt;     inspect a case study<br>schedule &lt;n&gt;       read entry n off the schedule (1 to 5)<br>projects           open the full schedule page<br>impairments        what went wrong, written down<br>cgma               the qualification<br>guardrails         how my AI tools are kept on a leash<br>contact            correspondence details<br>clear              wipe the ledger<br>exit               close the terminal');
     },
     basis: function () {
       tprint('<b>Basis of preparation</b><br>One hand-written HTML file per page. No framework, no build step, no npm.<br>Type: Instrument Serif, Inter, JetBrains Mono. Subset and self-hosted.<br>Motion: GSAP + ScrollTrigger + Lenis, vendored, SRI-pinned.<br>Analytics: GoatCounter. No cookies, nothing personal collected.<br>Figures: verified against production, or honestly marked approximate.<br>Also on file: <b>humans.txt</b>, <b>llms.txt</b>, and a 404 that balances.');
@@ -2499,7 +2289,7 @@ GROUP BY 1 ORDER BY 1;</div>
     },
     ls: function (arg) {
       if (arg && arg.indexOf('project') !== 0) { tprint('ls: cannot access \'' + esc(arg) + '\': only projects/ here'); return; }
-      tprint(Object.keys(PROJECTS).map(function (k) { return PROJECTS[k].line; }).join('<br>') + '<br><b>5 directories, all built solo.</b> five more built at work: scroll to the drawer.');
+      tprint(Object.keys(PROJECTS).map(function (k) { return PROJECTS[k].line; }).join('<br>') + '<br><b>5 directories, all built solo.</b> five more built at work: type projects for the full schedule.');
     },
     cat: function (arg) {
       if (arg !== 'about' && arg !== 'about.txt') { tprint('cat: ' + esc(arg || '') + ': no such file. try: cat about'); return; }
@@ -2518,6 +2308,11 @@ GROUP BY 1 ORDER BY 1;</div>
       if (!p.page) { tprint('scs-cockpit has no public exhibit. it did its job quietly.'); return; }
       tprint('opening ' + arg + '...');
       setTimeout(function () { location.href = p.page; }, 450);
+    },
+    projects: function () {
+      track('terminal-projects');
+      tprint('opening the full schedule: five public entries, five built at work...');
+      setTimeout(function () { location.href = 'projects/'; }, 450);
     },
     contact: function () { tprint('email      ajay@ajaysachdev.com<br>linkedin   linkedin.com/in/ajayy-sachdev'); },
     clear: function () { tbody.innerHTML = ''; },

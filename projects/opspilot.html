@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SCS Cockpit | Entry 05 | Ajay Sachdev</title>
-<meta name="description" content="Case study: the study engine I built for my own CIMA Strategic Case Study, aimed at the exam's three named ways to fail. 11,584 lines, zero runtime dependencies. Passed. Retired, job done.">
-<meta property="og:title" content="SCS Cockpit | Entry 05 in the ledger">
-<meta property="og:description" content="A study engine built against the three ways people fail the CIMA Strategic Case Study. 166 study items, 23 frameworks, zero dependencies. Passed, then retired.">
+<title>OpsPilot | Entry 01 | Ajay Sachdev</title>
+<meta name="description" content="Case study: an AI operations layer that lives in Microsoft Teams. 95,000+ lines of code, 43 features live, 6,124+ documents indexed, 100% on a 50-query test suite. Built and run by one finance manager.">
+<meta property="og:title" content="OpsPilot | Entry 01 in the ledger">
+<meta property="og:description" content="The AI that answers a finance manager's messages: hybrid search over 6,124+ documents, live accounting and CRM data, drafts approved with one click.">
 <meta property="og:type" content="article">
-<link rel="canonical" href="https://ajaysachdev.com/projects/scs-cockpit.html">
-<meta property="og:url" content="https://ajaysachdev.com/projects/scs-cockpit.html">
+<link rel="canonical" href="https://ajaysachdev.com/projects/opspilot.html">
+<meta property="og:url" content="https://ajaysachdev.com/projects/opspilot.html">
 <meta property="og:image" content="https://ajaysachdev.com/images/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="Ajay Sachdev">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SCS Cockpit | Entry 05 in the ledger">
-<meta name="twitter:description" content="A study engine built against the three ways people fail the CIMA Strategic Case Study. 166 study items, 23 frameworks, zero dependencies. Passed, then retired.">
+<meta name="twitter:title" content="OpsPilot | Entry 01 in the ledger">
+<meta name="twitter:description" content="The AI that answers a finance manager's messages: hybrid search over 6,124+ documents, live accounting and CRM data, drafts approved with one click.">
 <meta name="twitter:image" content="https://ajaysachdev.com/images/og.png">
 <meta name="theme-color" content="#0d0c0a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0c0a'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232fbf71'/%3E%3C/svg%3E">
@@ -146,25 +146,6 @@ h1 em { color: var(--credit); }
   background: var(--credit); box-shadow: 0 0 10px rgba(47, 191, 113, 0.6); animation: pulse 2.4s infinite;
 }
 .l-status.amber i { background: var(--amber); box-shadow: 0 0 10px rgba(232, 179, 75, 0.5); }
-.l-status.idle i { background: var(--paper-faint); box-shadow: none; animation: none; }
-
-/* SCS drill exhibit (static final state; phase 3 makes it playable) */
-.drill { margin-top: 2.4rem; max-width: 36rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--ink-2); padding: 1.2rem 1.3rem 1.3rem; }
-.dr-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--paper-faint); }
-.dr-stamp { color: var(--amber); border: 1px solid var(--amber); border-radius: 3px; padding: 0.2rem 0.5rem; transform: rotate(-2deg); }
-.dr-mail { margin-top: 1rem; font-size: 0.9rem; line-height: 1.6; color: var(--paper-dim); }
-.dr-mail b { display: block; margin-bottom: 0.5rem; font-family: var(--mono); font-weight: 400; font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-faint); }
-.dr-verb { margin-top: 1rem; padding-left: 0.85rem; border-left: 2px solid var(--credit); font-size: 0.8rem; line-height: 1.55; color: var(--paper-dim); }
-.dr-verb span { display: block; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--credit); margin-bottom: 0.25rem; }
-.dr-bars { list-style: none; margin-top: 1.3rem; border-top: 1px solid var(--rule); padding-top: 0.6rem; }
-.dr-bars li { display: grid; grid-template-columns: 6.5rem 1fr 2.4rem; align-items: center; gap: 0.8rem; padding: 0.4rem 0; }
-.dr-bars span { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper-dim); }
-.dr-bars i { position: relative; height: 6px; background: rgba(236, 231, 220, 0.08); border-radius: 3px; overflow: hidden; }
-.dr-bars i::after { content: ''; position: absolute; inset: 0 auto 0 0; width: calc(var(--v) * 100%); background: var(--credit); border-radius: 3px; }
-.dr-bars li.low i::after { background: var(--debit); }
-.dr-bars b { font-family: var(--mono); font-weight: 500; font-size: 0.7rem; text-align: right; font-variant-numeric: tabular-nums; }
-.dr-debrief { margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid var(--rule); font-size: 0.82rem; line-height: 1.55; color: var(--paper-dim); }
-.exhibit-note { margin-top: 0.9rem; max-width: 36rem; font-size: 0.78rem; line-height: 1.55; color: var(--paper-faint); }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 .entry-lede {
   margin-top: 2.2rem; font-family: var(--serif); font-size: clamp(1.35rem, 2.6vw, 2rem);
@@ -201,9 +182,9 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 
 /* Debit / credit comparison */
 .ba { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); margin-top: 2.4rem; }
-.ba h3 { font-family: var(--mono); font-weight: 400; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; padding-bottom: 0.8rem; border-bottom: 1px solid var(--rule); }
-.ba .deb h3 { color: var(--debit); }
-.ba .cred h3 { color: var(--credit); }
+.ba h2 { font-family: var(--mono); font-weight: 400; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; padding-bottom: 0.8rem; border-bottom: 1px solid var(--rule); }
+.ba .deb h2 { color: var(--debit); }
+.ba .cred h2 { color: var(--credit); }
 .ba ul { list-style: none; }
 .ba li {
   padding: 0.9rem 0; border-bottom: 1px solid var(--rule);
@@ -383,24 +364,39 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .mo-replay.show { display: inline-block; }
 .mo-hint { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-faint); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-/* SCS moment: a timed drill, then the five bars draw themselves */
-.dr-run { display: none; margin-top: 1.1rem; }
-.js .dr-run { display: block; }
-.dr-clock { font-family: var(--mono); font-size: 1.7rem; line-height: 1; font-variant-numeric: tabular-nums; color: var(--credit); transition: color 0.4s ease; }
-.dr-clock small { font-size: 0.5em; margin-left: 0.15em; color: var(--paper-faint); }
-.dr-clock.mid { color: var(--amber); }
-.dr-clock.low { color: var(--debit); }
-#dr-ans { display: block; width: 100%; margin-top: 0.7rem; padding: 0.7rem 0.8rem; border: 1px solid var(--rule); border-radius: 4px; background: transparent; color: var(--paper); font: inherit; font-size: 0.85rem; line-height: 1.55; resize: vertical; }
-#dr-ans:focus { outline: none; border-color: var(--credit); }
-#dr-ans:disabled { opacity: 0.55; }
-.dr-bars i::after { transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
-.dr-bars b { transition: opacity 0.3s ease; }
-.drill.armed .dr-bars li:not(.drawn) i::after { width: 0; }
-.drill.armed .dr-bars li:not(.drawn) b { opacity: 0; }
-.dr-debrief, .dr-retired { transition: opacity 0.5s ease; }
-.drill.armed .dr-debrief:not(.show), .drill.armed .dr-retired:not(.show) { opacity: 0; }
-.dr-retired { margin-top: 0.9rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-dim); }
-.dr-retired i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--paper-faint); margin-right: 0.55rem; }
+/* OpsPilot moment: the card is live */
+.adcard { position: relative; }
+.ac-btns button {
+  padding: 0.45rem 0.9rem; border-radius: 3px; border: 1px solid var(--rule); background: transparent; cursor: pointer;
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-dim);
+  transition: border-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+}
+.ac-btns button:hover:not(:disabled) { border-color: var(--paper-dim); color: var(--paper); }
+.ac-btns button.go { background: var(--credit); border-color: var(--credit); color: var(--ink); font-weight: 700; }
+.ac-btns button:disabled { opacity: 0.35; cursor: default; }
+.adcard.editing .ac-a { outline: 1px dashed rgba(47, 191, 113, 0.6); outline-offset: 5px; border-radius: 2px; color: var(--paper); }
+.adcard.filed > div { opacity: 0.4; transition: opacity 0.4s ease; }
+.ac-stamp {
+  position: absolute; right: 1.4rem; top: 38%; pointer-events: none;
+  font-family: var(--mono); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.35rem 1rem; border: 3px solid currentColor; border-radius: 4px; background: rgba(19, 18, 16, 0.75);
+  opacity: 0; transform: rotate(-8deg) scale(1.35);
+}
+.ac-stamp.sent { color: var(--credit); }
+.ac-stamp.declined { color: var(--debit); }
+.ac-stamp.on { animation: acStamp 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+@keyframes acStamp { to { opacity: 1; transform: rotate(-8deg) scale(1); } }
+.ac-log { max-width: 34rem; min-height: 1rem; }
+.ac-row {
+  display: grid; grid-template-columns: 2.4rem 3.2rem 1fr auto; gap: 0.6rem; align-items: baseline; margin-top: 1rem;
+  padding: 0.7rem 0 0.6rem; border-top: 1px solid var(--rule); border-bottom: 3px double var(--paper-faint);
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.06em; line-height: 1.5; color: var(--paper-dim);
+  opacity: 0; transform: translateY(-6px); transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.ac-row.in { opacity: 1; transform: none; }
+.ac-row b { font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.ac-row.sent b { color: var(--credit); }
+.ac-row.declined b { color: var(--debit); }
 
 /* ================= Footer ================= */
 footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
@@ -429,7 +425,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   html { scroll-behavior: auto; }
 }
 </style>
-<noscript><style>.reveal { opacity: 1; transform: none; } .pipe li { opacity: 1; transform: none; } .pipe::before { transform: scaleY(1); }</style></noscript>
+<noscript><style>.reveal { opacity: 1; transform: none; } .adcard > div { opacity: 1; transform: none; } .pipe li { opacity: 1; transform: none; } .pipe::before { transform: scaleY(1); }</style></noscript>
 </head>
 <body>
 
@@ -442,105 +438,156 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
     <a href="../index.html#about">About</a>
     <a href="../index.html#contact">Contact</a>
   </div>
-  <span class="nav-fy">SCHEDULE 1 / ENTRY 05</span>
+  <span class="nav-fy">SCHEDULE 1 / ENTRY 01</span>
 </nav>
 
 <main id="entry" class="wrap">
 
   <header>
-    <p class="crumb reveal"><a href="./">The schedule</a> / Entry 05 / Exam preparation</p>
-    <h1 class="reveal">SCS Cockpit<em>.</em></h1>
-    <p class="entry-status reveal"><span class="l-status idle"><i></i>Retired, job done</span><span>Exam passed / ACMA CGMA, 2026</span></p>
-    <p class="entry-lede reveal">The study engine I built for my own CIMA Strategic Case Study. The exam rarely fails people for not knowing things. It fails them for <em>generic theory, no recommendation and missing the facts in front of them.</em> I built against those three, used it until exam day, and passed.</p>
+    <p class="crumb reveal"><a href="./">The schedule</a> / Entry 01 / AI operations</p>
+    <h1 class="reveal">OpsPilot<em>.</em></h1>
+    <p class="entry-status reveal"><span class="l-status"><i></i>Production</span><span>In daily use since 2025 / Oracle Cloud, systemd</span></p>
+    <p class="entry-lede reveal">The AI from chapter 2. It lives in Teams, reads every document my company has ever filed, pulls live accounting and CRM data, and drafts answers in my voice. <em>Nothing sends without my approval.</em></p>
     <div class="fig-row">
-      <div class="fig reveal"><span class="fig-num">11,584</span><span class="fig-lab">lines of code</span></div>
-      <div class="fig reveal"><span class="fig-num">0</span><span class="fig-lab">runtime dependencies</span></div>
-      <div class="fig reveal"><span class="fig-num">166</span><span class="fig-lab">study items</span></div>
-      <div class="fig reveal"><span class="fig-num">23</span><span class="fig-lab">frameworks</span></div>
+      <div class="fig reveal"><span class="fig-num">95,000+</span><span class="fig-lab">lines of code</span></div>
+      <div class="fig reveal"><span class="fig-num">43</span><span class="fig-lab">features live</span></div>
+      <div class="fig reveal"><span class="fig-num">6,124<i>+</i></span><span class="fig-lab">documents indexed</span></div>
+      <div class="fig reveal"><span class="fig-num">100<i>%</i></span><span class="fig-lab">on a 50-query test suite</span></div>
     </div>
   </header>
-
   <div class="body-grid">
     <div class="notes-col">
-      <section data-note="1">
-        <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">Three ways to fail</span></div>
-        <p class="prose reveal">The Strategic Case Study is the last CIMA exam: a fictional company you've studied for weeks, a clock, and a run of emails asking what you'd actually do. Knowing the theory isn't the hard part. The guidance names three ways people fail: generic theory that could apply to any company, no real recommendation, and missing the facts the scenario hands you.</p>
-        <p class="prose reveal">Most study material tests what you know. I wanted something that tested <b>how I answered</b>, under time, against those three.</p>
-        <table class="ledger reveal">
-          <thead><tr><th>Failure mode</th><th>What the tool does about it</th></tr></thead>
-          <tbody>
-            <tr><td>Generic theory</td><td>Every drill is anchored to the case company, and Application is marked on whether the answer used its numbers</td></tr>
-            <tr><td>No recommendation</td><td>Judgement is marked on a clear call, not a balanced menu of options</td></tr>
-            <tr><td>Missing scenario facts</td><td>The command verb is flagged before you write, with the shape of answer it needs</td></tr>
-          </tbody>
-        </table>
-      </section>
 
-      <section data-note="2">
-        <div class="section-head reveal"><span>Note 2: How it works</span><span class="right">Seeds, verbs, a clock</span></div>
-        <p class="prose reveal">A drill is composed, not pulled from a bank: a case-specific scenario seed, a competency, a template and an anchor from the study material. It arrives as an email with tasks attached, and a timer changes colour as time runs down. Afterwards the answer is scored on the five dimensions the exam marks: <b>role fit, application, judgement, structure and ethics</b>.</p>
-        <p class="prose reveal">Behind it, 54 source PDFs were normalised into 166 study items and 23 frameworks, loaded from three packs and de-duplicated at startup. Spaced repetition decides what comes back tomorrow. One button turns any drill into an examiner prompt I could hand to an outside AI for a second opinion.</p>
-      </section>
-
-      <section data-note="3">
-        <div class="section-head reveal"><span>Note 3: Exhibit</span><span class="right">Exhibit E / one drill</span></div>
-        <div class="drill reveal" id="drill">
-          <div class="dr-head"><span>Drill / Judgement</span><span class="dr-stamp">Sample data</span></div>
-          <p class="dr-mail"><b>From: Finance Director, Northmoor Composites plc</b>Our largest customer wants 90-day payment terms instead of 30, in return for a three-year volume commitment. The board meets tomorrow. Recommend whether we accept, and what we'd need in place to protect ourselves.</p>
-          <p class="dr-verb"><span>Verb: recommend</span>Make a call, give the reason, say what has to be true for it to work.</p>
-          <div class="dr-run" id="dr-run">
-            <div class="dr-clock" id="dr-clock"><span id="dr-t">60</span><small>s</small></div>
-            <textarea id="dr-ans" rows="4" placeholder="Your recommendation. Not stored, not sent, not marked." aria-label="Your answer. It is not stored, sent or marked" disabled></textarea>
-            <div class="mo-bar"><button class="mo-btn" id="dr-start" type="button">Start the 60-second drill</button><button class="mo-btn ghost mo-hide" id="dr-stop" type="button">Finish early</button><button class="mo-btn ghost mo-replay" id="dr-replay" type="button">Run it again</button><span class="visually-hidden" id="dr-sr" role="status"></span></div>
-          </div>
-          <ol class="dr-bars" aria-label="Sample marking on the five dimensions">
-            <li style="--v: 0.8"><span>Role fit</span><i></i><b>4/5</b></li>
-            <li style="--v: 0.6"><span>Application</span><i></i><b>3/5</b></li>
-            <li style="--v: 1"><span>Judgement</span><i></i><b>5/5</b></li>
-            <li style="--v: 0.8"><span>Structure</span><i></i><b>4/5</b></li>
-            <li class="low" style="--v: 0.4"><span>Ethics</span><i></i><b>2/5</b></li>
-          </ol>
-          <p class="dr-debrief">Debrief: clear recommendation, good structure. Ethics bolted on at the end. Thread it through.</p>
-          <p class="dr-retired"><i></i>Retired, job done. The real exam: passed.</p>
+    <section data-note="1">
+      <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">Where the hours went</span></div>
+      <p class="prose reveal">I run finance and operations at a tech company. My day is split across Teams, SharePoint, Xero, HubSpot and email. Someone asks a question in one system, the answer lives in another, and the context for why it matters is in a third. I was spending hours just pulling data, missing follow-ups because nobody tracked who said what, and scrambling for context five minutes before meetings.</p>
+      <p class="prose reveal">"What does the contract say about payment terms?" That's a SharePoint search. "Who hasn't paid us?" That's Xero. "What deals is the sales team working on?" HubSpot. "Tell me about this customer." That needs all three. The information always existed. It was just scattered across 6,124+ files, multiple systems, and years of accumulated documents.</p>
+      <div class="ba reveal">
+        <div class="deb">
+          <h2>Debit: before</h2>
+          <ul>
+            <li>Dig through 6,124+ SharePoint files by hand</li>
+            <li>Log into Xero, HubSpot, email and calendar separately for every question</li>
+            <li>Miss follow-ups because nobody tracked who promised what</li>
+            <li>Scramble for context five minutes before a meeting</li>
+          </ul>
         </div>
-        <p class="exhibit-note reveal">A made-up company and a sample marking, built for this page. It doesn't read what you type. The real drills used the exam's own case material, which stays with CIMA.</p>
-      </section>
-
-      <section class="wrong" data-note="4">
-        <div class="section-head reveal"><span>Note 4: What went wrong</span><span class="right">The mock I never built</span></div>
-        <p class="prose reveal">The exam is three hours under one clock, and the feature that would have rehearsed exactly that never got built. Mock exam mode, three linked sections, a three-hour clock and a structured debrief, went to the top of the priority list in April. It was still at the top after the exam. I built short timed drills instead. They worked, but they weren't the whole exam.</p>
-        <p class="pull reveal">The highest-value feature on the list <span>stayed on the list.</span></p>
-      </section>
-
-      <section data-note="5">
-        <div class="section-head reveal"><span>Note 5: Stack</span><span class="right">Carrying values</span></div>
-        <div class="stack reveal">
-          <div><span class="s-name">Vanilla JavaScript</span><span class="s-role">The whole app. No framework, 0 runtime dependencies</span></div>
-          <div><span class="s-name">HTML + CSS</span><span class="s-role">No build step. It opens and it runs</span></div>
-          <div><span class="s-name">Node scripts</span><span class="s-role">Turned 54 source PDFs into 166 study items</span></div>
-          <div><span class="s-name">localStorage</span><span class="s-role">Scores and spaced-repetition state</span></div>
-          <div><span class="s-name">Serverless KV</span><span class="s-role">Syncs progress between laptop and phone</span></div>
-          <div><span class="s-name">Clipboard prompt</span><span class="s-role">Hands a drill to an outside AI for marking</span></div>
+        <div class="cred">
+          <h2>Credit: after</h2>
+          <ul>
+            <li>Ask a question in Teams, get an answer from any source in seconds</li>
+            <li>Morning briefing with everything that matters before 9am</li>
+            <li>Commitment tracker catches every promise, nudges when overdue</li>
+            <li>Pre-meeting brief lands before every call</li>
+          </ul>
         </div>
-        <p class="pull reveal">One user, one exam, one result: <span>passed.</span></p>
-      </section>
+      </div>
+    </section>
+
+    <section data-note="2">
+      <div class="section-head reveal"><span>Note 2: How it works</span><span class="right">Nine stages, one approval</span></div>
+      <p class="prose reveal">Someone asks a question in Teams. The pipeline triages it, figures out whether it needs documents, live accounting data, CRM data, or all three at once, and returns an answer as an Adaptive Card with approve, edit and reject buttons. Live data questions hit Xero or HubSpot directly, zero LLM cost. Document questions run a hybrid search. Cross-source questions go through a single orchestrator call with <b>25 orchestrator tools</b>. A PII blocker sits in front of everything that leaves.</p>
+      <ol class="pipe reveal">
+        <li><span><b>Teams webhook</b> receives the message inside the Bot Framework turn</span></li>
+        <li><span><b>Dedup gate</b> drops repeats before they cost anything</span></li>
+        <li class="hl"><span><b>Smart triage</b>, two layers: keywords first, a fast model for the rest. Work, personal or noise</span></li>
+        <li class="hl"><span><b>Intent router</b> picks the source: documents, Xero, HubSpot, multi-source, reconciliation or journal</span></li>
+        <li class="hl"><span><b>Retrieval</b>: BM25 + FAISS hybrid with reciprocal rank fusion and an AI reranker for documents; direct API reads for live data</span></li>
+        <li><span><b>Multi-draft generation</b> in my writing style, several answer shapes to choose from</span></li>
+        <li class="hl"><span><b>Sensitivity gate</b>: UK PII detector, a hard blocker before anything can auto-send</span></li>
+        <li><span><b>Adaptive Card builder</b> formats the answer with sources and figures</span></li>
+        <li class="hl"><span><b>Approve, edit or reject</b>. A human signs every entry. That's the design, not a limitation</span></li>
+      </ol>
+      <table class="ledger reveal">
+        <thead><tr><th>Test suite</th><th>Scope</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Document search</td><td>50 production queries</td><td class="mono"><span class="ok">50/50</span></td></tr>
+          <tr><td>Triage</td><td>20 labelled messages</td><td class="mono"><span class="ok">20/20</span></td></tr>
+          <tr><td>Intent routing</td><td>45 queries across 6 sources</td><td class="mono"><span class="ok">45/45</span></td></tr>
+          <tr><td>Conversation follow-up</td><td>54 multi-turn cases</td><td class="mono"><span class="ok">54/54</span></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="2">The search pipeline is frozen at 100%</td><td>No changes until it misses</td></tr></tfoot>
+      </table>
+      <div class="adcard reveal" id="adcard" role="group" aria-label="Working replica of an OpsPilot draft card: approve, edit or reject it">
+        <div class="ac-head"><span>OpsPilot / draft for approval</span><span>Adaptive Card</span></div>
+        <div class="ac-q">"Where's the signed Acme master agreement? Client call in 20 minutes."</div>
+        <div class="ac-a" id="ac-a">Found it: <b>Acme_MSA_signed.pdf</b> in Contracts/2024, countersigned 12 Mar. Drafted the reply with the file link and the two clauses they'll ask about.</div>
+        <div class="ac-file">PDF / CONTRACTS/2024 / 1.2 MB</div>
+        <div class="ac-btns"><button type="button" class="go" id="ac-approve">Approve &amp; send</button><button type="button" id="ac-edit">Edit</button><button type="button" id="ac-reject">Reject</button></div>
+        <span class="ac-stamp" id="ac-stamp" aria-hidden="true"></span>
+      </div>
+      <div class="ac-log" id="ac-log" role="status"></div>
+      <div class="mo-bar"><span class="mo-hint">It's live. Approve it, edit it, or reject it.</span><button class="mo-btn ghost mo-replay" id="ac-replay" type="button">Replay</button></div>
+    </section>
+
+    <section data-note="3">
+      <div class="section-head reveal"><span>Note 3: Exhibit</span><span class="right">Exhibit A</span></div>
+      <div class="exhibit-fig reveal">
+        <figure>
+          <picture>
+            <source srcset="../images/ajay-brain-dashboard.webp" type="image/webp">
+            <img src="../images/ajay-brain-dashboard.png" alt="OpsPilot overview, reconstructed with sample items: frozen test suites all passing, build figures, and three drafts waiting for approve, edit or reject" loading="lazy" decoding="async">
+          </picture>
+          <figcaption><span>OpsPilot overview</span><span>Reconstruction: build figures real, work items sample</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section data-note="4">
+      <div class="section-head reveal"><span>Note 4: What it does</span><span class="right">Beyond answering</span></div>
+      <ul class="notes">
+        <li class="reveal"><span class="n-ref">F.1</span><span><b>Hybrid search</b>BM25 for keywords, FAISS for meaning, reciprocal rank fusion to merge them, then an AI reranker picks the top five. HyDE query expansion generates domain terms so vague questions still land on the right document.</span></li>
+        <li class="reveal"><span class="n-ref">F.2</span><span><b>Live data, no hallucination surface</b>"Who hasn't paid us?" reads Xero receivables directly. "What deals are open?" queries the HubSpot pipeline. 17 direct API actions where the LLM never touches the numbers: formatted figures, straight back. Xero access is read-only by design.</span></li>
+        <li class="reveal"><span class="n-ref">F.3</span><span><b>Autonomous monitoring</b>Morning briefing at 08:00, evening wrap at 17:30, deal-stage checks every five minutes in business hours. An invoice scanner reads PDFs from my inbox, extracts line items, matches them against Xero and flags duplicates and price drift. A commitment tracker detects promises in Teams and email and alerts when they slip.</span></li>
+        <li class="reveal"><span class="n-ref">F.4</span><span><b>Dashboard</b>A React dashboard on precomputed state: P&amp;L, cash position, pipeline, receivables, engagement. FastAPI serves it from SQLite so the page never waits on a third-party API.</span></li>
+        <li class="reveal"><span class="n-ref">F.5</span><span><b>Personal growth journal</b>Every evening it writes a first-person diary entry from the day's activity, then a behavioural layer flags blind spots: unreplied messages, tone drift, neglected relationships. Weekly digest on Fridays.</span></li>
+        <li class="reveal"><span class="n-ref">F.6</span><span><b>Conversation memory and approval</b>Per-user context with a two-hour window and ten-turn memory, so "what about their payment terms?" knows who "they" are. Every answer returns as options; nothing goes out unapproved. It learns which answer style I tend to pick.</span></li>
+      </ul>
+    </section>
+
+    <section class="wrong" data-note="5">
+      <div class="section-head reveal"><span>Note 5: What went wrong</span><span class="right">The 1am journal</span></div>
+      <p class="prose reveal">OpsPilot writes me a daily journal from my own mail, calendar and chats. One week it told me I'd been online at 1am, then 2am. I hadn't. The sent-mail query used Graph's <b>/messages</b> endpoint with a date filter, and that endpoint returns mail from every folder, not just Sent Items. Automated notifications landing overnight were being counted as mail I'd sent. The fix was to ask the Sent Items folder directly, and the rule now is never to assume an endpoint filters by folder.</p>
+      <p class="pull reveal">A wrong number that looks wrong gets caught. One that describes <span>a believable bad week</span> doesn't.</p>
+    </section>
+
+    <section data-note="6">
+      <div class="section-head reveal"><span>Note 6: Stack</span><span class="right">Carrying values</span></div>
+      <div class="stack reveal">
+        <div><span class="s-name">Python 3.12</span><span class="s-role">Most of 95,000+ lines, one codebase</span></div>
+        <div><span class="s-name">Gemini 2.5 Flash / Pro</span><span class="s-role">Primary models: triage, drafting, reasoning</span></div>
+        <div><span class="s-name">Claude</span><span class="s-role">Tool-use orchestration and fallback in the LLM cascade</span></div>
+        <div><span class="s-name">FAISS + BM25</span><span class="s-role">Hybrid retrieval with rank fusion</span></div>
+        <div><span class="s-name">Microsoft Graph</span><span class="s-role">Teams, SharePoint, calendar, email</span></div>
+        <div><span class="s-name">Bot Framework</span><span class="s-role">Teams webhook handler, aiohttp</span></div>
+        <div><span class="s-name">Xero API</span><span class="s-role">Accounting data, read-only by design</span></div>
+        <div><span class="s-name">HubSpot API</span><span class="s-role">CRM and sales pipeline</span></div>
+        <div><span class="s-name">React 19 + Vite</span><span class="s-role">Dashboard, TypeScript throughout</span></div>
+        <div><span class="s-name">FastAPI + SQLite</span><span class="s-role">Precomputed state, no live waits</span></div>
+        <div><span class="s-name">APScheduler</span><span class="s-role">Briefings and scheduled jobs</span></div>
+        <div><span class="s-name">Oracle Cloud</span><span class="s-role">Ubuntu VM, systemd, auto-deploy</span></div>
+      </div>
+      <p class="pull reveal">Nobody could find anything in 6,124 files. Now the files <span>answer back.</span></p>
+    </section>
     </div>
     <aside class="rail" aria-label="Margin notes">
       <div class="rail-inner">
-        <div class="rail-head"><span>Ref</span><span>Entry 05 / Margin</span></div>
+        <div class="rail-head"><span>Ref</span><span>Entry 01 / Margin</span></div>
         <ol class="rail-ref">
           <li data-n="1" class="on"><i></i><b>N.1</b><span>The problem</span></li>
           <li data-n="2" class=""><i></i><b>N.2</b><span>How it works</span></li>
           <li data-n="3" class=""><i></i><b>N.3</b><span>Exhibit</span></li>
-          <li data-n="4" class="debit"><i></i><b>N.4</b><span>What went wrong</span></li>
-          <li data-n="5" class=""><i></i><b>N.5</b><span>Stack</span></li>
+          <li data-n="4" class=""><i></i><b>N.4</b><span>What it does</span></li>
+          <li data-n="5" class="debit"><i></i><b>N.5</b><span>What went wrong</span></li>
+          <li data-n="6" class=""><i></i><b>N.6</b><span>Stack</span></li>
         </ol>
         <div class="rail-panels">
-          <div class="rp on" data-n="1"><span class="rp-num">3</span><span class="rp-lab">named ways to fail. Built against all three</span></div>
-          <div class="rp" data-n="2"><span class="rp-num">54</span><span class="rp-lab">source PDFs normalised</span></div>
-          <div class="rp" data-n="3"><span class="rp-num">5</span><span class="rp-lab">dimensions marked: role fit, application, judgement, structure, ethics</span></div>
-          <div class="rp debit" data-n="4"><span class="rp-num">0</span><span class="rp-lab">full mock exams built</span></div>
-          <div class="rp" data-n="5"><span class="rp-num">0</span><span class="rp-lab">runtime dependencies</span></div>
+          <div class="rp on" data-n="1"><span class="rp-num">6,124+</span><span class="rp-lab">documents nobody could find. Now they answer back</span></div>
+          <div class="rp" data-n="2"><span class="rp-num">50/50</span><span class="rp-lab">frozen retrieval suite. No changes until it misses</span></div>
+          <div class="rp" data-n="3"><span class="rp-num">10</span><span class="rp-lab">architecture invariants, written down before they were needed</span></div>
+          <div class="rp" data-n="4"><span class="rp-num">43</span><span class="rp-lab">features live</span></div>
+          <div class="rp debit" data-n="5"><span class="rp-num">1am</span><span class="rp-lab">when the journal said I was working. I wasn't</span></div>
+          <div class="rp" data-n="6"><span class="rp-num">327</span><span class="rp-lab">commits in seven months</span></div>
         </div>
       </div>
     </aside>
@@ -551,12 +598,6 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
     <table class="others reveal">
       <thead class="visually-hidden"><tr><th scope="col">Ref</th><th scope="col">Project</th><th scope="col">Summary</th><th scope="col">Status</th></tr></thead>
       <tbody>
-        <tr data-href="opspilot.html">
-          <td class="o-ref">01</td>
-          <td><span class="o-name">OpsPilot</span></td>
-          <td class="o-desc">An AI operations layer in Microsoft Teams. Reads 6,124+ documents, drafts answers I approve.</td>
-          <td class="o-status">Production</td>
-        </tr>
         <tr data-href="trading-bot.html">
           <td class="o-ref">02</td>
           <td><span class="o-name">Trading Bot</span></td>
@@ -574,6 +615,12 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
           <td><span class="o-name">WhatsApp Smart</span></td>
           <td class="o-desc">A Chrome extension that gives WhatsApp scheduling, AI replies and summaries.</td>
           <td class="o-status">Prototype</td>
+        </tr>
+        <tr data-href="scs-cockpit.html">
+          <td class="o-ref">05</td>
+          <td><span class="o-name">SCS Cockpit</span></td>
+          <td class="o-desc">The study engine I built for my own CIMA Strategic Case Study. I passed.</td>
+          <td class="o-status">Retired, job done</td>
         </tr>
       </tbody>
     </table>
@@ -663,46 +710,59 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
     if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, event: true });
   }
 
-  /* ---------- Signature moment: sixty seconds, then the marking draws itself ---------- */
+  /* ---------- Signature moment: the draft card, live (approve / edit / reject) ---------- */
   (function () {
-    var drill = document.getElementById('drill');
-    if (!drill) return;
-    document.documentElement.classList.add('js');
-    var clock = document.getElementById('dr-clock'), tEl = document.getElementById('dr-t'), ans = document.getElementById('dr-ans');
-    var start = document.getElementById('dr-start'), stopB = document.getElementById('dr-stop'), rp = document.getElementById('dr-replay');
-    var sr = document.getElementById('dr-sr'), bars = drill.querySelectorAll('.dr-bars li');
-    var deb = drill.querySelector('.dr-debrief'), ret = drill.querySelector('.dr-retired');
-    var timer = null, left = 60, gen = 0;
-    function paint() { tEl.textContent = left; clock.className = 'dr-clock' + (left <= 10 ? ' low' : left <= 30 ? ' mid' : ''); }
-    function arm() {
-      gen++; clearInterval(timer); timer = null; left = 60; paint();
-      drill.classList.add('armed'); bars.forEach(function (b) { b.classList.remove('drawn'); });
-      deb.classList.remove('show'); ret.classList.remove('show');
-      ans.value = ''; ans.disabled = true;
-      start.classList.remove('mo-hide'); start.disabled = false; stopB.classList.add('mo-hide'); rp.classList.remove('show'); sr.textContent = '';
+    var card = document.getElementById('adcard');
+    if (!card) return;
+    var ans = document.getElementById('ac-a'), stamp = document.getElementById('ac-stamp'), log = document.getElementById('ac-log');
+    var bA = document.getElementById('ac-approve'), bE = document.getElementById('ac-edit'), bR = document.getElementById('ac-reject');
+    var rp = document.getElementById('ac-replay');
+    var ORIG = ans.innerHTML, edited = false;
+    function lock(on) { [bA, bE, bR].forEach(function (b) { b.disabled = on; }); }
+    function endEdit() {
+      if (ans.isContentEditable) { ans.contentEditable = 'false'; bE.textContent = 'Edit'; card.classList.remove('editing'); }
     }
-    function mark() {
-      var g = gen; clearInterval(timer); timer = null;
-      ans.disabled = true; stopB.classList.add('mo-hide'); start.classList.add('mo-hide');
-      sr.textContent = 'Time. Sample marking on the five dimensions follows.';
-      track('sim-scs-finished');
-      var step = reduced ? 0 : 320;
-      bars.forEach(function (b, k) {
-        setTimeout(function () { if (g !== gen) return; b.classList.add('drawn'); blip(330 + k * 80, 0.08, 'sine', 0.04); }, 400 + k * step);
-      });
-      setTimeout(function () { if (g === gen) deb.classList.add('show'); }, 400 + bars.length * step + 300);
-      setTimeout(function () { if (g === gen) { ret.classList.add('show'); rp.classList.add('show'); blip(170, 0.09); blip(88, 0.16, 'triangle', 0.1); } }, 400 + bars.length * step + 1100);
+    function file(kind, label, what) {
+      stamp.textContent = label;
+      stamp.className = 'ac-stamp ' + kind + (reduced ? '' : ' on');
+      if (reduced) { stamp.style.opacity = '1'; stamp.style.transform = 'rotate(-8deg)'; }
+      card.classList.add('filed');
+      var row = document.createElement('div');
+      row.className = 'ac-row ' + kind;
+      row.innerHTML = '<span>S.1</span><span>09:15</span><span>' + what + '</span><b>' + label + '</b>';
+      log.innerHTML = '';
+      log.appendChild(row);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { row.classList.add('in'); }); });
+      rp.classList.add('show');
     }
-    start.addEventListener('click', function () {
-      if (timer) return;
-      start.classList.add('mo-hide'); stopB.classList.remove('mo-hide');
-      ans.disabled = false; ans.focus();
-      blip(520, 0.08, 'sine', 0.04); track('sim-scs-started');
-      timer = setInterval(function () { left -= 1; paint(); if (left <= 0) mark(); }, 1000);
+    bA.addEventListener('click', function () {
+      endEdit(); lock(true);
+      file('sent', 'Sent', 'Reply to colleague: Acme MSA' + (edited ? ', edited by me' : '') + ', file attached');
+      blip(760, 0.2); setTimeout(function () { blip(1140, 0.28, 'sine', 0.05); }, 90);
+      track('sim-opspilot-approved');
     });
-    stopB.addEventListener('click', mark);
-    rp.addEventListener('click', function () { arm(); start.focus(); track('sim-scs-replayed'); });
-    arm();
+    bR.addEventListener('click', function () {
+      endEdit(); lock(true);
+      file('declined', 'Declined', 'Draft discarded. Nothing left the building');
+      blip(220, 0.25, 'triangle', 0.08);
+      track('sim-opspilot-declined');
+    });
+    bE.addEventListener('click', function () {
+      if (ans.isContentEditable) { endEdit(); bA.focus(); return; }
+      ans.contentEditable = 'true'; edited = true;
+      card.classList.add('editing'); bE.textContent = 'Done editing';
+      ans.focus();
+      var r = document.createRange(); r.selectNodeContents(ans); r.collapse(false);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      track('sim-opspilot-edited');
+    });
+    rp.addEventListener('click', function () {
+      ans.innerHTML = ORIG; edited = false;
+      stamp.className = 'ac-stamp'; stamp.textContent = ''; stamp.removeAttribute('style');
+      card.classList.remove('filed'); log.innerHTML = '';
+      lock(false); rp.classList.remove('show'); bA.focus();
+      track('sim-opspilot-replayed');
+    });
   })();
 
   /* Row navigation */
