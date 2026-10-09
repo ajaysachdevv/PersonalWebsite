@@ -59,7 +59,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentEl
   --sans: 'Inter', 'Inter Fallback', -apple-system, sans-serif;
   --mono: 'JetBrains Mono', 'JetBrains Mono Fallback', Consolas, monospace;
   /* Mono micro-type scale (V-T1): 4 sizes, 4 trackings. Every mono label uses these */
-  --ms-1: 0.58rem; --ms-2: 0.62rem; --ms-3: 0.68rem; --ms-4: 0.72rem;
+  --ms-1: 0.66rem; --ms-2: 0.7rem; --ms-3: 0.74rem; --ms-4: 0.78rem; /* floor raised 09/10/2026: 0.58rem tracked caps was decoration, not text */
   --tr-1: 0.08em; --tr-2: 0.14em; --tr-3: 0.22em; --tr-4: 0.3em;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -201,6 +201,7 @@ html.tb-on .tb { display: block; }
 .tb-cue { position: absolute; bottom: 1.8rem; left: 0; right: 0; display: flex; justify-content: center; gap: 2rem; font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-3); text-transform: uppercase; color: var(--paper-faint); }
 .tb-cue a { color: var(--paper-faint); text-decoration: none; border-bottom: 1px solid var(--rule); }
 .tb-cue a:hover { color: var(--credit); border-color: var(--credit); }
+@media (max-width: 480px) { .tb-cue { gap: 1.2rem; letter-spacing: var(--tr-1); } }
 /* the hero's own entrance waits until the books close */
 html.tb-on:not(.hero-go) .open h1 .row span, html.tb-on:not(.hero-go) .open-sub, html.tb-on:not(.hero-go) .total-rule,
 html.tb-on:not(.hero-go) .open-cue, html.tb-on:not(.hero-go) .open-skip { animation-play-state: paused; }
@@ -246,6 +247,13 @@ body.scene-mill .nav-pos { color: rgba(28, 22, 13, 0.72); background: rgba(239, 
 /* ================= v4 Built at Krank drawer ================= */
 #drawer .ledger td.l-metric { white-space: nowrap; }
 .drawer-note { margin-top: 1.4rem; max-width: 40rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; }
+/* Schedule impairments line: puts "publishes his own failures" on the homepage, not only on case pages */
+.sched-note { margin-top: 1.3rem; max-width: 46rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; }
+.sched-note .wr { color: var(--debit); }
+.sched-term { all: unset; cursor: pointer; font-family: var(--mono); font-size: var(--ms-3); letter-spacing: var(--tr-1); text-transform: uppercase; color: var(--paper-faint); border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.sched-term b { color: var(--paper); font-weight: 500; text-transform: none; letter-spacing: 0; }
+.sched-term:hover, .sched-term:focus-visible { color: var(--credit); border-color: var(--credit); }
+.sched-term:focus-visible { outline: 2px solid var(--credit); outline-offset: 3px; }
 /* Screen strip: one frame per drawer row, click to enlarge. K.3/K.4 are CSS reconstructions sized in cqw so they scale with the frame */
 .kstrip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(0.8rem, 1.6vw, 1.4rem); margin-top: 2.2rem; }
 .kshot { all: unset; display: block; cursor: zoom-in; min-width: 0; container-type: inline-size; }
@@ -374,6 +382,12 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 }
 .open-readout .term-hint { cursor: pointer; transition: color 0.3s ease; }
 .open-readout .term-hint:hover { color: var(--credit); }
+/* Phone: the readout is the identity payload (name, CGMA, base), so it stacks legibly; PRESS T moves to the footer prompt, the ghost name goes (noise behind a crowded hero) */
+@media (max-width: 480px) {
+  .open-readout { flex-direction: column; gap: 0.35rem; font-size: 0.7rem; letter-spacing: var(--tr-1); }
+  .open-readout [data-term] { display: none; }
+  .open-name { display: none; }
+}
 @keyframes lift { to { transform: translateY(0); } }
 @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
@@ -517,6 +531,10 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 .sim-btn.done:disabled { opacity: 1; background: #17462c; color: var(--paper); }
 .mill .sim-btn.done:disabled { background: #1f7a4d; color: #f7f0df; }
 .sim-btn.cta-pulse { animation: ctapulse 1.9s ease-out infinite; }
+/* Credit never fills large areas: only the first sim CTA is a solid slab, later ones are outlined until pressed */
+.sim-btn--outline { background: transparent; color: var(--credit); box-shadow: inset 0 0 0 1px var(--credit); transition: transform 0.15s ease, opacity 0.3s ease, background 0.2s ease, color 0.2s ease; }
+.sim-btn--outline:hover:not(:disabled), .sim-btn--outline:active:not(:disabled) { background: var(--credit); color: var(--ink); }
+.sim-btn--outline.done:disabled { box-shadow: none; }
 @keyframes ctapulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(47, 191, 113, 0.45); } 50% { box-shadow: 0 0 0 11px rgba(47, 191, 113, 0); } }
 .sim-replay {
   display: none; align-items: center; gap: 0.4rem; background: none; border: 1px solid var(--rule);
@@ -616,22 +634,6 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 .stamp.slam span { animation: slam 0.45s cubic-bezier(0.16, 1.2, 0.4, 1) forwards; }
 @keyframes slam { 0% { opacity: 0; transform: rotate(-12deg) scale(3); } 60% { opacity: 1; transform: rotate(-12deg) scale(0.96); } 100% { opacity: 1; transform: rotate(-12deg) scale(1); } }
 @media (max-width: 760px) { .desk-grid { grid-template-columns: 1fr; } .chart-pane { border-right: none; border-bottom: 1px solid var(--rule); } }
-
-/* ================= Full-bleed interlude ================= */
-.zero-scene { height: 100vh; position: relative; display: grid; place-items: center; overflow: hidden; }
-.zero-num {
-  font-family: var(--mono); font-weight: 700; font-size: 135vh; line-height: 0.74;
-  -webkit-text-fill-color: transparent; -webkit-text-stroke: 4px rgba(217, 100, 89, 0.82);
-  user-select: none; pointer-events: none; will-change: transform;
-  filter: drop-shadow(0 0 60px rgba(217, 100, 89, 0.18));
-}
-.zero-cap {
-  position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 0.8rem;
-  transform: translateY(16vh);
-  font-family: var(--mono); letter-spacing: var(--tr-3); text-transform: uppercase;
-}
-.zero-cap span:first-child { color: var(--paper); font-size: 0.85rem; font-weight: 700; }
-.zero-cap span:last-child { color: var(--paper-faint); font-size: var(--ms-3); }
 
 /* ================= Chapter 4: mill (Uni-Nation voice) ================= */
 .mill {
@@ -737,17 +739,24 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
   font-family: var(--mono); font-size: var(--ms-4); letter-spacing: var(--tr-1); line-height: 1.6;
   color: var(--paper-dim); border-bottom: 3px double var(--paper-faint); padding: 1.1rem 0.5rem;
 }
+@media (min-width: 861px) {
+  .ledger td.l-name-cell { padding-right: 1.4rem; }
+  .ledger tfoot td:last-child { white-space: nowrap; }
+}
 @media (max-width: 860px) {
+  /* Table + groups as blocks so the ledger can never be wider than the column (nowrap names used to push it past 390px and the right edge got clipped) */
+  .ledger, .ledger tbody, .ledger tfoot { display: block; width: 100%; }
   .ledger thead { display: none; }
-  .ledger tbody tr { display: grid; grid-template-columns: auto 1fr auto; gap: 0.2rem 1rem; padding: 1.3rem 0; border-bottom: 1px solid var(--rule); }
+  .ledger tbody tr { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.2rem 1rem; padding: 1.3rem 0; border-bottom: 1px solid var(--rule); }
   .ledger td { display: block; padding: 0; border: none; }
   .l-ref { grid-row: 1; }
   td.l-name-cell { grid-column: 2; grid-row: 1; }
-  .l-desc { grid-column: 2; grid-row: 2; max-width: none; margin-top: 0.4rem; }
-  td.l-status-cell { grid-column: 3; grid-row: 1; text-align: right; }
-  /* 0.9x downshift: the widest chip must clear the card grid at 390px */
-  .l-status { white-space: nowrap; font-size: calc(var(--ms-1) * 0.9); letter-spacing: var(--tr-1); display: inline-block; line-height: 1.4; }
-  .l-metric { grid-column: 2; grid-row: 3; margin-top: 0.5rem; color: var(--paper-dim); text-align: left; }
+  .l-desc { grid-column: 2; grid-row: 3; max-width: none; margin-top: 0.4rem; }
+  /* Status sits under the name, so the name gets the full width and the chip never collides with the edge */
+  td.l-status-cell { grid-column: 2; grid-row: 2; text-align: left; margin-top: 0.45rem; }
+  .l-status { white-space: nowrap; font-size: var(--ms-1); letter-spacing: var(--tr-1); display: inline-block; line-height: 1.4; }
+  .l-metric { grid-column: 2; grid-row: 4; margin-top: 0.5rem; color: var(--paper-dim); text-align: left; }
+  .l-name { white-space: normal; }
   .ledger tfoot tr { display: block; padding: 1.1rem 0; border-bottom: 3px double var(--paper-faint); }
   .ledger tfoot td { display: block; border: none; text-align: left !important; }
 }
@@ -879,7 +888,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
   body { background: #fff !important; color: #1c160d; }
   body::after, nav, .rail, .scroll-prog, #cur, #flash, .terminal,
   .tb, .split, .nav-pos, .foot-prompt, .open canvas, .topo, .open-name, .open-cue, .open-skip, .open-readout,
-  .map-scene, .sim-scene, .zero-scene, .ch-motif, .scene-bg, .sim-replay { display: none !important; }
+  .map-scene, .sim-scene, .ch-motif, .scene-bg, .sim-replay { display: none !important; }
   .open { min-height: auto; padding: 2rem 0; }
   .chapter { min-height: auto; padding: 1.2rem 0; overflow: visible; }
   .open h1, .chapter h2, .about h2, .foot-cta, .l-name, .op-num { color: #1c160d !important; }
@@ -909,6 +918,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
 <noscript><style>
 .reveal { opacity: 1; transform: none; }
 .map-label, .map-dot, .map-note, .mstone, .map-span, .agent, .opscard { opacity: 1; transform: none; }
+.sched-term { display: none; }
 </style></noscript>
 </head>
 <body>
@@ -1279,7 +1289,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
       <div class="chart-pane">
         <canvas id="chart" width="640" height="230" role="img" aria-label="Candlestick chart of an intraday BARC.L rally"></canvas>
         <div class="signal"><b>BARC.L</b> / Barclays PLC<br>price 302.4 / RSI stretched / above trend<br>momentum: <b>tempting</b></div>
-        <button class="sim-btn" id="trade" style="margin-top:1.1rem">Place trade</button>
+        <button class="sim-btn sim-btn--outline" id="trade" style="margin-top:1.1rem">Place trade</button>
       </div>
       <div class="agents" id="agents" aria-live="polite">
         <div class="agents-head">Agent floor / 4 voices, 1 veto</div>
@@ -1295,15 +1305,6 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
       </div>
     </div>
     <div class="sim-foot"><span id="desk-foot" role="status">115+ sessions. 0 impulsive trades let through.</span><span>That would have been trade no. <b>116</b></span><button class="sim-replay" id="replay-desk" type="button">Replay</button></div>
-  </div>
-</section>
-
-<!-- ============ Full-bleed interlude ============ -->
-<section class="zero-scene" aria-label="Zero impulsive trades across 115+ sessions">
-  <div class="zero-num" aria-hidden="true">0</div>
-  <div class="zero-cap">
-    <span>Impulsive trades let through</span>
-    <span>Sixty-two sessions and counting</span>
   </div>
 </section>
 
@@ -1411,6 +1412,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
         <tr><td colspan="3">Total: five public systems. Five more built at work, listed below</td><td colspan="2" style="text-align:right">All in production use, or honest about not being</td></tr>
       </tfoot>
     </table>
+    <p class="sched-note reveal">The failures are on the books too: every entry carries a <span class="wr">What went wrong</span> note, told straight. <button type="button" class="sched-term" data-term-run="impairments">Run <b>impairments</b> in the terminal</button></p>
   </section>
 
   <section id="drawer">
@@ -1529,11 +1531,11 @@ GROUP BY 1 ORDER BY 1;</div>
     <div class="section-head"><span>Supporting exhibits</span><span class="right">Click to inspect</span></div>
     <div class="exhibits">
       <a class="exhibit reveal" href="projects/ajay-brain.html">
-        <figure><picture><source srcset="images/card-brain.webp" type="image/webp"><img src="images/card-brain.png" alt="OpsPilot dashboard inside a laptop frame" loading="lazy" decoding="async"></picture></figure>
+        <figure><picture><source srcset="images/card-brain.webp" type="image/webp"><img src="images/card-brain.png" alt="OpsPilot overview, reconstructed with sample items: 6,124+ documents indexed, 50 of 50 on the retrieval suite, 43 features, drafts waiting for approval" loading="lazy" decoding="async"></picture></figure>
         <figcaption><span class="cap-name">OpsPilot</span><span class="cap-ref">Exhibit A / AI operations</span></figcaption>
       </a>
       <a class="exhibit reveal" href="projects/trading-bot.html">
-        <figure><picture><source srcset="images/card-trading.webp" type="image/webp"><img src="images/card-trading.png" alt="Trading bot terminal with signal dashboard" loading="lazy" decoding="async"></picture></figure>
+        <figure><picture><source srcset="images/card-trading.webp" type="image/webp"><img src="images/card-trading.png" alt="Trading Bot session ledger, reconstructed: 115+ sessions, 0 impulsive trades, GBP 750 hard cap, a walk-forward backtest that did not make the case for going live, and a sample session ending in no trade" loading="lazy" decoding="async"></picture></figure>
         <figcaption><span class="cap-name">Trading Bot</span><span class="cap-ref">Exhibit B / Multi-agent AI</span></figcaption>
       </a>
       <a class="exhibit reveal" href="projects/uni-nation.html">
@@ -2014,25 +2016,6 @@ GROUP BY 1 ORDER BY 1;</div>
       );
     });
 
-    /* Full-bleed zero: arrives oversized, settles as it centres, one debit beat */
-    gsap.fromTo('.zero-num',
-      { scale: 1.28 },
-      { scale: 0.96, ease: 'none', scrollTrigger: { trigger: '.zero-scene', start: 'top bottom', end: 'bottom top', scrub: true } }
-    );
-    gsap.fromTo('.zero-cap',
-      { opacity: 0 },
-      { opacity: 1, ease: 'none', scrollTrigger: { trigger: '.zero-scene', start: 'top 55%', end: 'top 15%', scrub: true } }
-    );
-    ScrollTrigger.create({
-      trigger: '.zero-scene', start: 'top 35%', once: true,
-      onEnter: function () { flash('#d96459'); blip(58, 0.5, 'sine', 0.1); noiseBurst(0.22, 180, 0.1); }
-    });
-    /* fade the zero out before ch4 so its arcs never bleed into the cream blend */
-    gsap.to('.zero-num', {
-      opacity: 0, ease: 'none',
-      scrollTrigger: { trigger: '.zero-scene', start: 'bottom 88%', end: 'bottom 55%', scrub: true }
-    });
-
     /* Ghost name drifts and loosens as the hero scrolls away */
     gsap.to('.open-name', {
       letterSpacing: '0.05em', yPercent: 18, ease: 'none',
@@ -2511,7 +2494,7 @@ GROUP BY 1 ORDER BY 1;</div>
     },
     ls: function (arg) {
       if (arg && arg.indexOf('project') !== 0) { tprint('ls: cannot access \'' + esc(arg) + '\': only projects/ here'); return; }
-      tprint(Object.keys(PROJECTS).map(function (k) { return PROJECTS[k].line; }).join('<br>') + '<br><b>5 directories, all built solo.</b> five more built at krank: scroll to the drawer.');
+      tprint(Object.keys(PROJECTS).map(function (k) { return PROJECTS[k].line; }).join('<br>') + '<br><b>5 directories, all built solo.</b> five more built at work: scroll to the drawer.');
     },
     cat: function (arg) {
       if (arg !== 'about' && arg !== 'about.txt') { tprint('cat: ' + esc(arg || '') + ': no such file. try: cat about'); return; }
@@ -2598,6 +2581,14 @@ GROUP BY 1 ORDER BY 1;</div>
     else if (focusables.indexOf(document.activeElement) === -1) { e.preventDefault(); first.focus(); }
   });
   document.querySelectorAll('[data-term]').forEach(function (el) { el.addEventListener('click', openTerm); });
+  /* [data-term-run="cmd"]: open the terminal and run one command (boot sequence needs ~1.2s on first open) */
+  document.querySelectorAll('[data-term-run]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      var firstBoot = !opened;
+      openTerm();
+      setTimeout(function () { run(el.getAttribute('data-term-run')); }, firstBoot ? 1250 : 150);
+    });
+  });
   var basisLink = document.getElementById('basis-link');
   if (basisLink) {
     basisLink.addEventListener('click', function () {

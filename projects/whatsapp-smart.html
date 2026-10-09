@@ -74,7 +74,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 }
 .skip-link {
   position: fixed; top: 0.9rem; left: 0.9rem; z-index: 200;
-  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--paper); background: var(--ink); border: 1px solid var(--credit);
   padding: 0.7rem 1.1rem; text-decoration: none;
   transform: translateY(calc(-100% - 1.5rem)); transition: transform 0.2s ease;
@@ -98,7 +98,7 @@ nav {
 .nav-mark em { color: var(--credit); }
 .nav-links { display: flex; gap: 2rem; align-items: baseline; }
 .nav-links a {
-  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--paper-dim); text-decoration: none; position: relative;
 }
 .nav-links a::after {
@@ -107,12 +107,12 @@ nav {
 }
 .nav-links a:hover { color: var(--paper); }
 .nav-links a:hover::after { transform: scaleX(1); transform-origin: bottom left; }
-.nav-fy { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; color: var(--paper-faint); }
+.nav-fy { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; color: var(--paper-faint); }
 @media (max-width: 720px) { .nav-fy { display: none; } .nav-links { gap: 1.2rem; } }
 @media (max-width: 480px) {
   .nav-mark { font-size: 1.05rem; }
   .nav-links { gap: 0.9rem; }
-  .nav-links a { font-size: 0.6rem; letter-spacing: 0.1em; }
+  .nav-links a { font-size: 0.66rem; letter-spacing: 0.1em; }
   .nav-links a[href="../index.html#about"] { display: none; }
 }
 
@@ -124,11 +124,12 @@ main.wrap > header::before {
   background: radial-gradient(ellipse 55% 48% at 76% 4%, rgba(232, 179, 75, 0.08), transparent 70%);
 }
 .crumb {
-  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--paper-faint);
 }
 .crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid rgba(236, 231, 220, 0.35); transition: color 0.3s ease, border-color 0.3s ease; }
 .crumb a:hover { color: var(--credit); border-color: var(--credit); }
+@media (max-width: 480px) { .crumb { letter-spacing: 0.1em; } }
 h1 {
   view-transition-name: entry-title;
   font-family: var(--serif); font-weight: 400; font-size: clamp(2.9rem, 8.9vw, 8rem);
@@ -137,9 +138,9 @@ h1 {
 h1 em { color: var(--credit); }
 .entry-status {
   display: flex; flex-wrap: wrap; gap: 0.6rem 1.6rem; align-items: baseline; margin-top: 1.5rem;
-  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-faint);
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-faint);
 }
-.l-status { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; color: var(--paper); }
+.l-status { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; color: var(--paper); }
 .l-status i {
   display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 0.55rem;
   background: var(--credit); box-shadow: 0 0 10px rgba(47, 191, 113, 0.6); animation: pulse 2.4s infinite;
@@ -155,12 +156,12 @@ h1 em { color: var(--credit); }
 .fig { border-top: 1px solid var(--rule); padding-top: 1rem; }
 .fig-num { display: block; font-family: var(--serif); font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1; font-variant-numeric: tabular-nums; }
 .fig-num i { font-style: normal; font-family: var(--mono); font-size: 0.34em; letter-spacing: 0.05em; color: var(--credit); margin: 0 0.12em; }
-.fig-lab { display: block; margin-top: 0.65rem; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; line-height: 1.5; color: var(--paper-dim); text-transform: uppercase; }
+.fig-lab { display: block; margin-top: 0.65rem; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; line-height: 1.5; color: var(--paper-dim); text-transform: uppercase; }
 @media (max-width: 720px) { .fig-row { grid-template-columns: 1fr 1fr; } }
 
 /* ================= Notes (sections) ================= */
 .section-head {
-  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--paper-dim); padding: 0.85rem 0; border-top: 2px solid var(--paper);
   display: flex; justify-content: space-between; gap: 1rem; margin-top: clamp(4.5rem, 9vw, 7rem);
 }
@@ -181,7 +182,7 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 
 /* Architecture layers */
 .layer-head {
-  margin-top: 2.4rem; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.2em;
+  margin-top: 2.4rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em;
   text-transform: uppercase; color: var(--amber); display: flex; align-items: baseline; gap: 1rem;
 }
 .layer-head::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
@@ -203,7 +204,7 @@ header + section .section-head, .notes-col > section:first-child .section-head {
   font-size: 0.88rem; line-height: 1.6; color: var(--paper-dim);
 }
 .notes li:first-child { border-top: 1px solid var(--rule); }
-.notes .n-ref { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--paper-faint); }
+.notes .n-ref { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--paper-faint); }
 .notes b { display: block; color: var(--paper); font-weight: 500; margin-bottom: 0.35rem; }
 
 /* Exhibit figures */
@@ -212,7 +213,7 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .exhibits img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; filter: saturate(0.85); }
 .exhibits figcaption {
   display: flex; justify-content: space-between; gap: 1rem; padding: 0.9rem 0.2rem 0;
-  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; color: var(--paper-faint); text-transform: uppercase;
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; color: var(--paper-faint); text-transform: uppercase;
 }
 @media (max-width: 680px) { .exhibits { grid-template-columns: 1fr; } }
 
@@ -233,7 +234,7 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .o-name { font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1; transition: color 0.3s ease, border-color 0.3s ease; white-space: nowrap; border-bottom: 1px solid rgba(236, 231, 220, 0.3); padding-bottom: 3px; }
 .others tr:hover .o-name { font-style: italic; color: var(--credit); border-bottom-color: var(--credit); }
 .o-desc { font-size: 0.82rem; color: var(--paper-dim); max-width: 26rem; line-height: 1.55; }
-.o-status { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; white-space: nowrap; color: var(--paper-dim); }
+.o-status { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; white-space: nowrap; color: var(--paper-dim); }
 @media (max-width: 680px) { .o-desc { display: none; } }
 
 /* ================= v4 body grid + margin rail (brief 3.1) =================
@@ -248,12 +249,12 @@ header + section .section-head, .notes-col > section:first-child .section-head {
   .rail { display: block; grid-column: 9 / 13; }
   .rail-inner { position: sticky; top: 6.5rem; margin-top: clamp(2.8rem, 5.5vw, 4.2rem); padding-top: 0.85rem; border-top: 2px solid var(--paper); }
 }
-.rail-head { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--paper-faint); }
+.rail-head { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--paper-faint); }
 .rail-ref { list-style: none; margin-top: 1.1rem; border-top: 1px solid var(--rule); }
 .rail-ref li {
   display: grid; grid-template-columns: 1.1rem 2.6rem 1fr; align-items: baseline; gap: 0.3rem;
   padding: 0.5rem 0; border-bottom: 1px solid var(--rule);
-  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--paper-faint); transition: color 0.3s ease;
 }
 .rail-ref li b { font-weight: 400; }
@@ -268,12 +269,12 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .rp.on { opacity: 1; visibility: visible; }
 .rp-num { display: block; font-family: var(--serif); font-size: clamp(3.6rem, 5.6vw, 5.4rem); line-height: 0.95; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--paper); }
 .rp.debit .rp-num { color: var(--debit); }
-.rp-lab { display: block; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; line-height: 1.6; text-transform: uppercase; color: var(--paper-dim); max-width: 18rem; }
+.rp-lab { display: block; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; line-height: 1.6; text-transform: uppercase; color: var(--paper-dim); max-width: 18rem; }
 
 /* ================= v4 signature moment kit (brief 3.2) ================= */
 .mo-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 1rem; }
 .mo-btn {
-  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
   padding: 0.6rem 1rem; border-radius: 3px; border: 1px solid var(--credit); background: transparent;
   color: var(--credit); cursor: pointer; transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
@@ -283,17 +284,17 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .mo-btn.ghost:hover:not(:disabled) { background: transparent; border-color: var(--paper-dim); color: var(--paper); }
 .mo-replay, .mo-hide { display: none; }
 .mo-replay.show { display: inline-block; }
-.mo-hint { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-faint); }
+.mo-hint { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-faint); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 /* WhatsApp moment: a real five-second undo window. Amber, because it's a prototype */
 .undo { margin-top: 2.4rem; max-width: 34rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--ink-2); padding: 1.1rem 1.2rem 1.2rem; }
-.un-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--paper-faint); }
+.un-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--paper-faint); }
 .un-stamp { color: var(--amber); border: 1px solid var(--amber); border-radius: 3px; padding: 0.2rem 0.5rem; transform: rotate(-2deg); }
 .un-chat { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; min-height: 5.2rem; }
 .un-msg { max-width: 80%; padding: 0.55rem 0.8rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.45; }
 .un-msg.them { align-self: flex-start; background: rgba(236, 231, 220, 0.07); color: var(--paper); }
 .un-msg.me { align-self: flex-end; background: rgba(232, 179, 75, 0.14); color: var(--paper); animation: tlIn 0.3s ease-out; }
-.un-msg.me small { display: block; margin-top: 0.25rem; font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); text-align: right; }
+.un-msg.me small { display: block; margin-top: 0.25rem; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); text-align: right; }
 @keyframes tlIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .un-bar {
   position: relative; overflow: hidden; display: grid; grid-template-columns: auto 1fr auto auto; gap: 0.7rem; align-items: center;
@@ -302,7 +303,7 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .un-bar[hidden] { display: none; }
 .un-count { font-family: var(--mono); font-size: 0.95rem; color: var(--amber); font-variant-numeric: tabular-nums; }
 .un-prev { font-size: 0.78rem; color: var(--paper-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.un-bar button { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.45rem 0.75rem; border-radius: 3px; cursor: pointer; }
+.un-bar button { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.45rem 0.75rem; border-radius: 3px; cursor: pointer; }
 .un-now { background: transparent; border: 1px solid var(--rule); color: var(--paper-dim); }
 .un-undo { background: var(--amber); border: 1px solid var(--amber); color: var(--ink); font-weight: 700; }
 .un-prog { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--amber); transform-origin: left; }
@@ -328,7 +329,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 .foot-sign {
   margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem 2rem;
-  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; color: var(--paper-faint); text-transform: uppercase;
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; color: var(--paper-faint); text-transform: uppercase;
 }
 
 /* ================= Reveal + motion prefs ================= */
