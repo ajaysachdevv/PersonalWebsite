@@ -43,6 +43,10 @@
 
 <script>/* Reserve the cold open before first paint so it never shifts the hero in (CLS). Undone below if GSAP fails to load */
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('tb-on');</script>
+<!-- Motion libraries, self-hosted and deferred: no render-blocking third-party requests (was CDN + SRI + document.write fallback; mobile LCP) -->
+<script src="vendor/gsap.min.js" defer></script>
+<script src="vendor/ScrollTrigger.min.js" defer></script>
+<script src="vendor/lenis.min.js" defer></script>
 <style>
 /* ================= Tokens: The Ledger, filmed ================= */
 :root {
@@ -1438,14 +1442,9 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous"></script>
-<script>window.gsap||document.write('<script src="vendor/gsap.min.js"><\/script>');</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous"></script>
-<script>window.ScrollTrigger||document.write('<script src="vendor/ScrollTrigger.min.js"><\/script>');</script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" integrity="sha384-tKsJDT6PlUI0pSBt9/sBKJluKgA19/a6mBrDsZaXotLB4ZYfMGM6xt6/WgGpYhTm" crossorigin="anonymous"></script>
-<script>window.Lenis||document.write('<script src="vendor/lenis.min.js"><\/script>');</script>
 <script>
-(function () {
+/* Runs after the deferred GSAP / ScrollTrigger / Lenis in <head> (deferred scripts execute before DOMContentLoaded) */
+document.addEventListener('DOMContentLoaded', function () {
   'use strict';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var pageStart = Date.now();
@@ -2443,7 +2442,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
       openTerm();
     }
   });
-})();
+});
 </script>
 </body>
 </html>
