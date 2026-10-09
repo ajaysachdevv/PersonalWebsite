@@ -475,7 +475,6 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
         <li class="reveal"><span class="n-ref">E.3</span><span><b>Walk-forward backtesting</b>60-day default, up to two years. Evaluates at 10:35 on each historical day with no lookahead bias and a 0.2% round-trip spread cost deducted.</span></li>
         <li class="reveal"><span class="n-ref">E.4</span><span><b>Atomic state, full audit trail</b>A file-locked state manager prevents race conditions between the order manager and the kill switch. Every decision writes to a JSONL audit trail: timestamp, session, stage, ticker, outcome. The whole system is one long paper trail, which is how I like my systems.</span></li>
       </ul>
-      <p class="pull reveal">A trading bot whose proudest metric is the trades it <span>refused to place.</span></p>
     </section>
 
     <section class="wrong" data-note="6">
@@ -511,6 +510,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
         <div><span class="s-name">Tenacity + filelock</span><span class="s-role">Retries and atomic state</span></div>
         <div><span class="s-name">Oracle Cloud</span><span class="s-role">Ubuntu VM, systemd, auto-deploy</span></div>
       </div>
+      <p class="pull reveal">A trading bot whose proudest metric is the trades it <span>refused to place.</span></p>
     </section>
     </div>
     <aside class="rail" aria-label="Margin notes">
