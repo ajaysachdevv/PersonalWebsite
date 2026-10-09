@@ -181,7 +181,7 @@ nav.solid { background: rgba(13, 12, 10, 0.82); backdrop-filter: blur(10px); -we
    Scrubbed to scroll. Columns settle, the difference closes to a double-ruled
    0.00, the zero resolves into the name, then the hero. Skipped entirely for
    reduced motion and no-JS (html.tb-on is set in <head> before first paint, removed if GSAP fails). */
-.tb { display: none; position: relative; height: 190vh; }
+.tb { display: none; position: relative; height: 140vh; } /* was 190vh: the joke stays, the toll halves */
 html.tb-on .tb { display: block; }
 .tb-stick { position: sticky; top: 0; height: 100svh; display: grid; place-items: center; overflow: hidden; }
 .tb-sheet { width: min(31rem, 88vw); font-family: var(--mono); font-size: clamp(0.78rem, 1.4vw, 0.9rem); color: var(--paper-dim); will-change: opacity, transform; }
@@ -198,6 +198,10 @@ html.tb-on .tb { display: block; }
 .tb-diff::after { content: ''; position: absolute; right: 0; bottom: -2px; width: 6.6rem; height: 5px; border-top: 1px solid var(--credit); border-bottom: 3px double var(--credit); transform: scaleX(var(--rule, 0)); transform-origin: right; }
 .tb-o { position: absolute; font-family: var(--serif); font-size: min(72vh, 70vw); line-height: 1; color: var(--credit); opacity: 0; pointer-events: none; }
 .tb-name { position: absolute; left: 0; right: 0; text-align: center; font-family: var(--sans); font-weight: 800; text-transform: uppercase; white-space: nowrap; font-size: clamp(2.6rem, 11vw, 10.5rem); line-height: 1; letter-spacing: -0.02em; opacity: 0; pointer-events: none; }
+/* Identity from the first frame: a set of accounts names who prepared it */
+.tb-prep { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.3rem; padding-top: 0.7rem; border-top: 1px solid var(--rule); font-size: var(--ms-2); letter-spacing: var(--tr-1); text-transform: uppercase; color: var(--paper-faint); }
+.tb-prep span:first-child { color: var(--paper-dim); }
+.tb-reg { display: block; margin-top: 1.1rem; font-family: var(--mono); font-weight: 400; font-size: clamp(0.7rem, 1.1vw, 0.86rem); letter-spacing: var(--tr-2); color: var(--paper-dim); white-space: normal; padding: 0 1.25rem; }
 .tb-cue { position: absolute; bottom: 1.8rem; left: 0; right: 0; display: flex; justify-content: center; gap: 2rem; font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-3); text-transform: uppercase; color: var(--paper-faint); }
 .tb-cue a { color: var(--paper-faint); text-decoration: none; border-bottom: 1px solid var(--rule); }
 .tb-cue a:hover { color: var(--credit); border-color: var(--credit); }
@@ -417,7 +421,7 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 .open-sub, .l-desc, .about-lede, .notes li, .op-lab { text-wrap: pretty; }
 
 /* ================= Chapter 1: map ================= */
-.map-scene { height: 220vh; position: relative; }
+.map-scene { height: 140vh; position: relative; } /* was 220vh: same draw, less dead scroll */
 .map-sticky { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; overflow: hidden; }
 .map-sticky::after {
   content: ''; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: 0.7;
@@ -949,7 +953,7 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
 </div>
 
 <!-- ============ v4 cold open: the trial balance ============ -->
-<section class="tb" id="tb" aria-label="Opening: the books balance">
+<section class="tb" id="tb" aria-label="Opening: the books balance. Prepared by Ajay Sachdev, ACMA CGMA, Finance and Operations Manager">
   <div class="tb-stick">
     <div class="tb-sheet" aria-hidden="true">
       <div class="tb-head"><span>Trial balance</span><span>FY 2021 to date</span></div>
@@ -960,9 +964,10 @@ html.has-cur .terminal, html.has-cur .terminal * { cursor: auto; }
       <div class="tb-row" data-side="cr" data-v="365"><span>Sleep</span><b></b><b>0.00</b></div>
       <div class="tb-tot"><span>Totals</span><b id="tb-dr">0.00</b><b id="tb-cr">0.00</b></div>
       <div class="tb-diff" id="tb-diff"><span>Difference</span><b id="tb-d">0.00</b></div>
+      <div class="tb-prep"><span>Prepared by A. Sachdev, ACMA CGMA</span><span>Finance &amp; Operations Manager</span></div>
     </div>
     <div class="tb-o" aria-hidden="true">0</div>
-    <div class="tb-name" aria-hidden="true">Ajay Sachdev</div>
+    <div class="tb-name" aria-hidden="true">Ajay Sachdev<span class="tb-reg">Finance &amp; Operations / ACMA CGMA / builds the systems at night</span></div>
     <div class="tb-cue"><span>Scroll to close the books</span><a href="#top">Skip the intro</a></div>
   </div>
 </section>
