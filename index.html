@@ -1676,11 +1676,15 @@ GROUP BY 1 ORDER BY 1;</div>
         slot.replaceChildren(fig);
         title.textContent = b.querySelector('.k-cap').textContent;
         dlg.showModal();
+        /* Own history entry: browser Back closes the frame instead of leaving the site */
+        history.pushState({ kview: true }, '');
         track('krank-shot-opened');
       });
     });
     dlg.querySelector('.kv-close').addEventListener('click', function () { dlg.close(); });
     dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('close', function () { if (history.state && history.state.kview) history.back(); });
+    addEventListener('popstate', function () { if (dlg.open) dlg.close(); });
   })();
 
   /* Contact intent */
