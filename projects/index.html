@@ -287,20 +287,14 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 /* ================= Reveal + motion prefs ================= */
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.9s cubic-bezier(0.23, 1, 0.32, 1); }
 .reveal.in { opacity: 1; transform: none; }
+/* Above the fold the entry head is visible from the first frame and only slides: an opacity-0 start made the LCP wait for JS (render delay ~1.8s) */
+main.wrap > header .reveal { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .reveal { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
 }
 
-/* ================= Reveal + motion prefs ================= */
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.9s cubic-bezier(0.23, 1, 0.32, 1); }
-.reveal.in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .reveal { opacity: 1; transform: none; }
-  html { scroll-behavior: auto; }
-}
 </style>
 <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
 </head>
