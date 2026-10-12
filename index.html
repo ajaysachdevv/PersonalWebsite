@@ -711,7 +711,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
       </div>
       <a class="door-go" href="projects/" data-track="projects-door">Open the schedule &rarr;</a>
     </div>
-    <p class="sched-note reveal">The failures are on the books too: every entry carries a <span class="wr">What went wrong</span> note, told straight. <button type="button" class="sched-term" data-term-run="impairments">Run <b>impairments</b> in the terminal</button></p>
+    <p class="sched-note reveal">The failures are on the books too: where something went wrong, the entry says so in a <span class="wr">What went wrong</span> note, told straight. <button type="button" class="sched-term" data-term-run="impairments">Run <b>impairments</b> in the terminal</button></p>
   </section>
 
 </div>
@@ -1066,7 +1066,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ping: function () { tprint('pong. 0 impulsive packets let through.'); },
     cgma: function () { tprint('<b>ACMA CGMA (CIMA)</b>, qualified 2026.<br>Strategic Case Study: passed, with a study engine I built for it.<br>try: open scs-cockpit'); },
     impairments: function () {
-      tprint('<b>Impairments</b> (what went wrong, written down)<br>opspilot         the 1am journal: a believable wrong number<br>trading-bot      the backtests said no, so it never went live<br>whatsapp-smart   built on someone else\'s page<br>scs-cockpit      the mock exam mode I never built<br>uni-nation       <span class="warn">being repaired now. the write-up follows the fix</span>');
+      tprint('<b>Impairments</b> (what went wrong, written down)<br>opspilot         the 1am journal: a believable wrong number<br>trading-bot      the backtests said no, so it never went live<br>whatsapp-smart   built on someone else\'s page<br>scs-cockpit      the mock exam mode I never built<br>uni-nation       <span class="warn">nothing written off. status: being repaired (PIN build)</span>');
     },
     schedule: function (arg) {
       var keys = Object.keys(PROJECTS), i = parseInt(arg, 10);

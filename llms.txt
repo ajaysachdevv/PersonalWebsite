@@ -34,6 +34,6 @@ Financial Modelling, Management Accounts, VAT & Payroll, Budgeting & Forecasting
 
 ## Contact
 - Web: https://ajaysachdev.com
-- Projects: https://ajaysachdev.com/projects/ (the full schedule: five public projects with status and a What went wrong note each, plus five tools built at work, shown with dummy data)
+- Projects: https://ajaysachdev.com/projects/ (the full schedule: five public projects with status and a What went wrong note wherever something did, plus five tools built at work, shown with dummy data)
 - LinkedIn: https://www.linkedin.com/in/ajayy-sachdev/
 - Email: ajay@ajaysachdev.com
