@@ -30,6 +30,7 @@
 <link rel="preload" href="vendor/fonts/instrumentserif-400-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="vendor/fonts/instrumentserif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="vendor/fonts/jetbrainsmono-400-500-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/design-tokens.css">
 <style>
 @font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('vendor/fonts/instrumentserif-400-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
@@ -49,23 +50,6 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentEl
 <script src="vendor/lenis.min.js" defer></script>
 <style>
 /* ================= Tokens: The Ledger, filmed ================= */
-:root {
-  --ink: #0d0c0a;
-  --ink-2: #131210;
-  --paper: #ece7dc;
-  --paper-dim: rgba(236, 231, 220, 0.68);
-  --paper-faint: rgba(236, 231, 220, 0.55);
-  --rule: rgba(236, 231, 220, 0.13);
-  --credit: #2fbf71;
-  --amber: #e8b34b;
-  --debit: #d96459;
-  --serif: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
-  --sans: 'Inter', 'Inter Fallback', -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', 'JetBrains Mono Fallback', Consolas, monospace;
-  /* Mono micro-type scale (V-T1): 4 sizes, 4 trackings. Every mono label uses these */
-  --ms-1: 0.66rem; --ms-2: 0.7rem; --ms-3: 0.74rem; --ms-4: 0.78rem; /* floor raised 09/10/2026: 0.58rem tracked caps was decoration, not text */
-  --tr-1: 0.08em; --tr-2: 0.14em; --tr-3: 0.22em; --tr-4: 0.3em;
-}
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scrollbar-color: var(--paper-faint) var(--ink); overflow-x: clip; }
 body {
@@ -610,12 +594,12 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 
 /* ================= Chapter 4: mill (Uni-Nation voice) ================= */
 .mill {
-  --paper: #1c160d;
-  --paper-dim: rgba(28, 22, 13, 0.72);
-  --paper-faint: rgba(28, 22, 13, 0.62);
-  --rule: rgba(28, 22, 13, 0.16);
-  --credit: #1f7a4d;
-  background: #f7f0df; color: var(--paper);
+  --paper: var(--light-ink);
+  --paper-dim: var(--light-ink-dim);
+  --paper-faint: var(--light-ink-faint);
+  --rule: var(--light-rule);
+  --credit: var(--light-credit);
+  background: var(--light-panel); color: var(--paper);
   box-shadow: 0 3rem 8rem rgba(60, 44, 16, 0.25);
 }
 .mill-grid { display: grid; grid-template-columns: 1fr 1.2fr; min-height: 23rem; }

@@ -26,6 +26,7 @@
 <link rel="preload" href="../vendor/fonts/instrumentserif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../vendor/fonts/instrumentserif-400-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../vendor/fonts/jetbrainsmono-400-500-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/design-tokens.css">
 <style>
 @font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
@@ -40,18 +41,16 @@
 <style>
 /* ================= Tokens: The Ledger, light scene (the mill) ================= */
 :root {
-  --ink: #efe8d5;
-  --ink-2: #f7f0df;
-  --paper: #1c160d;
-  --paper-dim: rgba(28, 22, 13, 0.72);
-  --paper-faint: rgba(28, 22, 13, 0.62);
-  --rule: rgba(28, 22, 13, 0.16);
-  --credit: #1c7146;
-  --amber: #8a610f;
-  --debit: #b04a40;
-  --serif: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
-  --sans: 'Inter', 'Inter Fallback', -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', 'JetBrains Mono Fallback', Consolas, monospace;
+  /* the one light scene: this page maps the shared tokens onto the light-scene set */
+  --ink: var(--light-bg);
+  --ink-2: var(--light-panel);
+  --paper: var(--light-ink);
+  --paper-dim: var(--light-ink-dim);
+  --paper-faint: var(--light-ink-faint);
+  --rule: var(--light-rule);
+  --credit: var(--light-credit);
+  --amber: var(--light-amber);
+  --debit: var(--light-debit);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scrollbar-color: var(--paper-faint) var(--ink); overflow-x: clip; scroll-behavior: smooth; }
