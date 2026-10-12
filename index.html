@@ -351,7 +351,7 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 .open-readout .term-hint:hover { color: var(--credit); }
 /* Phone: the readout is the identity payload (name, CGMA, base), so it stacks legibly; PRESS T moves to the footer prompt, the ghost name goes (noise behind a crowded hero) */
 @media (max-width: 480px) {
-  .open-readout { flex-direction: column; gap: 0.35rem; font-size: 0.7rem; letter-spacing: var(--tr-1); }
+  .open-readout { position: relative; left: auto; right: auto; bottom: auto; margin-top: 2.2rem; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; letter-spacing: var(--tr-1); }
   .open-readout [data-term] { display: none; }
   .open-name { display: none; }
 }
@@ -2198,8 +2198,8 @@ document.addEventListener('DOMContentLoaded', function () {
       sheet.style.opacity = 1 - out; sheet.style.transform = 'scale(' + (1 - out * 0.06) + ')';
       var z = seg(p, 0.64, 0.76), zOut = seg(p, 0.8, 0.88);
       zero.style.opacity = z * (1 - zOut); zero.style.transform = 'scale(' + (0.35 + 0.65 * ease(z)) + ')';
-      var n = seg(p, 0.82, 0.9), nOut = seg(p, 0.94, 1);
-      name.style.opacity = n * (1 - nOut); name.style.letterSpacing = (0.08 - 0.1 * ease(n)) + 'em';
+      var n = seg(p, 0.82, 0.9);
+      name.style.opacity = n; name.style.letterSpacing = (0.08 - 0.1 * ease(n)) + 'em';
       cue.style.opacity = 1 - seg(p, 0.05, 0.15);
       if (p > 0.9) heroGo();
     }
