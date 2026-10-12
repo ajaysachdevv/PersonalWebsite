@@ -51,25 +51,124 @@
   --rule-head: 2px;
   --measure-lede: 62ch;
 
-  /* ---------- Motion (cycle 1, 12/10/2026: tuned against hirotos.com live source and a
-     leoparpeix.com snapshot of 19/09/2026; values in POLISH-LOG.md) ---------- */
+  /* ---------- Motion (cycle 1b, 12/10/2026: motion pass, picks in the decision sheet; sources
+     measured live in ~/.claude/ui-references/study-2026-10-12/, values in POLISH-LOG.md) ---------- */
   /* Easing */
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* reveals and settles: between Hiroto (.2,.8,.2,1) and Leo (.16,1,.1,1) */
-  --ease-hero: cubic-bezier(0.16, 1, 0.3, 1); /* expo-out: hero line lifts only, both references use expo.out here */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* settles: terminal, drawers, small entrances */
+  --ease-hero: cubic-bezier(0.16, 1, 0.3, 1); /* expo-out: total-rule draw */
   --ease-micro: ease; /* hovers, colour and border changes */
+  --ease-reveal: ease; /* shared reveal (Paco Coursey, measured: plain ease) */
+  --ease-morph: cubic-bezier(0.22, 1, 0.36, 1); /* shared-element moves (Motion Primitives dialog, measured fit) */
+  --ease-spring: cubic-bezier(0.3, 1.28, 0.5, 1); /* nav notch (fit of Knotch's ~1.095 overshoot) */
   --ease-stamp: cubic-bezier(0.16, 1.2, 0.4, 1); /* the veto stamp ONLY: the one violent moment */
   /* Durations */
-  --dur-instant: 0.14s; /* presses, nudges (Hiroto 0.14s) */
-  --dur-micro: 0.22s; /* hovers, colour, border (Hiroto 0.18s, Leo 0.3s) */
-  --dur-short: 0.36s; /* small state changes, chips, panels swapping (Hiroto 0.36s) */
-  --dur-medium: 0.52s; /* image filters, clip reveals, card lifts (Hiroto 0.52s) */
-  --dur-reveal: 0.72s; /* scroll reveals (Hiroto 0.72s, Leo 0.75s; was 0.9s) */
-  --dur-hero: 1.1s; /* hero line lifts (both 1.0 to 1.28s) */
-  --dur-ambient: 2.4s; /* status-dot pulse and other ambient loops */
+  --dur-instant: 0.14s; /* presses, nudges */
+  --dur-micro: 0.22s; /* small colour changes inside moments */
+  --dur-link: 0.24s; /* links and buttons sitewide (Paco, measured: text-decoration-color 0.24s) */
+  --dur-morph: 0.22s; /* title carry-over, screen viewer, terminal (Motion Primitives, measured ~215ms) */
+  --dur-backdrop: 0.25s; /* dialog backdrop (Motion Primitives, measured 250ms linear) */
+  --dur-short: 0.36s; /* small state changes, chips, panels swapping */
+  --dur-medium: 0.52s; /* image filters, clip reveals */
+  --dur-reveal: 0.6s; /* shared reveal (Paco, measured 600ms) */
+  --dur-nav: 0.6s; /* notch open (Knotch, measured 600ms) */
+  --dur-trace: 0.42s; /* hero button outline trace (2F, own idea: long enough to read as drawing) */
+  --delay-trace: 0.1s; /* the trace's sides start after its top and bottom */
+  --dur-ambient: 2.4s; /* the one status-dot pulse and the map "now" pulse */
   /* Choreography */
-  --stagger-line: 0.075s; /* lines entering together (both references) */
-  --stagger-item: 0.035s; /* list items, rows (Hiroto) */
-  --reveal-dist: 18px; /* scroll reveal travel (Hiroto y:18; was 22 to 26px) */
-  /* Exempt by design: the sims' and signature moments' keyframe timings. They are content
+  --stagger-reveal: 0.12s; /* items entering together (Paco, measured 120ms) */
+  --stagger-line: 0.075s; /* lines entering together inside moments */
+  --stagger-item: 0.035s; /* list items inside moments */
+  --reveal-dist: 10px; /* shared reveal travel (Paco, measured 10px) */
+  --nav-blur: 4px; /* notch links un-blur (Knotch, measured 4px) */
+  --nav-squeeze-at: 60; /* px scrolled before the bar squeezes into the notch (read by js/nav.js) */
+  /* Exempt by design: the signature moments' keyframe timings (case pages). They are content
      timelines synced to JS sequencing (setTimeout beats), not free design constants. */
+}
+
+/* =====================================================================
+   Shared components (motion pass, 12/10/2026). One copy for every page
+   that has a nav; pages keep no nav CSS of their own.
+   ===================================================================== */
+
+/* ---------- Site nav, option C: full ledger bar at the top, squeezes into a black
+   notch once scrolled (js/nav.js adds .is-squeezed). Hover, tap or focus reopens.
+   No JS: the full bar simply stays. Notch after Knotch (knotch.framer.ai), measured:
+   600ms, links un-blur from 4px. ---------- */
+.site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 40; pointer-events: none; }
+.nav-bar {
+  pointer-events: auto;
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 1.2rem clamp(1.25rem, 4vw, 3rem);
+  background: rgba(13, 12, 10, 0.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: var(--rule-hair) solid var(--rule);
+  transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s;
+}
+.site-nav.is-clear .nav-bar { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom-color: transparent; }
+.nav-mark { font-family: var(--serif); font-size: 1.25rem; text-decoration: none; color: var(--paper); }
+.nav-mark em, .nav-mono em { color: var(--credit); }
+.nav-links { display: flex; gap: 2rem; align-items: baseline; }
+.nav-links a, .nav-notch .side a {
+  font-family: var(--mono); font-size: var(--ms-3); letter-spacing: var(--tr-2); text-transform: uppercase;
+  color: var(--paper-dim);
+  text-decoration: underline; text-decoration-thickness: var(--rule-hair); text-underline-offset: 5px; text-decoration-color: var(--rule);
+  transition: color var(--dur-link) var(--ease-micro), text-decoration-color var(--dur-link) var(--ease-micro);
+}
+.nav-links a:hover, .nav-links a:focus-visible, .nav-links a[aria-current="page"],
+.nav-notch .side a:hover, .nav-notch .side a:focus-visible, .nav-notch .side a[aria-current="page"] { color: var(--paper); text-decoration-color: var(--credit); }
+.nav-fy { font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-2); color: var(--paper-faint); }
+
+/* squeezed: the bar lifts away, the notch drops in */
+.site-nav.is-squeezed .nav-bar {
+  opacity: 0; transform: translateY(-40%); visibility: hidden; pointer-events: none;
+  transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s var(--dur-short);
+}
+.nav-notch {
+  pointer-events: auto;
+  position: absolute; top: 0; left: 50%; transform: translate(-50%, -110%); visibility: hidden;
+  display: flex; align-items: center; height: 2.6rem; padding: 0 0.9rem;
+  background: var(--ink); border: var(--rule-hair) solid var(--rule); border-top: 0; border-radius: 0 0 16px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: transform var(--dur-short) var(--ease-out), visibility 0s var(--dur-short);
+}
+.site-nav.is-squeezed .nav-notch { transform: translate(-50%, 0); visibility: visible; transition: transform var(--dur-short) var(--ease-out), visibility 0s; }
+.nav-mono {
+  font: inherit; font-family: var(--serif); font-size: 1.15rem; line-height: 1; color: var(--paper);
+  background: none; border: 0; padding: 0.4rem 0.55rem; cursor: pointer; white-space: nowrap;
+}
+.nav-notch .side { display: flex; gap: 1.1rem; max-width: 0; overflow: hidden; transition: max-width var(--dur-nav) var(--ease-spring), padding var(--dur-nav) var(--ease-spring); }
+.nav-notch .side.l { justify-content: flex-end; }
+.nav-notch .side a {
+  padding: 0.2rem 0.15rem; white-space: nowrap;
+  opacity: 0; filter: blur(var(--nav-blur)); transform: scale(1.1);
+  transition: filter var(--dur-nav) var(--ease-spring), opacity var(--dur-nav) var(--ease-spring), transform var(--dur-nav) var(--ease-spring), color var(--dur-link) var(--ease-micro), text-decoration-color var(--dur-link) var(--ease-micro);
+}
+.nav-notch.is-open .side { max-width: 18rem; }
+.nav-notch.is-open .side.l { padding-right: 0.4rem; }
+.nav-notch.is-open .side.r { padding-left: 0.4rem; }
+.nav-notch.is-open .side a { opacity: 1; filter: none; transform: none; }
+
+@media (max-width: 720px) { .nav-fy { display: none; } .nav-links { gap: 1.2rem; } }
+@media (max-width: 480px) {
+  .nav-mark { font-size: 1.05rem; }
+  .nav-links { gap: 0.9rem; }
+  .nav-links a, .nav-notch .side a { font-size: var(--ms-2); letter-spacing: var(--tr-1); }
+  .nav-hide-sm { display: none; }
+  .nav-notch { padding: 0 0.6rem; }
+  .nav-notch .side { gap: 0.75rem; }
+}
+
+/* ---------- The one ambient pulse keyframe (status dot on "Production" only, map "now") ---------- */
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+/* ---------- Page transitions, 12B (motion pass): the title you clicked carries over and becomes the
+   next page's title, about 220ms (Motion Primitives morphing dialog, measured ~215ms, no overshoot).
+   Pairs: home door title -> /projects/ h1 (schedule-title); ledger row name -> case h1 (entry-title).
+   Names are given at click time by each page's script, never statically on both ends of a click. ---------- */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--dur-backdrop); }
+::view-transition-group(entry-title), ::view-transition-group(schedule-title),
+::view-transition-old(entry-title), ::view-transition-new(entry-title),
+::view-transition-old(schedule-title), ::view-transition-new(schedule-title) {
+  animation-duration: var(--dur-morph); animation-timing-function: var(--ease-morph);
 }
