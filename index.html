@@ -302,8 +302,8 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 .map-note { font-family: var(--serif); font-style: italic; font-size: 17px; fill: var(--paper-dim); opacity: 0; }
 /* dual-track timeline */
 .mstone { opacity: 0; }
-.map-ach { font-family: var(--serif); font-size: 21px; fill: var(--paper); }
-.map-sub { font-family: var(--mono); font-size: 12px; letter-spacing: var(--tr-2); fill: var(--paper-dim); text-transform: uppercase; }
+.map-ach { font-family: var(--serif); font-size: 17px; fill: var(--paper); }
+.map-sub { font-family: var(--mono); font-size: 10px; letter-spacing: var(--tr-2); fill: var(--paper-dim); text-transform: uppercase; }
 .map-sub .yr { fill: var(--credit); }
 .map-branch { fill: none; stroke: rgba(236, 231, 220, 0.38); stroke-width: 1.2; }
 .map-branch.lg-study { stroke: var(--credit); opacity: 0.75; }
@@ -314,8 +314,8 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 .compass { fill: none; stroke: var(--paper-faint); stroke-width: 1.4; }
 /* small screens shrink the 1000-unit viewBox hard; scale the type up in SVG units */
 @media (max-width: 700px) {
-  .map-ach { font-size: 27px; }
-  .map-sub { font-size: 16px; }
+  .map-ach { font-size: 22px; }
+  .map-sub { font-size: 13px; }
   .map-note { font-size: 24px; }
   .map-label.big { font-size: 34px; }
   .map-label { font-size: 16px; }
@@ -604,24 +604,6 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
           <path d="M 986 486 L 986 506 L 966 506" fill="none"/>
           <path d="M 34 506 L 14 506 L 14 486" fill="none"/>
         </g>
-        <!-- survey contours: hills in the empty quadrants -->
-        <g fill="none" stroke="rgba(236, 231, 220, 0.055)" stroke-width="1.1">
-          <path d="M 60 120 C 120 70 240 60 320 95 C 400 130 420 200 350 235 C 270 272 130 260 85 205 C 55 168 40 140 60 120 Z"/>
-          <path d="M 110 135 C 160 98 250 92 310 118 C 370 145 385 195 330 220 C 268 247 165 238 130 196 C 108 170 95 150 110 135 Z"/>
-          <path d="M 165 152 C 200 128 258 125 298 142 C 338 160 346 192 310 208 C 268 226 200 219 178 191 C 163 172 155 160 165 152 Z"/>
-          <path d="M 620 400 C 680 370 780 368 840 395 C 900 422 908 466 850 488 C 785 512 675 505 640 470 C 615 445 598 415 620 400 Z"/>
-          <path d="M 668 415 C 712 393 782 392 826 411 C 868 430 874 460 832 476 C 786 494 706 488 682 462 C 664 443 655 425 668 415 Z"/>
-        </g>
-        <g class="compass" transform="translate(930, 60)"><circle r="26"/><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-26" y1="0" x2="26" y2="0"/></g>
-        <text class="map-label" x="918" y="18">N</text>
-        <g id="survey-stamp" transform="translate(900, 452) rotate(-8)">
-          <circle class="map-stamp" r="54"/>
-          <circle class="map-stamp" r="44"/>
-          <text class="map-stamp-text" x="0" y="-6" text-anchor="middle">SURVEYED</text>
-          <text class="map-stamp-text" x="0" y="12" text-anchor="middle">2015 - 2026</text>
-        </g>
-        <text class="map-coord" x="92" y="392">19.0N / 72.8E</text>
-        <text class="map-coord" x="846" y="164">52.2N / 0.1E</text>
         <path class="map-path" d="M 64 484 Q 104 454 146 433" opacity="0.3"/>
         <path class="map-path" d="M 846 116 Q 892 98 938 92" opacity="0.3"/>
         <path id="route" class="map-route" d="M 150 430 C 240 420 260 360 330 350 C 420 338 450 380 520 330 C 600 272 580 210 660 180 C 730 153 780 170 840 120"/>
@@ -679,27 +661,13 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
           <text class="map-ach" x="801" y="104" text-anchor="end">Cambridge, now</text>
           <text class="map-sub" x="801" y="120" text-anchor="end">BUILDS THE SYSTEMS</text>
         </g>
-        <text class="map-note" id="note" x="70" y="190">commercial instinct came before the qualifications did</text>
       </svg>
     </div>
   </div>
 </section>
 
-<!-- ============ The day job, then the night work ============ -->
+<!-- ============ The night work ============ -->
 <div class="wrap">
-
-  <section id="operating">
-    <div class="section-head"><span>Experience: the day job</span><span class="right">Finance and operations, one operator</span></div>
-    <p class="op-lede reveal">The software is after-hours. By day I run finance and operations for a UK tech scale-up, on my own, across three countries. A few figures from the books.</p>
-    <div class="op-grid">
-      <div class="op-fig reveal"><span class="op-num">3</span><span class="op-lab">countries of finance and ops, run as the sole function</span></div>
-      <div class="op-fig reveal"><span class="op-num">50+</span><span class="op-lab">live dashboards on product, marketing and finance data</span></div>
-      <div class="op-fig reveal"><span class="op-num">40+<i>hrs</i></span><span class="op-lab">of manual reporting automated away every month</span></div>
-      <div class="op-fig reveal"><span class="op-num">65<i>%</i></span><span class="op-lab">cut from a core platform's cost by working the numbers</span></div>
-      <div class="op-fig reveal"><span class="op-num">26<i>to</i>3</span><span class="op-lab">page contract redesign: six-month stalls became one-week signings</span></div>
-      <div class="op-fig reveal"><span class="op-num">7</span><span class="op-lab">multi-currency accounts, GBP USD PKR</span></div>
-    </div>
-  </section>
 
   <section id="books">
     <div class="section-head"><span>After hours: the schedule</span><span class="right">Carried to Schedule 1</span></div>
@@ -742,7 +710,6 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 </main>
 
 <footer class="wrap" id="contact">
-  <div class="section-head"><span>Closing entry</span><span class="right">Correspondence</span></div>
   <p class="foot-cta reveal">Got a problem that sits <em>between departments?</em></p>
   <div class="foot-links reveal">
     <a href="projects/" data-track="projects-footer">Projects</a>
@@ -755,7 +722,6 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
     <input id="foot-cmd" type="text" placeholder="press T, or type here. try: impairments" spellcheck="false" autocapitalize="off" aria-label="Terminal command">
   </form>
   <div class="foot-sign">
-    <span>Prepared without audit fees. Audited by production.</span>
     <button type="button" class="term-hint" id="basis-link">Basis of preparation</button>
     <span>Ajay Sachdev / books last audited 09/10/2026</span>
   </div>
@@ -805,7 +771,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* Scroll-depth funnel: how far do visitors get down the story? (12/10/2026 restructure: new names, old chapter events retired) */
   if ('IntersectionObserver' in window) {
     var depthMap = [
-      ['#ch1', 'depth-ch1-origins'], ['#operating', 'depth-dayjob'], ['#books', 'depth-books'],
+      ['#ch1', 'depth-ch1-origins'], ['#books', 'depth-books'],
       ['#about', 'depth-notes'], ['#contact', 'depth-footer']
     ];
     var io = new IntersectionObserver(function (entries) {
@@ -897,7 +863,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     blend('#ch1', '#0d0c0a', '#11100c');
     /* back to plain ink once the map has passed */
-    blend('#operating', '#11100c', '#0d0c0a', 'top 98%', 'top 60%');
+    blend('#books', '#11100c', '#0d0c0a', 'top 98%', 'top 60%');
 
     /* Reveal B: CSS does the motion (.reveal.in); ScrollTrigger.batch groups items entering together, 120ms apart */
     var stagger = tok('--stagger-reveal', 0.12);
@@ -953,8 +919,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* One-shot beats when the map enters: quote lifts in, survey stamp settles */
     ScrollTrigger.create({ trigger: '#map', start: 'top 70%', once: true, onEnter: function () {
-      gsap.fromTo('#note', { opacity: 0, y: 16 }, { opacity: 0.85, y: 0, duration: 1.05, ease: 'expo.out' });
-      gsap.from('#survey-stamp', { opacity: 0, scale: 1.04, svgOrigin: '900 452', duration: 0.7, ease: 'power2.out' });
     } });
 
   } else {
@@ -985,8 +949,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var pos = document.getElementById('nav-pos');
     var railCur = document.getElementById('rail-cur');
     if (!pos) return;
-    var marks = [['top', 'Opening'], ['ch1', 'Origins'], ['operating', 'The day job'], ['books', 'The schedule'],
-      ['about', 'The operator'], ['contact', 'Closing entry']]
+    var marks = [['top', 'Opening'], ['ch1', 'Origins'], ['books', 'The schedule'],
+      ['about', 'The operator'], ['contact', 'Contact']]
       .map(function (m) { return [document.getElementById(m[0]), m[1]]; }).filter(function (m) { return m[0]; });
     var ticking = false, last = '';
     function update() {
@@ -1029,7 +993,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
       tprint('<b>The schedule</b><br>ls projects        list the schedule of assets<br>schedule &lt;n&gt;       read entry n off the schedule (1 to 5)<br>open &lt;project&gt;     inspect a case study (or just type its name)<br>projects           open the full schedule page<br>impairments        what went wrong, written down<br>status             system status board<br><br>' +
-        '<b>The preparer</b><br>cat about          who prepared these statements<br>cgma               the qualification<br>guardrails         how my AI tools are kept on a leash<br>contact            correspondence details (email, linkedin)<br><br>' +
+        '<b>The preparer</b><br>cat about          who prepared these statements<br>cgma               the qualification<br>guardrails         how my AI tools are kept on a leash<br>contact            email and linkedin<br><br>' +
         '<b>The books</b><br>log                the audit trail of this site<br>basis              basis of preparation (how it is built)<br>uptime             how long the books have been open<br>date               today, in the house format<br><br>' +
         '<b>The terminal</b><br>history            what you have typed this session<br>sound on | off     blips on the case pages<br>echo &lt;text&gt;        say it back<br>clear              wipe the ledger<br>exit               close the terminal (or Esc)<br><br>' +
         'help &lt;command&gt; explains one. up arrow recalls the last command. typos get a suggestion.');
