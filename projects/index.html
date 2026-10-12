@@ -65,7 +65,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px s
   font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--paper); background: var(--ink); border: 1px solid var(--credit);
   padding: 0.7rem 1.1rem; text-decoration: none;
-  transform: translateY(calc(-100% - 1.5rem)); transition: transform 0.2s ease;
+  transform: translateY(calc(-100% - 1.5rem)); transition: transform var(--dur-micro) ease;
 }
 .skip-link:focus { transform: translateY(0); }
 body::after {
@@ -91,7 +91,7 @@ nav {
 }
 .nav-links a::after {
   content: ''; position: absolute; bottom: -3px; left: 0; width: 100%; height: 1px;
-  background: var(--credit); transform: scaleX(0); transform-origin: bottom right; transition: transform 0.35s ease;
+  background: var(--credit); transform: scaleX(0); transform-origin: bottom right; transition: transform var(--dur-short) ease;
 }
 .nav-links a:hover { color: var(--paper); }
 .nav-links a:hover::after { transform: scaleX(1); transform-origin: bottom left; }
@@ -111,7 +111,7 @@ main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
   font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--paper-faint);
 }
-.crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid rgba(236, 231, 220, 0.35); transition: color 0.3s ease, border-color 0.3s ease; }
+.crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid rgba(236, 231, 220, 0.35); transition: color var(--dur-micro) ease, border-color var(--dur-micro) ease; }
 .crumb a:hover { color: var(--credit); border-color: var(--credit); }
 @media (max-width: 480px) { .crumb { letter-spacing: 0.1em; } }
 .dossier-h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(3.4rem, 9vw, 7rem); line-height: 0.96; margin-top: 1.2rem; letter-spacing: -0.01em; }
@@ -258,7 +258,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 .foot-links a {
   font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--paper-dim); text-decoration: none; border: 1px solid var(--rule); padding: 0.8rem 1.4rem;
-  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  transition: color var(--dur-micro) ease, border-color var(--dur-micro) ease, background var(--dur-micro) ease;
 }
 .foot-links a:hover { color: var(--ink); background: var(--credit); border-color: var(--credit); }
 @media (max-width: 480px) { .foot-links a { flex: 1 1 40%; text-align: center; } }
@@ -269,7 +269,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 }
 
 /* ================= Reveal + motion prefs ================= */
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.9s cubic-bezier(0.23, 1, 0.32, 1); }
+.reveal { opacity: 0; transform: translateY(var(--reveal-dist)); transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out); }
 .reveal.in { opacity: 1; transform: none; }
 /* Above the fold the entry head is visible from the first frame and only slides: an opacity-0 start made the LCP wait for JS (render delay ~1.8s) */
 main.wrap > header .reveal { opacity: 1; }

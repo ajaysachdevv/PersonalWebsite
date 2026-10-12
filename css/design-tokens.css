@@ -51,30 +51,25 @@
   --rule-head: 2px;
   --measure-lede: 62ch;
 
-  /* ---------- Motion ---------- */
+  /* ---------- Motion (cycle 1, 12/10/2026: tuned against hirotos.com live source and a
+     leoparpeix.com snapshot of 19/09/2026; values in POLISH-LOG.md) ---------- */
   /* Easing */
-  --ease-out: cubic-bezier(
-    0.23,
-    1,
-    0.32,
-    1
-  ); /* reveals, hero line lifts, settles */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* reveals and settles: between Hiroto (.2,.8,.2,1) and Leo (.16,1,.1,1) */
+  --ease-hero: cubic-bezier(0.16, 1, 0.3, 1); /* expo-out: hero line lifts only, both references use expo.out here */
   --ease-micro: ease; /* hovers, colour and border changes */
-  --ease-stamp: cubic-bezier(
-    0.16,
-    1.2,
-    0.4,
-    1
-  ); /* the veto stamp ONLY: the one violent moment */
+  --ease-stamp: cubic-bezier(0.16, 1.2, 0.4, 1); /* the veto stamp ONLY: the one violent moment */
   /* Durations */
-  --dur-instant: 0.15s; /* presses, nudges */
-  --dur-micro: 0.3s; /* hovers, colour, border */
-  --dur-short: 0.45s; /* small state changes, chips, panels swapping */
-  --dur-medium: 0.6s; /* image filters, card lifts */
-  --dur-reveal: 0.9s; /* scroll reveals */
-  --dur-hero: 1.1s; /* hero line lifts */
+  --dur-instant: 0.14s; /* presses, nudges (Hiroto 0.14s) */
+  --dur-micro: 0.22s; /* hovers, colour, border (Hiroto 0.18s, Leo 0.3s) */
+  --dur-short: 0.36s; /* small state changes, chips, panels swapping (Hiroto 0.36s) */
+  --dur-medium: 0.52s; /* image filters, clip reveals, card lifts (Hiroto 0.52s) */
+  --dur-reveal: 0.72s; /* scroll reveals (Hiroto 0.72s, Leo 0.75s; was 0.9s) */
+  --dur-hero: 1.1s; /* hero line lifts (both 1.0 to 1.28s) */
   --dur-ambient: 2.4s; /* status-dot pulse and other ambient loops */
   /* Choreography */
-  --stagger-line: 0.08s; /* between lines or rows entering together */
-  --reveal-dist: 22px; /* scroll reveal travel */
+  --stagger-line: 0.075s; /* lines entering together (both references) */
+  --stagger-item: 0.035s; /* list items, rows (Hiroto) */
+  --reveal-dist: 18px; /* scroll reveal travel (Hiroto y:18; was 22 to 26px) */
+  /* Exempt by design: the sims' and signature moments' keyframe timings. They are content
+     timelines synced to JS sequencing (setTimeout beats), not free design constants. */
 }
