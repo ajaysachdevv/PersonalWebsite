@@ -27,6 +27,7 @@
 <link rel="preload" href="../vendor/fonts/instrumentserif-400-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../vendor/fonts/jetbrainsmono-400-500-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../css/design-tokens.css">
+<script src="../js/nav.js" defer></script>
 <style>
 @font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
@@ -48,11 +49,7 @@ body {
   overflow-x: clip;
 }
 ::selection { background: var(--credit); color: var(--ink); }
-/* Cross-document view transitions: pairs with the homepage ledger (Chromium; others hard-cut) */
-@view-transition { navigation: auto; }
-@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.35s; }
-::view-transition-old(entry-title), ::view-transition-new(entry-title) { animation-duration: 0.45s; }
+/* View transitions: shared in css/design-tokens.css (12B, title carries over) */
 a { color: inherit; }
 a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--credit); outline-offset: 3px; }
 .visually-hidden {
@@ -73,35 +70,7 @@ body::after {
 }
 .wrap { max-width: 74rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
 
-/* ================= Nav ================= */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding: 1.2rem clamp(1.25rem, 4vw, 3rem);
-  background: rgba(13, 12, 10, 0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--rule);
-}
-.nav-mark { font-family: var(--serif); font-size: 1.25rem; text-decoration: none; }
-.nav-mark em { color: var(--credit); }
-.nav-links { display: flex; gap: 2rem; align-items: baseline; }
-.nav-links a {
-  font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--paper-dim); text-decoration: none; position: relative;
-}
-.nav-links a::after {
-  content: ''; position: absolute; bottom: -3px; left: 0; width: 100%; height: 1px;
-  background: var(--credit); transform: scaleX(0); transform-origin: bottom right; transition: transform var(--dur-short) ease;
-}
-.nav-links a:hover { color: var(--paper); }
-.nav-links a:hover::after { transform: scaleX(1); transform-origin: bottom left; }
-.nav-fy { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; color: var(--paper-faint); }
-@media (max-width: 720px) { .nav-fy { display: none; } .nav-links { gap: 1.2rem; } }
-@media (max-width: 480px) {
-  .nav-mark { font-size: 1.05rem; }
-  .nav-links { gap: 0.9rem; }
-  .nav-links a { font-size: 0.66rem; letter-spacing: 0.1em; }
-  .nav-links a[href="../index.html#about"] { display: none; }
-}
+/* Nav: shared component in css/design-tokens.css (nav C) */
 
 /* ================= Entry head ================= */
 main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
@@ -114,8 +83,8 @@ main.wrap > header::before {
   font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--paper-faint);
 }
-.crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid rgba(236, 231, 220, 0.35); transition: color var(--dur-micro) ease, border-color var(--dur-micro) ease; }
-.crumb a:hover { color: var(--credit); border-color: var(--credit); }
+.crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid rgba(236, 231, 220, 0.35); transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro); }
+.crumb a:hover, .crumb a:focus-visible { color: var(--paper); border-color: var(--credit); }
 @media (max-width: 480px) { .crumb { letter-spacing: 0.1em; } }
 h1 {
   view-transition-name: entry-title;
@@ -130,8 +99,10 @@ h1 em { color: var(--credit); }
 .l-status { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; color: var(--paper); }
 .l-status i {
   display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 0.55rem;
-  background: var(--credit); box-shadow: 0 0 10px rgba(47, 191, 113, 0.6); animation: pulse var(--dur-ambient) infinite;
+  background: var(--credit); box-shadow: 0 0 10px rgba(47, 191, 113, 0.6);
 }
+/* 14D (motion pass): only the system in production breathes */
+.l-status.prod i { animation: pulse var(--dur-ambient) infinite; }
 .l-status.amber i { background: var(--amber); box-shadow: 0 0 10px rgba(232, 179, 75, 0.5); }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 .entry-lede {
@@ -221,6 +192,8 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 }
 .adcard > div { opacity: 0; transform: translateY(8px); transition: opacity var(--dur-medium) ease, transform var(--dur-medium) ease; }
 .adcard.in > div { opacity: 1; transform: none; }
+/* Decided (motion pass): the card does not reveal itself as well; only its five parts arrive */
+.adcard.reveal { opacity: 1; transform: none; transition: none; }
 .adcard.in > div:nth-child(1) { transition-delay: 0.1s; }
 .adcard.in > div:nth-child(2) { transition-delay: 0.3s; }
 .adcard.in > div:nth-child(3) { transition-delay: 0.55s; }
@@ -293,11 +266,12 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 /* Other entries */
 .others { width: 100%; border-collapse: collapse; margin-top: 2.2rem; }
 .others td { padding: 1.3rem 0.5rem; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
-.others tr { cursor: pointer; transition: background var(--dur-micro) ease; }
-.others tr:hover { background: rgba(236, 231, 220, 0.035); }
+.others tr { cursor: pointer; }
+.others tr:focus-visible { outline-offset: -2px; }
 .o-ref { font-family: var(--mono); font-size: 0.7rem; color: var(--paper-faint); width: 3.5rem; }
-.o-name { font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1; transition: color var(--dur-micro) ease, border-color var(--dur-micro) ease; white-space: nowrap; border-bottom: 1px solid rgba(236, 231, 220, 0.3); padding-bottom: 3px; }
-.others tr:hover .o-name { font-style: italic; color: var(--credit); border-bottom-color: var(--credit); }
+.o-name { font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1; white-space: nowrap; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; text-decoration-color: rgba(236, 231, 220, 0.3); transition: text-decoration-color var(--dur-link) var(--ease-micro); }
+/* 13B (motion pass): same rule as /projects/ and every link (Paco, measured 240ms) */
+.others tr:hover .o-name, .others tr:focus-visible .o-name { text-decoration-color: var(--credit); }
 .o-desc { font-size: 0.82rem; color: var(--paper-dim); max-width: 26rem; line-height: 1.55; }
 .o-status { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; white-space: nowrap; color: var(--paper-dim); }
 @media (max-width: 680px) { .o-desc { display: none; } }
@@ -315,20 +289,13 @@ header + section .section-head, .notes-col > section:first-child .section-head {
   .rail-inner { position: sticky; top: 6.5rem; margin-top: clamp(2.8rem, 5.5vw, 4.2rem); padding-top: 0.85rem; border-top: 2px solid var(--paper); }
 }
 .rail-head { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--paper-faint); }
-.rail-ref { list-style: none; margin-top: 1.1rem; border-top: 1px solid var(--rule); }
-.rail-ref li {
-  display: grid; grid-template-columns: 1.1rem 2.6rem 1fr; align-items: baseline; gap: 0.3rem;
-  padding: 0.5rem 0; border-bottom: 1px solid var(--rule);
-  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--paper-faint); transition: color var(--dur-micro) ease;
-}
-.rail-ref li b { font-weight: 400; }
-/* The tick: drawn, not a glyph. Ticked = read, active = being read */
-.rail-ref li i { width: 0.42rem; height: 0.68rem; border: solid transparent; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg) translate(-1px, -2px); transition: border-color var(--dur-micro) ease; }
-.rail-ref li.ticked i { border-color: var(--paper-faint); }
-.rail-ref li.on { color: var(--paper); }
-.rail-ref li.on i { border-color: var(--credit); }
-.rail-ref li.on.debit i { border-color: var(--debit); }
+/* 17A + 4C's hairline (motion pass): one hairline that fills as you read the notes, the current note's name, its stat below */
+.rail-line { margin-top: 1.1rem; }
+.rail-track { position: relative; height: 1px; background: var(--rule); }
+.rail-fill { position: absolute; inset: 0; background: var(--credit); transform-origin: left; transform: scaleX(0); }
+.rail-cur { margin-top: 0.85rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); }
+.rail-cur b { font-weight: 400; color: var(--credit); margin-right: 0.7rem; }
+.rail-cur.debit b { color: var(--debit); }
 .rail-panels { display: grid; margin-top: 2rem; }
 .rp { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity var(--dur-micro) ease, visibility var(--dur-micro); }
 .rp.on { opacity: 1; visibility: visible; }
@@ -340,10 +307,10 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .mo-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 1rem; }
 .mo-btn {
   font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
-  padding: 0.6rem 1rem; border-radius: 3px; border: 1px solid var(--credit); background: transparent;
-  color: var(--credit); cursor: pointer; transition: background var(--dur-micro) ease, color var(--dur-micro) ease, border-color var(--dur-micro) ease;
+  padding: 0.6rem 1rem; border-radius: 3px; border: 1px solid color-mix(in srgb, var(--credit) 45%, transparent); background: transparent;
+  color: var(--credit); cursor: pointer; transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro);
 }
-.mo-btn:hover:not(:disabled) { background: var(--credit); color: var(--ink); }
+.mo-btn:hover:not(:disabled), .mo-btn:focus-visible { color: var(--paper); border-color: var(--credit); }
 .mo-btn:disabled { opacity: 0.45; cursor: default; }
 .mo-btn.ghost { border-color: var(--rule); color: var(--paper-dim); }
 .mo-btn.ghost:hover:not(:disabled) { background: transparent; border-color: var(--paper-dim); color: var(--paper); }
@@ -391,9 +358,9 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 .foot-links a {
   font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--paper-dim); text-decoration: none; border: 1px solid var(--rule); padding: 0.8rem 1.4rem;
-  transition: color var(--dur-micro) ease, border-color var(--dur-micro) ease, background var(--dur-micro) ease;
+  transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro);
 }
-.foot-links a:hover { color: var(--ink); background: var(--credit); border-color: var(--credit); }
+.foot-links a:hover, .foot-links a:focus-visible { color: var(--paper); border-color: var(--credit); }
 @media (max-width: 480px) { .foot-links a { flex: 1 1 40%; text-align: center; } }
 .foot-sign {
   margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);
@@ -402,7 +369,8 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
 }
 
 /* ================= Reveal + motion prefs ================= */
-.reveal { opacity: 0; transform: translateY(var(--reveal-dist)); transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out); }
+/* Reveal B (motion pass): Paco, measured: 600ms, 10px, plain ease; items entering together 120ms apart (JS) */
+.reveal { opacity: 0; transform: translateY(var(--reveal-dist)); transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal); }
 .reveal.in { opacity: 1; transform: none; }
 /* Above the fold the entry head is visible from the first frame and only slides: an opacity-0 start made the LCP wait for JS (render delay ~1.8s) */
 main.wrap > header .reveal { opacity: 1; }
@@ -420,14 +388,16 @@ main.wrap > header .reveal { opacity: 1; }
 
 <a class="skip-link" href="#entry">Skip to the entry</a>
 
-<nav>
-  <a class="nav-mark" href="../index.html">Ajay<em>.</em>Sachdev</a>
-  <div class="nav-links">
-    <a href="./">Projects</a>
-    <a href="../index.html#about">About</a>
-    <a href="../index.html#contact">Contact</a>
+<nav id="nav" class="site-nav" aria-label="Main">
+  <div class="nav-bar">
+    <a class="nav-mark" href="../index.html">Ajay<em>.</em>Sachdev</a>
+    <div class="nav-links">
+      <a href="./">Projects</a>
+      <a class="nav-hide-sm" href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+    <span class="nav-fy">SCHEDULE 1 / ENTRY 01</span>
   </div>
-  <span class="nav-fy">SCHEDULE 1 / ENTRY 01</span>
 </nav>
 
 <main id="entry" class="wrap">
@@ -435,7 +405,7 @@ main.wrap > header .reveal { opacity: 1; }
   <header>
     <p class="crumb reveal"><a href="./">The schedule</a> / Entry 01 / AI operations</p>
     <h1 class="reveal">OpsPilot<em>.</em></h1>
-    <p class="entry-status reveal"><span class="l-status"><i></i>Production</span><span>In daily use since 2025 / Oracle Cloud, systemd</span></p>
+    <p class="entry-status reveal"><span class="l-status prod"><i></i>Production</span><span>In daily use since 2025 / Oracle Cloud, systemd</span></p>
     <p class="entry-lede reveal">It lives in Teams, reads every document my company has ever filed, pulls live accounting and CRM data, and drafts answers in my voice. <em>Nothing sends without my approval.</em></p>
     <div class="fig-row">
       <div class="fig reveal"><span class="fig-num">95,000+</span><span class="fig-lab">lines of code</span></div>
@@ -562,14 +532,10 @@ main.wrap > header .reveal { opacity: 1; }
     <aside class="rail" aria-label="Margin notes">
       <div class="rail-inner">
         <div class="rail-head"><span>Ref</span><span>Entry 01 / Margin</span></div>
-        <ol class="rail-ref">
-          <li data-n="1" class="on"><i></i><b>N.1</b><span>The problem</span></li>
-          <li data-n="2" class=""><i></i><b>N.2</b><span>How it works</span></li>
-          <li data-n="3" class=""><i></i><b>N.3</b><span>Exhibit</span></li>
-          <li data-n="4" class=""><i></i><b>N.4</b><span>What it does</span></li>
-          <li data-n="5" class="debit"><i></i><b>N.5</b><span>What went wrong</span></li>
-          <li data-n="6" class=""><i></i><b>N.6</b><span>Stack</span></li>
-        </ol>
+        <div class="rail-line" data-notes="The problem|How it works|Exhibit|What it does|What went wrong|Stack" data-debit="5">
+          <div class="rail-track" aria-hidden="true"><i class="rail-fill"></i></div>
+          <p class="rail-cur"><b>N.1</b>The problem</p>
+        </div>
         <div class="rail-panels">
           <div class="rp on" data-n="1"><span class="rp-num">6,124+</span><span class="rp-lab">documents nobody could find. Now they answer back</span></div>
           <div class="rp" data-n="2"><span class="rp-num">50/50</span><span class="rp-lab">frozen retrieval suite. No changes until it misses</span></div>
@@ -649,25 +615,50 @@ main.wrap > header .reveal { opacity: 1; }
   if (reduced || !('IntersectionObserver' in window)) {
     reveals.forEach(function (el) { el.classList.add('in'); });
   } else {
+    /* Items entering together go 120ms apart; signature moments keep their own choreography, so no delay on them */
+    var stagger = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stagger-reveal')) || 0.12;
     var io = new IntersectionObserver(function (entries) {
+      var k = 0;
       entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        if (!en.isIntersecting) return;
+        if (!en.target.matches('.pipe, .adcard, .term, .voice, .undo, .drill')) en.target.style.transitionDelay = (Math.min(k++, 4) * stagger) + 's';
+        en.target.classList.add('in');
+        io.unobserve(en.target);
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
     reveals.forEach(function (el) { io.observe(el); });
   }
 
-  /* Margin rail: index ticks and the marginal panel swaps as each note enters (brief 3.1) */
+  /* Margin rail, 17A with 4C's hairline (motion pass): the hairline fills as you read the notes,
+     the current note's name and its stat swap as each note enters */
   var notes = document.querySelectorAll('[data-note]');
-  var refs = document.querySelectorAll('.rail-ref li');
+  var railLine = document.querySelector('.rail-line');
+  var railCur = railLine && railLine.querySelector('.rail-cur');
+  var railFill = railLine && railLine.querySelector('.rail-fill');
+  var railLabels = railLine ? railLine.dataset.notes.split('|') : [];
+  var railDebit = railLine ? +railLine.dataset.debit : 0;
   var panels = document.querySelectorAll('.rp');
+  var shownNote = 1;
   function setNote(n) {
-    refs.forEach(function (li) {
-      var k = +li.dataset.n;
-      li.classList.toggle('on', k === n);
-      li.classList.toggle('ticked', k < n);
-    });
+    if (n === shownNote || !railLabels[n - 1]) return;
+    shownNote = n;
+    if (railCur) {
+      var b = document.createElement('b');
+      b.textContent = 'N.' + n;
+      railCur.replaceChildren(b, document.createTextNode(railLabels[n - 1]));
+      railCur.classList.toggle('debit', n === railDebit);
+    }
     panels.forEach(function (p) { p.classList.toggle('on', +p.dataset.n === n); });
+  }
+  if (railFill && notes.length) {
+    var railTick = false;
+    var railProgress = function () {
+      railTick = false;
+      var a = notes[0].getBoundingClientRect().top, z = notes[notes.length - 1].getBoundingClientRect().bottom, y = innerHeight * 0.35;
+      railFill.style.transform = 'scaleX(' + Math.max(0, Math.min(1, (y - a) / ((z - a) || 1))) + ')';
+    };
+    addEventListener('scroll', function () { if (!railTick) { railTick = true; requestAnimationFrame(railProgress); } }, { passive: true });
+    railProgress();
   }
   if (notes.length && 'IntersectionObserver' in window) {
     var railIo = new IntersectionObserver(function (entries) {
@@ -755,17 +746,27 @@ main.wrap > header .reveal { opacity: 1; }
   })();
 
   /* Row navigation */
+  /* 12B (motion pass): the clicked name carries over and becomes the next entry's title. This page's own h1
+     gives the name up first: two elements with one name made Chromium skip the transition. */
+  var pageH1 = document.querySelector('h1');
   document.querySelectorAll('tr[data-href]').forEach(function (row) {
-    row.addEventListener('click', function () {
+    function go() {
       var n = row.querySelector('.o-name');
+      if (pageH1) pageH1.style.viewTransitionName = 'none';
       if (n) n.style.viewTransitionName = 'entry-title';
       location.href = row.dataset.href;
-    });
+    }
+    row.addEventListener('click', go);
     row.setAttribute('tabindex', '0');
     row.setAttribute('role', 'link');
     row.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.href = row.dataset.href; }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
     });
+  });
+  /* Back/forward cache: restore the names so the page is clean if it is shown again */
+  addEventListener('pageshow', function () {
+    if (pageH1) pageH1.style.viewTransitionName = '';
+    document.querySelectorAll('.o-name').forEach(function (n) { n.style.viewTransitionName = ''; });
   });
 })();
 </script>
