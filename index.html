@@ -429,6 +429,12 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
   .map-label { font-size: 16px; }
   .map-stamp-text, .map-coord { font-size: 13px; }
 }
+/* Phones: the map is a third of a screen tall at this width, so pinning it for a full screen left two bands of empty ink.
+   It sits inline instead and draws while it passes through the viewport (timeline range set in JS) */
+@media (max-width: 700px) {
+  .map-scene { height: auto; padding: 1.5rem 0 2.5rem; }
+  .map-sticky { position: relative; height: auto; overflow: visible; }
+}
 
 /* ================= Sim shells (shared) ================= */
 .sim-scene { min-height: var(--scene-h, 92vh); display: grid; place-items: center; padding: var(--scene-pt, 1.5rem) 1.25rem var(--scene-pb, 3rem); position: relative; overflow: hidden; }
@@ -1825,7 +1831,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var lenA = spanA.getTotalLength(), lenB = spanB.getTotalLength();
     spanA.style.strokeDasharray = lenA; spanA.style.strokeDashoffset = lenA; spanA.style.opacity = 1;
     spanB.style.strokeDasharray = lenB; spanB.style.strokeDashoffset = lenB; spanB.style.opacity = 1;
-    var tl = gsap.timeline({ scrollTrigger: { trigger: '#map', start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
+    var mapInline = window.matchMedia('(max-width: 700px)').matches;
+    var tl = gsap.timeline({ scrollTrigger: mapInline
+      ? { trigger: '#map', start: 'top 85%', end: 'bottom 40%', scrub: 0.6 }
+      : { trigger: '#map', start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
     tl.to(route, { strokeDashoffset: 0, ease: 'none', duration: 7.2 }, 0);
     [['#e1', '150 430', 0.3], ['#e2', '292 362', 1.5], ['#e3', '385 349', 2.4], ['#e4', '480 351', 3.3], ['#e5', '557 296', 4.2], ['#e6', '691 170', 5.9], ['#e7', '821 134', 7.0]].forEach(function (s) {
       tl.fromTo(s[0], { opacity: 0, scale: 0.6, svgOrigin: s[1] }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.6)' }, s[2]);
