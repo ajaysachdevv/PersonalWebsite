@@ -490,6 +490,14 @@ GROUP BY 1 ORDER BY 1;</div>
     if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, event: true });
   }
   window.addEventListener('load', function () { setTimeout(function () { track('projects-view'); }, 1500); });
+  /* Contact intent, same event names as the homepage */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a');
+    if (!a) return;
+    var h = a.getAttribute('href') || '';
+    if (h.indexOf('mailto:') === 0) track('contact-email');
+    else if (h.indexOf('linkedin.com') !== -1) track('contact-linkedin');
+  });
   /* Reveals */
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var reveals = document.querySelectorAll('.reveal');
