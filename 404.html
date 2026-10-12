@@ -31,9 +31,11 @@ a {
   display: inline-block; color: var(--paper-dim); text-decoration: none;
   font-family: var(--mono); font-size: var(--ms-3); letter-spacing: var(--tr-2); text-transform: uppercase;
   border: 1px solid var(--rule); border-radius: var(--radius-1); padding: 0.85rem 1.5rem;
-  transition: color var(--dur-micro) var(--ease-micro), background var(--dur-micro) var(--ease-micro), border-color var(--dur-micro) var(--ease-micro);
+  transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro);
 }
-a:hover, a:focus-visible { color: var(--ink); background: var(--credit); border-color: var(--credit); outline: none; }
+/* 6B (motion pass): the outline turns green, no fill; keyboard focus keeps its visible ring */
+a:hover, a:focus-visible { color: var(--paper); border-color: var(--credit); }
+a:focus-visible { outline: 2px solid var(--credit); outline-offset: 3px; }
 .sign { position: fixed; bottom: 1.4rem; left: 0; right: 0; font-family: var(--mono); font-size: var(--ms-1); letter-spacing: var(--tr-2); color: var(--paper-faint); text-transform: uppercase; }
 @media (prefers-reduced-motion: reduce) { a { transition: none; } }
 </style>
