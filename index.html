@@ -1021,8 +1021,18 @@ document.addEventListener('DOMContentLoaded', function () {
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function echo(cmd) { tprint('<span class="in">visitor@ajaysachdev.com:~$</span> ' + esc(cmd)); }
   var COMMANDS = {
-    help: function () {
-      tprint('<b>Available commands</b><br>ls projects        list the schedule of assets<br>cat about          who prepared these statements<br>status             system status board<br>uptime             how long the books have been open<br>log                the audit trail of this site<br>basis              basis of preparation (how it is built)<br>open &lt;project&gt;     inspect a case study<br>schedule &lt;n&gt;       read entry n off the schedule (1 to 5)<br>projects           open the full schedule page<br>impairments        what went wrong, written down<br>cgma               the qualification<br>guardrails         how my AI tools are kept on a leash<br>contact            correspondence details<br>clear              wipe the ledger<br>exit               close the terminal');
+    help: function (arg) {
+      if (arg) {
+        var name = ALIASES[arg] || arg;
+        if (HELP[name]) { tprint('<b>' + esc(name) + '</b>  ' + HELP[name]); return; }
+        tprint('help: no entry for \'' + esc(arg) + '\'. type help for the full list');
+        return;
+      }
+      tprint('<b>The schedule</b><br>ls projects        list the schedule of assets<br>schedule &lt;n&gt;       read entry n off the schedule (1 to 5)<br>open &lt;project&gt;     inspect a case study (or just type its name)<br>projects           open the full schedule page<br>impairments        what went wrong, written down<br>status             system status board<br><br>' +
+        '<b>The preparer</b><br>cat about          who prepared these statements<br>cgma               the qualification<br>guardrails         how my AI tools are kept on a leash<br>contact            correspondence details (email, linkedin)<br><br>' +
+        '<b>The books</b><br>log                the audit trail of this site<br>basis              basis of preparation (how it is built)<br>uptime             how long the books have been open<br>date               today, in the house format<br><br>' +
+        '<b>The terminal</b><br>history            what you have typed this session<br>sound on | off     blips on the case pages<br>echo &lt;text&gt;        say it back<br>clear              wipe the ledger<br>exit               close the terminal (or Esc)<br><br>' +
+        'help &lt;command&gt; explains one. up arrow recalls the last command. typos get a suggestion.');
     },
     basis: function () {
       tprint('<b>Basis of preparation</b><br>One hand-written HTML file per page. No framework, no build step, no npm.<br>Type: Instrument Serif, Inter, JetBrains Mono. Subset and self-hosted.<br>Motion: GSAP + ScrollTrigger + Lenis, self-hosted and deferred.<br>Analytics: GoatCounter. No cookies, nothing personal collected.<br>Figures: verified against production, or honestly marked approximate.<br>Also on file: <b>humans.txt</b>, <b>llms.txt</b>, and a 404 that balances.');
@@ -1073,18 +1083,127 @@ document.addEventListener('DOMContentLoaded', function () {
       var k = keys[i - 1];
       tprint('<b>Entry 0' + i + '</b>  ' + PROJECTS[k].line + '<br>open ' + k + ' to inspect it');
     },
+    history: function () {
+      if (!histBuf.length) { tprint('history: nothing yet. try: help'); return; }
+      tprint(histBuf.map(function (h, i) { return ('  ' + (i + 1)).slice(-3) + '  ' + esc(h); }).join('<br>'));
+    },
+    date: function () {
+      var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; };
+      tprint(p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + '  ' + p(d.getHours()) + ':' + p(d.getMinutes()) + '. books close at month end, like everyone else\'s.');
+    },
+    echo: function (arg, rest) { tprint(rest ? esc(rest) : '&nbsp;'); },
+    pwd: function () { tprint('/ledger/schedule-1'); },
+    cd: function (arg) {
+      if (arg && arg.indexOf('project') === 0) { COMMANDS.ls('projects'); return; }
+      if (PROJECTS[arg]) { COMMANDS.open(arg); return; }
+      tprint('cd: one directory on these books. try: ls projects');
+    },
+    sound: function (arg) {
+      if (arg !== 'on' && arg !== 'off') { tprint('sound is ' + (muted ? 'off' : 'on') + '. sound on | off changes it (blips play only on the case pages, after a click)'); return; }
+      if ((arg === 'off') !== muted) sndBtn.click();
+      tprint('sound ' + arg + '. the preference holds across the site');
+    },
+    hello: function () { tprint('hello. this is a read-only ledger with a command line. type help to start the audit, or contact to talk to the preparer.'); },
+    thanks: function () { tprint('anytime. the books are open: contact if you want to talk.'); },
+    cv: function () { tprint('there is no cv on this site. the schedule is the record: type projects. for anything else: contact.'); },
+    rm: function () { tprint('rm: refused. the deletion guard is active: nothing on these books is deleted, it moves to trash. see: guardrails'); },
+    vim: function () { tprint('read-only ledger, no editor here. to exit vim in real life: :q (here: exit).'); },
     guardrails: function () {
       tprint('<b>guardrails --status</b><br><span class="ok">[OK]</span> secret protection     active<br><span class="ok">[OK]</span> deletion guard        active, moves to trash, never deletes<br><span class="ok">[OK]</span> circuit breaker       active, warns at 4 edits to a file, stops at 7<br><span class="ok">[OK]</span> push review           active<br><span class="ok">[OK]</span> auto-format           active<br><span class="ok">[OK]</span> prompt log            active<br>11 hooks loaded. destructive actions wait for me.');
     }
   };
+  /* What visitors actually type: every alias lands on a real command */
+  var ALIASES = {
+    '?': 'help', h: 'help', man: 'help', commands: 'help', menu: 'help', info: 'help', start: 'help',
+    about: 'cat', bio: 'cat', who: 'cat', ajay: 'cat', me: 'cat', 'about.txt': 'cat', readme: 'cat',
+    email: 'contact', mail: 'contact', linkedin: 'contact', reach: 'contact', talk: 'contact', call: 'contact', message: 'contact',
+    work: 'ls', portfolio: 'ls', list: 'ls', dir: 'ls', ll: 'ls', projects: 'projects', schedule: 'schedule',
+    failures: 'impairments', failure: 'impairments', mistakes: 'impairments', wrong: 'impairments', lessons: 'impairments', postmortem: 'impairments',
+    stack: 'basis', tech: 'basis', built: 'basis', how: 'basis', colophon: 'basis', source: 'basis',
+    history: 'history', cima: 'cgma', acma: 'cgma', qualification: 'cgma', qualifications: 'cgma', exam: 'cgma',
+    git: 'log', changelog: 'log', timeline: 'log', story: 'log',
+    top: 'status', ps: 'status', health: 'status', htop: 'status',
+    ai: 'guardrails', safety: 'guardrails', claude: 'guardrails',
+    quit: 'exit', q: 'exit', ':q': 'exit', ':wq': 'exit', close: 'exit', bye: 'exit', logout: 'exit',
+    cls: 'clear', reset: 'clear', time: 'date', today: 'date', say: 'echo', mute: 'sound', unmute: 'sound', audio: 'sound',
+    hi: 'hello', hey: 'hello', yo: 'hello', hola: 'hello', namaste: 'hello', sup: 'hello',
+    thank: 'thanks', thx: 'thanks', ty: 'thanks', cheers: 'thanks',
+    resume: 'cv', 'résumé': 'cv', hire: 'cv', hiring: 'cv', jobs: 'cv', job: 'cv', career: 'cv',
+    del: 'rm', delete: 'rm', rmdir: 'rm', format: 'rm',
+    emacs: 'vim', nano: 'vim', vi: 'vim', edit: 'vim', su: 'sudo', admin: 'sudo', root: 'sudo',
+    'cd..': 'cd', 'cd~': 'cd', id: 'whoami'
+  };
+  /* Project names typed on their own, or loosely */
+  var PROJECT_ALIASES = {
+    opspilot: 'opspilot', 'ops-pilot': 'opspilot', pilot: 'opspilot', 'ajay-brain': 'opspilot', brain: 'opspilot',
+    'trading-bot': 'trading-bot', trading: 'trading-bot', bot: 'trading-bot', tradingbot: 'trading-bot', veto: 'trading-bot',
+    'uni-nation': 'uni-nation', unination: 'uni-nation', uni: 'uni-nation', inventory: 'uni-nation', textile: 'uni-nation',
+    'whatsapp-smart': 'whatsapp-smart', whatsapp: 'whatsapp-smart', whatsappsmart: 'whatsapp-smart', extension: 'whatsapp-smart',
+    'scs-cockpit': 'scs-cockpit', scs: 'scs-cockpit', cockpit: 'scs-cockpit', 'scs-prep': 'scs-cockpit'
+  };
+  var HELP = {
+    ls: 'lists the five public entries with status and carrying value. try: ls projects',
+    schedule: 'reads one entry off the schedule. try: schedule 2',
+    open: 'opens a case study page. try: open opspilot (or just type opspilot)',
+    projects: 'opens /projects/: all ten systems, five public and five built at work',
+    impairments: 'what went wrong on each entry, written down',
+    status: 'one line per system: what is running, what is paused, what is retired',
+    cat: 'who prepared these statements. try: cat about',
+    cgma: 'the qualification, and the study engine built to pass it',
+    guardrails: 'the checks every AI tool here runs under',
+    contact: 'email and linkedin. the quickest way to reach the preparer',
+    log: 'the audit trail: dates that matter, oldest first',
+    basis: 'how this site is built: one file per page, no framework',
+    uptime: 'how long you have been here, and how long the books have been open',
+    date: 'today\'s date, DD/MM/YYYY',
+    history: 'every command you typed this session. up arrow recalls them',
+    sound: 'sound on | off. blips play only after a click, on the case pages',
+    echo: 'prints back what you type',
+    clear: 'wipes the screen, keeps your history',
+    exit: 'closes the terminal. Esc works too',
+    help: 'you are reading it'
+  };
+  /* Typos get a suggestion: edit distance up to 2 against every command, alias and project name */
+  function dist(a, b) {
+    var m = a.length, n = b.length, d = [], i, j;
+    for (i = 0; i <= m; i++) { d[i] = [i]; }
+    for (j = 1; j <= n; j++) { d[0][j] = j; }
+    for (i = 1; i <= m; i++) for (j = 1; j <= n; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    return d[m][n];
+  }
+  function suggest(word) {
+    var best = null, bestD = 3;
+    Object.keys(COMMANDS).concat(Object.keys(ALIASES), Object.keys(PROJECT_ALIASES)).forEach(function (k) {
+      var dd = dist(word, k);
+      if (dd < bestD && k.length > 2) { best = k; bestD = dd; }
+    });
+    return best;
+  }
+  var QUESTION = /^(what|who|how|why|where|when|can|could|do|does|is|are|will|would|should|tell|show|give|i|im|i'm|please|hire)\b|\?$/;
   function run(raw) {
-    var parts = raw.trim().split(/\s+/);
+    var text = raw.trim();
+    var parts = text.split(/\s+/);
     var cmd = (parts[0] || '').toLowerCase();
     var arg = (parts[1] || '').toLowerCase();
+    var rest = text.slice(parts[0].length).trim();
     if (!cmd) return;
     echo(raw);
-    if (COMMANDS[cmd]) COMMANDS[cmd](arg);
-    else tprint(esc(cmd) + ': command not found. try: help');
+    if (cmd === 'ls' && arg.charAt(0) === '-') arg = '';
+    if (cmd === 'sudo' && parts.length > 1) { tprint('nice try. this ledger is read-only, even for root.'); return; }
+    var name = COMMANDS[cmd] ? cmd : ALIASES[cmd];
+    if (name === 'cat' && cmd !== 'cat') arg = 'about';
+    if (name === 'ls' && cmd !== 'ls') arg = 'projects';
+    if (name === 'sound' && cmd === 'mute') arg = 'off';
+    if (name === 'sound' && cmd === 'unmute') arg = 'on';
+    if (name && COMMANDS[name]) { COMMANDS[name](arg, rest); return; }
+    var proj = PROJECT_ALIASES[cmd] || PROJECT_ALIASES[text.toLowerCase().replace(/\s+/g, '-')];
+    if (proj) { tprint(PROJECTS[proj].line + '<br>open ' + proj + ' to inspect it'); return; }
+    if (QUESTION.test(text.toLowerCase())) {
+      tprint('this terminal speaks ledger, not english. the commands are listed under help.<br>for a real answer from the preparer: contact.');
+      return;
+    }
+    var s = suggest(cmd);
+    tprint(esc(cmd) + ': command not found.' + (s ? ' did you mean <b>' + esc(s) + '</b>?' : '') + ' try: help');
   }
   var termTrigger = null;
   var morphMs = tok('--dur-morph', 0.22) * 1000;
