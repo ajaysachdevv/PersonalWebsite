@@ -599,7 +599,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
       </div>
       <a class="door-go" href="projects/" data-track="projects-door">See all projects &rarr;</a>
     </div>
-    <p class="sched-note reveal">The failures are on the books too: where something went wrong, the entry says so in a <span class="wr">What went wrong</span> note, told straight. <button type="button" class="sched-term" data-term-run="impairments">Run <b>impairments</b> in the terminal</button></p>
+    <p class="sched-note reveal">Where something went wrong, the entry says so in a <span class="wr">What went wrong</span> note. <button type="button" class="sched-term" data-term-run="impairments">Run <b>impairments</b> in the terminal</button></p>
   </section>
 
 </div>
@@ -618,8 +618,8 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
         <li class="reveal"><span class="n-ref">N.2</span><span><b>ACMA CGMA (CIMA):</b> qualified 2026, on top of an MSc in Finance from Loughborough.</span></li>
         <li class="reveal"><span class="n-ref">N.3</span><span><b>50+ live dashboards</b> built on product, marketing and finance data; reporting automation that saves 40+ hours a month.</span></li>
         <li class="reveal"><span class="n-ref">N.4</span><span><b>Grew up in the family textile business</b> in India.</span></li>
-        <li class="reveal"><span class="n-ref">N.5</span><span><b>Builds in Python and TypeScript</b> at night: AI agents, search pipelines, dashboards, the occasional Chrome extension.</span></li>
-        <li class="reveal"><span class="n-ref">N.6</span><span><b>Four languages</b> (English, Hindi, Sindhi, Marathi) and a school governor at a local primary. Taught himself the rest: SQL, Power BI, the AI stack.</span></li>
+        <li class="reveal"><span class="n-ref">N.5</span><span><b>I build in Python and TypeScript</b> at night: AI agents, search pipelines, dashboards and a Chrome extension.</span></li>
+        <li class="reveal"><span class="n-ref">N.6</span><span><b>Four languages</b> (English, Hindi, Sindhi, Marathi) and a school governor at a local primary. I taught myself SQL, Power BI and the AI stack.</span></li>
         <li class="reveal"><span class="n-ref">N.7</span><span><b>Guardrails on my own AI tools.</b> I built 11 around my AI coding assistant: hooks that block deletions, protect secrets, catch fix-break loops and review pushes. It can edit, build and deploy freely. Anything destructive stops for my approval.</span></li>
       </ul>
     </div>
@@ -900,14 +900,14 @@ document.addEventListener('DOMContentLoaded', function () {
       stats: '~16,000 lines TypeScript | 11 features | 3 codebases | 14 tests',
       wrong: 'built on someone else\'s page', status: 'prototype, unreleased', tech: 'TypeScript, Chrome Extension, Claude' },
     'scs-cockpit': { page: 'projects/scs-cockpit.html', line: 'scs-cockpit/     retired       11,584 lines, 0 dependencies, passed',
-      desc: 'Zero-dependency browser study tool for the CIMA Strategic Case Study exam. Timed drills, spaced repetition, five-dimension debrief scoring. He passed.',
+      desc: 'Zero-dependency browser study tool for the CIMA Strategic Case Study exam. Timed drills, spaced repetition, five-dimension debrief scoring. Passed.',
       stats: '11,584 lines | 0 dependencies | 166 study items | 23 frameworks | 54 source PDFs normalised',
       wrong: 'the mock exam mode I never built', status: 'retired, job done', tech: 'vanilla JS, no build step' }
   };
   /* Virtual filesystem: files you can cat */
   var FILES = {
     '/': { type: 'd', children: ['about.txt', 'projects/', 'skills.txt', 'education.txt', 'timeline.txt'] },
-    'about.txt': { type: 'f', content: 'Ajay Sachdev. Finance and operations manager at a UK tech company.\nRuns the numbers by day. Builds the systems the numbers run on by night.\nACMA CGMA, MSc Finance. Grew up in the family textile business in India.\nMost people file a request with IT. I open an editor.' },
+    'about.txt': { type: 'f', content: 'Ajay Sachdev. Finance and operations manager at a UK tech company.\nRuns the numbers by day. Builds the systems the numbers run on by night.\nACMA CGMA, MSc Finance. Grew up in the family textile business in India.' },
     'skills.txt': { type: 'f', content: 'Finance: financial modelling, management accounts, VAT, payroll, budgeting, forecasting, cash management, multi-entity consolidation\nData: Power BI (50+ dashboards), SQL, GA4, Firebase, Python data analysis\nSystems: Xero, HubSpot, Factorial\nAI/Eng: Python, TypeScript, Claude, Gemini, FAISS, BM25, RAG, voice interfaces\nCommercial: contract drafting, NDAs, SoWs, cost negotiation' },
     'education.txt': { type: 'f', content: 'ACMA CGMA (CIMA), qualified 2026\nMSc Finance, Loughborough University, 2020-21 (2:1)\nBachelor in Financial Markets, Jai Hind College, Mumbai, 2015-18\nDiploma in Weaving Technology, Sasmira, Mumbai, 2019-20' },
     'timeline.txt': { type: 'f', content: '2015-18    BSc Financial Markets, Mumbai\n2018-20    Accounting and Sales Manager, family textile business\n2019       Chartered Wealth Manager (AAFM)\n2019       M.Com (first year), University of Mumbai\n2019-20    Diploma in Weaving Technology, Sasmira\n2020       Moved to the UK\n2020-21    MSc Finance, Loughborough University\n2021 Oct   Intern at a B2B tech scale-up\n2022 Jan   Finance Associate\n2025 Jan   Finance & Operations Manager (current)\n2026       ACMA CGMA qualified' },
@@ -991,7 +991,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ls: function (arg) {
       if (arg && arg.indexOf('project') !== 0) { tprint('ls: cannot access \'' + esc(arg) + '\': only projects/ here'); return; }
       var out = Object.keys(PROJECTS).map(function (k) { return PROJECTS[k].line; }).join('<br>');
-      return out + '<br><b>5 directories, all built solo.</b> five more built at work: type projects for all ten.';
+      return out + '<br><b>5 directories.</b> five more built at work: type projects for all ten.';
     },
     cat: function (arg) {
       if (!arg) { tprint('cat: missing file. try: cat about.txt or cat opspilot/README.md'); return; }
@@ -1005,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       if (!file || file.type === 'd') {
         if (fname === 'about' || fname === 'about.txt') {
-          return 'Ajay Sachdev. Finance and operations manager at a UK tech company.<br>Runs the numbers by day. Builds the systems the numbers run on by night.<br>ACMA CGMA, MSc Finance. Grew up in the family textile business in India.<br><b>Most people file a request with IT. I open an editor.</b>';
+          return 'Ajay Sachdev. Finance and operations manager at a UK tech company.<br>Runs the numbers by day. Builds the systems the numbers run on by night.<br>ACMA CGMA, MSc Finance. Grew up in the family textile business in India.';
         }
         tprint('cat: ' + esc(arg) + ': no such file. try: tree');
         return;
@@ -1034,9 +1034,9 @@ document.addEventListener('DOMContentLoaded', function () {
     contact: function () { tprint('email      ajay@ajaysachdev.com<br>linkedin   linkedin.com/in/ajayy-sachdev<br><br>fastest route: email. response time: usually same day.'); },
     clear: function () { tbody.innerHTML = ''; },
     exit: function () { closeTerm(); },
-    whoami: function () { tprint('a visitor with good taste in portfolios.<br>to learn about the preparer instead: cat about'); },
+    whoami: function () { tprint('a visitor. to learn about me: cat about'); },
     sudo: function () { tprint('nice try. this ledger is read-only.'); },
-    ping: function () { tprint('pong. 0 impulsive packets let through.'); },
+    ping: function () { tprint('pong.'); },
     cgma: function () { tprint('<b>ACMA CGMA (CIMA)</b>, qualified 2026.<br>Strategic Case Study: passed, with a study engine I built for it.<br>try: open scs-cockpit'); },
     impairments: function () {
       tprint('<b>Impairments</b> (what went wrong, written down)<br>opspilot         the 1am journal: a believable wrong number<br>trading-bot      the backtests said no, so it never went live<br>whatsapp-smart   built on someone else\'s page<br>scs-cockpit      the mock exam mode I never built<br>uni-nation       <span class="warn">nothing written off. status: being repaired (PIN build)</span>');
@@ -1053,7 +1053,7 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     date: function () {
       var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; };
-      tprint(p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + '  ' + p(d.getHours()) + ':' + p(d.getMinutes()) + '. books close at month end, like everyone else\'s.');
+      tprint(p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + '  ' + p(d.getHours()) + ':' + p(d.getMinutes()) + '.');
     },
     echo: function (arg, rest) { tprint(rest ? esc(rest) : '&nbsp;'); },
     pwd: function () { tprint(cwd); },
@@ -1069,8 +1069,8 @@ document.addEventListener('DOMContentLoaded', function () {
       if ((arg === 'off') !== muted) sndBtn.click();
       tprint('sound ' + arg + '. the preference holds across the site');
     },
-    hello: function () { tprint('hello. this is a read-only ledger with a command line. type help to start the audit, or ask me anything.'); },
-    thanks: function () { tprint('anytime. the books are open: contact if you want to talk.'); },
+    hello: function () { tprint('hello. type help for the commands, or ask a question.'); },
+    thanks: function () { tprint('anytime. type contact for email and LinkedIn.'); },
     cv: function () { tprint('there is no cv on this site. the projects are the record: type projects. for anything else: contact.'); },
     rm: function () { tprint('rm: refused. the deletion guard is active: nothing on these books is deleted, it moves to trash. see: guardrails'); },
     vim: function () { tprint('read-only ledger, no editor here. to exit vim in real life: :q (here: exit).'); },
@@ -1091,7 +1091,7 @@ document.addEventListener('DOMContentLoaded', function () {
         out += '<br>' + pre.replace(/[+\\]--/, '   ') + '    +-- stats.txt';
         out += '<br>' + pre.replace(/[+\\]--/, '   ') + '    \\-- status.txt';
       });
-      out += '<br><br>5 projects, 4 root files. everything verified.';
+      out += '<br><br>5 projects, 4 root files.';
       tprint(out);
     },
     stats: function (arg) {
