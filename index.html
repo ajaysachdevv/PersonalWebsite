@@ -219,7 +219,8 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 .open h1 .row:nth-child(1) span { animation-delay: 0.1s; }
 .open h1 .row:nth-child(2) span { animation-delay: calc(0.1s + var(--stagger-reveal)); }
 .open-name {
-  position: absolute; left: -0.04em; bottom: -0.16em; z-index: 1;
+  /* centred (Ajay 13/10/2026): flex centring keeps it centred even when it is wider than the hero and crops both edges */
+  position: absolute; left: 0; right: 0; bottom: -0.16em; z-index: 1; display: flex; justify-content: center;
   font-family: var(--sans); font-weight: 800; white-space: nowrap;
   font-size: clamp(5rem, 15.5vw, 14rem); line-height: 1; letter-spacing: -0.02em; text-transform: uppercase;
   -webkit-text-fill-color: rgba(236, 231, 220, 0.035); -webkit-text-stroke: 1px rgba(236, 231, 220, 0.34);
@@ -871,7 +872,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var railCur = document.getElementById('rail-cur');
     if (!pos) return;
     var marks = [['top', 'Opening'], ['ch1', 'Origins'], ['books', 'Projects'],
-      ['about', 'The operator'], ['contact', 'Contact']]
+      ['about', 'About'], ['contact', 'Contact']]
       .map(function (m) { return [document.getElementById(m[0]), m[1]]; }).filter(function (m) { return m[0]; });
     var ticking = false, last = '';
     function update() {
