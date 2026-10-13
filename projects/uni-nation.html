@@ -83,6 +83,8 @@ body::after {
 .wrap { max-width: 74rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
 
 /* Nav: shared component in css/design-tokens.css (nav C) */
+/* light scene: the shared bar hardcodes a dark fill, so re-tint it to the light bg (matches --light-bg #efe8d5); notch already uses var(--ink) */
+.nav-bar { background: rgba(239, 232, 213, 0.86); }
 
 /* ================= Entry head ================= */
 main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
