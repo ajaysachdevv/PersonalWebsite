@@ -99,7 +99,8 @@
   pointer-events: auto;
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 1.2rem clamp(1.25rem, 4vw, 3rem);
-  background: rgba(13, 12, 10, 0.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  /* --nav-fill: a light-scene page sets it with its token remap (Uni-Nation), so the bar matches its ink */
+  background: var(--nav-fill, rgba(13, 12, 10, 0.82)); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   border-bottom: var(--rule-hair) solid var(--rule);
   transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s;
 }

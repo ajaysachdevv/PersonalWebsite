@@ -52,6 +52,7 @@
   --credit: var(--light-credit);
   --amber: var(--light-amber);
   --debit: var(--light-debit);
+  --nav-fill: rgba(239, 232, 213, 0.86); /* shared nav bar fill on the light scene (--light-bg at 86%) */
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scrollbar-color: var(--paper-faint) var(--ink); overflow-x: clip; scroll-behavior: smooth; }
@@ -82,9 +83,7 @@ body::after {
 }
 .wrap { max-width: 74rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
 
-/* Nav: shared component in css/design-tokens.css (nav C) */
-/* light scene: the shared bar hardcodes a dark fill, so re-tint it to the light bg (matches --light-bg #efe8d5); notch already uses var(--ink) */
-.nav-bar { background: rgba(239, 232, 213, 0.86); }
+/* Nav: shared component in css/design-tokens.css (nav C); its bar fill comes from --nav-fill above */
 
 /* ================= Entry head ================= */
 main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
