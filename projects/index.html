@@ -194,10 +194,36 @@ figure.kmock { background: #f4f1ea; color: #1c160d; font-family: var(--sans); fo
 .kmock .km-foot { margin-top: auto; font-family: var(--mono); font-size: 0.74em; letter-spacing: 0.08em; text-transform: uppercase; }
 .kmock .km-chips.km-foot { font-size: 1em; }
 .kmock .c-ok { color: #1f7a4d; } .kmock .c-amb { color: #9a6a12; } .kmock .c-deb { color: #b0443a; } .kmock .c-dim { color: rgba(28, 22, 13, 0.5); }
+/* K.3 bar chart */
+.kmock .km-card { background: #fff; border: 1px solid rgba(28, 22, 13, 0.12); border-radius: 0.4em; padding: 0.9em 1.1em; }
+.kmock .km-card-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82em; margin-bottom: 0.7em; }
+.kmock .km-card-head strong { font-weight: 600; }
+.kmock .km-bars { display: flex; flex-direction: column; gap: 0.45em; }
+.kmock .km-bar-row { display: flex; align-items: center; gap: 0.6em; font-size: 0.82em; }
+.kmock .km-bar-label { width: 2.2em; text-align: right; color: rgba(28, 22, 13, 0.6); font-family: var(--mono); font-size: 0.88em; flex-shrink: 0; }
+.kmock .km-bar-track { flex: 1; height: 1.1em; background: rgba(28, 22, 13, 0.06); border-radius: 0.2em; overflow: hidden; }
+.kmock .km-bar-fill { height: 100%; background: #1f7a4d; border-radius: 0.2em; }
+.kmock .km-bar-val { width: 2.4em; font-family: var(--mono); font-size: 0.88em; color: rgba(28, 22, 13, 0.7); }
+/* K.4 action cards */
+.kmock .km-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6em; }
+.kmock .km-kpi { background: #fff; border: 1px solid rgba(28, 22, 13, 0.1); border-radius: 0.35em; padding: 0.5em 0.7em; }
+.kmock .km-kpi-label { font-family: var(--mono); font-size: 0.6em; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(28, 22, 13, 0.5); }
+.kmock .km-kpi-val { display: block; font-size: 1.3em; font-weight: 700; margin-top: 0.1em; }
+.kmock .km-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6em; }
+.kmock .km-act-title { font-family: var(--mono); font-size: 0.62em; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(28, 22, 13, 0.5); margin-bottom: 0.4em; display: flex; align-items: center; gap: 0.4em; }
+.kmock .km-act-count { background: #1c160d; color: #f4f1ea; font-size: 0.9em; padding: 0.1em 0.5em; border-radius: 99px; }
+.kmock .km-act-item { background: #fff; border: 1px solid rgba(28, 22, 13, 0.1); border-radius: 0.3em; padding: 0.4em 0.55em; margin-bottom: 0.35em; font-size: 0.72em; line-height: 1.35; }
+.kmock .km-badge { display: inline-block; font-family: var(--mono); font-size: 0.78em; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.1em 0.45em; border-radius: 0.2em; color: #fff; margin-right: 0.3em; vertical-align: baseline; }
+.kmock .km-badge-notice { background: #b0443a; }
+.kmock .km-badge-approve { background: #1c160d; }
+.kmock .km-badge-chase { background: #6b6455; }
+.kmock .km-badge-decide { background: #9a6a12; }
 #kv-slot figure.kmock { font-size: max(2.3cqw, 12px); }
 @container (max-width: 560px) {
   #kv-slot figure.kmock { aspect-ratio: auto; }
   #kv-slot .km-row { grid-template-columns: 1fr; }
+  #kv-slot .km-actions { grid-template-columns: 1fr; }
+  #kv-slot .km-kpis { grid-template-columns: repeat(3, 1fr); }
 }
 .kview { margin: auto; border: 1px solid var(--rule); background: var(--ink); color: var(--paper); padding: 0; width: min(1100px, calc(100vw - 32px), calc((100dvh - 110px) * 1.6)); max-width: none; max-height: calc(100dvh - 32px); overflow: auto; }
 .kview::backdrop { background: rgba(7, 7, 6, 0.86); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); transition: opacity var(--dur-backdrop) linear; }
@@ -355,7 +381,7 @@ main.wrap > header .reveal { opacity: 1; transform: none; transition: none; }
         </tr>
         <tr>
           <td class="l-ref">K.3</td>
-          <td class="l-name-cell"><span class="l-name">Ask-the-data bot</span></td>
+          <td class="l-name-cell"><span class="l-name">Query DB</span></td>
           <td class="l-desc">Non-technical staff queued behind engineers for database answers. A Teams bot now writes SQL from plain English, runs it read-only and screens results for personal data.</td>
           <td class="l-status-cell"><span class="l-status"><i></i>Live</span></td>
           <td class="l-metric">0 credentials held</td>
@@ -388,44 +414,57 @@ main.wrap > header .reveal { opacity: 1; transform: none; transition: none; }
         <figure><picture><source srcset="../images/krank-proposal.webp" type="image/webp"><img src="../images/krank-proposal.png" alt="Proposal builder: contact form and section list beside a live Inspeq proposal preview for a fictional customer" width="1600" height="1000" loading="lazy" decoding="async"></picture></figure>
         <span class="k-cap">K.2 <b>Proposal builder</b></span>
       </button>
-      <button type="button" class="kshot reveal" aria-label="Enlarge K.3, ask-the-data bot reconstruction">
-        <figure class="kmock" role="img" aria-label="Reconstruction: a plain-English question becomes read-only SQL, results are screened for personal data before they are shown">
-          <div class="km-top"><span>Ask the data</span><span class="km-tag">Sample data</span></div>
-          <div class="km-q">Demo accounts created per month this quarter?</div>
-          <div class="km-row">
-            <div class="km-sql">SELECT date_trunc('month', created_at),
-       count(*)
-FROM demo_accounts
-WHERE created_at &gt;= '2026-07-01'
-GROUP BY 1 ORDER BY 1;</div>
-            <table><thead><tr><th>Month</th><th class="n">Accounts</th></tr></thead>
-              <tbody><tr><td>July</td><td class="n">12</td></tr><tr><td>August</td><td class="n">15</td></tr><tr><td>September</td><td class="n">9</td></tr></tbody></table>
+      <button type="button" class="kshot reveal" aria-label="Enlarge K.3, Query DB reconstruction">
+        <figure class="kmock" role="img" aria-label="Reconstruction: a Teams bot takes a plain-English question about Inspeq data and returns a chart of inspection counts by month">
+          <div class="km-top"><span>Query DB</span><span class="km-tag">Sample data</span></div>
+          <div class="km-q">#querydb How many inspections completed each month this quarter?</div>
+          <div class="km-card">
+            <div class="km-card-head"><strong>Query from: A. Patel</strong><span class="c-dim">1.8s</span></div>
+            <div class="km-bars">
+              <div class="km-bar-row"><span class="km-bar-label">Jul</span><div class="km-bar-track"><div class="km-bar-fill" style="width:65%"></div></div><span class="km-bar-val">142</span></div>
+              <div class="km-bar-row"><span class="km-bar-label">Aug</span><div class="km-bar-track"><div class="km-bar-fill" style="width:85%"></div></div><span class="km-bar-val">186</span></div>
+              <div class="km-bar-row"><span class="km-bar-label">Sep</span><div class="km-bar-track"><div class="km-bar-fill" style="width:100%"></div></div><span class="km-bar-val">218</span></div>
+            </div>
           </div>
           <div class="km-chips km-foot"><span class="km-chip c-ok">Read-only</span><span class="km-chip c-ok">Personal data: none</span></div>
         </figure>
-        <span class="k-cap">K.3 <b>Ask-the-data bot</b></span>
+        <span class="k-cap">K.3 <b>Query DB</b></span>
       </button>
       <button type="button" class="kshot reveal" aria-label="Enlarge K.4, Ops Monitor reconstruction">
-        <figure class="kmock" role="img" aria-label="Reconstruction: a renewals register where each contract carries a 90, 60, 30 or 7-day alert band">
-          <div class="km-top"><span>Renewals register</span><span class="km-tag">Sample data</span></div>
-          <table><thead><tr><th>Contract</th><th class="n">Renews in</th><th class="n">Alert</th></tr></thead>
-            <tbody>
-              <tr><td>Sample: CRM seats</td><td class="n">7 days</td><td class="n"><span class="km-chip c-deb">7-day</span></td></tr>
-              <tr><td>Sample: cloud hosting</td><td class="n">29 days</td><td class="n"><span class="km-chip c-amb">30-day</span></td></tr>
-              <tr><td>Sample: design licences</td><td class="n">60 days</td><td class="n"><span class="km-chip c-amb">60-day</span></td></tr>
-              <tr><td>Sample: payroll service</td><td class="n">89 days</td><td class="n"><span class="km-chip c-dim">90-day</span></td></tr>
-              <tr><td>Sample: office lease</td><td class="n">212 days</td><td class="n"><span class="km-chip c-ok">Clear</span></td></tr>
-            </tbody></table>
-          <div class="km-foot c-dim">Alerts at 90, 60, 30 and 7 days before renewal</div>
+        <figure class="kmock" role="img" aria-label="Reconstruction: an ops dashboard with KPI summary and action cards grouped by urgency">
+          <div class="km-top"><span>Ops Monitor</span><span class="km-tag">Sample data</span></div>
+          <div class="km-kpis">
+            <div class="km-kpi"><span class="km-kpi-label">Revenue / yr</span><span class="km-kpi-val c-ok">840k</span></div>
+            <div class="km-kpi"><span class="km-kpi-label">Renewals 90d</span><span class="km-kpi-val c-deb">7</span></div>
+            <div class="km-kpi"><span class="km-kpi-label">Next notice</span><span class="km-kpi-val c-deb">4d</span></div>
+          </div>
+          <div class="km-actions">
+            <div>
+              <div class="km-act-title">Do now <span class="km-act-count">3</span></div>
+              <div class="km-act-item"><span class="km-badge km-badge-notice">Notice</span>Fern Valley renewal in 4 days</div>
+              <div class="km-act-item"><span class="km-badge km-badge-approve">Approve</span>Expense claim (2,340)</div>
+              <div class="km-act-item"><span class="km-badge km-badge-chase">Chase</span>Northmoor invoice overdue</div>
+            </div>
+            <div>
+              <div class="km-act-title">Do soon <span class="km-act-count">2</span></div>
+              <div class="km-act-item"><span class="km-badge km-badge-decide">Decide</span>Ashworth renewal terms</div>
+              <div class="km-act-item"><span class="km-badge km-badge-chase">Pay</span>Insurance premium 28/11</div>
+            </div>
+            <div>
+              <div class="km-act-title">Heads up <span class="km-act-count">2</span></div>
+              <div class="km-act-item"><span class="km-badge km-badge-notice">Notice</span>Pinnacle notice window 01/01</div>
+              <div class="km-act-item"><span class="km-badge km-badge-decide">Decide</span>Fleet SaaS review in Feb</div>
+            </div>
+          </div>
         </figure>
         <span class="k-cap">K.4 <b>Ops Monitor</b></span>
       </button>
-      <button type="button" class="kshot reveal" aria-label="Enlarge K.5, contract signing flow">
-        <figure><picture><source srcset="../images/krank-contract.webp" type="image/webp"><img src="../images/krank-contract.png" alt="Automation canvas: a signing event triggers a condition that routes the signed document onward" width="919" height="575" loading="lazy" decoding="async"></picture></figure>
+      <button type="button" class="kshot reveal" aria-label="Enlarge K.5, contract generator pipeline">
+        <figure><picture><source srcset="../images/krank-contract.webp" type="image/webp"><img src="../images/krank-contract.png" alt="Contract generator pipeline: Forms intake, generated order form document, and Teams confirmation with DocuSign routing for a fictional licensee" width="1440" height="900" loading="lazy" decoding="async"></picture></figure>
         <span class="k-cap">K.5 <b>Contract generator</b></span>
       </button>
     </div>
-    <p class="k-legend reveal">K.1, K.2, K.5: real screens, test accounts and invented customers. K.3, K.4: reconstructions of the real tools, sample data. Open any frame to enlarge it.</p>
+    <p class="k-legend reveal">K.1, K.2: real screens, test accounts and invented customers. K.3, K.4: reconstructions of the real tools, sample data. K.5: reconstruction of the pipeline, fictional licensee. Open any frame to enlarge it.</p>
     <dialog class="kview" id="kview" aria-label="Enlarged screen">
       <div class="kv-bar"><span id="kv-title"></span><button type="button" class="kv-close" aria-label="Close">Close [Esc]</button></div>
       <div id="kv-slot"></div>
