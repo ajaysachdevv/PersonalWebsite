@@ -117,11 +117,12 @@ a { color: inherit; }
    the cursor; on touch it drifts slowly; reduced motion holds it at the middle. */
 .split { position: absolute; inset: 0; pointer-events: none; --mx: 0.5; }
 /* a soft pool of ink behind the statement keeps it legible over both artefacts */
-.split::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 46% 40% at 50% 50%, rgba(13, 12, 10, 0.82), rgba(13, 12, 10, 0.4) 60%, transparent 85%); }
-.sp { position: absolute; inset: 0; overflow: hidden; opacity: 0.22; text-align: left; padding: clamp(5rem, 9vh, 7rem) clamp(1.25rem, 4vw, 3rem) 0; }
+.split::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 34% 30% at 50% 50%, rgba(13, 12, 10, 0.82), rgba(13, 12, 10, 0.4) 60%, transparent 85%); }
+.sp { position: absolute; inset: 0; overflow: hidden; opacity: 0.3; text-align: left; padding: clamp(5rem, 9vh, 7rem) clamp(1.25rem, 4vw, 3rem) 0; }
 .sp-acc { -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--mx) * 100% - 9%), transparent calc(var(--mx) * 100% + 9%)); mask-image: linear-gradient(90deg, #000 calc(var(--mx) * 100% - 9%), transparent calc(var(--mx) * 100% + 9%)); }
 .sp-code { -webkit-mask-image: linear-gradient(90deg, transparent calc(var(--mx) * 100% - 9%), #000 calc(var(--mx) * 100% + 9%)); mask-image: linear-gradient(90deg, transparent calc(var(--mx) * 100% - 9%), #000 calc(var(--mx) * 100% + 9%)); }
-.sp-seam { position: absolute; top: 0; bottom: 0; left: calc(var(--mx) * 100%); width: 1px; background: linear-gradient(180deg, transparent, rgba(47, 191, 113, 0.35) 30%, rgba(47, 191, 113, 0.35) 70%, transparent); }
+/* 13/10/2026 (Ajay): seam 1.5px at 50% green with a soft glow, veil 34% x 30%, panes 30%, so the swap reads past the headline */
+.sp-seam { position: absolute; top: 0; bottom: 0; left: calc(var(--mx) * 100%); width: 1.5px; background: linear-gradient(180deg, transparent, rgba(47, 191, 113, 0.5) 18%, rgba(47, 191, 113, 0.5) 82%, transparent); box-shadow: 0 0 16px rgba(47, 191, 113, 0.3); }
 .sp-acc .ma { font-family: var(--serif); color: var(--paper); max-width: 46rem; }
 .ma-h { font-family: var(--mono); font-size: var(--ms-3); letter-spacing: var(--tr-3); text-transform: uppercase; color: var(--paper-dim); display: flex; justify-content: space-between; border-bottom: 2px solid var(--paper); padding-bottom: 0.6rem; }
 .ma-t { font-size: clamp(1.4rem, 2.4vw, 2rem); margin: 1.1rem 0 0.4rem; }
@@ -275,57 +276,36 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 .chapter p { margin: 1.3rem auto 0; color: var(--paper-dim); max-width: 31rem; line-height: 1.7; font-size: 0.95rem; text-align: left; text-wrap: pretty; }
 .open-sub, .about-lede, .notes li, .op-lab, .door-sub { text-wrap: pretty; }
 
-/* ================= Chapter 1: map ================= */
-.map-scene { height: 140vh; position: relative; } /* was 220vh: same draw, less dead scroll */
-.map-sticky { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; overflow: hidden; }
-.map-sticky::after {
+/* ================= Chapter 1: big years (13/10/2026, Ajay's pick E; Canals Amsterdam) =================
+   The static list is the real content (screen readers, reduced motion, no JS, print): it reads as the 2026 year.
+   With motion on, JS builds one aria-hidden panel per year, each holding everything done up to then, and the
+   pinned track slides sideways as you scroll down. */
+.years { position: relative; }
+.yr-pin { position: relative; overflow: hidden; }
+.yr-pin::after {
   content: ''; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: 0.7;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.09'/%3E%3C/svg%3E");
 }
-.map-stamp { fill: none; stroke: rgba(236, 231, 220, 0.46); stroke-width: 1.5; }
-.map-stamp-text { font-family: var(--mono); font-size: 9px; letter-spacing: var(--tr-3); fill: rgba(236, 231, 220, 0.62); text-transform: uppercase; }
-.map-coord { font-family: var(--mono); font-size: 9px; letter-spacing: var(--tr-2); fill: rgba(236, 231, 220, 0.4); }
-.map-crop { stroke: rgba(236, 231, 220, 0.3); stroke-width: 1.2; }
-.map-frame { width: min(96vw, 77rem); }
-.map-frame svg { width: 100%; height: auto; display: block; }
-.map-path { fill: none; stroke: var(--paper); stroke-width: 3.85; stroke-linecap: round; stroke-dasharray: 8 7; }
-.map-route { fill: none; stroke: rgba(236, 231, 220, 0.5); stroke-width: 2.8; stroke-linecap: round; }
-.map-span { fill: none; stroke: var(--credit); stroke-width: 3.15; stroke-linecap: round; opacity: 0; }
-.map-dot.work { fill: #0d0c0a; stroke: var(--paper-dim); stroke-width: 2.5; }
-.now-pulse { animation: nowpulse var(--dur-ambient) ease-in-out infinite; }
-@keyframes nowpulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
-.map-ghost { fill: none; stroke: var(--paper-faint); stroke-width: 2.45; stroke-dasharray: 2 8; opacity: 0.55; }
-.map-label { font-family: var(--mono); font-size: 12px; letter-spacing: var(--tr-2); fill: var(--paper-dim); text-transform: uppercase; opacity: 0; }
-.map-label.big { font-family: var(--serif); font-size: 27px; letter-spacing: 0; fill: var(--paper); text-transform: none; }
-.map-label .yr { fill: var(--credit); }
-.map-dot { fill: var(--credit); opacity: 1; }
-.map-note { font-family: var(--serif); font-style: italic; font-size: 17px; fill: var(--paper-dim); opacity: 0; }
-/* dual-track timeline */
-.mstone { opacity: 0; }
-.map-ach { font-family: var(--serif); font-size: 17px; fill: var(--paper); }
-.map-sub { font-family: var(--mono); font-size: 10px; letter-spacing: var(--tr-2); fill: var(--paper-dim); text-transform: uppercase; }
-.map-sub .yr { fill: var(--credit); }
-.map-branch { fill: none; stroke: rgba(236, 231, 220, 0.38); stroke-width: 1.2; }
-.map-branch.lg-study { stroke: var(--credit); opacity: 0.75; }
-.lg-study { stroke: var(--credit); stroke-width: 1.5; }
-.lg-work { stroke: rgba(236, 231, 220, 0.55); stroke-width: 1.5; }
-.lg-rule-cream { stroke: rgba(236, 231, 220, 0.55); stroke-width: 2.6; }
-.lg-rule-green { stroke: var(--credit); stroke-width: 2.6; }
-.compass { fill: none; stroke: var(--paper-faint); stroke-width: 1.4; }
-/* small screens shrink the 1000-unit viewBox hard; scale the type up in SVG units */
+.yr-static, .yr-panel { padding: clamp(5rem, 12vh, 7rem) clamp(1.25rem, 4vw, 3rem) clamp(2rem, 6vh, 3.5rem); }
+h3.yr-num { margin: 0; font-weight: 400; }
+.yr-num { font-family: var(--serif); font-size: clamp(6rem, 17vw, 15rem); line-height: 0.82; letter-spacing: -0.02em; color: var(--paper); }
+.yr-last .yr-num, .yr-static .yr-num { color: var(--credit); font-style: italic; }
+.yr-list { list-style: none; margin: clamp(1.2rem, 3vh, 2rem) 0 0; padding: 0; max-width: 32rem; display: grid; gap: 0.15rem; }
+.yr-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.32rem 0 0.32rem 0.7rem; border-left: 2px solid transparent; font-size: 0.92rem; line-height: 1.35; color: var(--paper-dim); }
+.yr-list li.new { color: var(--paper); border-left-color: var(--credit); }
+.yr-list .yr-when { font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-1); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--paper-dim); }
+.yr-list li.new .yr-when { color: var(--credit); }
+/* live (motion on): the static list stays for screen readers only */
+.years.is-live .yr-static { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; padding: 0; }
+.years.is-live .yr-pin { height: 100vh; height: 100svh; }
+/* track starts on the page column (.wrap is 74rem) and every panel is top-aligned, so the numeral sits at one height while the list grows */
+.yr-static { max-width: 74rem; margin: 0 auto; }
+.yr-track { display: flex; height: 100%; will-change: transform; padding-inline: max(0px, calc((100vw - 74rem) / 2)); }
+.yr-panel { flex: 0 0 min(62vw, 56rem); display: flex; flex-direction: column; justify-content: flex-start; padding-top: clamp(6rem, 17vh, 9.5rem); border-left: 1px solid var(--rule); }
+.yr-panel:first-child { border-left: 0; }
 @media (max-width: 700px) {
-  .map-ach { font-size: 22px; }
-  .map-sub { font-size: 13px; }
-  .map-note { font-size: 24px; }
-  .map-label.big { font-size: 34px; }
-  .map-label { font-size: 16px; }
-  .map-stamp-text, .map-coord { font-size: 13px; }
-}
-/* Phones: the map is a third of a screen tall at this width, so pinning it for a full screen left two bands of empty ink.
-   It sits inline instead and draws while it passes through the viewport (timeline range set in JS) */
-@media (max-width: 700px) {
-  .map-scene { height: auto; padding: 1.5rem 0 2.5rem; }
-  .map-sticky { position: relative; height: auto; overflow: visible; }
+  .yr-panel { flex-basis: 88vw; }
+  .yr-list li { font-size: 0.86rem; }
 }
 
 /* ================= Ledger sections (the books) ================= */
@@ -465,7 +445,11 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   body { background: #fff !important; color: #1c160d; }
   body::after, nav, .rail, .scroll-prog, .terminal,
   .split, .nav-pos, .foot-prompt, .topo, .open-name, .open-readout,
-  .map-scene, .ch-motif { display: none !important; }
+  .yr-pin::after, .yr-track, .ch-motif { display: none !important; }
+  .years.is-live .yr-static { position: static; width: auto; height: auto; overflow: visible; clip: auto; clip-path: none; white-space: normal; }
+  .yr-static { padding: 1rem 0; }
+  .yr-static .yr-num { color: #1f7a4d !important; font-size: 3rem; }
+  .yr-list li, .yr-list li.new { color: #3a332a !important; border-color: rgba(28, 22, 13, 0.25) !important; }
   .paper { background: #fff !important; margin-top: 1.5rem; padding: 0; }
   .open { min-height: auto; padding: 2rem 0; }
   .chapter { min-height: auto; padding: 1.2rem 0; overflow: visible; }
@@ -490,12 +474,10 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   .open h1 .row span { transform: none; }
   .open h1 .row span, .jrnl span, .open-sub, .open-proj, .reveal { opacity: 1; transform: none; }
   .total-rule { transform: none; }
-  .map-label, .map-dot, .map-note, .mstone, .map-span { opacity: 1; }
 }
 </style>
 <noscript><style>
 .reveal { opacity: 1; transform: none; }
-.map-label, .map-dot, .map-note, .mstone, .map-span { opacity: 1; transform: none; }
 .sched-term { display: none; }
 </style></noscript>
 </head>
@@ -584,84 +566,27 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   <div class="reveal">
     <div class="num">The story / <b>Origins</b></div>
     <h2>It all starts with a <em>family business.</em></h2>
-    <p>Before the spreadsheets and the AI agents, there was my family's textile business in Mumbai, run on paper and memory since 1988. The route from there to here draws itself as you scroll.</p>
+    <p>Before the spreadsheets and the AI agents, there was my family's textile business in Mumbai, run on paper and memory since 1988. Here is how it added up, year by year.</p>
   </div>
 </section>
 
-<section class="map-scene" id="map">
-  <div class="map-sticky">
-    <div class="map-frame">
-      <svg viewBox="0 0 1000 520" aria-label="Hand-drawn route map from Mumbai to Cambridge">
-        <defs>
-          <filter id="ink" x="-5%" y="-5%" width="110%" height="110%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" result="n" seed="7"/>
-            <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5"/>
-          </filter>
-        </defs>
-        <g class="map-crop">
-          <path d="M 14 34 L 14 14 L 34 14" fill="none"/>
-          <path d="M 966 14 L 986 14 L 986 34" fill="none"/>
-          <path d="M 986 486 L 986 506 L 966 506" fill="none"/>
-          <path d="M 34 506 L 14 506 L 14 486" fill="none"/>
-        </g>
-        <path class="map-path" d="M 64 484 Q 104 454 146 433" opacity="0.3"/>
-        <path class="map-path" d="M 846 116 Q 892 98 938 92" opacity="0.3"/>
-        <path id="route" class="map-route" d="M 150 430 C 240 420 260 360 330 350 C 420 338 450 380 520 330 C 600 272 580 210 660 180 C 730 153 780 170 840 120"/>
-        <path class="map-span" id="spanA" d="M 286.9 349.7 L 295.6 345.9 L 304.6 342.6 L 313.9 340.1 L 323.2 338.3 L 332.7 337.1 L 342.3 336.3 L 351.8 335.8 L 361.4 335.7 L 370.9 336 L 380.5 336.6 L 390 337.6 L 399.5 338.7 L 409 340 L 418.4 341.2 L 427.9 342.3 L 437.5 343 L 447 343.2 L 456.6 342.5 L 466 341.1 L 475.3 338.7"/>
-        <path class="map-span" id="spanB" d="M 552.1 283.7 L 562 270.7 L 570.9 257 L 579.2 242.9 L 587.2 228.7 L 595.7 214.7 L 605.5 201.6 L 616.9 190 L 630 180.2 L 644.3 172.5 L 659.5 166.3 L 675 161.2 L 690.8 157.1 L 706.8 153.8 L 722.9 151 L 739 148.3 L 755.1 145.4 L 771 141.6 L 786.5 136.6 L 801.5 130.1 L 815.7 122.1"/>
-        <g class="map-legend">
-          <circle class="map-dot" cx="48" cy="49" r="4.5"/>
-          <text class="map-sub" x="58" y="53">STUDY</text>
-          <circle class="map-dot work" cx="142" cy="49" r="4.5"/>
-          <text class="map-sub" x="152" y="53">WORK</text>
-          <line class="lg-rule-cream" x1="250" y1="46" x2="276" y2="46"/>
-          <line class="lg-rule-green" x1="250" y1="51" x2="276" y2="51"/>
-          <text class="map-sub" x="284" y="53">BOTH AT ONCE</text>
-        </g>
-        <!-- 2015-18: BSc (study, filled) -->
-        <g class="mstone" id="e1">
-          <circle class="map-dot" cx="150" cy="430" r="6.5"/>
-          <text class="map-ach" x="176" y="452">BSc Financial Markets</text>
-          <text class="map-sub" x="178" y="468"><tspan class="yr">2015-18</tspan> / JAI HIND, MUMBAI</text>
-        </g>
-        <!-- 2018-20: family business (work, hollow) -->
-        <g class="mstone" id="e2">
-          <circle class="map-dot work" cx="292" cy="362" r="6.5"/>
-          <text class="map-ach" x="314" y="392">Family business</text>
-          <text class="map-sub" x="316" y="408"><tspan class="yr">2018-20</tspan> / MUMBAI</text>
-        </g>
-        <!-- 2019: CWM, M.Com, diploma (study, filled) -->
-        <g class="mstone" id="e3">
-          <circle class="map-dot" cx="385" cy="349" r="6.5"/>
-          <text class="map-ach" x="366" y="320" text-anchor="end">Chartered Wealth Manager</text>
-          <text class="map-sub" x="366" y="336" text-anchor="end"><tspan class="yr">2019</tspan> / M.COM (Y1), DIPLOMA</text>
-        </g>
-        <!-- 2020-21: MSc (study, filled) -->
-        <g class="mstone" id="e4">
-          <circle class="map-dot" cx="480" cy="351" r="6.5"/>
-          <text class="map-ach" x="502" y="392">MSc Finance</text>
-          <text class="map-sub" x="504" y="408"><tspan class="yr">2020-21</tspan> / LOUGHBOROUGH, UK</text>
-        </g>
-        <!-- 2021-now: scale-up role (work, hollow) -->
-        <g class="mstone" id="e5">
-          <circle class="map-dot work" cx="557" cy="296" r="6.5"/>
-          <text class="map-ach" x="579" y="330">Finance &amp; Operations</text>
-          <text class="map-sub" x="581" y="346"><tspan class="yr">2021-NOW</tspan> / 3 COUNTRIES</text>
-        </g>
-        <!-- 2025-26: CIMA, qualified ACMA CGMA 2026 (filled) -->
-        <g class="mstone" id="e6">
-          <circle class="map-dot" cx="691" cy="170" r="6.5"/>
-          <text class="map-ach" x="671" y="146" text-anchor="end">ACMA CGMA</text>
-          <text class="map-sub" x="671" y="162" text-anchor="end"><tspan class="yr">2025-26</tspan> / STRATEGIC CASE STUDY</text>
-        </g>
-        <!-- now: Cambridge (filled) -->
-        <g class="mstone" id="e7">
-          <circle class="now-ring" cx="821" cy="134" r="11.5" fill="none" stroke="rgba(47,191,113,0.4)" stroke-width="1.5"/>
-          <circle class="map-dot now-pulse" cx="821" cy="134" r="6.5"/>
-          <text class="map-ach" x="801" y="104" text-anchor="end">Cambridge, now</text>
-          <text class="map-sub" x="801" y="120" text-anchor="end">BUILDS THE SYSTEMS</text>
-        </g>
-      </svg>
+<section class="years" id="years" aria-labelledby="years-h">
+  <div class="yr-pin">
+    <div class="yr-static">
+      <h3 class="yr-num" id="years-h"><span class="visually-hidden">Everything to date, </span>2026</h3>
+      <ol class="yr-list">
+        <li data-from="2015" data-to="2018"><span class="yr-what">BSc Financial Markets, Mumbai</span><span class="yr-when">2015-18</span></li>
+        <li data-from="2018" data-to="2020"><span class="yr-what">Family textile business, Mumbai</span><span class="yr-when">2018-20</span></li>
+        <li data-from="2019" data-to="2019"><span class="yr-what">Chartered Wealth Manager</span><span class="yr-when">2019</span></li>
+        <li data-from="2019" data-to="2019"><span class="yr-what">M.Com, first year</span><span class="yr-when">2019</span></li>
+        <li data-from="2019" data-to="2020"><span class="yr-what">Diploma in Weaving Technology</span><span class="yr-when">2019-20</span></li>
+        <li data-from="2020" data-to="2021"><span class="yr-what">MSc Finance, Loughborough</span><span class="yr-when">2020-21</span></li>
+        <li data-from="2021" data-to="2022"><span class="yr-what">Intern, B2B tech scale-up</span><span class="yr-when">2021-22</span></li>
+        <li data-from="2022" data-to="2024"><span class="yr-what">Finance Associate</span><span class="yr-when">2022-24</span></li>
+        <li data-from="2025" data-to=""><span class="yr-what">Finance &amp; Operations Manager</span><span class="yr-when">2025-</span></li>
+        <li data-from="2025" data-to="2026"><span class="yr-what">CIMA studies</span><span class="yr-when">2025-26</span></li>
+        <li class="new" data-from="2026" data-to="2026"><span class="yr-what">Qualified ACMA CGMA</span><span class="yr-when">2026</span></li>
+      </ol>
     </div>
   </div>
 </section>
@@ -695,7 +620,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
         <p class="about-pull">Most people file a request with IT. <em>I open an editor.</em></p>
       </div>
       <ul class="notes">
-        <li class="reveal"><span class="n-ref">N.1</span><span><b>Finance and operations manager</b> at a B2B tech company, sole finance function across UK, US and Pakistan entities since 2021.</span></li>
+        <li class="reveal"><span class="n-ref">N.1</span><span><b>Finance and operations manager</b> at a B2B tech company I joined as the intern in 2021, now the sole finance function across UK, US and Pakistan entities.</span></li>
         <li class="reveal"><span class="n-ref">N.2</span><span><b>ACMA CGMA (CIMA):</b> qualified 2026, on top of an MSc in Finance from Loughborough.</span></li>
         <li class="reveal"><span class="n-ref">N.3</span><span><b>50+ live dashboards</b> built on product, marketing and finance data; reporting automation that saves 40+ hours a month.</span></li>
         <li class="reveal"><span class="n-ref">N.4</span><span><b>Grew up in the family textile business</b> in India. Commercial instinct came before the qualifications did.</span></li>
@@ -843,9 +768,9 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
-    /* The map's own tint class */
+    /* The years section's own tint class */
     ScrollTrigger.create({
-      trigger: '#map', start: 'top 55%', end: 'bottom 45%',
+      trigger: '#years', start: 'top 55%', end: 'bottom 45%',
       onToggle: function (st) { document.body.classList.toggle('scene-map', st.isActive); }
     });
     /* the rail sits over the cream notes band while it passes under it */
@@ -862,7 +787,7 @@ document.addEventListener('DOMContentLoaded', function () {
       );
     }
     blend('#ch1', '#0d0c0a', '#11100c');
-    /* back to plain ink once the map has passed */
+    /* back to plain ink once the years have passed */
     blend('#books', '#11100c', '#0d0c0a', 'top 98%', 'top 60%');
 
     /* Reveal B: CSS does the motion (.reveal.in); ScrollTrigger.batch groups items entering together, 120ms apart */
@@ -880,46 +805,41 @@ document.addEventListener('DOMContentLoaded', function () {
       scrollTrigger: { trigger: '#top', start: 'top top', end: 'bottom top', scrub: true }
     });
 
-    /* Map route scrub: the survey line self-draws, nodes stamp in at the draw front,
-       and the two overlap legs draw a parallel rule just after the base passes. */
-    var route = document.getElementById('route');
-    var len = route.getTotalLength();
-    route.style.strokeDasharray = len; route.style.strokeDashoffset = len;
-    var spanA = document.getElementById('spanA'), spanB = document.getElementById('spanB');
-    var lenA = spanA.getTotalLength(), lenB = spanB.getTotalLength();
-    spanA.style.strokeDasharray = lenA; spanA.style.strokeDashoffset = lenA; spanA.style.opacity = 1;
-    spanB.style.strokeDasharray = lenB; spanB.style.strokeDashoffset = lenB; spanB.style.opacity = 1;
-    var mapInline = window.matchMedia('(max-width: 700px)').matches;
-    var tl = gsap.timeline({ scrollTrigger: mapInline
-      ? { trigger: '#map', start: 'top 85%', end: 'bottom 40%', scrub: 0.6 }
-      : { trigger: '#map', start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
-    tl.to(route, { strokeDashoffset: 0, ease: 'none', duration: 7.2 }, 0);
-    /* 5C (motion pass): each pin drops in as the draw front reaches it, then its title types on (30ms a letter) */
-    function typeOn(el) {
-      var full = el.dataset.full, k = 0;
-      clearInterval(el._t);
-      el.textContent = '';
-      el._t = setInterval(function () { k++; el.textContent = full.slice(0, k); if (k >= full.length) clearInterval(el._t); }, 30);
-    }
-    [['#e1', 0.3], ['#e2', 1.5], ['#e3', 2.4], ['#e4', 3.3], ['#e5', 4.2], ['#e6', 5.9], ['#e7', 7.0]].forEach(function (s) {
-      var g = document.querySelector(s[0]);
-      var ach = g.querySelector('.map-ach');
-      ach.dataset.full = ach.textContent;
-      ach.textContent = '';
-      tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.01 }, s[1]);
-      tl.fromTo(g.querySelectorAll('circle'), { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.42, ease: 'back.out(1.4)' }, s[1]);
-      tl.fromTo(g.querySelector('.map-sub'), { opacity: 0 }, { opacity: 1, duration: 0.3 }, s[1] + 0.25);
-      tl.call(function () { typeOn(ach); }, null, s[1] + 0.12);
+    /* Big years (13/10/2026, Canals Amsterdam): one aria-hidden panel per year, built from the static list,
+       each holding everything done up to that year (new that year = green rule). The pinned track slides
+       sideways while you scroll down; scroll distance is 0.55 of the slide so a year costs about half a screen. */
+    var years = document.getElementById('years');
+    var yrPin = years.querySelector('.yr-pin');
+    var entries = [].map.call(years.querySelectorAll('.yr-static li'), function (li) {
+      return { from: +li.dataset.from, to: li.dataset.to ? +li.dataset.to : 0, what: li.querySelector('.yr-what').innerHTML };
     });
-    /* overlap legs draw their parallel rule just after the base front reaches them */
-    tl.to(spanA, { strokeDashoffset: 0, ease: 'none', duration: 1.0 }, 1.7);
-    tl.to(spanB, { strokeDashoffset: 0, ease: 'none', duration: 1.4 }, 4.4);
-    /* Hold the finished map for the final stretch so the Cambridge arrival lands and rests */
-    tl.to(route, { strokeDashoffset: 0, duration: 2.8 }, 7.2);
-
-    /* One-shot beats when the map enters: quote lifts in, survey stamp settles */
-    ScrollTrigger.create({ trigger: '#map', start: 'top 70%', once: true, onEnter: function () {
-    } });
+    var marks = [];
+    entries.forEach(function (e) { if (marks.indexOf(e.from) === -1) marks.push(e.from); });
+    marks.sort();
+    function when(e, y) {
+      if (!e.to || e.to > y) return e.from + '-';
+      return e.to === e.from ? String(e.from) : e.from + '-' + String(e.to).slice(2);
+    }
+    var yrTrack = document.createElement('div');
+    yrTrack.className = 'yr-track';
+    yrTrack.setAttribute('aria-hidden', 'true');
+    yrTrack.innerHTML = marks.map(function (y, i) {
+      return '<div class="yr-panel' + (i === marks.length - 1 ? ' yr-last' : '') + '"><div class="yr-num">' + y + '</div><ol class="yr-list">' +
+        entries.filter(function (e) { return e.from <= y; }).map(function (e) {
+          return '<li' + (e.from === y ? ' class="new"' : '') + '><span>' + e.what + '</span><span class="yr-when">' + when(e, y) + '</span></li>';
+        }).join('') + '</ol></div>';
+    }).join('');
+    yrPin.appendChild(yrTrack);
+    years.classList.add('is-live');
+    function yrDist() { return Math.max(0, yrTrack.scrollWidth - yrPin.clientWidth); }
+    gsap.to(yrTrack, {
+      x: function () { return -yrDist(); }, ease: 'none',
+      scrollTrigger: {
+        trigger: yrPin, pin: true, anticipatePin: 1, start: 'top top',
+        end: function () { return '+=' + Math.round(yrDist() * 0.55); },
+        scrub: 0.6, invalidateOnRefresh: true
+      }
+    });
 
   } else {
     document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
@@ -1002,7 +922,7 @@ document.addEventListener('DOMContentLoaded', function () {
       tprint('<b>How this site is built</b><br>One hand-written HTML file per page. No framework, no build step, no npm.<br>Type: Instrument Serif, Inter, JetBrains Mono. Subset and self-hosted.<br>Motion: GSAP + ScrollTrigger + Lenis, self-hosted and deferred.<br>Analytics: GoatCounter. No cookies, nothing personal collected.<br>Figures: verified against production, or honestly marked approximate.<br>Also on file: <b>humans.txt</b>, <b>llms.txt</b>, and a 404 that balances.');
     },
     log: function () {
-      tprint('<b>Audit trail</b><br>2015-18    BSc, Mumbai. Commercial instinct precedes the qualifications<br>2021       sole finance function across three countries<br>2025       OpsPilot answers its first message in production<br>12/06/26   the Ledger: full redesign begins<br>22/07/26   v2 ships as a single clean commit<br>03/08/26   craft pass: the books learn to move<br>09/10/26   v4: CGMA, a margin on every page, five moments you can play<br>12/10/26   restructure: the story stays here, the projects get their own page');
+      tprint('<b>Audit trail</b><br>2015-18    BSc, Mumbai. Commercial instinct precedes the qualifications<br>2021       joins a B2B tech scale-up as the intern<br>2025       OpsPilot answers its first message in production<br>12/06/26   the Ledger: full redesign begins<br>22/07/26   v2 ships as a single clean commit<br>03/08/26   craft pass: the books learn to move<br>09/10/26   v4: CGMA, a margin on every page, five moments you can play<br>12/10/26   restructure: the story stays here, the projects get their own page');
     },
     ls: function (arg) {
       if (arg && arg.indexOf('project') !== 0) { tprint('ls: cannot access \'' + esc(arg) + '\': only projects/ here'); return; }
