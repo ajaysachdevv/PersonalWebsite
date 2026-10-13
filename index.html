@@ -890,13 +890,83 @@ document.addEventListener('DOMContentLoaded', function () {
   var tbody = document.getElementById('term-body');
   var input = document.getElementById('term-cmd');
   var opened = false;
+  var cwd = '/';
   var PROJECTS = {
-    'opspilot': { page: 'projects/opspilot.html', line: 'opspilot/        production    95,000+ lines, 43 features' },
-    'trading-bot': { page: 'projects/trading-bot.html', line: 'trading-bot/     paper-mode    4 agents, 115+ sessions, 0 bad trades' },
-    'uni-nation': { page: 'projects/uni-nation.html', line: 'uni-nation/      repairing     ~$2m sales data, Hindi voice entry' }, /* STATUS:uni-nation (A7) */
-    'whatsapp-smart': { page: 'projects/whatsapp-smart.html', line: 'whatsapp-smart/  prototype     11 features, privacy-first' },
-    'scs-cockpit': { page: 'projects/scs-cockpit.html', line: 'scs-cockpit/     retired       11,584 lines, 0 dependencies, passed' }
+    'opspilot': { page: 'projects/opspilot.html', line: 'opspilot/        production    95,000+ lines, 43 features',
+      desc: 'AI executive assistant in Microsoft Teams. Reads 6,124+ SharePoint documents, pulls live Xero and HubSpot data, drafts replies approved with one click. Runs 24/7.',
+      stats: '95,000+ lines | 43 features | 25 orchestrator tools | 6,124+ docs indexed | 100% on 50-query retrieval suite | 327 commits in seven months',
+      wrong: 'the 1am journal: a believable wrong number', status: 'production', tech: 'Python, Gemini, Claude fallback, FAISS, BM25' },
+    'trading-bot': { page: 'projects/trading-bot.html', line: 'trading-bot/     paper-mode    4 agents, 115+ sessions, 0 bad trades',
+      desc: 'Intraday FTSE 100 system. Four AI agents vote on every signal. A risk auditor holds absolute veto. Paper trading by design.',
+      stats: '7,000+ lines | 4 agents | 115+ sessions | 0 impulsive trades | GBP 750 hard notional cap',
+      wrong: 'the backtests said no, so it never went live', status: 'paper trading, by design', tech: 'Python, Claude' },
+    'uni-nation': { page: 'projects/uni-nation.html', line: 'uni-nation/      repairing     ~$2m sales data, Hindi voice entry',
+      desc: 'Website, inventory system and analytics for the family textile business, running since 1988. Voice stock entry in Hindi.',
+      stats: '30,000+ lines | ~2,000 products | 650+ customers | ~$2m sales data | 19 screens | 150 tests | 11 UX principles',
+      wrong: 'nothing written off yet. status: being repaired', status: 'being repaired', tech: 'PWA, voice recognition, Hindi NLP' },
+    'whatsapp-smart': { page: 'projects/whatsapp-smart.html', line: 'whatsapp-smart/  prototype     11 features, privacy-first',
+      desc: 'Chrome extension adding scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. Privacy-first: messages stay in the browser unless you send one to the AI.',
+      stats: '~16,000 lines TypeScript | 11 features | 3 codebases | 14 tests',
+      wrong: 'built on someone else\'s page', status: 'prototype, unreleased', tech: 'TypeScript, Chrome Extension, Claude' },
+    'scs-cockpit': { page: 'projects/scs-cockpit.html', line: 'scs-cockpit/     retired       11,584 lines, 0 dependencies, passed',
+      desc: 'Zero-dependency browser study tool for the CIMA Strategic Case Study exam. Timed drills, spaced repetition, five-dimension debrief scoring. He passed.',
+      stats: '11,584 lines | 0 dependencies | 166 study items | 23 frameworks | 54 source PDFs normalised',
+      wrong: 'the mock exam mode I never built', status: 'retired, job done', tech: 'vanilla JS, no build step' }
   };
+  /* Virtual filesystem: files you can cat */
+  var FILES = {
+    '/': { type: 'd', children: ['about.txt', 'projects/', 'skills.txt', 'education.txt', 'timeline.txt'] },
+    'about.txt': { type: 'f', content: 'Ajay Sachdev. Finance and operations manager at a UK tech company.\nRuns the numbers by day. Builds the systems the numbers run on by night.\nACMA CGMA, MSc Finance. Grew up in the family textile business in India.\nMost people file a request with IT. I open an editor.' },
+    'skills.txt': { type: 'f', content: 'Finance: financial modelling, management accounts, VAT, payroll, budgeting, forecasting, cash management, multi-entity consolidation\nData: Power BI (50+ dashboards), SQL, GA4, Firebase, Python data analysis\nSystems: Xero, HubSpot, Factorial\nAI/Eng: Python, TypeScript, Claude, Gemini, FAISS, BM25, RAG, voice interfaces\nCommercial: contract drafting, NDAs, SoWs, cost negotiation' },
+    'education.txt': { type: 'f', content: 'ACMA CGMA (CIMA), qualified 2026\nMSc Finance, Loughborough University, 2020-21 (2:1)\nBachelor in Financial Markets, Jai Hind College, Mumbai, 2015-18\nDiploma in Weaving Technology, Sasmira, Mumbai, 2019-20' },
+    'timeline.txt': { type: 'f', content: '2015-18    BSc Financial Markets, Mumbai\n2018-20    Accounting and Sales Manager, family textile business\n2019       M.Com (first year), University of Mumbai\n2020       Moved to the UK\n2020-21    MSc Finance, Loughborough University\n2021 Oct   Intern at a B2B tech scale-up\n2022 Jan   Finance Associate\n2024 Dec   Promoted\n2025 Jan   Finance & Operations Manager (current)\n2026       ACMA CGMA qualified' },
+    'projects/': { type: 'd', children: Object.keys(PROJECTS).map(function (k) { return k + '/'; }) }
+  };
+  Object.keys(PROJECTS).forEach(function (k) {
+    FILES[k + '/'] = { type: 'd', children: ['README.md', 'stats.txt', 'status.txt'] };
+    FILES['projects/' + k + '/'] = FILES[k + '/'];
+    FILES[k + '/README.md'] = { type: 'f', content: PROJECTS[k].desc };
+    FILES[k + '/stats.txt'] = { type: 'f', content: PROJECTS[k].stats.replace(/ \| /g, '\n') };
+    FILES[k + '/status.txt'] = { type: 'f', content: PROJECTS[k].status };
+  });
+  /* Knowledge base for natural-language questions */
+  var FACTS = [
+    { keys: ['lines', 'code', 'size', 'big', 'much code', 'how many lines', 'total lines'], answer: '160,000+ lines across the five public projects. OpsPilot: 95,000+. Uni-Nation: 30,000+. WhatsApp Smart: ~16,000. SCS Cockpit: 11,584. Trading Bot: 7,000+.', cmd: 'stats' },
+    { keys: ['opspilot', 'ops pilot', 'executive assistant', 'teams bot', 'sharepoint'], answer: 'OpsPilot: an AI executive assistant in Microsoft Teams. 95,000+ lines, 43 features, 25 orchestrator tools, 6,124+ docs indexed. 100% accuracy on a 50-query retrieval suite. Runs in production 24/7.', cmd: 'open opspilot' },
+    { keys: ['trading', 'bot', 'ftse', 'veto', 'agents', 'risk'], answer: 'Trading Bot: 4 AI agents (orchestrator, context lead, analyst, risk auditor) trade the FTSE 100 on paper. 115+ sessions, zero impulsive trades let through, GBP 750 hard cap. Paper trading by design.', cmd: 'open trading-bot' },
+    { keys: ['uni-nation', 'uni nation', 'textile', 'fabric', 'family', 'inventory', 'hindi', 'india', 'mumbai', 'business'], answer: 'Uni-Nation Digital: website, inventory system and analytics for the family textile business (est. 1988). 30,000+ lines, ~2,000 products, 650+ customers, ~$2m of sales data. Voice stock entry in Hindi.', cmd: 'open uni-nation' },
+    { keys: ['whatsapp', 'chrome', 'extension', 'privacy'], answer: 'WhatsApp Smart: a Chrome extension prototype. 11 features (scheduling, AI replies, tone adjustment, group summaries). ~16,000 lines of TypeScript. Privacy-first: messages stay in the browser unless you send one to the AI.', cmd: 'open whatsapp-smart' },
+    { keys: ['scs', 'cockpit', 'cima', 'exam', 'study', 'cgma', 'acma', 'qualification', 'qualified'], answer: 'ACMA CGMA (CIMA), qualified 2026. SCS Cockpit: the study engine built for the Strategic Case Study exam. 11,584 lines, zero dependencies, 166 study items, 23 frameworks, 54 source PDFs normalised. Result: passed.', cmd: 'open scs-cockpit' },
+    { keys: ['build', 'built', 'make', 'create', 'ship', 'what do', 'what did', 'your projects', 'your work', 'what have'], answer: 'Five public projects: OpsPilot (AI assistant, production), Trading Bot (multi-agent FTSE 100, paper), Uni-Nation (family business digital, repairing), WhatsApp Smart (Chrome extension, prototype), SCS Cockpit (exam engine, retired). Five more built at work. Type: ls projects', cmd: 'ls projects' },
+    { keys: ['wrong', 'fail', 'mistake', 'failure', 'impairment', 'broke', 'problem', 'error'], answer: 'Every project has a "what went wrong" note. Type: impairments', cmd: 'impairments' },
+    { keys: ['who', 'about', 'ajay', 'yourself', 'background', 'bio'], answer: 'Ajay Sachdev. Finance and operations manager at a UK tech company. Runs the numbers by day, builds the systems the numbers run on by night. ACMA CGMA, MSc Finance. Grew up in the family textile business in India.', cmd: 'cat about' },
+    { keys: ['where', 'location', 'based', 'live', 'city', 'country', 'cambridge', 'uk'], answer: 'Cambridge, UK. Originally from Mumbai, India. Moved to the UK in 2020.', cmd: null },
+    { keys: ['education', 'university', 'degree', 'loughborough', 'college', 'study', 'studied'], answer: 'MSc Finance from Loughborough (2:1, 2020-21). BSc Financial Markets from Jai Hind College, Mumbai (2015-18). ACMA CGMA (CIMA) qualified 2026.', cmd: 'cat education.txt' },
+    { keys: ['skill', 'language', 'python', 'typescript', 'sql', 'power bi', 'tech', 'stack', 'tools', 'languages'], answer: 'Python, TypeScript, SQL. Power BI (50+ dashboards). Xero, HubSpot, Factorial. Claude, Gemini, FAISS, BM25 for AI. Contract drafting, financial modelling, multi-entity consolidation.', cmd: 'cat skills.txt' },
+    { keys: ['contact', 'email', 'reach', 'linkedin', 'talk', 'message'], answer: 'email: ajay@ajaysachdev.com | linkedin: linkedin.com/in/ajayy-sachdev', cmd: null },
+    { keys: ['dashboard', 'power bi', 'data', 'analytics', 'reporting'], answer: '50+ Power BI dashboards built as sole data analyst. Board-level financial models and reporting across three entities.', cmd: null },
+    { keys: ['day job', 'work', 'role', 'job', 'title', 'position', 'company', 'employer'], answer: 'Finance & Operations Manager at a B2B tech scale-up. Sole finance and operations function across UK, US and Pakistan (3 entities). 50+ dashboards, 40+ hrs/month automated, contracts redesigned from 26 pages to 3.', cmd: null },
+    { keys: ['contract', 'nda', 'legal', 'signing'], answer: 'Redesigned the contract format from 26 pages to 3 with hyperlinked terms. Six-month stalls became one-week signings.', cmd: null },
+    { keys: ['cost', 'save', 'saving', 'reduce', 'cut', 'automat'], answer: '65% cut on a core SaaS platform. WiFi costs halved. Electricity down 74%. Software 30%+. 40+ hours per month automated.', cmd: null },
+    { keys: ['timeline', 'career', 'history', 'journey', 'years', 'path', 'experience'], answer: 'Type: timeline (or: cat timeline.txt)', cmd: 'timeline' },
+    { keys: ['guardrail', 'safety', 'ai safety', 'hook', 'leash', 'responsible'], answer: 'Type: guardrails', cmd: 'guardrails' },
+    { keys: ['site', 'website', 'portfolio', 'page', 'how built', 'framework', 'design'], answer: 'Type: basis', cmd: 'basis' },
+    { keys: ['status', 'running', 'live', 'production', 'operational'], answer: 'Type: status', cmd: 'status' }
+  ];
+  function matchFact(text) {
+    var low = text.toLowerCase().replace(/[?!.,;:'"]/g, '');
+    var words = low.split(/\s+/);
+    var best = null, bestScore = 0;
+    FACTS.forEach(function (f) {
+      var score = 0;
+      f.keys.forEach(function (k) {
+        if (low.indexOf(k) !== -1) score += k.split(/\s+/).length + 1;
+        else words.forEach(function (w) { if (w.length > 2 && k.indexOf(w) !== -1) score += 0.5; });
+      });
+      if (score > bestScore) { bestScore = score; best = f; }
+    });
+    return bestScore >= 1.5 ? best : null;
+  }
   function tprint(html, cls) {
     var div = document.createElement('div');
     div.className = cls || 'out';
@@ -914,11 +984,12 @@ document.addEventListener('DOMContentLoaded', function () {
         tprint('help: no entry for \'' + esc(arg) + '\'. type help for the full list');
         return;
       }
-      tprint('<b>Projects</b><br>ls projects        list the projects<br>project &lt;n&gt;        read project n (1 to 5)<br>open &lt;project&gt;     open a case study (or just type its name)<br>projects           go to the projects page<br>impairments        what went wrong, written down<br>status             system status board<br><br>' +
-        '<b>The preparer</b><br>cat about          who prepared these statements<br>cgma               the qualification<br>guardrails         how my AI tools are kept on a leash<br>contact            email and linkedin<br><br>' +
-        '<b>The books</b><br>log                the audit trail of this site<br>basis              how this site is built<br>uptime             how long the books have been open<br>date               today, in the house format<br><br>' +
-        '<b>The terminal</b><br>history            what you have typed this session<br>sound on | off     blips on the case pages<br>echo &lt;text&gt;        say it back<br>clear              wipe the ledger<br>exit               close the terminal (or Esc)<br><br>' +
-        'help &lt;command&gt; explains one. up arrow recalls the last command. typos get a suggestion.');
+      tprint('<b>Projects</b><br>ls projects        list the projects<br>project &lt;n&gt;        read project n (1 to 5)<br>open &lt;project&gt;     open a case study (or just type its name)<br>projects           go to the projects page<br>impairments        what went wrong, written down<br>status             system status board<br>stats              the verified numbers<br><br>' +
+        '<b>The preparer</b><br>cat about          who prepared these statements<br>cgma               the qualification<br>guardrails         how my AI tools are kept on a leash<br>timeline           the career years<br>skills             the skill set<br>education          degrees and qualifications<br>contact            email and linkedin<br><br>' +
+        '<b>The books</b><br>log                the audit trail of this site<br>basis              how this site is built<br>uptime             how long the books have been open<br>date               today, in the house format<br>balance            trial balance of every system<br><br>' +
+        '<b>Filesystem</b><br>tree               show the file tree<br>cat &lt;file&gt;         read a file (try: cat about.txt)<br>grep &lt;word&gt;        search across all facts<br>ls | grep &lt;word&gt;   pipe output through grep<br><br>' +
+        '<b>The terminal</b><br>history            what you have typed this session<br>sound on | off     blips on the case pages<br>echo &lt;text&gt;        say it back<br>clear | Ctrl+L     wipe the screen<br>!!                 repeat the last command<br>exit | Esc         close the terminal<br><br>' +
+        'Tab completes commands and project names. Ask a question in plain English.<br>help &lt;command&gt; explains one. up/down arrows recall history.');
     },
     basis: function () {
       tprint('<b>How this site is built</b><br>One hand-written HTML file per page. No framework, no build step, no npm.<br>Type: Instrument Serif, Inter, JetBrains Mono. Subset and self-hosted.<br>Motion: GSAP + ScrollTrigger + Lenis, self-hosted and deferred.<br>Analytics: GoatCounter. No cookies, nothing personal collected.<br>Figures: verified against production, or honestly marked approximate.<br>Also on file: <b>humans.txt</b>, <b>llms.txt</b>, and a 404 that balances.');
@@ -928,11 +999,27 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     ls: function (arg) {
       if (arg && arg.indexOf('project') !== 0) { tprint('ls: cannot access \'' + esc(arg) + '\': only projects/ here'); return; }
-      tprint(Object.keys(PROJECTS).map(function (k) { return PROJECTS[k].line; }).join('<br>') + '<br><b>5 directories, all built solo.</b> five more built at work: type projects for all ten.');
+      var out = Object.keys(PROJECTS).map(function (k) { return PROJECTS[k].line; }).join('<br>');
+      return out + '<br><b>5 directories, all built solo.</b> five more built at work: type projects for all ten.';
     },
     cat: function (arg) {
-      if (arg !== 'about' && arg !== 'about.txt') { tprint('cat: ' + esc(arg || '') + ': no such file. try: cat about'); return; }
-      tprint('Ajay Sachdev. Finance and operations manager at a UK tech company.<br>Runs the numbers by day. Builds the systems the numbers run on by night.<br>ACMA CGMA, MSc Finance. Grew up in the family textile business in India.<br><b>Most people file a request with IT. I open an editor.</b>');
+      if (!arg) { tprint('cat: missing file. try: cat about.txt or cat opspilot/README.md'); return; }
+      var fname = arg.replace(/^\//, '');
+      /* resolve project subdirectory files */
+      var file = FILES[fname] || FILES[fname + '.txt'];
+      if (!file && PROJECTS[fname]) { file = FILES[fname + '/README.md']; }
+      if (!file) {
+        /* try with projects/ prefix */
+        file = FILES['projects/' + fname];
+      }
+      if (!file || file.type === 'd') {
+        if (fname === 'about' || fname === 'about.txt') {
+          return 'Ajay Sachdev. Finance and operations manager at a UK tech company.<br>Runs the numbers by day. Builds the systems the numbers run on by night.<br>ACMA CGMA, MSc Finance. Grew up in the family textile business in India.<br><b>Most people file a request with IT. I open an editor.</b>';
+        }
+        tprint('cat: ' + esc(arg) + ': no such file. try: tree');
+        return;
+      }
+      return esc(file.content).replace(/\n/g, '<br>');
     },
     status: function () {
       tprint('opspilot          <span class="ok">[OK] operational</span><br>trading-bot       <span class="ok">[OK] paper mode, deliberately</span><br>uni-nation        <span class="warn">[WARN] being repaired</span><br>whatsapp-smart    <span class="warn">[WARN] prototype, unreleased</span><br>scs-cockpit       [--] retired with honour');
@@ -953,10 +1040,10 @@ document.addEventListener('DOMContentLoaded', function () {
       tprint('opening projects: five public, five built at work...');
       setTimeout(function () { location.href = 'projects/'; }, 450);
     },
-    contact: function () { tprint('email      ajay@ajaysachdev.com<br>linkedin   linkedin.com/in/ajayy-sachdev'); },
+    contact: function () { tprint('email      ajay@ajaysachdev.com<br>linkedin   linkedin.com/in/ajayy-sachdev<br><br>fastest route: email. response time: usually same day.'); },
     clear: function () { tbody.innerHTML = ''; },
     exit: function () { closeTerm(); },
-    whoami: function () { tprint('a visitor with good taste in portfolios.'); },
+    whoami: function () { tprint('a visitor with good taste in portfolios.<br>to learn about the preparer instead: cat about'); },
     sudo: function () { tprint('nice try. this ledger is read-only.'); },
     ping: function () { tprint('pong. 0 impulsive packets let through.'); },
     cgma: function () { tprint('<b>ACMA CGMA (CIMA)</b>, qualified 2026.<br>Strategic Case Study: passed, with a study engine I built for it.<br>try: open scs-cockpit'); },
@@ -978,46 +1065,182 @@ document.addEventListener('DOMContentLoaded', function () {
       tprint(p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + '  ' + p(d.getHours()) + ':' + p(d.getMinutes()) + '. books close at month end, like everyone else\'s.');
     },
     echo: function (arg, rest) { tprint(rest ? esc(rest) : '&nbsp;'); },
-    pwd: function () { tprint('/projects'); },
+    pwd: function () { tprint(cwd); },
     cd: function (arg) {
-      if (arg && arg.indexOf('project') === 0) { COMMANDS.ls('projects'); return; }
-      if (PROJECTS[arg]) { COMMANDS.open(arg); return; }
-      tprint('cd: one directory on these books. try: ls projects');
+      if (!arg || arg === '/' || arg === '~') { cwd = '/'; tprint('/'); return; }
+      if (arg === '..' || arg === '../') { cwd = '/'; tprint('/'); return; }
+      if (arg.indexOf('project') === 0) { cwd = '/projects/'; tprint('/projects/'); return; }
+      if (PROJECTS[arg]) { cwd = '/' + arg + '/'; tprint('/' + arg + '/'); return; }
+      tprint('cd: ' + esc(arg) + ': no such directory. try: cd projects');
     },
     sound: function (arg) {
       if (arg !== 'on' && arg !== 'off') { tprint('sound is ' + (muted ? 'off' : 'on') + '. sound on | off changes it (blips play only on the case pages, after a click)'); return; }
       if ((arg === 'off') !== muted) sndBtn.click();
       tprint('sound ' + arg + '. the preference holds across the site');
     },
-    hello: function () { tprint('hello. this is a read-only ledger with a command line. type help to start the audit, or contact to talk to the preparer.'); },
+    hello: function () { tprint('hello. this is a read-only ledger with a command line. type help to start the audit, or ask me anything.'); },
     thanks: function () { tprint('anytime. the books are open: contact if you want to talk.'); },
     cv: function () { tprint('there is no cv on this site. the projects are the record: type projects. for anything else: contact.'); },
     rm: function () { tprint('rm: refused. the deletion guard is active: nothing on these books is deleted, it moves to trash. see: guardrails'); },
     vim: function () { tprint('read-only ledger, no editor here. to exit vim in real life: :q (here: exit).'); },
     guardrails: function () {
       tprint('<b>guardrails --status</b><br><span class="ok">[OK]</span> secret protection     active<br><span class="ok">[OK]</span> deletion guard        active, moves to trash, never deletes<br><span class="ok">[OK]</span> circuit breaker       active, warns at 4 edits to a file, stops at 7<br><span class="ok">[OK]</span> push review           active<br><span class="ok">[OK]</span> auto-format           active<br><span class="ok">[OK]</span> prompt log            active<br>11 hooks loaded. destructive actions wait for me.');
-    }
+    },
+    tree: function () {
+      var out = '<b>.</b>';
+      out += '<br>+-- about.txt';
+      out += '<br>+-- skills.txt';
+      out += '<br>+-- education.txt';
+      out += '<br>+-- timeline.txt';
+      out += '<br>\\-- projects/';
+      Object.keys(PROJECTS).forEach(function (k, i, arr) {
+        var pre = (i < arr.length - 1) ? '    +-- ' : '    \\-- ';
+        out += '<br>' + pre + k + '/';
+        out += '<br>' + pre.replace(/[+\\]--/, '   ') + '    +-- README.md';
+        out += '<br>' + pre.replace(/[+\\]--/, '   ') + '    +-- stats.txt';
+        out += '<br>' + pre.replace(/[+\\]--/, '   ') + '    \\-- status.txt';
+      });
+      out += '<br><br>5 projects, 4 root files. everything verified.';
+      tprint(out);
+    },
+    stats: function (arg) {
+      if (arg && PROJECTS[arg]) {
+        return '<b>' + esc(arg) + '</b><br>' + esc(PROJECTS[arg].stats).replace(/ \| /g, '<br>');
+      }
+      var out = '<b>Verified figures</b> (all measured against production)';
+      out += '<br><br>160,000+ lines across five public entries';
+      Object.keys(PROJECTS).forEach(function (k) {
+        out += '<br><br><b>' + esc(k) + '</b> (' + PROJECTS[k].status + ')<br>' + esc(PROJECTS[k].stats).replace(/ \| /g, '<br>');
+      });
+      return out;
+    },
+    timeline: function () {
+      tprint('<b>The years</b><br>2015-18    BSc Financial Markets, Jai Hind College, Mumbai<br>2018-20    Accounting and Sales Manager, family textile business<br>2019       M.Com (first year), University of Mumbai<br>2020       Moved to the UK<br>2020-21    MSc Finance, Loughborough University (2:1)<br>2021 Oct   Intern at a B2B tech scale-up<br>2022 Jan   Finance Associate<br>2025 Jan   Finance & Operations Manager (current)<br>2026       ACMA CGMA (CIMA) qualified');
+    },
+    skills: function () {
+      return COMMANDS.cat('skills.txt');
+    },
+    education: function () {
+      return COMMANDS.cat('education.txt');
+    },
+    grep: function (arg, rest) {
+      if (!arg) { tprint('grep: missing pattern. try: grep python'); return; }
+      var pattern = arg.toLowerCase();
+      var results = [];
+      Object.keys(FILES).forEach(function (fname) {
+        var f = FILES[fname];
+        if (f.type !== 'f') return;
+        var lines = f.content.split('\n');
+        lines.forEach(function (line) {
+          if (line.toLowerCase().indexOf(pattern) !== -1) {
+            results.push('<span class="in">' + esc(fname) + '</span>: ' + esc(line).replace(new RegExp('(' + esc(pattern).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<b>$1</b>'));
+          }
+        });
+      });
+      /* Also search fact answers */
+      FACTS.forEach(function (f) {
+        if (f.answer.toLowerCase().indexOf(pattern) !== -1) {
+          results.push('<span class="in">[fact]</span>: ' + esc(f.answer.substring(0, 120)).replace(new RegExp('(' + esc(pattern).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<b>$1</b>') + (f.answer.length > 120 ? '...' : ''));
+        }
+      });
+      if (!results.length) { tprint('grep: no matches for \'' + esc(arg) + '\'.'); return; }
+      return results.join('<br>');
+    },
+    balance: function () {
+      tprint('<b>Trial Balance</b> (status of accounts)<br><br>' +
+        'ACCOUNT               DR        CR        STATUS<br>' +
+        '-----------------------------------------------------<br>' +
+        'OpsPilot              95,000+             <span class="ok">production</span><br>' +
+        'Trading Bot            7,000+             <span class="ok">paper mode</span><br>' +
+        'Uni-Nation            30,000+             <span class="warn">repairing</span><br>' +
+        'WhatsApp Smart       ~16,000              <span class="warn">prototype</span><br>' +
+        'SCS Cockpit           11,584              [--] retired<br>' +
+        '-----------------------------------------------------<br>' +
+        'TOTAL                160,000+   lines     5 entries<br>' +
+        '<br>all figures verified. approximate where marked.');
+    },
+    wc: function (arg) {
+      if (!arg) { tprint('160,000+ lines across five public projects.'); return; }
+      var p = PROJECTS[arg] || PROJECTS[PROJECT_ALIASES[arg]];
+      if (p) { tprint(p.stats.split(' | ')[0]); return; }
+      tprint('wc: ' + esc(arg) + ': no such project. try: wc opspilot');
+    },
+    fortune: function () {
+      var fortunes = [
+        'the best time to ship was yesterday. the second best time is after the tests pass.',
+        'a dashboard without a question is decoration.',
+        'the auditor who trusts the spreadsheet has never found a spreadsheet error.',
+        'if the backtest says no, the backtest says no.',
+        'most people file a request with IT. some people open an editor.',
+        'every figure on these books is real. that is the whole trick.',
+        'the first rule of automation: do it by hand until you hate it.',
+        'a prototype that does not ship is still worth building. you learn what not to build next.'
+      ];
+      tprint(fortunes[Math.floor(Math.random() * fortunes.length)]);
+    },
+    neofetch: function () {
+      tprint(
+        '<b>ajaysachdev.com</b><br>' +
+        '-------------------<br>' +
+        'OS:        static HTML, no build step<br>' +
+        'Host:      GitHub Pages<br>' +
+        'Kernel:    GSAP 3.13 + ScrollTrigger + Lenis<br>' +
+        'Shell:     this terminal<br>' +
+        'Display:   Instrument Serif / Inter / JetBrains Mono<br>' +
+        'Analytics: GoatCounter (no cookies)<br>' +
+        'Entries:   5 public + 5 at work<br>' +
+        'Lines:     160,000+<br>' +
+        'Uptime:    since 12/06/2026'
+      );
+    },
+    head: function (arg) {
+      var out = COMMANDS.cat(arg);
+      if (typeof out === 'string') {
+        var lines = out.split('<br>');
+        tprint(lines.slice(0, 5).join('<br>') + (lines.length > 5 ? '<br>...' : ''));
+      }
+    },
+    tail: function (arg) {
+      var out = COMMANDS.cat(arg);
+      if (typeof out === 'string') {
+        var lines = out.split('<br>');
+        tprint((lines.length > 5 ? '...<br>' : '') + lines.slice(-5).join('<br>'));
+      }
+    },
+    find: function (arg) {
+      if (!arg) { tprint('find: missing name. try: find opspilot'); return; }
+      var pat = arg.toLowerCase();
+      var matches = Object.keys(FILES).filter(function (k) { return k.toLowerCase().indexOf(pat) !== -1; });
+      if (!matches.length) { tprint('find: no files matching \'' + esc(arg) + '\'.'); return; }
+      tprint(matches.map(function (m) { return './' + esc(m); }).join('<br>'));
+    },
+    man: function (arg) { COMMANDS.help(arg); }
   };
   /* What visitors actually type: every alias lands on a real command */
   var ALIASES = {
-    '?': 'help', h: 'help', man: 'help', commands: 'help', menu: 'help', info: 'help', start: 'help',
+    '?': 'help', h: 'help', commands: 'help', menu: 'help', info: 'help', start: 'help',
     about: 'cat', bio: 'cat', who: 'cat', ajay: 'cat', me: 'cat', 'about.txt': 'cat', readme: 'cat',
     email: 'contact', mail: 'contact', linkedin: 'contact', reach: 'contact', talk: 'contact', call: 'contact', message: 'contact',
     work: 'ls', portfolio: 'ls', list: 'ls', dir: 'ls', ll: 'ls', projects: 'projects', schedule: 'schedule', project: 'schedule',
     failures: 'impairments', failure: 'impairments', mistakes: 'impairments', wrong: 'impairments', lessons: 'impairments', postmortem: 'impairments',
-    stack: 'basis', tech: 'basis', built: 'basis', how: 'basis', colophon: 'basis', source: 'basis',
+    stack: 'basis', tech: 'basis', built: 'basis', colophon: 'basis', source: 'basis',
     history: 'history', cima: 'cgma', acma: 'cgma', qualification: 'cgma', qualifications: 'cgma', exam: 'cgma',
-    git: 'log', changelog: 'log', timeline: 'log', story: 'log',
+    git: 'log', changelog: 'log', story: 'log',
     top: 'status', ps: 'status', health: 'status', htop: 'status',
     ai: 'guardrails', safety: 'guardrails', claude: 'guardrails',
     quit: 'exit', q: 'exit', ':q': 'exit', ':wq': 'exit', close: 'exit', bye: 'exit', logout: 'exit',
     cls: 'clear', reset: 'clear', time: 'date', today: 'date', say: 'echo', mute: 'sound', unmute: 'sound', audio: 'sound',
     hi: 'hello', hey: 'hello', yo: 'hello', hola: 'hello', namaste: 'hello', sup: 'hello',
     thank: 'thanks', thx: 'thanks', ty: 'thanks', cheers: 'thanks',
-    resume: 'cv', 'résumé': 'cv', hire: 'cv', hiring: 'cv', jobs: 'cv', job: 'cv', career: 'cv',
+    resume: 'cv', hire: 'cv', hiring: 'cv', jobs: 'cv', job: 'cv', career: 'cv',
     del: 'rm', delete: 'rm', rmdir: 'rm', format: 'rm',
     emacs: 'vim', nano: 'vim', vi: 'vim', edit: 'vim', su: 'sudo', admin: 'sudo', root: 'sudo',
-    'cd..': 'cd', 'cd~': 'cd', id: 'whoami'
+    'cd..': 'cd', 'cd~': 'cd', id: 'whoami', years: 'timeline', path: 'timeline',
+    numbers: 'stats', figures: 'stats', metrics: 'stats', count: 'stats',
+    'trial-balance': 'balance', tb: 'balance', accounts: 'balance', ledger: 'balance', audit: 'balance', reconcile: 'balance',
+    coffee: 'fortune', '42': 'fortune', meaning: 'fortune',
+    sysinfo: 'neofetch', fetch: 'neofetch', about_site: 'neofetch',
+    locate: 'find', search: 'grep', how: 'basis'
   };
   /* Project names typed on their own, or loosely */
   var PROJECT_ALIASES = {
@@ -1034,7 +1257,7 @@ document.addEventListener('DOMContentLoaded', function () {
     projects: 'opens /projects/: all ten systems, five public and five built at work',
     impairments: 'what went wrong on each entry, written down',
     status: 'one line per system: what is running, what is paused, what is retired',
-    cat: 'who prepared these statements. try: cat about',
+    cat: 'reads a file. try: cat about.txt, cat opspilot/README.md, cat skills.txt',
     cgma: 'the qualification, and the study engine built to pass it',
     guardrails: 'the checks every AI tool here runs under',
     contact: 'email and linkedin. the quickest way to reach the preparer',
@@ -1047,7 +1270,20 @@ document.addEventListener('DOMContentLoaded', function () {
     echo: 'prints back what you type',
     clear: 'wipes the screen, keeps your history',
     exit: 'closes the terminal. Esc works too',
-    help: 'you are reading it'
+    help: 'you are reading it',
+    stats: 'verified figures for every project. try: stats opspilot',
+    timeline: 'the career years, from Mumbai to Cambridge',
+    skills: 'finance, data, AI, engineering, commercial',
+    education: 'degrees and qualifications',
+    tree: 'shows the virtual file tree you can browse with cat',
+    grep: 'search for a word across all files and facts. try: grep python',
+    balance: 'trial balance: every system, its lines, its status',
+    find: 'locate files by name. try: find stats',
+    neofetch: 'system information for this site',
+    wc: 'line count for a project. try: wc opspilot',
+    fortune: 'a random thought from the books',
+    head: 'first 5 lines of a file. try: head timeline.txt',
+    tail: 'last 5 lines of a file. try: tail timeline.txt'
   };
   /* Typos get a suggestion: edit distance up to 2 against every command, alias and project name */
   function dist(a, b) {
@@ -1065,15 +1301,78 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     return best;
   }
-  var QUESTION = /^(what|who|how|why|where|when|can|could|do|does|is|are|will|would|should|tell|show|give|i|im|i'm|please|hire)\b|\?$/;
+  /* Pipe support: cmd | grep <pattern> filters output line by line */
+  function runPiped(raw) {
+    var segments = raw.split(/\s*\|\s*/);
+    if (segments.length < 2) return null;
+    /* run first command, capture its output */
+    var firstCmd = segments[0].trim();
+    var pipeCmd = segments[1].trim();
+    var pipeParts = pipeCmd.split(/\s+/);
+    if (pipeParts[0] !== 'grep' || !pipeParts[1]) return null;
+    var pattern = pipeParts[1].toLowerCase();
+    /* temporarily capture the output */
+    var firstParts = firstCmd.split(/\s+/);
+    var c = (firstParts[0] || '').toLowerCase();
+    var a = (firstParts[1] || '').toLowerCase();
+    var r = firstCmd.slice(firstParts[0].length).trim();
+    var name = COMMANDS[c] ? c : ALIASES[c];
+    if (name === 'ls' && c !== 'ls') a = 'projects';
+    if (name === 'cat' && c !== 'cat') a = 'about';
+    if (!name || !COMMANDS[name]) return null;
+    var result = COMMANDS[name](a, r);
+    if (typeof result !== 'string') return null;
+    var lines = result.split('<br>');
+    var stripped = lines.map(function (l) { return l.replace(/<[^>]+>/g, ''); });
+    var filtered = [];
+    stripped.forEach(function (line, i) {
+      if (line.toLowerCase().indexOf(pattern) !== -1) filtered.push(lines[i]);
+    });
+    return filtered.length ? filtered.join('<br>') : 'grep: no matches for \'' + esc(pipeParts[1]) + '\' in the output.';
+  }
+  /* Tab completion */
+  function tabComplete(partial) {
+    if (!partial) return null;
+    var low = partial.toLowerCase();
+    var candidates = Object.keys(COMMANDS).concat(Object.keys(PROJECT_ALIASES));
+    /* dedupe */
+    var seen = {};
+    candidates = candidates.filter(function (c) { if (seen[c]) return false; seen[c] = 1; return true; });
+    var matches = candidates.filter(function (c) { return c.indexOf(low) === 0; });
+    if (matches.length === 1) return matches[0];
+    if (matches.length > 1) {
+      /* find common prefix */
+      var prefix = matches[0];
+      matches.forEach(function (m) {
+        while (m.indexOf(prefix) !== 0) prefix = prefix.slice(0, -1);
+      });
+      return { prefix: prefix, options: matches };
+    }
+    /* also try file completion for cat/grep */
+    var fileMatches = Object.keys(FILES).filter(function (f) { return f.indexOf(low) === 0 && FILES[f].type === 'f'; });
+    if (fileMatches.length === 1) return fileMatches[0];
+    if (fileMatches.length > 1) return { prefix: low, options: fileMatches };
+    return null;
+  }
+  var QUESTION = /^(what|who|how|why|where|when|can|could|do|does|is|are|will|would|should|tell|show|give|i|im|i'm|please|describe|explain)\b|\?$/;
   function run(raw) {
     var text = raw.trim();
+    /* !! repeats last command */
+    if (text === '!!' && histBuf.length) {
+      text = histBuf[histBuf.length - 1];
+    }
+    /* pipe support */
+    if (text.indexOf('|') !== -1) {
+      echo(raw);
+      var piped = runPiped(text);
+      if (piped !== null) { tprint(piped); return; }
+    }
     var parts = text.split(/\s+/);
     var cmd = (parts[0] || '').toLowerCase();
     var arg = (parts[1] || '').toLowerCase();
     var rest = text.slice(parts[0].length).trim();
     if (!cmd) return;
-    echo(raw);
+    if (text.indexOf('|') === -1) echo(raw);
     if (cmd === 'ls' && arg.charAt(0) === '-') arg = '';
     if (cmd === 'sudo' && parts.length > 1) { tprint('nice try. this ledger is read-only, even for root.'); return; }
     var name = COMMANDS[cmd] ? cmd : ALIASES[cmd];
@@ -1081,15 +1380,31 @@ document.addEventListener('DOMContentLoaded', function () {
     if (name === 'ls' && cmd !== 'ls') arg = 'projects';
     if (name === 'sound' && cmd === 'mute') arg = 'off';
     if (name === 'sound' && cmd === 'unmute') arg = 'on';
-    if (name && COMMANDS[name]) { COMMANDS[name](arg, rest); return; }
+    if (name && COMMANDS[name]) {
+      var output = COMMANDS[name](arg, rest);
+      if (typeof output === 'string') tprint(output);
+      return;
+    }
     var proj = PROJECT_ALIASES[cmd] || PROJECT_ALIASES[text.toLowerCase().replace(/\s+/g, '-')];
-    if (proj) { tprint(PROJECTS[proj].line + '<br>open ' + proj + ' to see the case study'); return; }
-    if (QUESTION.test(text.toLowerCase())) {
-      tprint('this terminal speaks ledger, not english. the commands are listed under help.<br>for a real answer from the preparer: contact.');
+    if (proj) { tprint(PROJECTS[proj].line + '<br>' + esc(PROJECTS[proj].desc) + '<br>open ' + proj + ' to see the case study'); return; }
+    /* Natural language question answering */
+    if (QUESTION.test(text.toLowerCase()) || text.indexOf('?') !== -1) {
+      var fact = matchFact(text);
+      if (fact) {
+        tprint(esc(fact.answer) + (fact.cmd ? '<br><br>try: <b>' + esc(fact.cmd) + '</b>' : ''));
+        return;
+      }
+      tprint('I don\'t have a fact for that. try one of these:<br>  help           full command list<br>  stats          verified project figures<br>  cat about      who is behind this<br>  grep &lt;word&gt;    search across everything<br>or ask about a specific project by name.');
+      return;
+    }
+    /* Try fact matching even for non-questions */
+    var fact2 = matchFact(text);
+    if (fact2) {
+      tprint(esc(fact2.answer) + (fact2.cmd ? '<br><br>try: <b>' + esc(fact2.cmd) + '</b>' : ''));
       return;
     }
     var s = suggest(cmd);
-    tprint(esc(cmd) + ': command not found.' + (s ? ' did you mean <b>' + esc(s) + '</b>?' : '') + ' try: help');
+    tprint(esc(cmd) + ': command not found.' + (s ? ' did you mean <b>' + esc(s) + '</b>?' : ' try: help') + (s ? '' : ''));
   }
   var termTrigger = null;
   var morphMs = tok('--dur-morph', 0.22) * 1000;
@@ -1140,6 +1455,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   term.addEventListener('keydown', function (e) {
     if (e.key !== 'Tab') return;
+    /* Let tab completion handle Tab when the input has focus (non-shift) */
+    if (document.activeElement === input && !e.shiftKey) return;
     var focusables = [document.getElementById('term-close'), input];
     var first = focusables[0], last = focusables[focusables.length - 1];
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
@@ -1199,6 +1516,30 @@ document.addEventListener('DOMContentLoaded', function () {
       histIdx += 1;
       if (histIdx >= histBuf.length) { histIdx = -1; input.value = histDraft; }
       else { input.value = histBuf[histIdx]; }
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      var val = input.value.trim();
+      var tabParts = val.split(/\s+/);
+      var completing = tabParts[tabParts.length - 1];
+      var prefix = tabParts.length > 1 ? tabParts.slice(0, -1).join(' ') + ' ' : '';
+      var result = tabComplete(completing);
+      if (!result) return;
+      if (typeof result === 'string') {
+        input.value = prefix + result;
+      } else {
+        input.value = prefix + result.prefix;
+        tprint(result.options.join('  '));
+      }
+    } else if (e.key === 'l' && e.ctrlKey) {
+      e.preventDefault();
+      COMMANDS.clear();
+    } else if (e.key === 'c' && e.ctrlKey) {
+      e.preventDefault();
+      if (input.value.trim()) {
+        echo(input.value + '^C');
+        input.value = '';
+        histIdx = -1; histDraft = '';
+      }
     }
   });
   addEventListener('keydown', function (e) {
