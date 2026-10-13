@@ -681,7 +681,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function tok(name, fallback) { var v = parseFloat(rootStyle.getPropertyValue(name)); return isNaN(v) ? fallback : v; }
 
   /* ---------- Analytics: GoatCounter (production only, no cookies, no PII) ---------- */
-  if (location.hostname === 'ajaysachdev.com' || location.hostname === 'www.ajaysachdev.com') {
+  /* automated browsers (Playwright, Lighthouse QA runs) set navigator.webdriver: never count them */
+  if ((location.hostname === 'ajaysachdev.com' || location.hostname === 'www.ajaysachdev.com') && !navigator.webdriver) {
     var gc = document.createElement('script');
     gc.async = true;
     gc.src = 'https://gc.zgo.at/count.js';
