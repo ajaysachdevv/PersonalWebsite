@@ -194,18 +194,34 @@ figure.kmock { background: #f4f1ea; color: #1c160d; font-family: var(--sans); fo
 .kmock .km-foot { margin-top: auto; font-family: var(--mono); font-size: 0.74em; letter-spacing: 0.08em; text-transform: uppercase; }
 .kmock .km-chips.km-foot { font-size: 1em; }
 .kmock .c-ok { color: #1f7a4d; } .kmock .c-amb { color: #9a6a12; } .kmock .c-deb { color: #b0443a; } .kmock .c-dim { color: rgba(28, 22, 13, 0.5); }
-/* K.3 bar chart */
-.kmock .km-card { background: #fff; border: 1px solid rgba(28, 22, 13, 0.12); border-radius: 0.4em; padding: 0.9em 1.1em; }
-.kmock .km-card-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82em; margin-bottom: 0.7em; }
+/* K.3 Teams-style mock */
+.kmock.km-teams { padding: 0; gap: 0; background: #f5f5f5; }
+.kmock .km-ch-bar { background: #464775; color: #fff; padding: 0.55em 0.9em; font-size: 0.78em; font-weight: 600; display: flex; align-items: center; gap: 0.4em; }
+.kmock .km-ch-bar .km-hash { opacity: 0.7; }
+.kmock .km-chat { padding: 0.9em 1.1em; display: flex; flex-direction: column; gap: 0.7em; flex: 1; }
+.kmock .km-msg { display: flex; gap: 0.5em; align-items: flex-start; }
+.kmock .km-avatar { width: 1.8em; height: 1.8em; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7em; font-weight: 600; color: #fff; }
+.kmock .km-msg-body { flex: 1; min-width: 0; }
+.kmock .km-msg-name { font-weight: 600; font-size: 0.78em; }
+.kmock .km-msg-name .km-ts { font-weight: 400; color: rgba(28, 22, 13, 0.4); font-size: 0.85em; margin-left: 0.4em; }
+.kmock .km-msg-text { font-size: 0.78em; margin-top: 0.1em; }
+.kmock .km-msg-text code { background: rgba(28, 22, 13, 0.08); padding: 0.05em 0.3em; border-radius: 0.2em; font-family: var(--mono); font-size: 0.9em; }
+.kmock .km-card { background: #fff; border: 1px solid rgba(28, 22, 13, 0.12); border-radius: 0.35em; margin-top: 0.3em; overflow: hidden; }
+.kmock .km-card-accent { height: 0.18em; background: #464775; }
+.kmock .km-card-body { padding: 0.7em 0.85em; }
+.kmock .km-card-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.78em; margin-bottom: 0.15em; }
 .kmock .km-card-head strong { font-weight: 600; }
-.kmock .km-bars { display: flex; flex-direction: column; gap: 0.45em; }
-.kmock .km-bar-row { display: flex; align-items: center; gap: 0.6em; font-size: 0.82em; }
-.kmock .km-bar-label { width: 2.2em; text-align: right; color: rgba(28, 22, 13, 0.6); font-family: var(--mono); font-size: 0.88em; flex-shrink: 0; }
-.kmock .km-bar-track { flex: 1; height: 1.1em; background: rgba(28, 22, 13, 0.06); border-radius: 0.2em; overflow: hidden; }
-.kmock .km-bar-fill { height: 100%; background: #1f7a4d; border-radius: 0.2em; }
-.kmock .km-bar-val { width: 2.4em; font-family: var(--mono); font-size: 0.88em; color: rgba(28, 22, 13, 0.7); }
+.kmock .km-card-query { font-size: 0.68em; color: rgba(28, 22, 13, 0.5); font-style: italic; margin-bottom: 0.5em; }
+.kmock .km-card-result { background: rgba(31, 122, 77, 0.08); border-radius: 0.25em; padding: 0.6em 0.75em; }
+.kmock .km-bars { display: flex; flex-direction: column; gap: 0.3em; }
+.kmock .km-bar-row { display: flex; align-items: center; gap: 0.5em; font-size: 0.75em; }
+.kmock .km-bar-label { width: 2em; text-align: right; color: rgba(28, 22, 13, 0.55); font-family: var(--mono); font-size: 0.88em; flex-shrink: 0; }
+.kmock .km-bar-track { flex: 1; height: 0.9em; background: rgba(28, 22, 13, 0.06); border-radius: 0.15em; overflow: hidden; }
+.kmock .km-bar-fill { height: 100%; background: #464775; border-radius: 0.15em; }
+.kmock .km-bar-val { width: 2.2em; font-family: var(--mono); font-size: 0.88em; color: rgba(28, 22, 13, 0.6); }
+.kmock .km-card-foot { font-size: 0.6em; color: rgba(28, 22, 13, 0.4); margin-top: 0.4em; font-family: var(--mono); letter-spacing: 0.04em; }
 /* K.4 action cards */
-.kmock .km-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6em; }
+.kmock .km-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5em; }
 .kmock .km-kpi { background: #fff; border: 1px solid rgba(28, 22, 13, 0.1); border-radius: 0.35em; padding: 0.5em 0.7em; }
 .kmock .km-kpi-label { font-family: var(--mono); font-size: 0.6em; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(28, 22, 13, 0.5); }
 .kmock .km-kpi-val { display: block; font-size: 1.3em; font-weight: 700; margin-top: 0.1em; }
@@ -223,7 +239,7 @@ figure.kmock { background: #f4f1ea; color: #1c160d; font-family: var(--sans); fo
   #kv-slot figure.kmock { aspect-ratio: auto; }
   #kv-slot .km-row { grid-template-columns: 1fr; }
   #kv-slot .km-actions { grid-template-columns: 1fr; }
-  #kv-slot .km-kpis { grid-template-columns: repeat(3, 1fr); }
+  #kv-slot .km-kpis { grid-template-columns: repeat(2, 1fr); }
 }
 .kview { margin: auto; border: 1px solid var(--rule); background: var(--ink); color: var(--paper); padding: 0; width: min(1100px, calc(100vw - 32px), calc((100dvh - 110px) * 1.6)); max-width: none; max-height: calc(100dvh - 32px); overflow: auto; }
 .kview::backdrop { background: rgba(7, 7, 6, 0.86); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); transition: opacity var(--dur-backdrop) linear; }
@@ -415,18 +431,43 @@ main.wrap > header .reveal { opacity: 1; transform: none; transition: none; }
         <span class="k-cap">K.2 <b>Proposal builder</b></span>
       </button>
       <button type="button" class="kshot reveal" aria-label="Enlarge K.3, Query DB reconstruction">
-        <figure class="kmock" role="img" aria-label="Reconstruction: a Teams bot takes a plain-English question about Inspeq data and returns a chart of inspection counts by month">
-          <div class="km-top"><span>Query DB</span><span class="km-tag">Sample data</span></div>
-          <div class="km-q">#querydb How many inspections completed each month this quarter?</div>
-          <div class="km-card">
-            <div class="km-card-head"><strong>Query from: A. Patel</strong><span class="c-dim">1.8s</span></div>
-            <div class="km-bars">
-              <div class="km-bar-row"><span class="km-bar-label">Jul</span><div class="km-bar-track"><div class="km-bar-fill" style="width:65%"></div></div><span class="km-bar-val">142</span></div>
-              <div class="km-bar-row"><span class="km-bar-label">Aug</span><div class="km-bar-track"><div class="km-bar-fill" style="width:85%"></div></div><span class="km-bar-val">186</span></div>
-              <div class="km-bar-row"><span class="km-bar-label">Sep</span><div class="km-bar-track"><div class="km-bar-fill" style="width:100%"></div></div><span class="km-bar-val">218</span></div>
+        <figure class="kmock km-teams" role="img" aria-label="Reconstruction: a Teams channel where a user asks the bot how many inspections were completed each month and gets a bar chart reply">
+          <div class="km-ch-bar"><span class="km-hash">#</span> ops-data</div>
+          <div class="km-chat">
+            <div class="km-msg">
+              <div class="km-avatar" style="background:#4A90D9;">AP</div>
+              <div class="km-msg-body">
+                <div class="km-msg-name">A. Patel <span class="km-ts">10:42 AM</span></div>
+                <div class="km-msg-text"><code>#querydb</code> How many inspections completed each month this half?</div>
+              </div>
+            </div>
+            <div class="km-msg">
+              <div class="km-avatar" style="background:#464775;">
+                <svg width="1em" height="1em" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="5" height="5" rx="1" fill="#fff"/><rect x="10" y="3" width="5" height="5" rx="1" fill="#fff" opacity="0.6"/><rect x="3" y="10" width="5" height="5" rx="1" fill="#fff" opacity="0.6"/><rect x="10" y="10" width="5" height="5" rx="1" fill="#fff" opacity="0.3"/></svg>
+              </div>
+              <div class="km-msg-body">
+                <div class="km-msg-name">Query DB <span class="km-ts">10:42 AM</span></div>
+                <div class="km-card">
+                  <div class="km-card-accent"></div>
+                  <div class="km-card-body">
+                    <div class="km-card-head"><strong>Query from: A. Patel</strong><span class="c-dim">2.1s</span></div>
+                    <div class="km-card-query">"How many inspections completed each month this half?"</div>
+                    <div class="km-card-result">
+                      <div class="km-bars">
+                        <div class="km-bar-row"><span class="km-bar-label">Apr</span><div class="km-bar-track"><div class="km-bar-fill" style="width:52%"></div></div><span class="km-bar-val">114</span></div>
+                        <div class="km-bar-row"><span class="km-bar-label">May</span><div class="km-bar-track"><div class="km-bar-fill" style="width:60%"></div></div><span class="km-bar-val">131</span></div>
+                        <div class="km-bar-row"><span class="km-bar-label">Jun</span><div class="km-bar-track"><div class="km-bar-fill" style="width:65%"></div></div><span class="km-bar-val">142</span></div>
+                        <div class="km-bar-row"><span class="km-bar-label">Jul</span><div class="km-bar-track"><div class="km-bar-fill" style="width:75%"></div></div><span class="km-bar-val">164</span></div>
+                        <div class="km-bar-row"><span class="km-bar-label">Aug</span><div class="km-bar-track"><div class="km-bar-fill" style="width:85%"></div></div><span class="km-bar-val">186</span></div>
+                        <div class="km-bar-row"><span class="km-bar-label">Sep</span><div class="km-bar-track"><div class="km-bar-fill" style="width:100%"></div></div><span class="km-bar-val">218</span></div>
+                      </div>
+                      <div class="km-card-foot">6 months shown, source: Inspeq</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="km-chips km-foot"><span class="km-chip c-ok">Read-only</span><span class="km-chip c-ok">Personal data: none</span></div>
         </figure>
         <span class="k-cap">K.3 <b>Query DB</b></span>
       </button>
@@ -434,26 +475,30 @@ main.wrap > header .reveal { opacity: 1; transform: none; transition: none; }
         <figure class="kmock" role="img" aria-label="Reconstruction: an ops dashboard with KPI summary and action cards grouped by urgency">
           <div class="km-top"><span>Ops Monitor</span><span class="km-tag">Sample data</span></div>
           <div class="km-kpis">
-            <div class="km-kpi"><span class="km-kpi-label">Revenue / yr</span><span class="km-kpi-val c-ok">840k</span></div>
+            <div class="km-kpi"><span class="km-kpi-label">Contracts tracked</span><span class="km-kpi-val">34</span></div>
             <div class="km-kpi"><span class="km-kpi-label">Renewals 90d</span><span class="km-kpi-val c-deb">7</span></div>
             <div class="km-kpi"><span class="km-kpi-label">Next notice</span><span class="km-kpi-val c-deb">4d</span></div>
+            <div class="km-kpi"><span class="km-kpi-label">Overdue invoices</span><span class="km-kpi-val c-deb">2</span></div>
           </div>
           <div class="km-actions">
             <div>
-              <div class="km-act-title">Do now <span class="km-act-count">3</span></div>
+              <div class="km-act-title">Do now <span class="km-act-count">4</span></div>
               <div class="km-act-item"><span class="km-badge km-badge-notice">Notice</span>Fern Valley renewal in 4 days</div>
-              <div class="km-act-item"><span class="km-badge km-badge-approve">Approve</span>Expense claim (2,340)</div>
-              <div class="km-act-item"><span class="km-badge km-badge-chase">Chase</span>Northmoor invoice overdue</div>
+              <div class="km-act-item"><span class="km-badge km-badge-approve">Approve</span>Expense claim from R. Gill</div>
+              <div class="km-act-item"><span class="km-badge km-badge-chase">Chase</span>Northmoor invoice 22d overdue</div>
+              <div class="km-act-item"><span class="km-badge km-badge-chase">Chase</span>Pinnacle invoice 8d overdue</div>
             </div>
             <div>
-              <div class="km-act-title">Do soon <span class="km-act-count">2</span></div>
+              <div class="km-act-title">Do soon <span class="km-act-count">3</span></div>
               <div class="km-act-item"><span class="km-badge km-badge-decide">Decide</span>Ashworth renewal terms</div>
               <div class="km-act-item"><span class="km-badge km-badge-chase">Pay</span>Insurance premium 28/11</div>
+              <div class="km-act-item"><span class="km-badge km-badge-approve">Approve</span>New vendor onboarding</div>
             </div>
             <div>
-              <div class="km-act-title">Heads up <span class="km-act-count">2</span></div>
+              <div class="km-act-title">Heads up <span class="km-act-count">3</span></div>
               <div class="km-act-item"><span class="km-badge km-badge-notice">Notice</span>Pinnacle notice window 01/01</div>
               <div class="km-act-item"><span class="km-badge km-badge-decide">Decide</span>Fleet SaaS review in Feb</div>
+              <div class="km-act-item"><span class="km-badge km-badge-notice">Notice</span>Meridian cert renewal Mar</div>
             </div>
           </div>
         </figure>
