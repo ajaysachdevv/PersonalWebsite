@@ -340,11 +340,6 @@ h3.yr-num { margin: 0; font-weight: 400; }
 .about h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.12; text-wrap: balance; }
 .about h2 em { color: var(--credit); }
 .about-lede { margin-top: 1.4rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; max-width: 28rem; }
-.about-pull {
-  margin-top: 2.6rem; padding-top: 1.4rem; border-top: 1px solid var(--rule);
-  font-family: var(--serif); font-size: clamp(1.5rem, 2.6vw, 2.1rem); line-height: 1.25; max-width: 24rem;
-}
-.about-pull em { color: var(--credit); }
 .notes { list-style: none; }
 .notes li {
   display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: baseline;
@@ -409,8 +404,6 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 }
 .foot-sign .term-hint { cursor: pointer; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; transition: color var(--dur-link) var(--ease-micro), text-decoration-color var(--dur-link) var(--ease-micro); }
 .foot-sign .term-hint:hover, .foot-sign .term-hint:focus-visible { color: var(--paper); text-decoration-color: var(--credit); }
-.signed { margin-top: 3.5rem; font-family: var(--serif); font-style: italic; font-size: clamp(1.2rem, 2vw, 1.6rem); color: var(--paper-dim); }
-.signed span { display: block; margin-top: 0.5rem; color: var(--credit); font-size: 0.85em; }
 
 /* ================= Terminal ================= */
 .terminal {
@@ -457,7 +450,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   .open h1, .chapter h2, .about h2, .foot-cta, .l-name, .op-num { color: #1c160d !important; }
   .open h1 em, .chapter h2 em, .about h2 em, .foot-cta em { color: #1f7a4d !important; }
   .jrnl, .credit-line, .open-sub, .chapter p, .l-desc, .about-lede, .notes li, .op-lab,
-  .section-head, .ledger th, .ledger td, .foot-sign, .reach-line, .signed, .about-pull { color: #3a332a !important; }
+  .section-head, .ledger th, .ledger td, .foot-sign, .reach-line { color: #3a332a !important; }
   .total-rule { border-color: #3a332a; }
   .section-head { border-top-color: #1c160d; }
   .ledger td, .ledger th, .notes li, .op-fig { border-color: rgba(28, 22, 13, 0.25) !important; }
