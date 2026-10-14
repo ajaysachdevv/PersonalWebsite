@@ -9,10 +9,8 @@ He moved to the UK for an MSc in Finance at Loughborough University (2020-21, 2:
 He qualified as an ACMA CGMA (CIMA) in 2026 and serves as a School Governor at a 250-pupil primary school.
 
 ## Current Role: Finance & Operations Manager
-- Finance and operations at the UK head office
 - Board-level financial models and reporting
 - Built 50+ Power BI dashboards
-- Drafts contracts, NDAs, SoWs, supplier agreements
 - Cut a core SaaS platform's cost 65% through a systematic audit
 - Redesigned the contract format from 26 pages to 3 with hyperlinked terms; six-month stalls became one-week signings
 - Saves 40+ hours/month through automation
@@ -31,12 +29,12 @@ An AI assistant that lives in Microsoft Teams: reads 6,124+ SharePoint documents
 An intraday trading system where four AI agents vote on every signal and a Risk Auditor holds an absolute veto.
 - 4 agents: Orchestrator, Context Lead, Analyst, Risk Auditor (Claude-powered)
 - Paper trading by design: 115+ sessions, zero impulsive trades let through
-- 7,000+ lines of Python
+- 7,000+ lines
 - Hard safety rails in code, not prompts: GBP 750 max notional, fixed stop loss and take profit, one position at a time, kill switch, end-of-day liquidation
 
 ### Uni-Nation Digital (uni-nation.in)
 Website, inventory system and analytics for the family fabric business running since 1988.
-- Inventory PWA (30,000+ lines) tracking roughly $2m of sales data, ~2,000 products, 650+ customers
+- Inventory system (30,000+ lines) tracking roughly $2m of sales data, ~2,000 products, 650+ customers
 - Voice stock entry in mixed Hindi-English: the parser understands thaan, taaka, metre and Hindi numbers, and corrects speech-to-text on fabric names
 - Receivables tracking with WhatsApp follow-up generation
 
@@ -49,19 +47,19 @@ A zero-dependency browser study tool he built for his own CIMA Strategic Case St
 ## Skills & Tools
 
 ### Finance & Modelling
-Financial Modelling, Management Accounts, VAT & Payroll, Budgeting & Forecasting, Cash Management, Multi-entity consolidation, Board-level reporting, Scenario analysis
+Financial Modelling, Budgeting & Forecasting, Cash Management, Board-level reporting, Scenario analysis
 
 ### Data & Analytics
 Power BI (50+ dashboards), SQL, GA4, Firebase, Python data analysis
 
 ### Systems & Automation
-Xero, HubSpot, Factorial, Onboarding/offboarding, ESOPs
+Xero, HubSpot, Factorial
 
 ### AI & Engineering
 Python, TypeScript, Claude, GPT, Gemini, FAISS, BM25, RAG, voice interfaces (Deepgram), PII detection, API integrations
 
 ### Commercial & Legal
-Contract drafting, NDAs, SoWs, Cost negotiation, Supplier agreements
+Contract drafting, Cost negotiation
 
 ## Education
 - MSc Finance, Loughborough University (2020-21, 2:1)

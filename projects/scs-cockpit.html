@@ -412,7 +412,7 @@ main.wrap > header .reveal { opacity: 1; }
     <p class="crumb reveal"><a href="./">Projects</a> / Exam preparation</p>
     <h1 class="reveal">SCS Cockpit<em>.</em></h1>
     <p class="entry-status reveal"><span class="l-status idle"><i></i>Retired, job done</span><span>Exam passed / ACMA CGMA, 2026</span></p>
-    <p class="entry-lede reveal">The study engine I built for my own CIMA Strategic Case Study. The exam rarely fails people for not knowing things. It fails them for <em>generic theory, no recommendation and missing the facts in front of them.</em> I built against those three, used it until exam day, and passed.</p>
+    <p class="entry-lede reveal">The study engine I built for my own CIMA Strategic Case Study. The exam rarely fails people for not knowing things. It fails them for <em>generic theory, no recommendation and missing the facts in front of them.</em> I built against those three and used it until exam day. I passed.</p>
     <div class="fig-row">
       <div class="fig reveal"><span class="fig-num">11,584</span><span class="fig-lab">lines of code</span></div>
       <div class="fig reveal"><span class="fig-num">0</span><span class="fig-lab">runtime dependencies</span></div>
@@ -425,7 +425,7 @@ main.wrap > header .reveal { opacity: 1; }
     <div class="notes-col">
       <section data-note="1">
         <div class="section-head reveal"><span>The problem</span><span class="right">Three ways to fail</span></div>
-        <p class="prose reveal">The Strategic Case Study is the last CIMA exam: a fictional company you've studied for weeks, a clock, and a run of emails asking what you'd actually do. Knowing the theory isn't the hard part. The guidance names three ways people fail: generic theory that could apply to any company, no real recommendation, and missing the facts the scenario hands you.</p>
+        <p class="prose reveal">The Strategic Case Study is the last CIMA exam: a fictional company you've studied for weeks, a clock, and a run of emails asking what you'd actually do. The guidance names three ways people fail: generic theory that could apply to any company, no real recommendation, and missing the facts the scenario hands you.</p>
         <p class="prose reveal">Most study material tests what you know. I wanted something that tested <b>how I answered</b>, under time, against those three.</p>
         <table class="ledger reveal">
           <thead><tr><th>Failure mode</th><th>What the tool does about it</th></tr></thead>
@@ -440,11 +440,11 @@ main.wrap > header .reveal { opacity: 1; }
       <section data-note="2">
         <div class="section-head reveal"><span>How it works</span><span class="right">Seeds, verbs, a clock</span></div>
         <p class="prose reveal">A drill is composed, not pulled from a bank: a case-specific scenario seed, a competency, a template and an anchor from the study material. It arrives as an email with tasks attached, and a timer changes colour as time runs down. Afterwards the answer is scored on the five dimensions the exam marks: <b>role fit, application, judgement, structure and ethics</b>.</p>
-        <p class="prose reveal">Behind it, 54 source PDFs were normalised into 166 study items and 23 frameworks, loaded from three packs and de-duplicated at startup. Spaced repetition decides what comes back tomorrow. One button turns any drill into an examiner prompt I could hand to an outside AI for a second opinion.</p>
+        <p class="prose reveal">Behind it, 54 source PDFs became 166 study items and 23 frameworks. Spaced repetition decides what comes back tomorrow. One button turns any drill into an examiner prompt I could hand to an outside AI for a second opinion.</p>
       </section>
 
       <section data-note="3">
-        <div class="section-head reveal"><span>A look inside</span><span class="right"></span></div>
+        <div class="section-head reveal"><span>The drill</span><span class="right"></span></div>
         <div class="drill reveal" id="drill">
           <div class="dr-head"><span>Drill / Judgement</span><span class="dr-stamp">Sample data</span></div>
           <p class="dr-mail"><b>From: Finance Director, Northmoor Composites plc</b>Our largest customer wants 90-day payment terms instead of 30, in return for a three-year volume commitment. The board meets tomorrow. Recommend whether we accept, and what we'd need in place to protect ourselves.</p>
@@ -452,7 +452,7 @@ main.wrap > header .reveal { opacity: 1; }
           <div class="dr-run" id="dr-run">
             <div class="dr-clock" id="dr-clock"><span id="dr-t">60</span><small>s</small></div>
             <textarea id="dr-ans" rows="4" placeholder="Your recommendation. Not stored, not sent, not marked." aria-label="Your answer. It is not stored, sent or marked" disabled></textarea>
-            <div class="mo-bar"><button class="mo-btn" id="dr-start" type="button">Start the 60-second drill</button><button class="mo-btn ghost mo-hide" id="dr-stop" type="button">Finish early</button><button class="mo-btn ghost mo-replay" id="dr-replay" type="button">Run it again</button><span class="visually-hidden" id="dr-sr" role="status"></span></div>
+            <div class="mo-bar"><span class="mo-hint">Answer the email in 60 seconds. Nothing is stored.</span><button class="mo-btn" id="dr-start" type="button">Start the 60-second drill</button><button class="mo-btn ghost mo-hide" id="dr-stop" type="button">Finish early</button><button class="mo-btn ghost mo-replay" id="dr-replay" type="button">Replay</button><span class="visually-hidden" id="dr-sr" role="status"></span></div>
           </div>
           <ol class="dr-bars" aria-label="Sample marking on the five dimensions">
             <li style="--v: 0.8"><span>Role fit</span><i></i><b>4/5</b></li>
@@ -489,7 +489,7 @@ main.wrap > header .reveal { opacity: 1; }
     <aside class="rail" aria-label="Margin notes">
       <div class="rail-inner">
         <div class="rail-head"><span>On this page</span><span></span></div>
-        <div class="rail-line" data-notes="The problem|How it works|A look inside|What went wrong|Stack" data-debit="4">
+        <div class="rail-line" data-notes="The problem|How it works|The drill|What went wrong|Stack" data-debit="4">
           <div class="rail-track" aria-hidden="true"><i class="rail-fill"></i></div>
           <p class="rail-cur"><b>01</b>The problem</p>
         </div>
@@ -512,7 +512,7 @@ main.wrap > header .reveal { opacity: 1; }
         <tr data-href="opspilot.html">
           <td class="o-ref">01</td>
           <td><span class="o-name">OpsPilot</span></td>
-          <td class="o-desc">An AI operations layer in Microsoft Teams. Reads 6,124+ documents, drafts answers I approve.</td>
+          <td class="o-desc">The AI that answers my messages: 6,124+ documents, live finance data, one-click approval.</td>
           <td class="o-status">Production</td>
         </tr>
         <tr data-href="trading-bot.html">

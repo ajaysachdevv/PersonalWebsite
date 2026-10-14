@@ -143,21 +143,6 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 }
 .pull span { color: var(--credit); }
 
-/* Architecture layers */
-.layer-head {
-  margin-top: 2.4rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--amber); display: flex; align-items: baseline; gap: 1rem;
-}
-.layer-head::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
-.layer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.2rem; }
-.node {
-  border: 1px solid var(--rule); border-radius: 5px; padding: 1rem 1.1rem; background: var(--ink-2);
-}
-.node.hl { border-color: rgba(47, 191, 113, 0.35); }
-.node .n-name { display: block; font-family: var(--mono); font-size: 0.72rem; color: var(--paper); }
-.node .n-desc { display: block; margin-top: 0.4rem; font-size: 0.76rem; line-height: 1.55; color: var(--paper-faint); }
-@media (max-width: 760px) { .layer-grid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 480px) { .layer-grid { grid-template-columns: 1fr; } }
 
 /* Feature notes */
 .notes { list-style: none; margin-top: 2.2rem; }
@@ -337,9 +322,7 @@ main.wrap > header .reveal { opacity: 1; }
 
     <section data-note="1">
       <div class="section-head reveal"><span>The problem</span><span class="right">The missing layer</span></div>
-      <p class="prose reveal">I kept running into the same friction. Want to schedule a birthday message for midnight? Can't. Need to catch up on a family group chat buried in unread messages? Scroll through every single one. Want quick reply suggestions when you're juggling ten conversations? Nothing.</p>
-      <p class="prose reveal">The gap is bigger than scheduling. There's no personal productivity layer at all. WhatsApp's own scheduling, added in early 2026, is single-message only with no recurring option. Every third-party tool in this space targets businesses running customer support through the WhatsApp Business API. <b>Personal users got left behind.</b> That was the gap I built into.</p>
-      <p class="pull reveal">Every WhatsApp extension I found was built for businesses. I just wanted to schedule <span>a birthday message.</span></p>
+      <p class="prose reveal">WhatsApp's own scheduling, added in early 2026, is single-message only with no recurring option. Busy group chats pile up unread, and nothing helps with replies. Every third-party tool in this space targets businesses running customer support through the WhatsApp Business API. <b>Personal users got left behind.</b></p>
     </section>
 
     <section data-note="2">
@@ -364,32 +347,13 @@ main.wrap > header .reveal { opacity: 1; }
 
     <section data-note="3">
       <div class="section-head reveal"><span>How it works</span><span class="right">Three layers, local first</span></div>
-      <p class="prose reveal">You open WhatsApp Web and the extension is already there: a small toolbar next to the compose box with AI suggestions, a tone adjuster and a schedule button. A content script injects the UI via shadow DOM so it never clashes with WhatsApp's own styles. A background service worker handles scheduling through Chrome Alarms, so messages go out even if the tab isn't focused. Message access comes from an open-source WhatsApp Web API library, not brittle DOM scraping. <b>No server required for core features. No sign-up.</b></p>
+      <p class="prose reveal">You open WhatsApp Web and the extension is already there: a small toolbar next to the compose box with AI suggestions, a tone adjuster and a schedule button. Message access comes from an open-source WhatsApp Web API library, not brittle DOM scraping. <b>No server required for core features. No sign-up.</b></p>
 
-      <div class="reveal">
-        <p class="layer-head">Layer 1: Browser</p>
-        <div class="layer-grid">
-          <div class="node hl"><span class="n-name">Content script</span><span class="n-desc">Injects into WhatsApp Web via MutationObserver detection</span></div>
-          <div class="node"><span class="n-name">Message bridge</span><span class="n-desc">postMessage relay between content and injected scripts</span></div>
-          <div class="node hl"><span class="n-name">React 19 UI in shadow DOM</span><span class="n-desc">54 components: Radix primitives, Tailwind v4, shadcn/ui. Isolated mount, never clashes with WhatsApp CSS</span></div>
-        </div>
-      </div>
-      <div class="reveal">
-        <p class="layer-head">Layer 2: Extension</p>
-        <div class="layer-grid">
-          <div class="node hl"><span class="n-name">Background worker</span><span class="n-desc">1,400 lines: scheduling engine, send queue, orphan recovery, tab manager</span></div>
-          <div class="node"><span class="n-name">Chrome Alarms + Storage</span><span class="n-desc">OS-level timing that fires with the tab unfocused; all user data stays local</span></div>
-          <div class="node"><span class="n-name">Send queue</span><span class="n-desc">Retries, staggered batch delivery with 3 to 10 second gaps, status tracking</span></div>
-        </div>
-      </div>
-      <div class="reveal">
-        <p class="layer-head">Layer 3: External, optional</p>
-        <div class="layer-grid">
-          <div class="node hl"><span class="n-name">Claude API</span><span class="n-desc">Haiku for speed, Sonnet for quality. Bring your own key, direct from the browser, or use the proxy</span></div>
-          <div class="node"><span class="n-name">Hono server</span><span class="n-desc">Push notifications when Chrome is closed; AI proxy with a free monthly allowance</span></div>
-          <div class="node"><span class="n-name">Upstash Redis</span><span class="n-desc">Server-side schedule state, push subscriptions, usage metering</span></div>
-        </div>
-      </div>
+      <ul class="notes reveal">
+        <li><span><b>In the page</b>A content script spots WhatsApp Web with a MutationObserver and mounts a React 19 UI of 54 components in shadow DOM, talking to the page through a postMessage bridge.</span></li>
+        <li><span><b>In the extension</b>A 1,400-line background worker runs the scheduler and send queue on Chrome Alarms, with retries and 3 to 10 second gaps between batch sends. All user data stays in local storage.</span></li>
+        <li><span><b>Outside, optional</b>Claude, Haiku for speed and Sonnet for quality, with your own key or through a small Hono proxy. Upstash Redis keeps server-side schedules and push subscriptions for when Chrome is closed.</span></li>
+      </ul>
     </section>
 
     <section data-note="4">
@@ -404,7 +368,7 @@ main.wrap > header .reveal { opacity: 1; }
         <li class="reveal"><span><b>Privacy first</b>All data in local Chrome storage. No sign-up. Messages stay in the browser; only text you send to the AI leaves it, and those prompts are not stored.</span></li>
       </ul>
       <div class="undo reveal" id="undo">
-        <div class="un-head"><span>F.5 / Undo send, working replica</span><span class="un-stamp">Prototype</span></div>
+        <div class="un-head"><span>Undo send, working replica</span><span class="un-stamp">Prototype</span></div>
         <div class="un-chat" id="un-chat"><div class="un-msg them">Are we still on for tonight?</div></div>
         <div class="un-bar" id="un-bar">
           <span class="un-count"><b id="un-n">5</b>s</span>
@@ -414,21 +378,17 @@ main.wrap > header .reveal { opacity: 1; }
           <i class="un-prog" id="un-prog"></i>
         </div>
         <div class="un-compose"><input id="un-input" type="text" value="Yes, see you there. I'll bring the contracts." aria-label="Message to send"><button class="mo-btn" id="un-send" type="button">Send</button></div>
-        <div class="mo-bar"><span class="mo-hint" id="un-note" role="status">Press send, then try to take it back.</span><button class="mo-btn ghost mo-replay" id="un-reset" type="button">Reset</button></div>
+        <div class="mo-bar"><span class="mo-hint" id="un-note" role="status">Press send, then try to take it back.</span><button class="mo-btn ghost mo-replay" id="un-reset" type="button">Replay</button></div>
       </div>
     </section>
 
-    <section data-note="5">
-      <div class="section-head reveal"><span>Status</span><span class="right">Status: prototype</span></div>
-      <p class="prose reveal">Eleven features built, never launched. It stays for the engineering: shadow DOM isolation inside a hostile host page, OS-level scheduling that survives a sleeping service worker, and an AI layer that works without ever holding your messages.</p>
-    </section>
 
-    <section class="wrong" data-note="6">
+    <section class="wrong" data-note="5">
       <div class="section-head reveal"><span>What went wrong</span><span class="right">Built on someone else's page</span></div>
-      <p class="prose reveal">The whole extension sits on top of WhatsApp Web's own HTML. It reads that page and drives it, and WhatsApp can change it whenever they like without telling anyone. One update on their side could break sending overnight. I can't unit-test my way out of it either, because the code under test depends on markup I don't own. The spec logs it as known issue one. This page says it too.</p>
+      <p class="prose reveal">The whole extension sits on top of WhatsApp Web's own HTML. It reads that page and drives it, and WhatsApp can change it whenever they like without telling anyone. One update on their side could break sending overnight. I can't unit-test my way out of it either, because the code under test depends on markup I don't own. The spec logs it as known issue one.</p>
     </section>
 
-    <section data-note="7">
+    <section data-note="6">
       <div class="section-head reveal"><span>Stack</span></div>
       <div class="stack reveal">
         <div><span class="s-name">React 19</span><span class="s-role">UI and state, 50+ components</span></div>
@@ -447,7 +407,7 @@ main.wrap > header .reveal { opacity: 1; }
     <aside class="rail" aria-label="Margin notes">
       <div class="rail-inner">
         <div class="rail-head"><span>On this page</span><span></span></div>
-        <div class="rail-line" data-notes="The problem|A look inside|How it works|What it does|Status|What went wrong|Stack" data-debit="6">
+        <div class="rail-line" data-notes="The problem|A look inside|How it works|What it does|What went wrong|Stack" data-debit="5">
           <div class="rail-track" aria-hidden="true"><i class="rail-fill"></i></div>
           <p class="rail-cur"><b>01</b>The problem</p>
         </div>
@@ -456,9 +416,8 @@ main.wrap > header .reveal { opacity: 1; }
           <div class="rp" data-n="2"><span class="rp-num">3</span><span class="rp-lab">codebases: extension, server, landing page</span></div>
           <div class="rp" data-n="3"><span class="rp-num">5s</span><span class="rp-lab">undo-send window before anything reaches WhatsApp</span></div>
           <div class="rp" data-n="4"><span class="rp-num">11</span><span class="rp-lab">features built</span></div>
-          <div class="rp" data-n="5"><span class="rp-num">0</span><span class="rp-lab">launches</span></div>
-          <div class="rp debit" data-n="6"><span class="rp-num">KI1</span><span class="rp-lab">logged in the spec as the risk that can break everything</span></div>
-          <div class="rp" data-n="7"><span class="rp-num">14</span><span class="rp-lab">tests</span></div>
+          <div class="rp debit" data-n="5"><span class="rp-num">1</span><span class="rp-lab">known issue that could break everything overnight</span></div>
+          <div class="rp" data-n="6"><span class="rp-num">14</span><span class="rp-lab">tests</span></div>
         </div>
       </div>
     </aside>

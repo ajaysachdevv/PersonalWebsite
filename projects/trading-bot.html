@@ -6,7 +6,7 @@
 <title>Trading Bot | Ajay Sachdev</title>
 <meta name="description" content="Case study: four AI agents that veto impulsive trades. 115+ paper-trading sessions on the FTSE 100, zero trades let through, hard risk rails in code. Built by a finance manager who kept overriding his own rules.">
 <meta property="og:title" content="Trading Bot | Ajay Sachdev">
-<meta property="og:description" content="Four AI agents with an absolute veto. 115+ sessions, 0 impulsive trades let through. The point was never the profit. It was the restraint.">
+<meta property="og:description" content="Four AI agents with an absolute veto. 115+ sessions, 0 impulsive trades let through. The point was the restraint.">
 <meta property="og:type" content="article">
 <link rel="canonical" href="https://ajaysachdev.com/projects/trading-bot.html">
 <meta property="og:url" content="https://ajaysachdev.com/projects/trading-bot.html">
@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Ajay Sachdev">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Trading Bot | Ajay Sachdev">
-<meta name="twitter:description" content="Four AI agents with an absolute veto. 115+ sessions, 0 impulsive trades let through. The point was never the profit. It was the restraint.">
+<meta name="twitter:description" content="Four AI agents with an absolute veto. 115+ sessions, 0 impulsive trades let through. The point was the restraint.">
 <meta name="twitter:image" content="https://ajaysachdev.com/images/og.jpg">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://ajaysachdev.com/projects/trading-bot.html#case","name":"Trading Bot: case study","headline":"Trading Bot","description":"Case study: four AI agents that veto impulsive trades. 115+ paper-trading sessions on the FTSE 100, zero trades let through, hard risk rails in code. Built by a finance manager who kept overriding his own rules.","url":"https://ajaysachdev.com/projects/trading-bot.html","inLanguage":"en-GB","image":"https://ajaysachdev.com/images/og.jpg","author":{"@type":"Person","@id":"https://ajaysachdev.com/#person","name":"Ajay Sachdev","url":"https://ajaysachdev.com/"},"creator":{"@type":"Person","@id":"https://ajaysachdev.com/#person","name":"Ajay Sachdev","url":"https://ajaysachdev.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajaysachdev.com/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://ajaysachdev.com/projects/"},{"@type":"ListItem","position":3,"name":"Trading Bot","item":"https://ajaysachdev.com/projects/trading-bot.html"}]}]}
@@ -368,8 +368,8 @@ main.wrap > header .reveal { opacity: 1; }
 
     <section data-note="1">
       <div class="section-head reveal"><span>The problem</span><span class="right">The operator was the risk</span></div>
-      <p class="prose reveal">I studied financial markets at Jai Hind College and hold a Chartered Wealth Manager certification. I understood markets. But understanding them and trading them profitably turned out to be two different things. I'd watch a stock I'd researched all week drop sharply on a single announcement and sell within five minutes, then watch it recover by close. I'd spot a FTSE dip and buy in, convinced it was the bottom, only for it to keep sliding. After a red day I'd jump into something I hadn't even properly analysed, just to make the loss back.</p>
-      <p class="prose reveal"><b>The analysis was usually fine. It was the real-time decisions that killed it.</b> I'd override my own rules the moment I felt any pressure. So the question became: could I build something that kept the analysis but removed me from the execution?</p>
+      <p class="prose reveal">I studied financial markets and I understood them. Trading them profitably was another thing. I'd watch a stock I'd researched all week drop sharply on a single announcement and sell within five minutes, then watch it recover by close. After a red day I'd jump into something I hadn't properly analysed, just to make the loss back.</p>
+      <p class="prose reveal"><b>The analysis was usually fine. It was the real-time decisions that killed it.</b> I'd override my own rules the moment I felt any pressure. So I set out to keep the analysis and take myself out of the execution.</p>
     </section>
 
     <section data-note="2">
@@ -407,7 +407,7 @@ main.wrap > header .reveal { opacity: 1; }
           <div class="tl tb-total" data-t="7.0"><span class="t-dim">10:35:07</span> Session 115 closed flat. Trades placed: <b>0</b></div>
           <div class="stamp on" id="tb-stamp" aria-hidden="true"><span>VETOED</span></div>
         </div>
-        <div class="mo-bar tb-ctl"><button class="mo-btn" id="tb-run" type="button">Run the session</button><button class="mo-btn ghost mo-replay" id="tb-replay" type="button">Replay</button><span class="visually-hidden" id="tb-sr" role="status"></span></div>
+        <div class="mo-bar tb-ctl"><span class="mo-hint">Run a 10:35 session and watch the floor vote.</span><button class="mo-btn" id="tb-run" type="button">Run the session</button><button class="mo-btn ghost mo-replay" id="tb-replay" type="button">Replay</button><span class="visually-hidden" id="tb-sr" role="status"></span></div>
       </div>
     </section>
 
@@ -439,12 +439,12 @@ main.wrap > header .reveal { opacity: 1; }
 
     <section class="wrong" data-note="6">
       <div class="section-head reveal"><span>What went wrong</span><span class="right">The backtests said no</span></div>
-      <p class="prose reveal">I built this bot to trade. Then I ran the walk-forward backtests, no lookahead, spread costs deducted, and they didn't make the case for going live. So it hasn't gone live. That's not the project failing. It's the same rule that vetoes an impulsive trade, applied to an impulsive launch.</p>
+      <p class="prose reveal">I built this bot to trade. Then I ran the walk-forward backtests, no lookahead, spread costs deducted, and they didn't make the case for going live. So it hasn't gone live. The rule that vetoes an impulsive trade also vetoed an impulsive launch.</p>
       <p class="pull reveal">The bot agrees with <span>its own data.</span></p>
     </section>
 
     <section data-note="7">
-      <div class="section-head reveal"><span>A look inside</span><span class="right"></span></div>
+      <div class="section-head reveal"><span>Session ledger</span><span class="right"></span></div>
       <div class="exhibit-fig reveal">
         <figure>
           <picture>
@@ -475,7 +475,7 @@ main.wrap > header .reveal { opacity: 1; }
     <aside class="rail" aria-label="Margin notes">
       <div class="rail-inner">
         <div class="rail-head"><span>On this page</span><span></span></div>
-        <div class="rail-line" data-notes="The problem|The trading day|The floor|Hard rails|Engineering|What went wrong|A look inside|Stack" data-debit="6">
+        <div class="rail-line" data-notes="The problem|The trading day|The floor|Hard rails|Engineering|What went wrong|Session ledger|Stack" data-debit="6">
           <div class="rail-track" aria-hidden="true"><i class="rail-fill"></i></div>
           <p class="rail-cur"><b>01</b>The problem</p>
         </div>
@@ -484,7 +484,7 @@ main.wrap > header .reveal { opacity: 1; }
           <div class="rp" data-n="2"><span class="rp-num">10:35</span><span class="rp-lab">the one decision window in the trading day</span></div>
           <div class="rp" data-n="3"><span class="rp-num">4</span><span class="rp-lab">agents. One absolute veto, no appeal</span></div>
           <div class="rp" data-n="4"><span class="rp-num">GBP 750</span><span class="rp-lab">hard notional cap, in code, not in a prompt</span></div>
-          <div class="rp" data-n="5"><span class="rp-num">7,000+</span><span class="rp-lab">lines of Python</span></div>
+          <div class="rp" data-n="5"><span class="rp-num">7,000+</span><span class="rp-lab">lines of code</span></div>
           <div class="rp debit" data-n="6"><span class="rp-num">0</span><span class="rp-lab">days live. The backtests said no</span></div>
           <div class="rp" data-n="7"><span class="rp-num">115+</span><span class="rp-lab">sessions run, paper by design</span></div>
           <div class="rp" data-n="8"><span class="rp-num">0</span><span class="rp-lab">trades placed</span></div>
