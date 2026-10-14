@@ -77,9 +77,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   font-family: var(--mono); font-size: var(--ms-3); letter-spacing: var(--tr-2); text-transform: uppercase;
   color: var(--paper); background: var(--ink); border: 1px solid var(--credit);
   padding: 0.7rem 1.1rem; text-decoration: none;
-  transform: translateY(calc(-100% - 1.5rem)); transition: transform var(--dur-micro) ease;
+  /* parked above the viewport AND invisible: iOS 26 Safari paints content behind its see-through status bar, so a parked link showed its green border there (14/10/2026) */
+  transform: translateY(calc(-100% - 1.5rem)); opacity: 0; pointer-events: none;
+  transition: transform var(--dur-micro) ease, opacity var(--dur-micro) ease;
 }
-.skip-link:focus { transform: translateY(0); }
+.skip-link:focus { transform: translateY(0); opacity: 1; pointer-events: auto; }
 button.term-hint {
   background: none; border: none; font: inherit; color: inherit;
   letter-spacing: inherit; text-transform: inherit;
