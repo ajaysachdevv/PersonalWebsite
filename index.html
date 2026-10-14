@@ -634,7 +634,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   <div class="foot-links reveal">
     <a href="projects/" data-track="projects-footer">Projects</a>
     <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="mailto:ajay@ajaysachdev.com?subject=Re%3A%20the%20ledger">Email</a>
+    <a href="mailto:ajay@ajaysachdev.com?subject=Hello">Email</a>
   </div>
   <form class="foot-prompt reveal" id="foot-prompt" autocomplete="off">
     <label for="foot-cmd">visitor@ajaysachdev.com:~$</label>
@@ -925,7 +925,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* Knowledge base for natural-language questions */
   var FACTS = [
     { keys: ['how are you', 'how you doing', 'how are things', 'how is it going', 'hows it going', 'whats up', 'good morning', 'good evening', 'thank you', 'thanks'], answer: 'all good here, thanks for asking. ask me about a project, or type help.', cmd: null },
-    { keys: ['lines', 'code', 'size', 'big', 'much code', 'how many lines', 'total lines'], answer: '160,000+ lines across the five public projects. OpsPilot: 95,000+. Uni-Nation: 30,000+. WhatsApp Smart: ~16,000. SCS Cockpit: 11,584. Trading Bot: 7,000+.', cmd: 'stats' },
+    { keys: ['lines', 'code', 'size', 'big', 'much code', 'how many lines', 'total lines'], answer: '160,000+ lines across the five case studies. OpsPilot: 95,000+. Uni-Nation: 30,000+. WhatsApp Smart: ~16,000. SCS Cockpit: 11,584. Trading Bot: 7,000+.', cmd: 'stats' },
     { keys: ['opspilot', 'ops pilot', 'executive assistant', 'teams bot', 'sharepoint'], answer: 'OpsPilot: an AI executive assistant in Microsoft Teams. 95,000+ lines, 43 features, 25 orchestrator tools, 6,124+ docs indexed. 100% accuracy on a 50-query retrieval suite. Runs in production 24/7.', cmd: 'open opspilot' },
     { keys: ['trading', 'bot', 'ftse', 'veto', 'agents', 'risk'], answer: 'Trading Bot: 4 AI agents (orchestrator, context lead, analyst, risk auditor) trade the FTSE 100 on paper. 115+ sessions, zero impulsive trades let through, GBP 750 hard cap. Paper trading by design.', cmd: 'open trading-bot' },
     { keys: ['uni-nation', 'uni nation', 'textile', 'fabric', 'family', 'inventory', 'hindi', 'india', 'mumbai', 'business'], answer: 'Uni-Nation Digital: website, inventory system and analytics for the family textile business (est. 1988). 30,000+ lines, ~2,000 products, 650+ customers, ~$2m of sales data. Voice stock entry in Hindi.', cmd: 'open uni-nation' },
@@ -988,7 +988,7 @@ document.addEventListener('DOMContentLoaded', function () {
         'Tab completes commands and project names. Ask a question in plain English.<br>help &lt;command&gt; explains one. up/down arrows recall history.');
     },
     basis: function () {
-      tprint('<b>How this site is built</b><br>One hand-written HTML file per page. No framework, no build step, no npm.<br>Type: Instrument Serif, Inter, JetBrains Mono. Subset and self-hosted.<br>Motion: GSAP + ScrollTrigger + Lenis, self-hosted and deferred.<br>Analytics: GoatCounter. No cookies, nothing personal collected.<br>Figures: verified against production, or honestly marked approximate.<br>Also on file: <b>humans.txt</b>, <b>llms.txt</b>, and a 404 that balances.');
+      tprint('<b>How this site is built</b><br>One hand-written HTML file per page. No framework, no build step, no npm.<br>Type: Instrument Serif, Inter, JetBrains Mono. Subset and self-hosted.<br>Motion: GSAP + ScrollTrigger + Lenis, self-hosted and deferred.<br>Analytics: GoatCounter. No cookies, nothing personal collected.<br>Also on file: <b>humans.txt</b>, <b>llms.txt</b>, and a 404 that balances.');
     },
     log: function () {
       tprint('<b>Audit trail</b><br>2015-18    BSc, Mumbai<br>2021       joins a B2B tech scale-up as the intern<br>2025       OpsPilot answers its first message in production<br>12/06/26   the Ledger: full redesign begins<br>22/07/26   v2 ships as a single clean commit<br>03/08/26   craft pass: the books learn to move<br>09/10/26   v4: CGMA, a margin on every page, five moments you can play<br>12/10/26   restructure: the story stays here, the projects get their own page');
@@ -996,7 +996,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ls: function (arg) {
       if (arg && arg.indexOf('project') !== 0) { tprint('ls: cannot access \'' + esc(arg) + '\': only projects/ here'); return; }
       var out = Object.keys(PROJECTS).map(function (k) { return PROJECTS[k].line; }).join('<br>');
-      return out + '<br><b>5 directories.</b> five more built at work: type projects for all ten.';
+      return out + '<br><b>5 directories.</b> type projects for all ten.';
     },
     cat: function (arg) {
       if (!arg) { tprint('cat: missing file. try: cat about.txt or cat opspilot/README.md'); return; }
@@ -1033,7 +1033,7 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     projects: function () {
       track('terminal-projects');
-      tprint('opening projects: five public, five built at work...');
+      tprint('opening projects...');
       setTimeout(function () { location.href = 'projects/'; }, 450);
     },
     contact: function () { tprint('email      ajay@ajaysachdev.com<br>linkedin   linkedin.com/in/ajayy-sachdev<br><br>fastest route: email. response time: usually same day.'); },
@@ -1104,7 +1104,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return '<b>' + esc(arg) + '</b><br>' + esc(PROJECTS[arg].stats).replace(/ \| /g, '<br>');
       }
       var out = '<b>Verified figures</b> (all measured against production)';
-      out += '<br><br>160,000+ lines across five public entries';
+      out += '<br><br>160,000+ lines across the five case studies';
       Object.keys(PROJECTS).forEach(function (k) {
         out += '<br><br><b>' + esc(k) + '</b> (' + PROJECTS[k].status + ')<br>' + esc(PROJECTS[k].stats).replace(/ \| /g, '<br>');
       });
@@ -1156,7 +1156,7 @@ document.addEventListener('DOMContentLoaded', function () {
         '<br>all figures verified. approximate where marked.');
     },
     wc: function (arg) {
-      if (!arg) { tprint('160,000+ lines across five public projects.'); return; }
+      if (!arg) { tprint('160,000+ lines across the five case studies.'); return; }
       var p = PROJECTS[arg] || PROJECTS[PROJECT_ALIASES[arg]];
       if (p) { tprint(p.stats.split(' | ')[0]); return; }
       tprint('wc: ' + esc(arg) + ': no such project. try: wc opspilot');
@@ -1233,7 +1233,7 @@ document.addEventListener('DOMContentLoaded', function () {
     'scs-cockpit': 'scs-cockpit', scs: 'scs-cockpit', cockpit: 'scs-cockpit', 'scs-prep': 'scs-cockpit'
   };
   var HELP = {
-    ls: 'lists the five public projects with status and a key figure. try: ls projects',
+    ls: 'lists the five case studies with status and a key figure. try: ls projects',
     schedule: 'shows one project by number. try: project 2',
     open: 'opens a case study page. try: open opspilot (or just type opspilot)',
     projects: 'opens /projects/: all ten projects',
@@ -1411,15 +1411,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!opened) {
       opened = true;
       var boot = [
-        'mounting /projects ............ <span class="ok">[OK]</span> 5 public',
-        'checking project statuses .... <span class="ok">[OK]</span> verified against production',
-        'waking the agent floor ........ <span class="ok">[OK]</span> 4 voices, 1 veto',
+        'mounting /projects ............ <span class="ok">[OK]</span> 10 projects',
+                'waking the agent floor ........ <span class="ok">[OK]</span> 4 voices, 1 veto',
         ''
       ];
       boot.forEach(function (line, i) { setTimeout(function () { tprint(line); }, i * 160); });
       setTimeout(function () {
         tprint('<b>The Ledger, interactive edition.</b>');
-        tprint('Books balanced. Auditor: you.');
         tprint('Type <b>help</b> to see the commands, or <b>ls projects</b> to list the projects.');
       }, boot.length * 160 + 60);
     }

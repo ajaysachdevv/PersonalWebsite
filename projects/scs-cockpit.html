@@ -258,12 +258,10 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 /* Feature notes */
 .notes { list-style: none; margin-top: 2.2rem; }
 .notes li {
-  display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: baseline;
   padding: 1.2rem 0; border-bottom: 1px solid var(--rule);
   font-size: 0.88rem; line-height: 1.6; color: var(--paper-dim);
 }
 .notes li:first-child { border-top: 1px solid var(--rule); }
-.notes .n-ref { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--paper-faint); }
 .notes b { display: block; color: var(--paper); font-weight: 500; margin-bottom: 0.35rem; }
 
 /* Exhibit figure */
@@ -424,7 +422,7 @@ main.wrap > header .reveal { opacity: 1; }
   <div class="body-grid">
     <div class="notes-col">
       <section data-note="1">
-        <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">Three ways to fail</span></div>
+        <div class="section-head reveal"><span>The problem</span><span class="right">Three ways to fail</span></div>
         <p class="prose reveal">The Strategic Case Study is the last CIMA exam: a fictional company you've studied for weeks, a clock, and a run of emails asking what you'd actually do. Knowing the theory isn't the hard part. The guidance names three ways people fail: generic theory that could apply to any company, no real recommendation, and missing the facts the scenario hands you.</p>
         <p class="prose reveal">Most study material tests what you know. I wanted something that tested <b>how I answered</b>, under time, against those three.</p>
         <table class="ledger reveal">
@@ -438,13 +436,13 @@ main.wrap > header .reveal { opacity: 1; }
       </section>
 
       <section data-note="2">
-        <div class="section-head reveal"><span>Note 2: How it works</span><span class="right">Seeds, verbs, a clock</span></div>
+        <div class="section-head reveal"><span>How it works</span><span class="right">Seeds, verbs, a clock</span></div>
         <p class="prose reveal">A drill is composed, not pulled from a bank: a case-specific scenario seed, a competency, a template and an anchor from the study material. It arrives as an email with tasks attached, and a timer changes colour as time runs down. Afterwards the answer is scored on the five dimensions the exam marks: <b>role fit, application, judgement, structure and ethics</b>.</p>
         <p class="prose reveal">Behind it, 54 source PDFs were normalised into 166 study items and 23 frameworks, loaded from three packs and de-duplicated at startup. Spaced repetition decides what comes back tomorrow. One button turns any drill into an examiner prompt I could hand to an outside AI for a second opinion.</p>
       </section>
 
       <section data-note="3">
-        <div class="section-head reveal"><span>Note 3: Exhibit</span><span class="right">Exhibit E / one drill</span></div>
+        <div class="section-head reveal"><span>A look inside</span><span class="right"></span></div>
         <div class="drill reveal" id="drill">
           <div class="dr-head"><span>Drill / Judgement</span><span class="dr-stamp">Sample data</span></div>
           <p class="dr-mail"><b>From: Finance Director, Northmoor Composites plc</b>Our largest customer wants 90-day payment terms instead of 30, in return for a three-year volume commitment. The board meets tomorrow. Recommend whether we accept, and what we'd need in place to protect ourselves.</p>
@@ -468,13 +466,13 @@ main.wrap > header .reveal { opacity: 1; }
       </section>
 
       <section class="wrong" data-note="4">
-        <div class="section-head reveal"><span>Note 4: What went wrong</span><span class="right">The mock I never built</span></div>
+        <div class="section-head reveal"><span>What went wrong</span><span class="right">The mock I never built</span></div>
         <p class="prose reveal">The exam is three hours under one clock, and the feature that would have rehearsed exactly that never got built. Mock exam mode, three linked sections, a three-hour clock and a structured debrief, went to the top of the priority list in April. It was still at the top after the exam. I built short timed drills instead. They worked, but they weren't the whole exam.</p>
         <p class="pull reveal">The highest-value feature on the list <span>stayed on the list.</span></p>
       </section>
 
       <section data-note="5">
-        <div class="section-head reveal"><span>Note 5: Stack</span></div>
+        <div class="section-head reveal"><span>Stack</span></div>
         <div class="stack reveal">
           <div><span class="s-name">Vanilla JavaScript</span><span class="s-role">The whole app. No framework, 0 runtime dependencies</span></div>
           <div><span class="s-name">HTML + CSS</span><span class="s-role">No build step. It opens and it runs</span></div>
@@ -488,10 +486,10 @@ main.wrap > header .reveal { opacity: 1; }
     </div>
     <aside class="rail" aria-label="Margin notes">
       <div class="rail-inner">
-        <div class="rail-head"><span>Ref</span><span>Notes</span></div>
-        <div class="rail-line" data-notes="The problem|How it works|Exhibit|What went wrong|Stack" data-debit="4">
+        <div class="rail-head"><span>On this page</span><span></span></div>
+        <div class="rail-line" data-notes="The problem|How it works|A look inside|What went wrong|Stack" data-debit="4">
           <div class="rail-track" aria-hidden="true"><i class="rail-fill"></i></div>
-          <p class="rail-cur"><b>N.1</b>The problem</p>
+          <p class="rail-cur"><b>01</b>The problem</p>
         </div>
         <div class="rail-panels">
           <div class="rp on" data-n="1"><span class="rp-num">3</span><span class="rp-lab">named ways to fail. Built against all three</span></div>
@@ -543,7 +541,7 @@ main.wrap > header .reveal { opacity: 1; }
   <div class="foot-links reveal">
     <a href="./">All projects</a>
     <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="mailto:ajay@ajaysachdev.com?subject=Re%3A%20the%20ledger">Email</a>
+    <a href="mailto:ajay@ajaysachdev.com?subject=Hello">Email</a>
   </div>
   <div class="foot-sign">
     <span>Ajay Sachdev, 2026</span>
@@ -599,7 +597,7 @@ main.wrap > header .reveal { opacity: 1; }
     shownNote = n;
     if (railCur) {
       var b = document.createElement('b');
-      b.textContent = 'N.' + n;
+      b.textContent = (n < 10 ? '0' : '') + n;
       railCur.replaceChildren(b, document.createTextNode(railLabels[n - 1]));
       railCur.classList.toggle('debit', n === railDebit);
     }

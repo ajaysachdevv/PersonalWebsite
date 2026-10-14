@@ -182,12 +182,10 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 /* Feature notes */
 .notes { list-style: none; margin-top: 2.2rem; }
 .notes li {
-  display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: baseline;
   padding: 1.2rem 0; border-bottom: 1px solid var(--rule);
   font-size: 0.88rem; line-height: 1.6; color: var(--paper-dim);
 }
 .notes li:first-child { border-top: 1px solid var(--rule); }
-.notes .n-ref { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--paper-faint); }
 .notes b { display: block; color: var(--paper); font-weight: 500; margin-bottom: 0.35rem; }
 
 /* Rails table */
@@ -367,13 +365,13 @@ main.wrap > header .reveal { opacity: 1; }
     <div class="notes-col">
 
     <section data-note="1">
-      <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">The operator was the risk</span></div>
+      <div class="section-head reveal"><span>The problem</span><span class="right">The operator was the risk</span></div>
       <p class="prose reveal">I studied financial markets at Jai Hind College and hold a Chartered Wealth Manager certification. I understood markets. But understanding them and trading them profitably turned out to be two different things. I'd watch a stock I'd researched all week drop sharply on a single announcement and sell within five minutes, then watch it recover by close. I'd spot a FTSE dip and buy in, convinced it was the bottom, only for it to keep sliding. After a red day I'd jump into something I hadn't even properly analysed, just to make the loss back.</p>
       <p class="prose reveal"><b>The analysis was usually fine. It was the real-time decisions that killed it.</b> I'd override my own rules the moment I felt any pressure. So the question became: could I build something that kept the analysis but removed me from the execution?</p>
     </section>
 
     <section data-note="2">
-      <div class="section-head reveal"><span>Note 2: The trading day</span><span class="right">No human input</span></div>
+      <div class="section-head reveal"><span>The trading day</span><span class="right">No human input</span></div>
       <p class="prose reveal">Every weekday at 10:35 GMT, thirty minutes after London open once the opening noise has settled, the system runs. APScheduler fires five jobs through the day. Nothing is held overnight.</p>
       <ol class="sched reveal">
         <li><span class="t">10:30</span><span>Start 5-minute candle collection via Lightstreamer</span></li>
@@ -385,7 +383,7 @@ main.wrap > header .reveal { opacity: 1; }
     </section>
 
     <section data-note="3">
-      <div class="section-head reveal"><span>Note 3: The floor</span><span class="right">Four agents, one veto</span></div>
+      <div class="section-head reveal"><span>The floor</span><span class="right">Four agents, one veto</span></div>
       <p class="prose reveal">First thing each session: kill-switch and market regime check. If either fails, nothing else runs. News gets scanned and classified by tier before the technical check: EMA, VWAP, RSI. Only setups that pass everything reach the quality gate, where Claude Sonnet rates them against a strict JSON schema. The last word belongs to Claude Opus as risk auditor. <b>If it vetoes, the trade dies.</b> The rails live in code, not prompts: the agents can assess and recommend, they cannot override the config.</p>
       <div class="agents reveal">
         <div class="agent"><span class="who">Orchestrator</span><span class="verdict ok">GATE</span><br>Kill-switch and regime check. If the equity floor is breached or the FTSE fails its regime gate, the session never starts.</div>
@@ -412,7 +410,7 @@ main.wrap > header .reveal { opacity: 1; }
     </section>
 
     <section data-note="4">
-      <div class="section-head reveal"><span>Note 4: Hard rails</span><span class="right">Config, not prompts</span></div>
+      <div class="section-head reveal"><span>Hard rails</span><span class="right">Config, not prompts</span></div>
       <table class="ledger reveal">
         <thead><tr><th>Rail</th><th>Rule</th><th>Value</th></tr></thead>
         <tbody>
@@ -428,23 +426,23 @@ main.wrap > header .reveal { opacity: 1; }
     </section>
 
     <section data-note="5">
-      <div class="section-head reveal"><span>Note 5: Engineering</span><span class="right">The parts that mattered</span></div>
+      <div class="section-head reveal"><span>Engineering</span><span class="right">The parts that mattered</span></div>
       <ul class="notes">
-        <li class="reveal"><span class="n-ref">E.1</span><span><b>Structured outputs, no fallback holes</b>The quality gate used to run on a model whose JSON sometimes failed to parse, and the fallback defaulted the score to 3: a safety hole that could let marginal trades through. Switched to Claude Sonnet with a guaranteed schema. No parse failures, no fallback needed. Prompt caching across parallel scans cut token spend by about 90%.</span></li>
-        <li class="reveal"><span class="n-ref">E.2</span><span><b>News before numbers</b>Each ticker's RNS gets checked before the technical scan. One API call finds same-day announcements and classifies them by tier. This replaced a screen scraper that kept breaking; the scraper survives only as the fallback.</span></li>
-        <li class="reveal"><span class="n-ref">E.3</span><span><b>Walk-forward backtesting</b>60-day default, up to two years. Evaluates at 10:35 on each historical day with no lookahead bias and a 0.2% round-trip spread cost deducted.</span></li>
-        <li class="reveal"><span class="n-ref">E.4</span><span><b>Atomic state, full audit trail</b>A file-locked state manager prevents race conditions between the order manager and the kill switch. Every decision writes to a JSONL audit trail: timestamp, session, stage, ticker, outcome. The whole system is one long paper trail, which is how I like my systems.</span></li>
+        <li class="reveal"><span><b>Structured outputs, no fallback holes</b>The quality gate used to run on a model whose JSON sometimes failed to parse, and the fallback defaulted the score to 3: a safety hole that could let marginal trades through. Switched to Claude Sonnet with a guaranteed schema. No parse failures, no fallback needed. Prompt caching across parallel scans cut token spend by about 90%.</span></li>
+        <li class="reveal"><span><b>News before numbers</b>Each ticker's RNS gets checked before the technical scan. One API call finds same-day announcements and classifies them by tier. This replaced a screen scraper that kept breaking; the scraper survives only as the fallback.</span></li>
+        <li class="reveal"><span><b>Walk-forward backtesting</b>60-day default, up to two years. Evaluates at 10:35 on each historical day with no lookahead bias and a 0.2% round-trip spread cost deducted.</span></li>
+        <li class="reveal"><span><b>Atomic state, full audit trail</b>A file-locked state manager prevents race conditions between the order manager and the kill switch. Every decision writes to a JSONL audit trail: timestamp, session, stage, ticker, outcome. The whole system is one long paper trail, which is how I like my systems.</span></li>
       </ul>
     </section>
 
     <section class="wrong" data-note="6">
-      <div class="section-head reveal"><span>Note 6: What went wrong</span><span class="right">The backtests said no</span></div>
+      <div class="section-head reveal"><span>What went wrong</span><span class="right">The backtests said no</span></div>
       <p class="prose reveal">I built this bot to trade. Then I ran the walk-forward backtests, no lookahead, spread costs deducted, and they didn't make the case for going live. So it hasn't gone live. That's not the project failing. It's the same rule that vetoes an impulsive trade, applied to an impulsive launch.</p>
       <p class="pull reveal">The bot agrees with <span>its own data.</span></p>
     </section>
 
     <section data-note="7">
-      <div class="section-head reveal"><span>Note 7: Exhibit</span><span class="right">Exhibit B</span></div>
+      <div class="section-head reveal"><span>A look inside</span><span class="right"></span></div>
       <div class="exhibit-fig reveal">
         <figure>
           <picture>
@@ -457,7 +455,7 @@ main.wrap > header .reveal { opacity: 1; }
     </section>
 
     <section data-note="8">
-      <div class="section-head reveal"><span>Note 8: Stack</span></div>
+      <div class="section-head reveal"><span>Stack</span></div>
       <div class="stack reveal">
         <div><span class="s-name">Python 3.12</span><span class="s-role">7,000+ lines across 33 files</span></div>
         <div><span class="s-name">Claude Opus</span><span class="s-role">Risk auditor, the final veto</span></div>
@@ -474,10 +472,10 @@ main.wrap > header .reveal { opacity: 1; }
     </div>
     <aside class="rail" aria-label="Margin notes">
       <div class="rail-inner">
-        <div class="rail-head"><span>Ref</span><span>Notes</span></div>
-        <div class="rail-line" data-notes="The problem|The trading day|The floor|Hard rails|Engineering|What went wrong|Exhibit|Stack" data-debit="6">
+        <div class="rail-head"><span>On this page</span><span></span></div>
+        <div class="rail-line" data-notes="The problem|The trading day|The floor|Hard rails|Engineering|What went wrong|A look inside|Stack" data-debit="6">
           <div class="rail-track" aria-hidden="true"><i class="rail-fill"></i></div>
-          <p class="rail-cur"><b>N.1</b>The problem</p>
+          <p class="rail-cur"><b>01</b>The problem</p>
         </div>
         <div class="rail-panels">
           <div class="rp on" data-n="1"><span class="rp-num">0</span><span class="rp-lab">impulsive trades let through</span></div>
@@ -532,7 +530,7 @@ main.wrap > header .reveal { opacity: 1; }
   <div class="foot-links reveal">
     <a href="./">All projects</a>
     <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="mailto:ajay@ajaysachdev.com?subject=Re%3A%20the%20ledger">Email</a>
+    <a href="mailto:ajay@ajaysachdev.com?subject=Hello">Email</a>
   </div>
   <div class="foot-sign">
     <span>Ajay Sachdev, 2026</span>
@@ -588,7 +586,7 @@ main.wrap > header .reveal { opacity: 1; }
     shownNote = n;
     if (railCur) {
       var b = document.createElement('b');
-      b.textContent = 'N.' + n;
+      b.textContent = (n < 10 ? '0' : '') + n;
       railCur.replaceChildren(b, document.createTextNode(railLabels[n - 1]));
       railCur.classList.toggle('debit', n === railDebit);
     }

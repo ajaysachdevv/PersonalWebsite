@@ -241,12 +241,10 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 /* Feature notes */
 .notes { list-style: none; margin-top: 2.2rem; }
 .notes li {
-  display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: baseline;
   padding: 1.2rem 0; border-bottom: 1px solid var(--rule);
   font-size: 0.88rem; line-height: 1.6; color: var(--paper-dim);
 }
 .notes li:first-child { border-top: 1px solid var(--rule); }
-.notes .n-ref { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--paper-faint); }
 .notes b { display: block; color: var(--paper); font-weight: 500; margin-bottom: 0.35rem; }
 
 /* Exhibit figure */
@@ -421,7 +419,7 @@ main.wrap > header .reveal { opacity: 1; }
     <div class="notes-col">
 
     <section data-note="1">
-      <div class="section-head reveal"><span>Note 1: The problem</span><span class="right">Where the hours went</span></div>
+      <div class="section-head reveal"><span>The problem</span><span class="right">Where the hours went</span></div>
       <p class="prose reveal">I run finance and operations at a tech company. My day is split across Teams, SharePoint, Xero, HubSpot and email. Someone asks a question in one system, the answer lives in another, and the context for why it matters is in a third. I was spending hours just pulling data, missing follow-ups because nobody tracked who said what, and scrambling for context five minutes before meetings.</p>
       <p class="prose reveal">"What does the contract say about payment terms?" That's a SharePoint search. "Who hasn't paid us?" That's Xero. "What deals is the sales team working on?" HubSpot. "Tell me about this customer." That needs all three. The information always existed. It was just scattered across 6,124+ files, multiple systems, and years of accumulated documents.</p>
       <div class="ba reveal">
@@ -447,7 +445,7 @@ main.wrap > header .reveal { opacity: 1; }
     </section>
 
     <section data-note="2">
-      <div class="section-head reveal"><span>Note 2: How it works</span><span class="right">Nine stages, one approval</span></div>
+      <div class="section-head reveal"><span>How it works</span><span class="right">Nine stages, one approval</span></div>
       <p class="prose reveal">Someone asks a question in Teams. The pipeline triages it, figures out whether it needs documents, live accounting data, CRM data, or all three at once, and returns an answer as an Adaptive Card with approve, edit and reject buttons. Live data questions hit Xero or HubSpot directly, zero LLM cost. Document questions run a hybrid search. Cross-source questions go through a single orchestrator call with <b>25 orchestrator tools</b>. A PII blocker sits in front of everything that leaves.</p>
       <ol class="pipe reveal">
         <li><span><b>Teams webhook</b> receives the message inside the Bot Framework turn</span></li>
@@ -483,7 +481,7 @@ main.wrap > header .reveal { opacity: 1; }
     </section>
 
     <section data-note="3">
-      <div class="section-head reveal"><span>Note 3: Exhibit</span><span class="right">Exhibit A</span></div>
+      <div class="section-head reveal"><span>A look inside</span><span class="right"></span></div>
       <div class="exhibit-fig reveal">
         <figure>
           <picture>
@@ -496,25 +494,25 @@ main.wrap > header .reveal { opacity: 1; }
     </section>
 
     <section data-note="4">
-      <div class="section-head reveal"><span>Note 4: What it does</span><span class="right">Beyond answering</span></div>
+      <div class="section-head reveal"><span>What it does</span><span class="right">Beyond answering</span></div>
       <ul class="notes">
-        <li class="reveal"><span class="n-ref">F.1</span><span><b>Hybrid search</b>BM25 for keywords, FAISS for meaning, reciprocal rank fusion to merge them, then an AI reranker picks the top five. HyDE query expansion generates domain terms so vague questions still land on the right document.</span></li>
-        <li class="reveal"><span class="n-ref">F.2</span><span><b>Live data, no hallucination surface</b>"Who hasn't paid us?" reads Xero receivables directly. "What deals are open?" queries the HubSpot pipeline. 17 direct API actions where the LLM never touches the numbers: formatted figures, straight back. Xero access is read-only by design.</span></li>
-        <li class="reveal"><span class="n-ref">F.3</span><span><b>Autonomous monitoring</b>Morning briefing at 08:00, evening wrap at 17:30, deal-stage checks every five minutes in business hours. An invoice scanner reads PDFs from my inbox, extracts line items, matches them against Xero and flags duplicates and price drift. A commitment tracker detects promises in Teams and email and alerts when they slip.</span></li>
-        <li class="reveal"><span class="n-ref">F.4</span><span><b>Dashboard</b>A React dashboard on precomputed state: P&amp;L, cash position, pipeline, receivables, engagement. FastAPI serves it from SQLite so the page never waits on a third-party API.</span></li>
-        <li class="reveal"><span class="n-ref">F.5</span><span><b>Personal growth journal</b>Every evening it writes a first-person diary entry from the day's activity, then a behavioural layer flags blind spots: unreplied messages, tone drift, neglected relationships. Weekly digest on Fridays.</span></li>
-        <li class="reveal"><span class="n-ref">F.6</span><span><b>Conversation memory and approval</b>Per-user context with a two-hour window and ten-turn memory, so "what about their payment terms?" knows who "they" are. Every answer returns as options; nothing goes out unapproved. It learns which answer style I tend to pick.</span></li>
+        <li class="reveal"><span><b>Hybrid search</b>BM25 for keywords, FAISS for meaning, reciprocal rank fusion to merge them, then an AI reranker picks the top five. HyDE query expansion generates domain terms so vague questions still land on the right document.</span></li>
+        <li class="reveal"><span><b>Live data, no hallucination surface</b>"Who hasn't paid us?" reads Xero receivables directly. "What deals are open?" queries the HubSpot pipeline. 17 direct API actions where the LLM never touches the numbers: formatted figures, straight back. Xero access is read-only by design.</span></li>
+        <li class="reveal"><span><b>Autonomous monitoring</b>Morning briefing at 08:00, evening wrap at 17:30, deal-stage checks every five minutes in business hours. An invoice scanner reads PDFs from my inbox, extracts line items, matches them against Xero and flags duplicates and price drift. A commitment tracker detects promises in Teams and email and alerts when they slip.</span></li>
+        <li class="reveal"><span><b>Dashboard</b>A React dashboard on precomputed state: P&amp;L, cash position, pipeline, receivables, engagement. FastAPI serves it from SQLite so the page never waits on a third-party API.</span></li>
+        <li class="reveal"><span><b>Personal growth journal</b>Every evening it writes a first-person diary entry from the day's activity, then a behavioural layer flags blind spots: unreplied messages, tone drift, neglected relationships. Weekly digest on Fridays.</span></li>
+        <li class="reveal"><span><b>Conversation memory and approval</b>Per-user context with a two-hour window and ten-turn memory, so "what about their payment terms?" knows who "they" are. Every answer returns as options; nothing goes out unapproved. It learns which answer style I tend to pick.</span></li>
       </ul>
     </section>
 
     <section class="wrong" data-note="5">
-      <div class="section-head reveal"><span>Note 5: What went wrong</span><span class="right">The 1am journal</span></div>
+      <div class="section-head reveal"><span>What went wrong</span><span class="right">The 1am journal</span></div>
       <p class="prose reveal">OpsPilot writes me a daily journal from my own mail, calendar and chats. One week it told me I'd been online at 1am, then 2am. I hadn't. The sent-mail query used Graph's <b>/messages</b> endpoint with a date filter, and that endpoint returns mail from every folder, not just Sent Items. Automated notifications landing overnight were being counted as mail I'd sent. The fix was to ask the Sent Items folder directly, and the rule now is never to assume an endpoint filters by folder.</p>
       <p class="pull reveal">A wrong number that looks wrong gets caught. One that describes <span>a believable bad week</span> doesn't.</p>
     </section>
 
     <section data-note="6">
-      <div class="section-head reveal"><span>Note 6: Stack</span></div>
+      <div class="section-head reveal"><span>Stack</span></div>
       <div class="stack reveal">
         <div><span class="s-name">Python 3.12</span><span class="s-role">Most of 95,000+ lines, one codebase</span></div>
         <div><span class="s-name">Gemini 2.5 Flash / Pro</span><span class="s-role">Primary models: triage, drafting, reasoning</span></div>
@@ -534,10 +532,10 @@ main.wrap > header .reveal { opacity: 1; }
     </div>
     <aside class="rail" aria-label="Margin notes">
       <div class="rail-inner">
-        <div class="rail-head"><span>Ref</span><span>Notes</span></div>
-        <div class="rail-line" data-notes="The problem|How it works|Exhibit|What it does|What went wrong|Stack" data-debit="5">
+        <div class="rail-head"><span>On this page</span><span></span></div>
+        <div class="rail-line" data-notes="The problem|How it works|A look inside|What it does|What went wrong|Stack" data-debit="5">
           <div class="rail-track" aria-hidden="true"><i class="rail-fill"></i></div>
-          <p class="rail-cur"><b>N.1</b>The problem</p>
+          <p class="rail-cur"><b>01</b>The problem</p>
         </div>
         <div class="rail-panels">
           <div class="rp on" data-n="1"><span class="rp-num">6,124+</span><span class="rp-lab">documents nobody could find. Now they answer back</span></div>
@@ -590,7 +588,7 @@ main.wrap > header .reveal { opacity: 1; }
   <div class="foot-links reveal">
     <a href="./">All projects</a>
     <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="mailto:ajay@ajaysachdev.com?subject=Re%3A%20the%20ledger">Email</a>
+    <a href="mailto:ajay@ajaysachdev.com?subject=Hello">Email</a>
   </div>
   <div class="foot-sign">
     <span>Ajay Sachdev, 2026</span>
@@ -646,7 +644,7 @@ main.wrap > header .reveal { opacity: 1; }
     shownNote = n;
     if (railCur) {
       var b = document.createElement('b');
-      b.textContent = 'N.' + n;
+      b.textContent = (n < 10 ? '0' : '') + n;
       railCur.replaceChildren(b, document.createTextNode(railLabels[n - 1]));
       railCur.classList.toggle('debit', n === railDebit);
     }

@@ -23,7 +23,6 @@
 - Board-level financial models and reporting
 - 50+ Power BI dashboards built
 - 40+ hours/month saved through automation
-- WiFi costs reduced 50%, electricity 74%, software 30%+
 - Core SaaS platform cost cut 65% through a systematic audit
 - Redesigned contracts from 26 pages to 3; six-month stalls became one-week signings
 
@@ -32,6 +31,6 @@ Financial Modelling, Management Accounts, VAT & Payroll, Budgeting & Forecasting
 
 ## Contact
 - Web: https://ajaysachdev.com
-- Projects: https://ajaysachdev.com/projects/ (all projects: five public projects with status and a What went wrong note wherever something did, plus five tools built at work, shown with dummy data)
+- Projects: https://ajaysachdev.com/projects/ (all ten projects: five case studies, plus five tools built at work, shown with dummy data)
 - LinkedIn: https://www.linkedin.com/in/ajayy-sachdev/
 - Email: ajay@ajaysachdev.com
