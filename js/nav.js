@@ -1,7 +1,8 @@
 /* Site nav, option C (motion pass, 12/10/2026).
    Full ledger bar at the top of the page; once scrolled past --nav-squeeze-at it squeezes
    into a black notch holding the monogram. Fine pointers open the notch on hover, touch
-   opens it on tap, keyboard focus opens it, Escape closes it. Never touches scrolling or
+   opens it on tap, keyboard focus opens it, Escape closes it. Scrolling up opens it too (the
+   same open notch, not the full bar) and scrolling down closes it again (Ajay, 14/10/2026). Never touches scrolling or
    anchor clicks, and never assumes Lenis. Loaded with defer, so it runs before the
    home page's DOMContentLoaded handler binds its anchor links. */
 (() => {
@@ -49,6 +50,24 @@
     pinned = false;
     setOpen(false);
   };
+  /* scroll direction: a short run one way (DIR_PX) flips it, so jitter and inertia tails do nothing */
+  const DIR_PX = 12;
+  let lastY = window.scrollY;
+  let run = 0;
+  const held = () =>
+    pinned ||
+    notch.contains(document.activeElement) ||
+    (fine && notch.matches(":hover"));
+  const direction = () => {
+    const y = window.scrollY;
+    const d = y - lastY;
+    lastY = y;
+    if (!squeezed || !d) return;
+    run = Math.sign(d) === Math.sign(run) ? run + d : d;
+    if (run <= -DIR_PX && !notch.classList.contains("is-open")) setOpen(true);
+    else if (run >= DIR_PX && notch.classList.contains("is-open") && !held())
+      setOpen(false);
+  };
 
   const update = () => {
     const s = window.scrollY > at;
@@ -66,6 +85,7 @@
       requestAnimationFrame(() => {
         ticking = false;
         update();
+        direction();
       });
     },
     { passive: true },
