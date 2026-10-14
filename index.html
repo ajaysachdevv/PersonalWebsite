@@ -47,6 +47,7 @@
 <script src="vendor/ScrollTrigger.min.js" defer></script>
 <script src="vendor/lenis.min.js" defer></script>
 <script src="js/nav.js" defer></script>
+<script src="js/terminal-answers.js" defer></script>
 <style>
 /* ================= Tokens: The Ledger, filmed ================= */
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -910,7 +911,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var FILES = {
     '/': { type: 'd', children: ['about.txt', 'projects/', 'skills.txt', 'education.txt', 'timeline.txt'] },
     'about.txt': { type: 'f', content: 'Ajay Sachdev. Finance and operations manager at a UK tech company.\nRuns the numbers by day. Builds the systems the numbers run on by night.\nACMA CGMA, MSc Finance. Grew up in the family textile business in India.' },
-    'skills.txt': { type: 'f', content: 'Finance: financial modelling, management accounts, VAT, payroll, budgeting, forecasting, cash management, multi-entity consolidation\nData: Power BI (50+ dashboards), SQL, GA4, Firebase, Python data analysis\nSystems: Xero, HubSpot, Factorial\nAI/Eng: Python, TypeScript, Claude, Gemini, FAISS, BM25, RAG, voice interfaces\nCommercial: contract drafting, NDAs, SoWs, cost negotiation' },
+    'skills.txt': { type: 'f', content: 'Finance: financial modelling, budgeting, forecasting, cash management, reporting\nData: Power BI (50+ dashboards), SQL, GA4, Firebase, Python data analysis\nSystems: Xero, HubSpot, Factorial\nAI/Eng: Python, TypeScript, Claude, Gemini, FAISS, BM25, RAG, voice interfaces\nCommercial: contract drafting, NDAs, SoWs, cost negotiation' },
     'education.txt': { type: 'f', content: 'ACMA CGMA (CIMA), qualified 2026\nMSc Finance, Loughborough University, 2020-21 (2:1)\nBachelor in Financial Markets, Jai Hind College, Mumbai, 2015-18\nDiploma in Weaving Technology, Sasmira, Mumbai, 2019-20' },
     'timeline.txt': { type: 'f', content: '2015-18    BSc Financial Markets, Mumbai\n2018-20    Accounting and Sales Manager, family textile business\n2019       Chartered Wealth Manager (AAFM)\n2019       M.Com (first year), University of Mumbai\n2019-20    Diploma in Weaving Technology, Sasmira\n2020       Moved to the UK\n2020-21    MSc Finance, Loughborough University\n2021 Oct   Intern at a B2B tech scale-up\n2022 Jan   Finance Associate\n2025 Jan   Finance & Operations Manager (current)\n2026       ACMA CGMA qualified' },
     'projects/': { type: 'd', children: Object.keys(PROJECTS).map(function (k) { return k + '/'; }) }
@@ -922,46 +923,68 @@ document.addEventListener('DOMContentLoaded', function () {
     FILES[k + '/stats.txt'] = { type: 'f', content: PROJECTS[k].stats.replace(/ \| /g, '\n') };
     FILES[k + '/status.txt'] = { type: 'f', content: PROJECTS[k].status };
   });
-  /* Knowledge base for natural-language questions */
-  var FACTS = [
-    { keys: ['how are you', 'how you doing', 'how are things', 'how is it going', 'hows it going', 'whats up', 'good morning', 'good evening', 'thank you', 'thanks'], answer: 'all good here, thanks for asking. ask me about a project, or type help.', cmd: null },
-    { keys: ['lines', 'code', 'size', 'big', 'much code', 'how many lines', 'total lines'], answer: '160,000+ lines across the five case studies. OpsPilot: 95,000+. Uni-Nation: 30,000+. WhatsApp Smart: ~16,000. SCS Cockpit: 11,584. Trading Bot: 7,000+.', cmd: 'stats' },
-    { keys: ['opspilot', 'ops pilot', 'executive assistant', 'teams bot', 'sharepoint'], answer: 'OpsPilot: an AI executive assistant in Microsoft Teams. 95,000+ lines, 43 features, 25 orchestrator tools, 6,124+ docs indexed. 100% accuracy on a 50-query retrieval suite. Runs in production 24/7.', cmd: 'open opspilot' },
-    { keys: ['trading', 'bot', 'ftse', 'veto', 'agents', 'risk'], answer: 'Trading Bot: 4 AI agents (orchestrator, context lead, analyst, risk auditor) trade the FTSE 100 on paper. 115+ sessions, zero impulsive trades let through, GBP 750 hard cap. Paper trading by design.', cmd: 'open trading-bot' },
-    { keys: ['uni-nation', 'uni nation', 'textile', 'fabric', 'family', 'inventory', 'hindi', 'india', 'mumbai', 'business'], answer: 'Uni-Nation Digital: website, inventory system and analytics for the family textile business (est. 1988). 30,000+ lines, ~2,000 products, 650+ customers, ~$2m of sales data. Voice stock entry in Hindi.', cmd: 'open uni-nation' },
-    { keys: ['whatsapp', 'chrome', 'extension', 'privacy'], answer: 'WhatsApp Smart: a Chrome extension prototype. 11 features (scheduling, AI replies, tone adjustment, group summaries). ~16,000 lines of TypeScript. Privacy-first: messages stay in the browser unless you send one to the AI.', cmd: 'open whatsapp-smart' },
-    { keys: ['scs', 'cockpit', 'cima', 'exam', 'study', 'cgma', 'acma', 'qualification', 'qualified'], answer: 'ACMA CGMA (CIMA), qualified 2026. SCS Cockpit: the study engine built for the Strategic Case Study exam. 11,584 lines, zero dependencies, 166 study items, 23 frameworks, 54 source PDFs normalised. Result: passed.', cmd: 'open scs-cockpit' },
-    { keys: ['build', 'built', 'make', 'create', 'ship', 'what do', 'what did', 'your projects', 'your work', 'what have'], answer: 'Ten projects, including OpsPilot (AI assistant, production), Trading Bot (multi-agent FTSE 100, paper), Uni-Nation (family business digital, repairing), WhatsApp Smart (Chrome extension, prototype) and SCS Cockpit (exam engine, retired). Type: ls projects', cmd: 'ls projects' },
-    { keys: ['wrong', 'fail', 'mistake', 'failure', 'impairment', 'broke', 'problem', 'error'], answer: 'Where something went wrong on a project, it is written down. Type: impairments', cmd: 'impairments' },
-    { keys: ['who', 'about you', 'about ajay', 'ajay', 'yourself', 'background', 'bio'], answer: 'Ajay Sachdev. Finance and operations manager at a UK tech company. Runs the numbers by day, builds the systems the numbers run on by night. ACMA CGMA, MSc Finance. Grew up in the family textile business in India.', cmd: 'cat about' },
-    { keys: ['where', 'location', 'based', 'live', 'city', 'country', 'cambridge', 'uk'], answer: 'Cambridge, UK. Originally from Mumbai, India. Moved to the UK in 2020.', cmd: null },
-    { keys: ['education', 'university', 'degree', 'loughborough', 'college', 'study', 'studied'], answer: 'MSc Finance from Loughborough (2:1, 2020-21). BSc Financial Markets from Jai Hind College, Mumbai (2015-18). ACMA CGMA (CIMA) qualified 2026.', cmd: 'cat education.txt' },
-    { keys: ['skill', 'language', 'python', 'typescript', 'sql', 'power bi', 'tech', 'stack', 'tools', 'languages'], answer: 'Python, TypeScript, SQL. Power BI (50+ dashboards). Xero, HubSpot, Factorial. Claude, Gemini, FAISS, BM25 for AI. Contract drafting, financial modelling, multi-entity consolidation.', cmd: 'cat skills.txt' },
-    { keys: ['contact', 'email', 'reach', 'linkedin', 'talk', 'message'], answer: 'email: ajay@ajaysachdev.com | linkedin: linkedin.com/in/ajayy-sachdev', cmd: null },
-    { keys: ['dashboard', 'power bi', 'data', 'analytics', 'reporting'], answer: '50+ Power BI dashboards on product, marketing and finance data. Reporting automation that saves 40+ hours a month.', cmd: null },
-    { keys: ['day job', 'work', 'role', 'job', 'title', 'position', 'company', 'employer'], answer: 'Finance & Operations Manager at a UK tech company, joined as the intern in 2021. 50+ dashboards, 40+ hrs/month automated, contracts redesigned from 26 pages to 3.', cmd: null },
-    { keys: ['contract', 'nda', 'legal', 'signing'], answer: 'Redesigned the contract format from 26 pages to 3 with hyperlinked terms. Six-month stalls became one-week signings.', cmd: null },
-    { keys: ['cost', 'save', 'saving', 'reduce', 'cut', 'automat'], answer: '65% cut on a core platform cost. 40+ hours per month automated.', cmd: null },
-    { keys: ['timeline', 'career', 'history', 'journey', 'years', 'path', 'experience'], answer: 'Type: timeline (or: cat timeline.txt)', cmd: 'timeline' },
-    { keys: ['guardrail', 'safety', 'ai safety', 'hook', 'leash', 'responsible'], answer: 'Type: guardrails', cmd: 'guardrails' },
-    { keys: ['site', 'website', 'portfolio', 'page', 'how built', 'framework', 'design'], answer: 'Type: basis', cmd: 'basis' },
-    { keys: ['status', 'running', 'live', 'production', 'operational'], answer: 'Type: status', cmd: 'status' }
-  ];
-  function matchFact(text) {
-    /* whole-word phrase hits only; a loose stem match (5+ letters) counts for less.
-       Substring hits made "how much did you save" match small talk and "tell me about the weather" match the bio */
-    var low = ' ' + text.toLowerCase().replace(/[?!.,;:'"]/g, '').replace(/\s+/g, ' ').trim() + ' ';
-    var words = low.trim().split(' ');
-    var best = null, bestScore = 0;
-    FACTS.forEach(function (f) {
-      var score = 0;
-      f.keys.forEach(function (k) {
-        if (low.indexOf(' ' + k + ' ') !== -1) score += k.split(' ').length + 1;
-        else if (k.length >= 5 && k.indexOf(' ') === -1) words.forEach(function (w) { if (w.length >= 5 && (w.indexOf(k) === 0 || k.indexOf(w) === 0)) score += 1.5; });
-      });
-      if (score > bestScore) { bestScore = score; best = f; }
+  /* Plain-English questions: answered ONLY from the pre-written bank in js/terminal-answers.js
+     (nothing is generated). Scorer: slang map, stop words, rarity-weighted words (a word that
+     appears in few intents counts more), strict stems, a bonus for whole known phrases.
+     Tuned against two held-out test sets, 14/10/2026. */
+  var KB_SLANG = { r: 'are', u: 'you', ur: 'your', urself: 'yourself', abt: 'about', pls: 'please', plz: 'please', whos: 'who is', wheres: 'where is', whats: 'what is', hows: 'how is', thx: 'thanks', ty: 'thanks' };
+  var KB_STOP = {};
+  'a an the is are was were do does did i you he his him me my your yourself to of in on at for and or it this that what how who where which why can could would should tell about please so then any got there have has be am with from by into just really very some much many one ones today now right mate'.split(' ').forEach(function (w) { KB_STOP[w] = 1; });
+  function kbClean(s) {
+    return s.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim().split(' ').map(function (w) { return KB_SLANG[w] || w; }).join(' ');
+  }
+  function kbToks(s) { return kbClean(s).split(' ').filter(function (w) { return w && !KB_STOP[w]; }); }
+  var KB_SUF = ['ations', 'ation', 'ions', 'ion', 'ings', 'ing', 'ers', 'er', 'ed', 'es', 's', 'ly'];
+  function kbRoot(w) {
+    for (var i = 0; i < KB_SUF.length; i++) {
+      var f = KB_SUF[i];
+      if (w.length - f.length >= 3 && w.slice(-f.length) === f) return w.slice(0, -f.length);
+    }
+    return w;
+  }
+  /* same word after suffix stripping (fail, failed, failures). No prefix matching: it paired profile with profitable */
+  function kbStem(a, b) {
+    return a === b || kbRoot(a) === kbRoot(b) || a.replace(/s$/, '') === b.replace(/s$/, '');
+  }
+  var KB = null, KB_DF = null;
+  function kbIndex() {
+    if (KB || !window.TERMINAL_KB) return KB;
+    KB = window.TERMINAL_KB.map(function (k) {
+      var pt = {};
+      k.phrases.forEach(function (ph) { kbToks(ph).forEach(function (w) { pt[w] = 1; }); });
+      return { src: k, phr: k.phrases.map(kbClean), ptoks: Object.keys(pt), keys: k.keys.map(kbClean) };
     });
-    return bestScore >= 1.5 ? best : null;
+    KB_DF = {};
+    KB.forEach(function (k) {
+      var seen = {};
+      k.ptoks.concat(k.keys).forEach(function (w) { if (!seen[w]) { seen[w] = 1; KB_DF[w] = (KB_DF[w] || 0) + 1; } });
+    });
+    return KB;
+  }
+  function kbIdf(w) {
+    var d = 0;
+    Object.keys(KB_DF).forEach(function (x) { if (kbStem(x, w)) d = Math.max(d, KB_DF[x]); });
+    return d ? Math.log(1 + KB.length / d) : 0;
+  }
+  function matchFact(text) {
+    if (!kbIndex()) return null;
+    var nq = kbClean(text);
+    if (!nq) return null;
+    for (var i = 0; i < KB.length; i++) if (KB[i].phr.indexOf(nq) !== -1) return KB[i].src;
+    var qt = kbToks(text);
+    if (!qt.length) return null;
+    var best = null, bestScore = 0, padded = ' ' + nq + ' ';
+    KB.forEach(function (k) {
+      var s = 0;
+      qt.forEach(function (w) {
+        var wi = kbIdf(w);
+        if (k.keys.some(function (x) { return kbStem(x, w); })) s += 1.5 * wi;
+        else if (k.ptoks.some(function (x) { return kbStem(x, w); })) s += wi;
+      });
+      k.phr.forEach(function (ph) { if (ph.indexOf(' ') !== -1 && padded.indexOf(' ' + ph + ' ') !== -1) s += 2; });
+      if (s > bestScore) { bestScore = s; best = k.src; }
+    });
+    return bestScore >= 2 ? best : null;
   }
   function tprint(html, cls) {
     var div = document.createElement('div');
@@ -980,9 +1003,9 @@ document.addEventListener('DOMContentLoaded', function () {
         tprint('help: no entry for \'' + esc(arg) + '\'. type help for the full list');
         return;
       }
-      tprint('<b>Projects</b><br>ls projects        list the projects<br>project &lt;n&gt;        read project n (1 to 5)<br>open &lt;project&gt;     open a case study (or just type its name)<br>projects           go to the projects page<br>impairments        what went wrong, written down<br>status             system status board<br>stats              the verified numbers<br><br>' +
-        '<b>The preparer</b><br>cat about          who prepared these statements<br>cgma               the qualification<br>guardrails         how my AI tools are kept on a leash<br>timeline           the career years<br>skills             the skill set<br>education          degrees and qualifications<br>contact            email and linkedin<br><br>' +
-        '<b>The books</b><br>log                the audit trail of this site<br>basis              how this site is built<br>uptime             how long the books have been open<br>date               today, in the house format<br>balance            trial balance of every system<br><br>' +
+      tprint('<b>Projects</b><br>ls projects        list the projects<br>project &lt;n&gt;        read project n (1 to 5)<br>open &lt;project&gt;     open a case study (or just type its name)<br>projects           go to the projects page<br>impairments        what went wrong, written down<br>status             system status board<br>stats              the numbers<br><br>' +
+        '<b>About</b><br>cat about          who is behind this<br>cgma               the qualification<br>guardrails         the guardrails on his AI coding tools<br>timeline           the career years<br>skills             the skill set<br>education          degrees and qualifications<br>contact            email and linkedin<br><br>' +
+        '<b>This site</b><br>log                the change log of this site<br>basis              how this site is built<br>uptime             how long the books have been open<br>date               today, in the house format<br>balance            trial balance of every system<br><br>' +
         '<b>Filesystem</b><br>tree               show the file tree<br>cat &lt;file&gt;         read a file (try: cat about.txt)<br>grep &lt;word&gt;        search across all facts<br>ls | grep &lt;word&gt;   pipe output through grep<br><br>' +
         '<b>The terminal</b><br>history            what you have typed this session<br>sound on | off     blips on the case pages<br>echo &lt;text&gt;        say it back<br>clear | Ctrl+L     wipe the screen<br>!!                 repeat the last command<br>exit | Esc         close the terminal<br><br>' +
         'Tab completes commands and project names. Ask a question in plain English.<br>help &lt;command&gt; explains one. up/down arrows recall history.');
@@ -1103,7 +1126,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (arg && PROJECTS[arg]) {
         return '<b>' + esc(arg) + '</b><br>' + esc(PROJECTS[arg].stats).replace(/ \| /g, '<br>');
       }
-      var out = '<b>Verified figures</b> (all measured against production)';
+      var out = '<b>The figures</b>';
       out += '<br><br>160,000+ lines across the five case studies';
       Object.keys(PROJECTS).forEach(function (k) {
         out += '<br><br><b>' + esc(k) + '</b> (' + PROJECTS[k].status + ')<br>' + esc(PROJECTS[k].stats).replace(/ \| /g, '<br>');
@@ -1134,8 +1157,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       });
       /* Also search fact answers */
-      FACTS.forEach(function (f) {
-        if (f.answer.toLowerCase().indexOf(pattern) !== -1) {
+      (window.TERMINAL_KB || []).forEach(function (f) {
+        if (f.id !== 'offtopic' && f.answer.toLowerCase().indexOf(pattern) !== -1) {
           results.push('<span class="in">[fact]</span>: ' + esc(f.answer.substring(0, 120)).replace(new RegExp('(' + esc(pattern).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<b>$1</b>') + (f.answer.length > 120 ? '...' : ''));
         }
       });
@@ -1153,7 +1176,7 @@ document.addEventListener('DOMContentLoaded', function () {
         'SCS Cockpit           11,584              [--] retired<br>' +
         '-----------------------------------------------------<br>' +
         'TOTAL                160,000+   lines     5 entries<br>' +
-        '<br>all figures verified. approximate where marked.');
+        '<br>approximate where marked.');
     },
     wc: function (arg) {
       if (!arg) { tprint('160,000+ lines across the five case studies.'); return; }
@@ -1253,7 +1276,7 @@ document.addEventListener('DOMContentLoaded', function () {
     clear: 'wipes the screen, keeps your history',
     exit: 'closes the terminal. Esc works too',
     help: 'you are reading it',
-    stats: 'verified figures for every project. try: stats opspilot',
+    stats: 'figures for every project. try: stats opspilot',
     timeline: 'the career years, from Mumbai to Cambridge',
     skills: 'finance, data, AI, engineering, commercial',
     education: 'degrees and qualifications',
@@ -1381,7 +1404,8 @@ document.addEventListener('DOMContentLoaded', function () {
         tprint(esc(fact.answer) + (fact.cmd ? '<br><br>try: <b>' + esc(fact.cmd) + '</b>' : ''));
         return;
       }
-      tprint('I don\'t have a fact for that. try one of these:<br>  help           full command list<br>  stats          verified project figures<br>  cat about      who is behind this<br>  grep &lt;word&gt;    search across everything<br>or ask about a specific project by name.');
+      track('terminal-miss');
+      tprint('I don\'t have a fact for that. try one of these:<br>  help           full command list<br>  stats          project figures<br>  cat about      who is behind this<br>  grep &lt;word&gt;    search across everything<br>or ask about a specific project by name.');
       return;
     }
     /* Try fact matching even for non-questions */
