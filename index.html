@@ -446,7 +446,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 
 /* terminal owl: stands bottom-right above the input row; the body keeps a gutter so text never runs under it */
 .term-body { padding-right: 150px; }
-.owl { position: absolute; right: 14px; bottom: 58px; width: 128px; height: 128px; pointer-events: none; transform-origin: 50% 92%; }
+.owl { position: absolute; right: 14px; bottom: calc(58px + var(--chips-h, 0px)); width: 128px; height: 128px; pointer-events: none; transform-origin: 50% 92%; }
 .owl svg { width: 100%; height: 100%; overflow: visible; }
 .owl.pop { animation: owl-pop 0.42s var(--ease-spring); }
 @keyframes owl-pop { 0% { transform: scale(1.06, 0.9); } 45% { transform: scale(0.96, 1.06); } 100% { transform: none; } }
@@ -475,7 +475,22 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 .term-body .out b.try-cmd { transition: background-color 0.3s ease, color 0.3s ease; }
 .term-body .out b.try-cmd.lit { background: var(--credit); color: var(--ink); }
 .owl-measure { position: absolute; visibility: hidden; white-space: pre; font-family: var(--mono); font-size: 0.8rem; }
-@media (max-width: 600px) { .term-body { padding-right: 104px; } .owl { width: 92px; height: 92px; right: 8px; bottom: 54px; } }
+@media (max-width: 600px) { .term-body { padding-right: 104px; } .owl { width: 92px; height: 92px; right: 8px; bottom: calc(54px + var(--chips-h, 0px)); } }
+/* suggested replies (14/10/2026, Ajay picked board option B + F's ghost): numbered tags above the input, a
+   "Show all commands" tag at the end, the first suggestion as ghost text in the empty input. Tags sit clear of
+   the input rule; the owl stands on the row (--chips-h, set in JS). Hover is the button family: no new motion */
+.term-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0.6rem 1.3rem 0.7rem; }
+.term-chips:empty { display: none; }
+.term-chips .chip { font-family: var(--mono); font-size: calc(var(--ms-3) * 0.8); line-height: 1.2; color: var(--paper-dim); text-align: left;
+  background: rgba(236, 231, 220, 0.04); border: 1px solid var(--rule); border-radius: var(--radius-1); padding: 0.36rem 0.56rem; min-height: 29px; cursor: pointer;
+  transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro); }
+.term-chips .chip:focus-visible { color: var(--paper); border-color: var(--credit); }
+@media (hover: hover) { .term-chips .chip:hover { color: var(--paper); border-color: var(--credit); } .term-chips .chip.all:hover { color: var(--paper); } }
+.term-chips .chip:focus-visible { outline-offset: 2px; }
+.term-chips .chip kbd { font: inherit; color: var(--credit); margin-right: 0.5em; }
+.term-chips .chip.all { margin-left: auto; color: var(--credit); }
+.term-chips .chip.all:focus-visible { color: var(--paper); }
+.term-input input::placeholder { color: var(--paper-faint); opacity: 0.7; }
 @media (prefers-reduced-motion: reduce) { .owl *, .owl { transition: none !important; animation: none !important; } }
 
 /* ================= Print: the statement of work on actual paper ================= */
@@ -695,6 +710,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
     <button id="term-close">ESC TO CLOSE</button>
   </div>
   <div class="term-body" id="term-body"></div>
+  <div class="term-chips" id="term-chips" role="group" aria-label="Suggested replies"></div>
   <div class="term-input">
     <span class="ps1">visitor@ajaysachdev.com:~$</span>
     <input id="term-cmd" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal command">
@@ -1513,8 +1529,74 @@ document.addEventListener('DOMContentLoaded', function () {
   function answer(fact) {
     var line = tprint(esc(fact.answer) + (fact.cmd ? '<br><br>try: <b class="try-cmd">' + esc(fact.cmd) + '</b>' : ''));
     var state = fact.id === 'offtopic' ? 'off' : fact.id === 'rude' ? 'rude' : WARM[fact.id] ? 'warm' : kbLastScore >= 5 ? 'sure' : 'maybe';
+    chipFact = fact;
     if (owl) owl.verdict(state, line);
   }
+  /* ---------- Suggested replies (14/10/2026, Ajay picked board option B with F's ghost text) ----------
+     Up to 3 numbered tags from the chip table in js/terminal-answers.js: the last answer's suggested
+     command first, then follow-up questions on the same topic, then "Show all commands". The first one
+     also shows as ghost text in the empty input (Tab or Right arrow takes it); keys 1-3 run a tag while
+     the input is empty. Pre-written like the answers: nothing is generated. */
+  var chipsEl = document.getElementById('term-chips'), CH = window.TERMINAL_CHIPS, chipList = [], chipFact = null, chipGroup = {};
+  var coarse = window.matchMedia('(pointer: coarse)').matches;
+  var OPEN_TOPIC = { opspilot: 'opspilot', 'trading-bot': 'trading', 'uni-nation': 'uni-nation', 'whatsapp-smart': 'whatsapp', 'scs-cockpit': 'scs' };
+  if (CH) Object.keys(CH.groups).forEach(function (g) { CH.groups[g].split(' ').forEach(function (id) { chipGroup[id] = g; }); });
+  function chipsFor(fact, ran) {
+    var out = [], seen = {};
+    if (!CH) return out;
+    if (fact && fact.cmd && CH.cmd[fact.cmd] && fact.cmd !== 'help' && fact.cmd !== ran) { out.push({ label: CH.cmd[fact.cmd], run: fact.cmd }); seen[fact.cmd] = 1; }
+    CH.q[(fact && chipGroup[fact.id]) || 'start'].forEach(function (q) {
+      var r = q[2] || q[1];
+      if (out.length < 3 && (!fact || q[0] !== fact.id) && !seen[r] && r.toLowerCase() !== ran) { seen[r] = 1; out.push({ label: q[1], run: r }); }
+    });
+    return out;
+  }
+  /* the owl stands on the chip row, so it rises by the row's height */
+  function liftOwl() { term.style.setProperty('--chips-h', chipsEl.offsetHeight + 'px'); }
+  function renderChips(list) {
+    chipList = list;
+    chipsEl.innerHTML = '';
+    list.concat(list.length ? [{ label: 'Show all commands', run: 'help', all: 1 }] : []).forEach(function (c, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip' + (c.all ? ' all' : '');
+      b.tabIndex = i === 0 ? 0 : -1;
+      b.innerHTML = (c.all ? '' : '<kbd>' + (i + 1) + '</kbd>') + esc(c.label);
+      b.addEventListener('click', function () { pickChip(c); });
+      chipsEl.appendChild(b);
+    });
+    input.placeholder = list[0] ? list[0].run + (coarse ? '' : '   (Tab)') : '';
+    liftOwl();
+  }
+  /* run, then offer the next set: from the matched answer, else from the command's topic, else the opening set */
+  function runWithChips(raw) {
+    chipFact = null;
+    run(raw);
+    var low = raw.trim().toLowerCase().replace(/\s+/g, ' ');
+    var open = low.match(/^open ([a-z-]+)$/), proj = PROJECT_ALIASES[low] || PROJECT_ALIASES[low.replace(/ /g, '-')];
+    var id = CH && CH.commands[low] || OPEN_TOPIC[open ? open[1] : proj] || null;
+    renderChips(chipsFor(chipFact || (id ? { id: id } : null), low));
+  }
+  function pickChip(c) {
+    track('terminal-chip');
+    renderChips([]);
+    histBuf.push(c.run); histIdx = -1; histDraft = '';
+    runWithChips(c.run);
+    /* on touch, keep focus in the terminal without raising the phone keyboard */
+    if (!coarse) input.focus();
+    else (chipsEl.querySelector('.chip') || document.getElementById('term-close')).focus({ preventScroll: true });
+  }
+  chipsEl.addEventListener('keydown', function (e) {
+    var all = [].slice.call(chipsEl.querySelectorAll('.chip')), i = all.indexOf(document.activeElement), n;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = Math.min(all.length - 1, i + 1);
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = Math.max(0, i - 1);
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = all.length - 1;
+    else return;
+    e.preventDefault();
+    all.forEach(function (b, j) { b.tabIndex = j === n ? 0 : -1; });
+    all[n].focus();
+  });
+  addEventListener('resize', function () { if (term.classList.contains('open')) liftOwl(); });
   function run(raw) {
     var text = raw.trim();
     /* !! repeats last command */
@@ -1596,9 +1678,11 @@ document.addEventListener('DOMContentLoaded', function () {
       setTimeout(function () {
         tprint('<b>The Ledger, interactive edition.</b>');
         tprint('Type <b>help</b> to see the commands, or <b>ls projects</b> to list the projects.');
+        renderChips(chipsFor(null));
       }, boot.length * 160 + 60);
     }
     owlMake().wake();
+    liftOwl();
     setTimeout(function () { input.focus(); }, 50);
     document.body.style.overflow = 'hidden';
   }
@@ -1620,7 +1704,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key !== 'Tab') return;
     /* Let tab completion handle Tab when the input has focus (non-shift) */
     if (document.activeElement === input && !e.shiftKey) return;
-    var focusables = [document.getElementById('term-close'), input];
+    var focusables = [document.getElementById('term-close')].concat([].slice.call(chipsEl.querySelectorAll('.chip[tabindex="0"]')), [input]);
     var first = focusables[0], last = focusables[focusables.length - 1];
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
@@ -1632,7 +1716,7 @@ document.addEventListener('DOMContentLoaded', function () {
     el.addEventListener('click', function () {
       var firstBoot = !opened;
       openTerm();
-      setTimeout(function () { run(el.getAttribute('data-term-run')); }, firstBoot ? 1250 : 150);
+      setTimeout(function () { runWithChips(el.getAttribute('data-term-run')); }, firstBoot ? 1250 : 150);
     });
   });
   var basisLink = document.getElementById('basis-link');
@@ -1640,7 +1724,7 @@ document.addEventListener('DOMContentLoaded', function () {
     basisLink.addEventListener('click', function () {
       var firstBoot = !opened;
       openTerm();
-      setTimeout(function () { run('basis'); }, firstBoot ? 1250 : 150);
+      setTimeout(function () { runWithChips('basis'); }, firstBoot ? 1250 : 150);
     });
   }
   if (window.matchMedia('(pointer: coarse)').matches) {
@@ -1656,16 +1740,17 @@ document.addEventListener('DOMContentLoaded', function () {
       footCmd.value = '';
       track('terminal-footer');
       openTerm();
-      if (v) setTimeout(function () { histBuf.push(v); run(v); }, firstBoot ? 1250 : 150);
+      if (v) setTimeout(function () { histBuf.push(v); runWithChips(v); }, firstBoot ? 1250 : 150);
     });
   }
   /* command history: any real terminal answers the up arrow */
   var histBuf = [], histIdx = -1, histDraft = '';
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
-      if (input.value.trim()) { histBuf.push(input.value); }
       histIdx = -1; histDraft = '';
-      run(input.value); input.value = '';
+      /* an empty Enter keeps the current chips */
+      if (input.value.trim()) { histBuf.push(input.value); runWithChips(input.value); }
+      input.value = '';
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (!histBuf.length) return;
@@ -1679,7 +1764,14 @@ document.addEventListener('DOMContentLoaded', function () {
       histIdx += 1;
       if (histIdx >= histBuf.length) { histIdx = -1; input.value = histDraft; }
       else { input.value = histBuf[histIdx]; }
-    } else if (e.key === 'Tab') {
+    } else if (!input.value && chipList.length && !e.ctrlKey && !e.metaKey && !e.altKey && /^[1-3]$/.test(e.key) && chipList[+e.key - 1]) {
+      e.preventDefault();
+      pickChip(chipList[+e.key - 1]);
+    } else if (!input.value && chipList.length && ((e.key === 'Tab' && !e.shiftKey) || e.key === 'ArrowRight')) {
+      /* take the ghost suggestion */
+      e.preventDefault();
+      input.value = chipList[0].run;
+    } else if (e.key === 'Tab' && !e.shiftKey) {
       e.preventDefault();
       var val = input.value.trim();
       var tabParts = val.split(/\s+/);
@@ -1696,6 +1788,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (e.key === 'l' && e.ctrlKey) {
       e.preventDefault();
       COMMANDS.clear();
+      renderChips(chipsFor(null));
     } else if (e.key === 'c' && e.ctrlKey) {
       e.preventDefault();
       if (input.value.trim()) {

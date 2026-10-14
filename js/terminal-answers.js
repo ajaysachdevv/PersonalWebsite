@@ -1076,3 +1076,50 @@ window.TERMINAL_KB = [
     keys: ["bye", "goodbye", "cya"],
   },
 ];
+
+/* Suggested replies (chips above the terminal input, 14/10/2026). Also pre-written, never generated.
+   cmd: plain label for an answer's suggested command. q: follow-up chips per topic as
+   [intent id, label, optional command to run instead of the label]; a label without a command
+   runs through the matcher like typed text and must land on its intent id (checked by
+   design-history/terminal-eval/chips.mjs). groups: which topic each intent id belongs to. */
+window.TERMINAL_CHIPS = {
+  cmd: {
+    "help": "Show all commands", "cat about": "Read the bio", "timeline": "Show the timeline", "contact": "Get in touch",
+    "cat education.txt": "Education", "open scs-cockpit": "Open SCS Cockpit", "open uni-nation": "Open Uni-Nation",
+    "open opspilot": "Open OpsPilot", "open trading-bot": "Open the trading bot", "open whatsapp-smart": "Open WhatsApp Smart",
+    "projects": "See all projects", "stats": "Show the figures", "ls projects": "List the projects", "status": "Project status",
+    "impairments": "What went wrong", "cat skills.txt": "Skills", "guardrails": "Guardrails", "basis": "How this site was built",
+    "balance": "Check the balance",
+  },
+  q: {
+    about: [["finance-to-code", "How did finance lead to code?"], ["projects", "What have you built?"], ["education", "Where did you study?"]],
+    work: [["opspilot", "What is OpsPilot?"], ["savings", "What did it save?"], ["contact", "Get in touch", "contact"]],
+    opspilot: [["opspilot-how", "How was OpsPilot built?"], ["opspilot-accuracy", "How accurate is it?"], ["guardrails", "What are the guardrails?"]],
+    trading: [["trading-money", "Does the bot make money?"], ["trading-veto", "Why the veto?"], ["projects", "What else have you built?"]],
+    uni: [["uni-nation-voice", "Does the voice agent work?"], ["family-business", "Tell me about the family business"], ["projects", "What else have you built?"]],
+    whatsapp: [["whatsapp-privacy", "Is it private?"], ["projects", "What else have you built?"]],
+    study: [["cima", "What is CIMA?"], ["scs", "What is SCS Cockpit?"], ["projects", "What else have you built?"]],
+    site: [["why-vanilla", "Why no framework?"], ["privacy-site", "Do you track visitors?"], ["terminal", "Are you a bot?"]],
+    stack: [["ai-models", "Which AI models?"], ["guardrails", "What are the guardrails?"], ["stack", "What is the tech stack?"]],
+    reach: [["location", "Where are you based?"], ["projects", "What have you built?"]],
+    start: [["bio", "Who is Ajay?"], ["projects", "What have you built?"], ["contact", "Get in touch", "contact"]],
+  },
+  groups: {
+    about: "bio role title location languages-spoken governor family-business career hobbies",
+    work: "projects lines status savings finance-to-code advice dashboards contracts work-tools praise meaning wrong",
+    opspilot: "opspilot opspilot-how opspilot-accuracy",
+    trading: "trading trading-money trading-veto",
+    uni: "uni-nation uni-nation-voice",
+    whatsapp: "whatsapp whatsapp-privacy",
+    study: "education cima scs",
+    site: "site why-vanilla privacy-site terminal",
+    stack: "stack ai-models guardrails",
+    reach: "contact github availability money-personal cv thanks bye",
+  },
+  /* commands typed or tapped, mapped to the topic whose follow-ups come next */
+  commands: {
+    "cat about": "bio", "whoami": "bio", "timeline": "career", "contact": "contact", "cat education.txt": "education", "education": "education",
+    "stats": "lines", "ls projects": "projects", "ls": "projects", "status": "status", "impairments": "wrong", "cat skills.txt": "stack",
+    "skills": "stack", "guardrails": "guardrails", "basis": "site", "cgma": "cima",
+  },
+};
