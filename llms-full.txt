@@ -2,7 +2,7 @@
 > Finance & Operations Manager at a B2B tech scale-up. ACMA CGMA (CIMA), qualified 2026. Builds production AI systems, Power BI dashboards, and financial models. Python, TypeScript, SQL. Based in Cambridge, UK.
 
 ## Background
-Ajay Sachdev grew up in a Sindhi family from Mumbai. His dad ran a textile business (est. 1988). After studying Financial Markets at Jai Hind College (2015-18) and earning a Chartered Wealth Management certification from AAFM, he worked in the family business, leading a vertical integration into garment manufacturing and building its direct-to-consumer website (uni-nation.in).
+Ajay Sachdev grew up in a Sindhi family from Mumbai. His dad ran a textile business (est. 1988). After studying Financial Markets at Jai Hind College (2015-18) and earning a Chartered Wealth Management certification from AAFM, he worked in the family business, pushing it into garment manufacturing and building its digital systems, including the public catalogue site (uni-nation.in).
 
 He moved to the UK for an MSc in Finance at Loughborough University (2020-21, 2:1), then joined a B2B tech scale-up as an intern in October 2021, became Finance Associate in January 2022 and Finance & Operations Manager in January 2025. He is now the sole finance & operations function, managing three entities across the UK, US, and Pakistan.
 
@@ -44,7 +44,7 @@ Website, inventory system and analytics for the family fabric business running s
 - Receivables tracking with WhatsApp follow-up generation
 
 ### WhatsApp Smart: Chrome Extension Prototype
-Adds scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. Privacy-first: messages stay in the browser unless the user sends one to the AI. 11 features built; unreleased prototype.
+Adds scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. ~16,000 lines of TypeScript. Privacy-first: messages stay in the browser unless the user sends one to the AI. 11 features built; unreleased prototype.
 
 ### SCS Cockpit: Exam Study Engine
 A zero-dependency browser study tool he built for his own CIMA Strategic Case Study: timed drills, spaced repetition, 5-dimension debrief scoring. 11,584 lines, no build step, 166 study items, 23 frameworks, 54 source PDFs normalised. He passed. Retired, job done. Case study: https://ajaysachdev.com/projects/scs-cockpit.html
