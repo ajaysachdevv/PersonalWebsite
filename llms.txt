@@ -20,7 +20,6 @@
 - SCS Cockpit: zero-dependency study engine he built for his own CIMA Strategic Case Study. 11,584 lines, 166 study items, 23 frameworks, 54 source PDFs normalised. He passed. Retired, job done. Case study: https://ajaysachdev.com/projects/scs-cockpit.html
 
 ## Key Metrics
-- Board-level financial models and reporting
 - 50+ Power BI dashboards built
 - 40+ hours/month saved through automation
 - Core SaaS platform cost cut 65% through a systematic audit

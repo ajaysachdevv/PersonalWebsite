@@ -9,7 +9,6 @@ He moved to the UK for an MSc in Finance at Loughborough University (2020-21, 2:
 He qualified as an ACMA CGMA (CIMA) in 2026 and serves as a School Governor at a 250-pupil primary school.
 
 ## Current Role: Finance & Operations Manager
-- Board-level financial models and reporting
 - Built 50+ Power BI dashboards
 - Cut a core SaaS platform's cost 65% through a systematic audit
 - Redesigned the contract format from 26 pages to 3 with hyperlinked terms; six-month stalls became one-week signings
@@ -47,7 +46,7 @@ A zero-dependency browser study tool he built for his own CIMA Strategic Case St
 ## Skills & Tools
 
 ### Finance & Modelling
-Financial Modelling, Budgeting & Forecasting, Cash Management, Board-level reporting, Scenario analysis
+Financial Modelling, Budgeting & Forecasting, Cash Management, Scenario analysis
 
 ### Data & Analytics
 Power BI (50+ dashboards), SQL, GA4, Firebase, Python data analysis
