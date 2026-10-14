@@ -442,6 +442,40 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 .term-input .ps1 { color: var(--credit); white-space: nowrap; }
 .term-input input { flex: 1; background: none; border: none; outline: none; color: var(--paper); font-family: var(--mono); font-size: 0.8rem; caret-color: var(--credit); }
 
+/* terminal owl: stands bottom-right above the input row; the body keeps a gutter so text never runs under it */
+.term-body { padding-right: 150px; }
+.owl { position: absolute; right: 14px; bottom: 58px; width: 128px; height: 128px; pointer-events: none; transform-origin: 50% 92%; }
+.owl svg { width: 100%; height: 100%; overflow: visible; }
+.owl.pop { animation: owl-pop 0.42s var(--ease-spring); }
+@keyframes owl-pop { 0% { transform: scale(1.06, 0.9); } 45% { transform: scale(0.96, 1.06); } 100% { transform: none; } }
+.owl .pupil { transition: transform 0.18s var(--ease-out); }
+.owl .head { transform-box: view-box; transform-origin: 60px 70px; transition: transform 0.35s var(--ease-out); }
+.owl .lid, .owl .lidhalf { transform-box: fill-box; transform-origin: 50% 0; transform: scaleY(0); }
+.owl .lid { transition: transform 0.09s ease-in; }
+.owl .lidhalf { transition: transform 0.25s var(--ease-out); }
+.owl.blink .lid, .owl[data-s="idle"] .lid { transform: scaleY(1); }
+.owl[data-s="idle"] .lid { transition-duration: 0.7s; }
+.owl[data-s="rude"] .lidhalf { transform: scaleY(0.55); }
+.owl .wingL { transform-box: fill-box; transform-origin: 80% 15%; transition: transform 0.4s var(--ease-spring); }
+.owl .wingR { transform-box: fill-box; transform-origin: 20% 15%; transition: transform 0.4s var(--ease-spring); }
+.owl[data-s="warm"] .wingR { transform: rotate(-70deg); }
+.owl[data-s="point"] .wingL { transform: rotate(48deg); }
+.owl[data-s="miss"] .wingL, .owl[data-s="off"] .wingL { transform: rotate(-35deg); }
+.owl[data-s="miss"] .wingR, .owl[data-s="off"] .wingR { transform: rotate(35deg); }
+.owl .happy, .owl .brow, .owl .ohh, .owl .zz { opacity: 0; transition: opacity 0.15s ease; }
+.owl .eyes { transition: opacity 0.15s ease; }
+.owl[data-s="sure"] .happy, .owl[data-s="warm"] .happy { opacity: 1; }
+.owl[data-s="sure"] .eyes, .owl[data-s="warm"] .eyes { opacity: 0; }
+.owl[data-s="maybe"] .brow, .owl[data-s="think"] .brow { opacity: 1; }
+.owl[data-s="off"] .ohh { opacity: 1; }
+.owl[data-s="idle"] .zz { opacity: 1; animation: owl-zz 2.4s ease-in-out infinite; }
+@keyframes owl-zz { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.term-body .out b.try-cmd { transition: background-color 0.3s ease, color 0.3s ease; }
+.term-body .out b.try-cmd.lit { background: var(--credit); color: var(--ink); }
+.owl-measure { position: absolute; visibility: hidden; white-space: pre; font-family: var(--mono); font-size: 0.8rem; }
+@media (max-width: 600px) { .term-body { padding-right: 104px; } .owl { width: 92px; height: 92px; right: 8px; bottom: 54px; } }
+@media (prefers-reduced-motion: reduce) { .owl *, .owl { transition: none !important; animation: none !important; } }
+
 /* ================= Print: the statement of work on actual paper ================= */
 @media print {
   body { background: #fff !important; color: #1c160d; }
@@ -548,7 +582,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   <div class="open-readout">
     <span>AJAY SACHDEV, ACMA CGMA</span>
     <span>BASE: CAMBRIDGE, UK</span>
-    <span>SYSTEMS: 5 PUBLIC / BUILT SOLO</span>
+    <span>PROJECTS: 10</span>
     <button type="button" class="term-hint" id="snd">SOUND: ON</button>
     <button type="button" class="term-hint" data-term>PRESS T FOR TERMINAL</button>
   </div>
@@ -950,7 +984,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function kbStem(a, b) {
     return a === b || kbRoot(a) === kbRoot(b) || a.replace(/s$/, '') === b.replace(/s$/, '');
   }
-  var KB = null, KB_DF = null;
+  var KB = null, KB_DF = null, kbLastScore = 0;
   function kbIndex() {
     if (KB || !window.TERMINAL_KB) return KB;
     KB = window.TERMINAL_KB.map(function (k) {
@@ -974,7 +1008,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!kbIndex()) return null;
     var nq = kbClean(text);
     if (!nq) return null;
-    for (var i = 0; i < KB.length; i++) if (KB[i].phr.indexOf(nq) !== -1) return KB[i].src;
+    for (var i = 0; i < KB.length; i++) if (KB[i].phr.indexOf(nq) !== -1) { kbLastScore = 99; return KB[i].src; }
     var qt = kbToks(text);
     if (!qt.length) return null;
     var best = null, bestScore = 0, padded = ' ' + nq + ' ';
@@ -988,6 +1022,7 @@ document.addEventListener('DOMContentLoaded', function () {
       k.phr.forEach(function (ph) { if (ph.indexOf(' ') !== -1 && padded.indexOf(' ' + ph + ' ') !== -1) s += 2; });
       if (s > bestScore) { bestScore = s; best = k.src; }
     });
+    kbLastScore = bestScore;
     return bestScore >= 2 ? best : null;
   }
   function tprint(html, cls) {
@@ -996,6 +1031,7 @@ document.addEventListener('DOMContentLoaded', function () {
     div.innerHTML = html;
     tbody.appendChild(div);
     tbody.scrollTop = tbody.scrollHeight;
+    return div;
   }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function echo(cmd) { tprint('<span class="in">visitor@ajaysachdev.com:~$</span> ' + esc(cmd)); }
@@ -1198,7 +1234,7 @@ document.addEventListener('DOMContentLoaded', function () {
         'Shell:     this terminal<br>' +
         'Display:   Instrument Serif / Inter / JetBrains Mono<br>' +
         'Analytics: GoatCounter (no cookies)<br>' +
-        'Entries:   5 public + 5 at work<br>' +
+        'Projects:  10<br>' +
         'Lines:     160,000+<br>' +
         'Uptime:    since 12/06/2026'
       );
@@ -1363,6 +1399,120 @@ document.addEventListener('DOMContentLoaded', function () {
     return null;
   }
   var QUESTION = /^(what|who|how|why|where|when|can|could|do|does|is|are|will|would|should|tell|show|give|i|im|i'm|please|describe|explain)\b|\?$/;
+  /* ---------- Terminal owl (14/10/2026, Ajay picked option B2) ----------
+     Reacts to what the matcher actually decided: watches the caret and pointer, a short thinking
+     beat, then a verdict face, then points at the suggested next command. Dozes after 9s idle.
+     One choreographed behaviour in the page budget. Blinks only when motion is allowed. */
+  var OWL_SVG = '<svg viewBox="0 0 120 120" aria-hidden="true">' +
+    '<ellipse cx="60" cy="112" rx="26" ry="3" style="fill:#000;opacity:0.35"/>' +
+    '<path d="M48 104 l-2 7 M51 104 l0 7 M54 104 l2 7 M66 104 l-2 7 M69 104 l0 7 M72 104 l2 7" style="stroke:#e8b34b;stroke-width:2.6;stroke-linecap:round"/>' +
+    '<path class="wingL" d="M27 64 Q14 80 24 98 Q30 92 34 80 Z" style="fill:#e3dccd;stroke:#0d0c0a;stroke-width:2"/>' +
+    '<path class="wingR" d="M93 64 Q106 80 96 98 Q90 92 86 80 Z" style="fill:#e3dccd;stroke:#0d0c0a;stroke-width:2"/>' +
+    '<ellipse cx="60" cy="74" rx="34" ry="33" style="fill:#ece7dc;stroke:#0d0c0a;stroke-width:2.4"/>' +
+    '<path d="M44 92 Q60 100 76 92" style="fill:none;stroke:#d8d0bf;stroke-width:3;stroke-linecap:round"/>' +
+    '<g class="head">' +
+      '<path d="M33 36 L30 22 L42 31 Z M87 36 L90 22 L78 31 Z" style="fill:#ece7dc;stroke:#0d0c0a;stroke-width:2;stroke-linejoin:round"/>' +
+      '<ellipse cx="60" cy="52" rx="31" ry="27" style="fill:#ece7dc;stroke:#0d0c0a;stroke-width:2.4"/>' +
+      '<path d="M30 40 Q60 22 90 40 L92 46 Q60 33 28 46 Z" style="fill:#2fbf71;stroke:#0d0c0a;stroke-width:2;stroke-linejoin:round"/>' +
+      '<circle cx="84" cy="41" r="1.8" style="fill:#0d0c0a"/>' +
+      '<g class="eyes">' +
+        '<circle cx="47" cy="56" r="11.5" style="fill:#f6f2ea;stroke:#0d0c0a;stroke-width:2"/><circle cx="73" cy="56" r="11.5" style="fill:#f6f2ea;stroke:#0d0c0a;stroke-width:2"/>' +
+        '<g class="pupil"><circle cx="47" cy="56" r="5.4" style="fill:#0d0c0a"/><circle cx="73" cy="56" r="5.4" style="fill:#0d0c0a"/><circle cx="45.2" cy="54" r="1.7" style="fill:#fff"/><circle cx="71.2" cy="54" r="1.7" style="fill:#fff"/></g>' +
+        '<rect class="lidhalf" x="35" y="44" width="24" height="12" style="fill:#ece7dc"/><rect class="lidhalf" x="61" y="44" width="24" height="12" style="fill:#ece7dc"/>' +
+        '<rect class="lid" x="35" y="44" width="24" height="24" rx="11" style="fill:#e6dfd0"/><rect class="lid" x="61" y="44" width="24" height="24" rx="11" style="fill:#e6dfd0"/>' +
+      '</g>' +
+      '<path class="happy" d="M39 57 Q47 49 55 57 M65 57 Q73 49 81 57" style="fill:none;stroke:#0d0c0a;stroke-width:2.6;stroke-linecap:round"/>' +
+      '<path class="brow" d="M64 41.5 Q73 38 82 41" style="fill:none;stroke:#0d0c0a;stroke-width:2.2;stroke-linecap:round"/>' +
+      '<circle cx="51" cy="63" r="6" style="fill:none;stroke:#0d0c0a;stroke-width:1.6"/><circle cx="69" cy="63" r="6" style="fill:none;stroke:#0d0c0a;stroke-width:1.6"/><path d="M57 63 L63 63" style="stroke:#0d0c0a;stroke-width:1.6"/>' +
+      '<path d="M56 64 L64 64 L60 73 Z" style="fill:#e8b34b;stroke:#0d0c0a;stroke-width:1.6;stroke-linejoin:round"/>' +
+      '<ellipse class="ohh" cx="60" cy="77" rx="2.4" ry="3" style="fill:#0d0c0a"/>' +
+      '<text class="zz" x="88" y="22" style="font:600 13px \'JetBrains Mono\',monospace;fill:#2fbf71">z</text>' +
+    '</g>' +
+    '<g transform="rotate(28 82 82)"><rect x="79" y="70" width="6" height="22" rx="1" style="fill:#e8b34b;stroke:#0d0c0a;stroke-width:1.4"/><path d="M79 70 L82 63 L85 70 Z" style="fill:#ece7dc;stroke:#0d0c0a;stroke-width:1.4"/></g>' +
+  '</svg>';
+  var owl = null;
+  var WARM = { greeting: 1, thanks: 1, 'how-are-you': 1, praise: 1, bye: 1, joke: 1 };
+  function owlMake() {
+    if (owl) return owl;
+    var el = document.createElement('div');
+    el.className = 'owl'; el.setAttribute('aria-hidden', 'true'); el.dataset.s = 'watch';
+    el.innerHTML = OWL_SVG;
+    term.appendChild(el);
+    var pupil = el.querySelector('.pupil'), head = el.querySelector('.head');
+    var timers = [], idleT = 0;
+    function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+    function stop() { timers.forEach(clearTimeout); timers = []; }
+    function look(x, y) {
+      x = Math.max(-1, Math.min(1, x)); y = Math.max(-1, Math.min(1, y));
+      pupil.style.transform = 'translate(' + (x * 4.6).toFixed(1) + 'px,' + (y * 4).toFixed(1) + 'px)';
+      head.style.transform = 'rotate(' + (x * 6).toFixed(1) + 'deg) translateY(' + (y * 1.5).toFixed(1) + 'px)';
+    }
+    function set(s) {
+      el.dataset.s = s;
+      if (s === 'think') look(0.5, -0.9);
+      else if (s === 'miss' || s === 'off') { look(0, -0.4); head.style.transform = 'rotate(-10deg)'; }
+      else if (s === 'idle') head.style.transform = 'rotate(8deg) translateY(2px)';
+      else if (s === 'point') look(-1, 1);
+      else if (s !== 'watch') look(0, 0);
+      if (!reduced && s !== 'think' && s !== 'idle' && s !== 'watch') { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+    }
+    function kick() { clearTimeout(idleT); idleT = setTimeout(function () { stop(); set('idle'); }, 9000); }
+    /* one blink timer, alive only while the terminal is open; wake() restarts it */
+    var blinkT = 0;
+    function blinkLoop() {
+      if (reduced || blinkT) return;
+      blinkT = setTimeout(function () {
+        blinkT = 0;
+        if (!term.classList.contains('open')) return;
+        if (el.dataset.s !== 'idle') { el.classList.add('blink'); setTimeout(function () { el.classList.remove('blink'); }, 130); }
+        blinkLoop();
+      }, 3800 + Math.random() * 3200);
+    }
+    var meas = document.createElement('span');
+    meas.className = 'owl-measure'; meas.setAttribute('aria-hidden', 'true');
+    input.parentNode.appendChild(meas);
+    function caret() {
+      meas.textContent = input.value.slice(0, input.selectionStart == null ? input.value.length : input.selectionStart);
+      var x = input.offsetLeft + Math.min(meas.offsetWidth, input.offsetWidth);
+      return (x / term.offsetWidth) * 2 - 1;
+    }
+    input.addEventListener('input', function () {
+      stop(); set('watch'); look(caret(), 1); kick();
+      var lit = tbody.querySelector('b.try-cmd.lit'); if (lit) lit.classList.remove('lit');
+    });
+    if (window.matchMedia('(pointer: fine)').matches) term.addEventListener('pointermove', function (e) {
+      if (el.dataset.s !== 'watch' && el.dataset.s !== 'idle') return;
+      var r = el.getBoundingClientRect();
+      var dx = (e.clientX - (r.left + r.width / 2)) / 160, dy = (e.clientY - (r.top + r.height * 0.4)) / 120;
+      if (Math.hypot(dx, dy) < 0.25) { dx = 0; dy = 0; }
+      if (el.dataset.s === 'idle') set('watch');
+      look(dx, dy); kick();
+    });
+    owl = {
+      /* state: sure | maybe | miss | off | rude | warm; line: the printed answer, so the owl can point at its "try" command */
+      verdict: function (state, line) {
+        stop(); kick();
+        var prev = tbody.querySelector('b.try-cmd.lit');
+        if (prev) prev.classList.remove('lit');
+        var b = line && line.querySelector('b.try-cmd');
+        function show() {
+          set(state);
+          if (b && state !== 'rude') later(function () { set('point'); b.classList.add('lit'); later(function () { b.classList.remove('lit'); set('watch'); look(0, 0); }, 1700); }, 1300);
+          else later(function () { set('watch'); look(0, 0); }, 2200);
+        }
+        if (reduced) return show();
+        set('think'); later(show, 380);
+      },
+      wake: function () { stop(); set('watch'); look(caret(), 1); kick(); blinkLoop(); }
+    };
+    return owl;
+  }
+  /* print a matched answer and let the owl react to it */
+  function answer(fact) {
+    var line = tprint(esc(fact.answer) + (fact.cmd ? '<br><br>try: <b class="try-cmd">' + esc(fact.cmd) + '</b>' : ''));
+    var state = fact.id === 'offtopic' ? 'off' : fact.id === 'rude' ? 'rude' : WARM[fact.id] ? 'warm' : kbLastScore >= 5 ? 'sure' : 'maybe';
+    if (owl) owl.verdict(state, line);
+  }
   function run(raw) {
     var text = raw.trim();
     /* !! repeats last command */
@@ -1382,12 +1532,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!cmd) return;
     if (text.indexOf('|') === -1) echo(raw);
     if (cmd === 'ls' && arg.charAt(0) === '-') arg = '';
-    if (cmd === 'sudo' && parts.length > 1) { tprint('nice try. this ledger is read-only, even for root.'); return; }
+    if (cmd === 'sudo' && parts.length > 1) { if (owl) owl.verdict('off', null); tprint('nice try. this ledger is read-only, even for root.'); return; }
     /* a multi-word question that does not start with a real command goes to the facts before any alias,
        so "how much did you save" is answered instead of hijacked by the one-word alias how -> basis */
     if (!COMMANDS[cmd] && parts.length > 1 && (QUESTION.test(text.toLowerCase()) || text.indexOf('?') !== -1)) {
       var early = matchFact(text);
-      if (early) { tprint(esc(early.answer) + (early.cmd ? '<br><br>try: <b>' + esc(early.cmd) + '</b>' : '')); return; }
+      if (early) { answer(early); return; }
     }
     var name = COMMANDS[cmd] ? cmd : ALIASES[cmd];
     if (name === 'cat' && cmd !== 'cat') arg = 'about';
@@ -1395,6 +1545,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (name === 'sound' && cmd === 'mute') arg = 'off';
     if (name === 'sound' && cmd === 'unmute') arg = 'on';
     if (name && COMMANDS[name]) {
+      if (owl && (name === 'hello' || name === 'thanks')) owl.verdict('warm', null);
       var output = COMMANDS[name](arg, rest);
       if (typeof output === 'string') tprint(output);
       return;
@@ -1404,21 +1555,17 @@ document.addEventListener('DOMContentLoaded', function () {
     /* Natural language question answering */
     if (QUESTION.test(text.toLowerCase()) || text.indexOf('?') !== -1) {
       var fact = matchFact(text);
-      if (fact) {
-        tprint(esc(fact.answer) + (fact.cmd ? '<br><br>try: <b>' + esc(fact.cmd) + '</b>' : ''));
-        return;
-      }
+      if (fact) { answer(fact); return; }
       track('terminal-miss');
+      if (owl) owl.verdict('miss', null);
       tprint('I don\'t have a fact for that. try one of these:<br>  help           full command list<br>  stats          project figures<br>  cat about      who is behind this<br>  grep &lt;word&gt;    search across everything<br>or ask about a specific project by name.');
       return;
     }
     /* Try fact matching even for non-questions */
     var fact2 = matchFact(text);
-    if (fact2) {
-      tprint(esc(fact2.answer) + (fact2.cmd ? '<br><br>try: <b>' + esc(fact2.cmd) + '</b>' : ''));
-      return;
-    }
+    if (fact2) { answer(fact2); return; }
     var s = suggest(cmd);
+    if (owl) owl.verdict('miss', null);
     tprint(esc(cmd) + ': command not found.' + (s ? ' did you mean <b>' + esc(s) + '</b>?' : ' try: help') + (s ? '' : ''));
   }
   var termTrigger = null;
@@ -1449,6 +1596,7 @@ document.addEventListener('DOMContentLoaded', function () {
         tprint('Type <b>help</b> to see the commands, or <b>ls projects</b> to list the projects.');
       }, boot.length * 160 + 60);
     }
+    owlMake().wake();
     setTimeout(function () { input.focus(); }, 50);
     document.body.style.overflow = 'hidden';
   }
