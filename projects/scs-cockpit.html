@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +11,7 @@
 <meta name="author" content="Ajay Sachdev">
 <meta name="publish_date" property="og:publish_date" content="2026-10-08T00:00:00+0000">
 <meta property="article:published_time" content="2026-10-08T00:00:00+00:00">
+<meta property="article:modified_time" content="2026-10-15T00:00:00+00:00">
 <meta property="article:author" content="Ajay Sachdev">
 <link rel="canonical" href="https://ajaysachdev.com/projects/scs-cockpit.html">
 <meta property="og:url" content="https://ajaysachdev.com/projects/scs-cockpit.html">
@@ -153,8 +154,9 @@ h1 em { color: var(--credit); }
   display: flex; justify-content: space-between; gap: 1rem; margin-top: clamp(4.5rem, 9vw, 7rem);
 }
 .section-head .right { color: var(--paper-faint); text-align: right; }
+.section-head h2 { font: inherit; margin: 0; letter-spacing: inherit; text-transform: inherit; color: inherit; }
 /* What went wrong: one failure per entry, told straight. Debit red label (brief 2.5) */
-.wrong .section-head > span:first-child { color: var(--debit); }
+.wrong .section-head > h2 { color: var(--debit); }
 .wrong .pull span { color: var(--debit); }
 /* First note sits tighter: the entry head's fig row already provides the air */
 header + section .section-head, .notes-col > section:first-child .section-head { margin-top: clamp(2.8rem, 5.5vw, 4.2rem); }
@@ -297,6 +299,8 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .o-name { font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1; white-space: nowrap; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; text-decoration-color: rgba(236, 231, 220, 0.3); transition: text-decoration-color var(--dur-link) var(--ease-micro); }
 /* 13B (motion pass): same rule as /projects/ and every link (Paco, measured 240ms) */
 .others tr:hover .o-name, .others tr:focus-visible .o-name { text-decoration-color: var(--credit); }
+a.o-name { color: inherit; }
+.others tr:focus-within .o-name { text-decoration-color: var(--credit); }
 .o-desc { font-size: 0.82rem; color: var(--paper-dim); max-width: 26rem; line-height: 1.55; }
 .o-status { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; white-space: nowrap; color: var(--paper-dim); }
 @media (max-width: 680px) { .o-desc { display: none; } }
@@ -429,7 +433,7 @@ main.wrap > header .reveal { opacity: 1; }
   <div class="body-grid">
     <div class="notes-col">
       <section data-note="1">
-        <div class="section-head reveal"><span>The problem</span><span class="right">Three ways to fail</span></div>
+        <div class="section-head reveal"><h2>The problem</h2><span class="right">Three ways to fail</span></div>
         <p class="prose reveal">The Strategic Case Study is the last CIMA exam: a fictional company you've studied for weeks, a clock, and a run of emails asking what you'd actually do. The guidance names three ways people fail: generic theory that could apply to any company, no real recommendation, and missing the facts the scenario hands you.</p>
         <p class="prose reveal">Most study material tests what you know. I wanted something that tested <b>how I answered</b>, under time, against those three.</p>
         <table class="ledger reveal">
@@ -443,13 +447,13 @@ main.wrap > header .reveal { opacity: 1; }
       </section>
 
       <section data-note="2">
-        <div class="section-head reveal"><span>How it works</span><span class="right">Seeds, verbs, a clock</span></div>
+        <div class="section-head reveal"><h2>How it works</h2><span class="right">Seeds, verbs, a clock</span></div>
         <p class="prose reveal">A drill is composed, not pulled from a bank: a case-specific scenario seed, a competency, a template and an anchor from the study material. It arrives as an email with tasks attached, and a timer changes colour as time runs down. Afterwards the answer is scored on the five dimensions the exam marks: <b>role fit, application, judgement, structure and ethics</b>.</p>
         <p class="prose reveal">Behind it, 54 source PDFs became 166 study items and 23 frameworks. Spaced repetition decides what comes back tomorrow. One button turns any drill into an examiner prompt I could hand to an outside AI for a second opinion.</p>
       </section>
 
       <section data-note="3">
-        <div class="section-head reveal"><span>The drill</span><span class="right"></span></div>
+        <div class="section-head reveal"><h2>The drill</h2><span class="right"></span></div>
         <div class="drill reveal" id="drill">
           <div class="dr-head"><span>Drill / Judgement</span><span class="dr-stamp">Sample data</span></div>
           <p class="dr-mail"><b>From: Finance Director, Northmoor Composites plc</b>Our largest customer wants 90-day payment terms instead of 30, in return for a three-year volume commitment. The board meets tomorrow. Recommend whether we accept, and what we'd need in place to protect ourselves.</p>
@@ -473,13 +477,13 @@ main.wrap > header .reveal { opacity: 1; }
       </section>
 
       <section class="wrong" data-note="4">
-        <div class="section-head reveal"><span>What went wrong</span><span class="right">The mock I never built</span></div>
+        <div class="section-head reveal"><h2>What went wrong</h2><span class="right">The mock I never built</span></div>
         <p class="prose reveal">The exam is three hours under one clock, and the feature that would have rehearsed exactly that never got built. Mock exam mode, three linked sections, a three-hour clock and a structured debrief, went to the top of the priority list in April. It was still at the top after the exam. I built short timed drills instead. They worked, but they weren't the whole exam.</p>
         <p class="pull reveal">The highest-value feature on the list <span>stayed on the list.</span></p>
       </section>
 
       <section data-note="5">
-        <div class="section-head reveal"><span>Stack</span></div>
+        <div class="section-head reveal"><h2>Stack</h2></div>
         <div class="stack reveal">
           <div><span class="s-name">Vanilla JavaScript</span><span class="s-role">The whole app. No framework, 0 runtime dependencies</span></div>
           <div><span class="s-name">HTML + CSS</span><span class="s-role">No build step. It opens and it runs</span></div>
@@ -510,31 +514,31 @@ main.wrap > header .reveal { opacity: 1; }
   </div>
 
   <section>
-    <div class="section-head reveal"><span>Other projects</span></div>
+    <div class="section-head reveal"><h2>Other projects</h2></div>
     <table class="others reveal">
       <thead class="visually-hidden"><tr><th scope="col">Ref</th><th scope="col">Project</th><th scope="col">Summary</th><th scope="col">Status</th></tr></thead>
       <tbody>
         <tr data-href="opspilot.html">
           <td class="o-ref">01</td>
-          <td><span class="o-name">OpsPilot</span></td>
+          <td><a class="o-name" href="opspilot.html">OpsPilot</a></td>
           <td class="o-desc">The AI that answers my messages: 6,124+ documents, live finance data, one-click approval.</td>
           <td class="o-status">Production</td>
         </tr>
         <tr data-href="trading-bot.html">
           <td class="o-ref">02</td>
-          <td><span class="o-name">Trading Bot</span></td>
+          <td><a class="o-name" href="trading-bot.html">Trading Bot</a></td>
           <td class="o-desc">Four AI agents that veto my trades. 115+ sessions, zero impulsive trades let through.</td>
           <td class="o-status">Paper trading</td>
         </tr>
         <tr data-href="uni-nation.html">
           <td class="o-ref">03</td>
-          <td><span class="o-name">Uni-Nation Digital</span></td>
+          <td><a class="o-name" href="uni-nation.html">Uni-Nation Digital</a></td>
           <td class="o-desc">Website, inventory PWA and Hindi voice stock entry for the family fabric business.</td>
           <td class="o-status">Being repaired</td>
         </tr>
         <tr data-href="whatsapp-smart.html">
           <td class="o-ref">04</td>
-          <td><span class="o-name">WhatsApp Smart</span></td>
+          <td><a class="o-name" href="whatsapp-smart.html">WhatsApp Smart</a></td>
           <td class="o-desc">A Chrome extension that gives WhatsApp scheduling, AI replies and summaries.</td>
           <td class="o-status">Prototype</td>
         </tr>
@@ -703,11 +707,10 @@ main.wrap > header .reveal { opacity: 1; }
       if (n) n.style.viewTransitionName = 'entry-title';
       location.href = row.dataset.href;
     }
-    row.addEventListener('click', go);
-    row.setAttribute('tabindex', '0');
-    row.setAttribute('role', 'link');
-    row.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+    /* The name is the real link (crawlable, keyboard focusable); the whole row stays clickable */
+    row.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault(); go();
     });
   });
   /* Back/forward cache: restore the names so the page is clean if it is shown again */

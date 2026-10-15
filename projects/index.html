@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +11,7 @@
 <meta name="author" content="Ajay Sachdev">
 <meta name="publish_date" property="og:publish_date" content="2026-10-12T00:00:00+0000">
 <meta property="article:published_time" content="2026-10-12T00:00:00+00:00">
+<meta property="article:modified_time" content="2026-10-15T00:00:00+00:00">
 <meta property="article:author" content="Ajay Sachdev">
 <link rel="canonical" href="https://ajaysachdev.com/projects/">
 <meta property="og:url" content="https://ajaysachdev.com/projects/">
@@ -106,6 +107,7 @@ main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
   display: flex; justify-content: space-between; gap: 1rem; margin-top: clamp(5rem, 10vw, 8rem);
 }
 .section-head .right { color: var(--paper-faint); }
+.section-head h2 { font: inherit; margin: 0; letter-spacing: inherit; text-transform: inherit; color: inherit; }
 .ledger { width: 100%; border-collapse: collapse; }
 .ledger th {
   font-family: var(--mono); font-weight: 400; font-size: var(--ms-2); letter-spacing: var(--tr-2);
@@ -118,6 +120,8 @@ main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
 .ledger tbody tr[data-href] { cursor: pointer; }
 .ledger tbody tr[data-href]:focus-visible { outline-offset: -2px; }
 .ledger tbody tr[data-href]:hover .l-name, .ledger tbody tr[data-href]:focus-visible .l-name { text-decoration-color: var(--credit); }
+a.l-name { color: inherit; }
+.ledger tbody tr[data-href]:focus-within .l-name { text-decoration-color: var(--credit); }
 .l-ref { font-family: var(--mono); font-size: var(--ms-3); color: var(--paper-faint); width: 3.5rem; }
 .l-name { font-family: var(--serif); font-size: clamp(1.45rem, 2.7vw, 2.2rem); line-height: 1; white-space: nowrap; }
 .ledger tbody tr[data-href] .l-name { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; text-decoration-color: rgba(236, 231, 220, 0.3); transition: text-decoration-color var(--dur-link) var(--ease-micro); }
@@ -165,7 +169,7 @@ main.wrap { padding-top: clamp(7rem, 12vw, 10rem); }
 /* 15D (motion pass): desaturated only on mouse screens; hovering the row colours it, so one hover gives the underline and the colour together */
 @media (hover: hover) and (pointer: fine) {
   .l-thumb img { filter: saturate(0.75); }
-  .ledger tbody tr[data-href]:hover .l-thumb img, .ledger tbody tr[data-href]:focus-visible .l-thumb img { filter: none; }
+  .ledger tbody tr[data-href]:hover .l-thumb img, .ledger tbody tr[data-href]:focus-within .l-thumb img { filter: none; }
   .kshot img { filter: saturate(0.7) contrast(0.98); }
   .kshot:hover img, .kshot:focus-visible img { filter: none; }
 }
@@ -327,7 +331,7 @@ main.wrap > header .reveal { opacity: 1; transform: none; transition: none; }
   </header>
 
   <section id="work" class="first">
-    <div class="section-head"><span>Case studies</span><span class="right">01 to 05</span></div>
+    <div class="section-head"><h2>Case studies</h2><span class="right">01 to 05</span></div>
     <table class="ledger">
       <thead>
         <tr><th>#</th><th>Project</th><th>Description</th><th>Status</th><th>Key figure</th></tr>
@@ -335,35 +339,35 @@ main.wrap > header .reveal { opacity: 1; transform: none; transition: none; }
       <tbody>
         <tr class="reveal" data-href="opspilot.html">
           <td class="l-ref">01</td>
-          <td class="l-name-cell"><span class="l-name">OpsPilot</span></td>
+          <td class="l-name-cell"><a class="l-name" href="opspilot.html">OpsPilot</a></td>
           <td class="l-desc">Nobody could find anything in 6,124+ documents. An AI that lives in Teams, searches them, pulls live finance data and drafts answers I approve with one click.<span class="l-thumb"><picture><source srcset="../images/card-brain.webp" type="image/webp"><img src="../images/card-brain.png" alt="OpsPilot overview, reconstructed with sample items" fetchpriority="high" decoding="async"></picture></span></td>
           <td class="l-status-cell"><span class="l-status prod"><i></i>Production</span></td>
           <td class="l-metric">6,124+ docs answering back</td>
         </tr>
         <tr class="reveal" data-href="trading-bot.html">
           <td class="l-ref">02</td>
-          <td class="l-name-cell"><span class="l-name">Trading Bot</span></td>
+          <td class="l-name-cell"><a class="l-name" href="trading-bot.html">Trading Bot</a></td>
           <td class="l-desc">I kept overriding my own trading rules. Four AI agents now rate every setup and hold an absolute veto: 115+ sessions, zero impulsive trades let through.<span class="l-thumb"><picture><source srcset="../images/card-trading.webp" type="image/webp"><img src="../images/card-trading.png" alt="Trading Bot session ledger, reconstructed" loading="lazy" decoding="async"></picture></span></td>
           <td class="l-status-cell"><span class="l-status amber"><i></i>Paper trading</span></td>
           <td class="l-metric">0 bad trades</td>
         </tr>
         <tr class="reveal" data-href="uni-nation.html">
           <td class="l-ref">03</td>
-          <td class="l-name-cell"><span class="l-name">Uni-Nation Digital</span></td>
+          <td class="l-name-cell"><a class="l-name" href="uni-nation.html">Uni-Nation Digital</a></td>
           <td class="l-desc">Warehouse staff hold fabric rolls in both hands, so stock entry had to work by voice. Website, inventory system and Hindi voice entry for the family fabric business, running since 1988.<span class="l-thumb"><picture><source srcset="../images/card-uninat.webp" type="image/webp"><img src="../images/card-uninat.png" alt="Uni-Nation website on desktop and phone" loading="lazy" decoding="async"></picture></span></td>
           <td class="l-status-cell"><!-- STATUS:uni-nation (A7) --><span class="l-status amber"><i></i>Being repaired</span></td>
           <td class="l-metric">~$2m tracked</td>
         </tr>
         <tr class="reveal" data-href="whatsapp-smart.html">
           <td class="l-ref">04</td>
-          <td class="l-name-cell"><span class="l-name">WhatsApp Smart</span></td>
+          <td class="l-name-cell"><a class="l-name" href="whatsapp-smart.html">WhatsApp Smart</a></td>
           <td class="l-desc">I wanted to schedule a birthday message and WhatsApp couldn't. A Chrome extension for scheduling, AI replies, tone adjustment and summaries. Never launched.<span class="l-thumb"><picture><source srcset="../images/card-whatsapp.webp" type="image/webp"><img src="../images/card-whatsapp.png" alt="WhatsApp Smart extension UI in a browser frame" loading="lazy" decoding="async"></picture></span></td>
           <td class="l-status-cell"><span class="l-status amber"><i></i>Prototype</span></td>
           <td class="l-metric">11 features</td>
         </tr>
         <tr class="reveal" data-href="scs-cockpit.html">
           <td class="l-ref">05</td>
-          <td class="l-name-cell"><span class="l-name">SCS Cockpit</span></td>
+          <td class="l-name-cell"><a class="l-name" href="scs-cockpit.html">SCS Cockpit</a></td>
           <td class="l-desc">The exam fails people for generic theory and missed facts. The study engine I built for my own CIMA Strategic Case Study: timed drills, spaced repetition, zero dependencies. I passed.</td>
           <td class="l-status-cell"><span class="l-status idle"><i></i>Retired, job done</span></td>
           <td class="l-metric">Passed. ACMA CGMA</td>
@@ -375,7 +379,7 @@ main.wrap > header .reveal { opacity: 1; transform: none; transition: none; }
     </table>
   </section>
   <section id="drawer">
-    <div class="section-head"><span>Built at Krank</span><span class="right">06 to 10</span></div>
+    <div class="section-head"><h2>Built at Krank</h2><span class="right">06 to 10</span></div>
     <p class="drawer-note reveal">The day job runs on software I built for it. These belong to Krank, so every screen uses dummy data, and the figures are build facts, not business ones.</p>
     <table class="ledger reveal">
       <thead><tr><th>#</th><th>Tool</th><th>What it does</th><th>Status</th><th>Build fact</th></tr></thead>
@@ -580,10 +584,11 @@ main.wrap > header .reveal { opacity: 1; transform: none; transition: none; }
       if (n) n.style.viewTransitionName = 'entry-title';
       location.href = row.dataset.href;
     }
-    row.addEventListener('click', function (e) { if (!e.target.closest('a')) go(); });
-    row.setAttribute('tabindex', '0');
-    row.setAttribute('role', 'link');
-    row.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    /* The name is the real link (crawlable, keyboard focusable); the whole row stays clickable */
+    row.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault(); go();
+    });
   });
   /* Back/forward cache: clear click-time names so the next navigation never sees two */
   addEventListener('pageshow', function () { document.querySelectorAll('.l-name').forEach(function (n) { n.style.viewTransitionName = ''; }); });
