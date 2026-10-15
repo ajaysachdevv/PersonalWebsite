@@ -28,6 +28,9 @@
 ## Skills
 Financial Modelling, Budgeting & Forecasting, Power BI, SQL, Python, TypeScript, GA4, Firebase, FAISS, RAG, BM25, Claude, GPT, Gemini, Xero, HubSpot, Factorial, Contract Drafting
 
+## More
+- Full profile with questions and answers: https://ajaysachdev.com/llms-full.txt
+
 ## Contact
 - Web: https://ajaysachdev.com
 - Projects: https://ajaysachdev.com/projects/ (all ten projects: five case studies, plus five tools built at work, shown with dummy data)

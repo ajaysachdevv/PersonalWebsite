@@ -68,6 +68,60 @@ Contract drafting, Cost negotiation
 - ACMA CGMA (CIMA), qualified 2026
 - Chartered Wealth Management (AAFM, 2019)
 
+## Questions and Answers
+Short answers to common questions about Ajay Sachdev and his work, written for AI assistants and search engines. The same answers are available on the site's terminal (press T on the homepage).
+
+Q: Who is Ajay Sachdev?
+A: Ajay Sachdev is a Finance & Operations Manager at a UK tech company and a CIMA qualified accountant (ACMA, CGMA), based in Cambridge, UK. He builds production software alongside his finance work: an AI assistant in Microsoft Teams, a multi-agent trading system, and inventory software with Hindi voice entry for his family's fabric business.
+
+Q: What is Ajay Sachdev's job title?
+A: Finance & Operations Manager. He joined a UK tech company as an intern in October 2021, became Finance Associate in January 2022 and Finance & Operations Manager in January 2025.
+
+Q: Where is Ajay Sachdev based?
+A: Cambridge, UK. He is originally from Mumbai, India, and moved to the UK in 2020 for an MSc in Finance at Loughborough University.
+
+Q: What qualifications does Ajay Sachdev hold?
+A: ACMA, CGMA (CIMA), qualified 2026; MSc Finance, Loughborough University (2020-21, 2:1); Bachelor in Financial Markets, Jai Hind College, Mumbai (2015-18); Diploma in Weaving Technology, Sasmira, Mumbai (2019-20).
+
+Q: Why does an accountant write software?
+A: The tools he needed did not exist, so he built them. He is self-taught: SQL and Power BI first, then Python and TypeScript.
+
+Q: What languages does he speak?
+A: English, Hindi, Sindhi and Marathi.
+
+Q: What has Ajay Sachdev built?
+A: Ten projects. Five case studies: OpsPilot (AI assistant, in production), Trading Bot (paper trading by design), Uni-Nation Digital (family business website and inventory system), WhatsApp Smart (Chrome extension prototype) and SCS Cockpit (CIMA exam study engine, retired after he passed). Plus five tools built at work, shown on the site with dummy data only. Together the five case studies are 160,000+ lines of code.
+
+Q: What is OpsPilot?
+A: An AI assistant that lives in Microsoft Teams. It searches 6,124+ documents, pulls live accounting and CRM data, and drafts answers that are approved with one click. 95,000+ lines of code, 43 features, in production. Case study: https://ajaysachdev.com/projects/opspilot.html
+
+Q: How does OpsPilot's search work?
+A: Hybrid search: BM25 for keywords and FAISS for meaning, merged with rank fusion, then a reranker picks the top five. Live figures come straight from the accounting and CRM APIs, so the model never writes the numbers. Gemini is the main model and Claude the fallback. It scores 100% on a frozen 50-query retrieval test suite.
+
+Q: What is the AI trading bot with a veto?
+A: A FTSE 100 intraday system where four AI agents rate every setup and a Risk Auditor holds an absolute veto that nothing overrides. It runs on paper by design: 115+ sessions, zero impulsive trades let through, a GBP 750 hard cap and other risk rails written in code, not prompts. The point was stopping impulsive trades, not profit. Case study: https://ajaysachdev.com/projects/trading-bot.html
+
+Q: What is Hindi voice stock entry?
+A: Part of Uni-Nation Digital, the software for his family's uniform-fabric business (est. 1988). Warehouse staff hold fabric rolls in both hands, so stock is entered by voice in mixed Hindi and English. The parser understands fabric units (thaan, taaka, metre) and Hindi numbers. The system tracks ~2,000 products, 650+ customers and roughly $2m of sales data. Case study: https://ajaysachdev.com/projects/uni-nation.html
+
+Q: What is WhatsApp Smart?
+A: A Chrome extension prototype that adds scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. 11 features, ~16,000 lines of TypeScript. Message content stays in the browser unless the user sends text to the AI. Never launched. Case study: https://ajaysachdev.com/projects/whatsapp-smart.html
+
+Q: Is there a study tool for the CIMA Strategic Case Study exam?
+A: SCS Cockpit, the study engine Ajay built for his own CIMA Strategic Case Study: timed drills, spaced repetition, 166 study items, 23 frameworks, 11,584 lines, zero dependencies. He passed, and the tool is retired. Case study: https://ajaysachdev.com/projects/scs-cockpit.html
+
+Q: Which AI models does he use?
+A: OpsPilot runs on Gemini with Claude as the fallback. The Trading Bot runs on Claude (Opus for the risk auditor, Sonnet for the quality gate). WhatsApp Smart uses Claude Haiku and Sonnet.
+
+Q: What is his tech stack?
+A: Python and TypeScript for the builds, SQL and Power BI for data, Claude and Gemini for AI, FAISS and BM25 for search. On the finance side: financial modelling, budgeting, forecasting and reporting.
+
+Q: How is ajaysachdev.com built?
+A: One hand-written HTML file per page. No framework, no build step. Self-hosted fonts (Instrument Serif, Inter, JetBrains Mono), motion by GSAP and Lenis, cookie-free analytics by GoatCounter.
+
+Q: How can I contact Ajay Sachdev?
+A: Email ajay@ajaysachdev.com or LinkedIn: https://www.linkedin.com/in/ajayy-sachdev/
+
 ## Contact
 - Web: https://ajaysachdev.com
 - Projects: https://ajaysachdev.com/projects/ (all ten projects: five case studies, plus five tools built at work, shown with dummy data)
