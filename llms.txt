@@ -33,6 +33,7 @@ Financial Modelling, Budgeting & Forecasting, Power BI, SQL, Python, TypeScript,
 
 ## Contact
 - Web: https://ajaysachdev.com
+- About: https://ajaysachdev.com/about/
 - Projects: https://ajaysachdev.com/projects/ (all ten projects: five case studies, plus five tools built at work, shown with dummy data)
 - LinkedIn: https://www.linkedin.com/in/ajayy-sachdev/
 - Email: ajay@ajaysachdev.com

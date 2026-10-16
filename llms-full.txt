@@ -89,6 +89,9 @@ A: The tools he needed did not exist, so he built them. He is self-taught: SQL a
 Q: What languages does he speak?
 A: English, Hindi, Sindhi and Marathi.
 
+Q: What does Ajay Sachdev do outside work?
+A: Chess, badminton, travel, and slowly learning the piano. Most evenings, though, he is building software. More on the About page: https://ajaysachdev.com/about/
+
 Q: What has Ajay Sachdev built?
 A: Ten projects. Five case studies: OpsPilot (AI assistant, in production), Trading Bot (paper trading by design), Uni-Nation Digital (family business website and inventory system), WhatsApp Smart (Chrome extension prototype) and SCS Cockpit (CIMA exam study engine, retired after he passed). Plus five tools built at work, shown on the site with dummy data only. Together the five case studies are 160,000+ lines of code.
 
@@ -124,6 +127,7 @@ A: Email ajay@ajaysachdev.com or LinkedIn: https://www.linkedin.com/in/ajayy-sac
 
 ## Contact
 - Web: https://ajaysachdev.com
+- About: https://ajaysachdev.com/about/
 - Projects: https://ajaysachdev.com/projects/ (all ten projects: five case studies, plus five tools built at work, shown with dummy data)
 - LinkedIn: https://www.linkedin.com/in/ajayy-sachdev/
 - Email: ajay@ajaysachdev.com

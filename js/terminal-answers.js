@@ -931,7 +931,7 @@ window.TERMINAL_KB = [
     id: "hobbies",
     cmd: null,
     answer:
-      "Off the clock, mostly building things like the ones on this site. Ask about any of them.",
+      "Chess, badminton, travel, and slowly learning the piano. Most evenings, though, he is building something.",
     phrases: [
       "hobbies",
       "what do you do for fun",
