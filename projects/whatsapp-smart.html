@@ -95,7 +95,8 @@ main.wrap > header::before {
   color: var(--paper-faint);
 }
 .crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid rgba(236, 231, 220, 0.35); transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro); }
-.crumb a:hover, .crumb a:focus-visible { color: var(--paper); border-color: var(--credit); }
+.crumb a:focus-visible { color: var(--paper); border-color: var(--credit); }
+@media (hover: hover) { .crumb a:hover { color: var(--paper); border-color: var(--credit); } }
 @media (max-width: 480px) { .crumb { letter-spacing: 0.1em; } }
 h1 {
   view-transition-name: entry-title;
@@ -186,7 +187,8 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .o-ref { font-family: var(--mono); font-size: 0.7rem; color: var(--paper-faint); width: 3.5rem; }
 .o-name { font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1; white-space: nowrap; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; text-decoration-color: rgba(236, 231, 220, 0.3); transition: text-decoration-color var(--dur-link) var(--ease-micro); }
 /* 13B (motion pass): same rule as /projects/ and every link (Paco, measured 240ms) */
-.others tr:hover .o-name, .others tr:focus-visible .o-name { text-decoration-color: var(--credit); }
+.others tr:focus-visible .o-name { text-decoration-color: var(--credit); }
+@media (hover: hover) { .others tr:hover .o-name { text-decoration-color: var(--credit); } }
 a.o-name { color: inherit; }
 .others tr:focus-within .o-name { text-decoration-color: var(--credit); }
 .o-desc { font-size: 0.82rem; color: var(--paper-dim); max-width: 26rem; line-height: 1.55; }
@@ -227,10 +229,11 @@ a.o-name { color: inherit; }
   padding: 0.6rem 1rem; border-radius: 3px; border: 1px solid color-mix(in srgb, var(--credit) 45%, transparent); background: transparent;
   color: var(--credit); cursor: pointer; transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro);
 }
-.mo-btn:hover:not(:disabled), .mo-btn:focus-visible { color: var(--paper); border-color: var(--credit); }
+.mo-btn:focus-visible { color: var(--paper); border-color: var(--credit); }
+@media (hover: hover) { .mo-btn:hover:not(:disabled) { color: var(--paper); border-color: var(--credit); } }
 .mo-btn:disabled { opacity: 0.45; cursor: default; }
 .mo-btn.ghost { border-color: var(--rule); color: var(--paper-dim); }
-.mo-btn.ghost:hover:not(:disabled) { background: transparent; border-color: var(--paper-dim); color: var(--paper); }
+@media (hover: hover) { .mo-btn.ghost:hover:not(:disabled) { background: transparent; border-color: var(--paper-dim); color: var(--paper); } }
 .mo-replay, .mo-hide { display: none; }
 .mo-replay.show { display: inline-block; }
 .mo-hint { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-faint); }
@@ -254,15 +257,19 @@ a.o-name { color: inherit; }
 .un-prev { font-size: 0.78rem; color: var(--paper-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .un-bar button { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.45rem 0.75rem; border-radius: 3px; cursor: pointer; }
 .un-now { background: transparent; border: 1px solid var(--rule); color: var(--paper-dim); transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro); }
-.un-now:hover, .un-now:focus-visible { color: var(--paper); border-color: var(--paper-dim); }
+.un-now:focus-visible { color: var(--paper); border-color: var(--paper-dim); }
+@media (hover: hover) { .un-now:hover { color: var(--paper); border-color: var(--paper-dim); } }
 .un-undo { background: var(--amber); border: 1px solid var(--amber); color: var(--ink); font-weight: 700; }
 .un-prog { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--amber); transform-origin: left; }
 .un-compose { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
 .un-compose input { flex: 1; min-width: 0; padding: 0.6rem 0.75rem; border-radius: 6px; border: 1px solid var(--rule); background: transparent; color: var(--paper); font: inherit; font-size: 0.85rem; }
 .un-compose input:focus { border-color: var(--amber); }
+/* iOS zooms into any input under 16px */
+@media (pointer: coarse) { .un-compose input { font-size: 16px; } }
 .un-compose input:focus:not(:focus-visible) { outline: none; }
 .undo .mo-btn { border-color: var(--amber); color: var(--amber); }
-.undo .mo-btn:hover:not(:disabled), .undo .mo-btn:focus-visible { border-color: var(--amber); color: var(--paper); }
+.undo .mo-btn:focus-visible { border-color: var(--amber); color: var(--paper); }
+@media (hover: hover) { .undo .mo-btn:hover:not(:disabled) { border-color: var(--amber); color: var(--paper); } }
 .undo .mo-btn.ghost { border-color: var(--rule); color: var(--paper-dim); }
 @media (max-width: 480px) { .un-bar { grid-template-columns: auto 1fr; } .un-prev { display: none; } }
 
@@ -274,7 +281,8 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   color: var(--paper-dim); text-decoration: none; border: 1px solid var(--rule); padding: 0.8rem 1.4rem;
   transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro);
 }
-.foot-links a:hover, .foot-links a:focus-visible { color: var(--paper); border-color: var(--credit); }
+.foot-links a:focus-visible { color: var(--paper); border-color: var(--credit); }
+@media (hover: hover) { .foot-links a:hover { color: var(--paper); border-color: var(--credit); } }
 @media (max-width: 480px) { .foot-links a { flex: 1 1 40%; text-align: center; } }
 .foot-sign {
   margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);
@@ -540,7 +548,9 @@ main.wrap > header .reveal { opacity: 1; }
       var a = notes[0].getBoundingClientRect().top, z = notes[notes.length - 1].getBoundingClientRect().bottom, y = innerHeight * 0.35;
       railFill.style.transform = 'scaleX(' + Math.max(0, Math.min(1, (y - a) / ((z - a) || 1))) + ')';
     };
-    addEventListener('scroll', function () { if (!railTick) { railTick = true; requestAnimationFrame(railProgress); } }, { passive: true });
+    /* the margin rail only shows at 1024px and up: below that, skip the per-frame measuring */
+    var railWide = window.matchMedia('(min-width: 1024px)');
+    addEventListener('scroll', function () { if (!railTick && railWide.matches) { railTick = true; requestAnimationFrame(railProgress); } }, { passive: true });
     railProgress();
   }
   if (notes.length && 'IntersectionObserver' in window) {
@@ -554,6 +564,16 @@ main.wrap > header .reveal { opacity: 1; }
   var muted = false;
   try { muted = localStorage.getItem('ledger-snd') === 'off'; } catch (e) { /* private mode */ }
   var actx = null;
+  var touchUI = window.matchMedia('(pointer: coarse)').matches;
+  /* iOS only starts Web Audio inside a tap: create or wake the context on every touch, so blips that
+     fire later (timers, animation frames) are not silent */
+  addEventListener('pointerdown', function () {
+    if (muted) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === 'suspended') actx.resume();
+    } catch (e) { /* audio optional */ }
+  }, { passive: true });
   function blip(freq, dur, type, vol) {
     if (muted) return;
     try {
@@ -614,7 +634,7 @@ main.wrap > header .reveal { opacity: 1; }
       if (!timer) return;
       stop(); bar.hidden = true; input.value = pending; send.disabled = false;
       note.textContent = 'Pulled back. Nothing reached WhatsApp.';
-      blip(300, 0.14, 'triangle', 0.07); reset.classList.add('show'); input.focus();
+      blip(300, 0.14, 'triangle', 0.07); reset.classList.add('show'); if (!touchUI) input.focus();
       track('sim-whatsapp-undone');
     });
     reset.addEventListener('click', function () {

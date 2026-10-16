@@ -132,6 +132,8 @@
   transition: transform var(--dur-short) var(--ease-out), visibility 0s var(--dur-short);
 }
 .site-nav.is-squeezed .nav-notch { transform: translate(-50%, 0); visibility: visible; transition: transform var(--dur-short) var(--ease-out), visibility 0s; }
+/* phones: tucked away while scrolling down (js/nav.js), back on scroll up */
+.site-nav.is-squeezed.is-tucked .nav-notch { transform: translate(-50%, -110%); visibility: hidden; transition: transform var(--dur-short) var(--ease-out), visibility 0s var(--dur-short); }
 .nav-mono {
   font: inherit; font-family: var(--serif); font-size: 1.15rem; line-height: 1; color: var(--paper);
   background: none; border: 0; padding: 0.4rem 0.55rem; cursor: pointer; white-space: nowrap;
@@ -157,6 +159,10 @@
   .nav-notch { padding: 0 0.6rem; }
   .nav-notch .side { gap: 0.75rem; }
 }
+
+/* ---------- Touch screens (16/10/2026): no grain. At phone size it cannot be seen, but its blend
+   repaints the whole screen on every scroll frame. Pages keep their own grain rule for desktop. ---------- */
+@media (pointer: coarse) { body::after, .yr-pin::after { display: none; } }
 
 /* ---------- The one ambient pulse keyframe (status dot on "Production" only, map "now") ---------- */
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }

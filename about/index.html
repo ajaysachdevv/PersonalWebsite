@@ -104,7 +104,8 @@ body::after {
 .otc-copy { position: absolute; z-index: 6; left: clamp(1.25rem, 6vw, 5rem); top: max(14%, 6.5rem); max-width: 27rem; }
 .crumb { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper-faint); }
 .crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid var(--rule); transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro); }
-.crumb a:hover, .crumb a:focus-visible { color: var(--paper); border-color: var(--credit); }
+.crumb a:focus-visible { color: var(--paper); border-color: var(--credit); }
+@media (hover: hover) { .crumb a:hover { color: var(--paper); border-color: var(--credit); } }
 .otc-h { font-family: var(--serif); font-weight: 400; font-size: clamp(2.3rem, 4.4vw, 3.8rem); line-height: 1.03; margin-top: 0.9rem; text-wrap: balance; }
 .otc-h em { color: var(--credit); }
 .otc-p { margin-top: 1rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; text-wrap: pretty; }
@@ -152,7 +153,8 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   color: var(--paper-dim); text-decoration: none; border: 1px solid var(--rule); padding: 0.8rem 1.4rem;
   transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro);
 }
-.foot-links a:hover, .foot-links a:focus-visible { color: var(--paper); border-color: var(--credit); }
+.foot-links a:focus-visible { color: var(--paper); border-color: var(--credit); }
+@media (hover: hover) { .foot-links a:hover { color: var(--paper); border-color: var(--credit); } }
 @media (max-width: 480px) { .foot-links a { flex: 1 1 40%; text-align: center; } }
 .foot-sign {
   margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);

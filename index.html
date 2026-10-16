@@ -160,6 +160,7 @@ a { color: inherit; }
   }
   .site-nav.is-squeezed .nav-pos { opacity: 1; }
   .site-nav:has(.nav-notch.is-open) .nav-pos { opacity: 0; }
+  .site-nav.is-tucked .nav-pos { opacity: 0; }
 }
 
 /* ================= v4 schedule notes ================= */
@@ -253,14 +254,16 @@ header.open { min-height: 100svh; position: relative; display: grid; place-items
 .open-proj .tr.b { bottom: -1px; transform-origin: right; }
 .open-proj .tr.r { right: -1px; transform-origin: top; }
 .open-proj .tr.l { left: -1px; transform-origin: bottom; }
-.open-proj:hover .tr, .open-proj:focus-visible .tr { transform: none; }
+.open-proj:focus-visible .tr { transform: none; }
+@media (hover: hover) { .open-proj:hover .tr { transform: none; } }
 .open-readout {
   position: absolute; bottom: 1.6rem; left: clamp(1.25rem, 4vw, 3rem); right: clamp(1.25rem, 4vw, 3rem); z-index: 2;
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.7rem 2rem;
   font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-2); color: var(--paper-faint); text-transform: uppercase;
 }
 .open-readout .term-hint { cursor: pointer; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; transition: color var(--dur-link) var(--ease-micro), text-decoration-color var(--dur-link) var(--ease-micro); }
-.open-readout .term-hint:hover, .open-readout .term-hint:focus-visible { color: var(--paper); text-decoration-color: var(--credit); }
+.open-readout .term-hint:focus-visible { color: var(--paper); text-decoration-color: var(--credit); }
+@media (hover: hover) { .open-readout .term-hint:hover { color: var(--paper); text-decoration-color: var(--credit); } }
 /* Phone: the readout is the identity payload (name, CGMA, base), so it stacks legibly; PRESS T moves to the footer prompt, the ghost name goes (noise behind a crowded hero) */
 @media (max-width: 480px) {
   .open-readout { position: relative; left: auto; right: auto; bottom: auto; margin-top: 2.2rem; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; letter-spacing: var(--tr-1); }
@@ -311,7 +314,8 @@ h3.yr-num { margin: 0; font-weight: 400; }
 .yr-panel { flex: 0 0 min(62vw, 56rem); display: flex; flex-direction: column; justify-content: flex-start; padding-top: clamp(6rem, 17vh, 9.5rem); border-left: 1px solid var(--rule); }
 .yr-panel:first-child { border-left: 0; }
 @media (max-width: 700px) {
-  .yr-panel { flex-basis: 88vw; }
+  /* phones (16/10/2026): one whole year per screen, snapped, so no half-panels mid-slide */
+  .yr-panel { flex-basis: 100vw; border-left: 0; }
   .yr-list li { font-size: 0.86rem; }
 }
 /* short viewports (iPhone SE 568, iPhone 15 659): the pin is 100svh, so shrink the panel until the 12-row 2026 list fits under the fixed notch (top >= 5rem) */
@@ -349,7 +353,8 @@ h3.yr-num { margin: 0; font-weight: 400; }
   color: var(--credit); text-decoration: none; border: 1px solid rgba(47, 191, 113, 0.4); border-radius: 3px; padding: 0.9rem 1.4rem;
   transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro);
 }
-.door-go:hover, .door-go:focus-visible { color: var(--paper); border-color: var(--credit); }
+.door-go:focus-visible { color: var(--paper); border-color: var(--credit); }
+@media (hover: hover) { .door-go:hover { color: var(--paper); border-color: var(--credit); } }
 @media (max-width: 720px) { .door { grid-template-columns: 1fr; } .door-go { justify-self: start; } }
 
 
@@ -360,7 +365,7 @@ h3.yr-num { margin: 0; font-weight: 400; }
   line-height: 1.45; color: var(--paper-dim); max-width: 36rem;
 }
 .reach-line a { color: var(--credit); text-decoration: none; border-bottom: 1px solid rgba(47, 191, 113, 0.4); transition: border-color var(--dur-micro) ease; }
-.reach-line a:hover { border-color: var(--credit); }
+@media (hover: hover) { .reach-line a:hover { border-color: var(--credit); } }
 
 /* ================= Operating results (the day job) ================= */
 .op-lede { margin-top: 1.4rem; max-width: 40rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; }
@@ -382,7 +387,8 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   color: var(--paper-dim); text-decoration: none; border: 1px solid var(--rule); padding: 0.8rem 1.4rem;
   transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro);
 }
-.foot-links a:hover, .foot-links a:focus-visible { color: var(--paper); border-color: var(--credit); }
+.foot-links a:focus-visible { color: var(--paper); border-color: var(--credit); }
+@media (hover: hover) { .foot-links a:hover { color: var(--paper); border-color: var(--credit); } }
 @media (max-width: 480px) { .foot-links a { flex: 1 1 40%; text-align: center; } }
 .foot-sign {
   margin-top: 5rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);
@@ -390,7 +396,8 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-2); color: var(--paper-faint); text-transform: uppercase;
 }
 .foot-sign .term-hint { cursor: pointer; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; transition: color var(--dur-link) var(--ease-micro), text-decoration-color var(--dur-link) var(--ease-micro); }
-.foot-sign .term-hint:hover, .foot-sign .term-hint:focus-visible { color: var(--paper); text-decoration-color: var(--credit); }
+.foot-sign .term-hint:focus-visible { color: var(--paper); text-decoration-color: var(--credit); }
+@media (hover: hover) { .foot-sign .term-hint:hover { color: var(--paper); text-decoration-color: var(--credit); } }
 
 /* ================= Terminal ================= */
 .terminal {
@@ -409,13 +416,18 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-1); padding: 0.3rem 0.7rem; cursor: pointer;
   transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro);
 }
-.term-bar button:hover, .term-bar button:focus-visible { color: var(--paper); border-color: var(--credit); }
+.term-bar button:focus-visible { color: var(--paper); border-color: var(--credit); }
+@media (hover: hover) { .term-bar button:hover { color: var(--paper); border-color: var(--credit); } }
 .term-body { flex: 1; overflow-y: auto; padding: 1.2rem 1.3rem; font-family: var(--mono); font-size: 0.8rem; line-height: 1.85; color: var(--paper-dim); white-space: pre-wrap; display: flex; flex-direction: column; }
 .term-body::before { content: ''; flex: 1 0 auto; }
 .term-body .in { color: var(--credit); }
 .term-body .out b { color: var(--paper); font-weight: 500; }
 .term-body .out .ok { color: var(--credit); }
 .term-body .out .warn { color: var(--amber); }
+/* phones: "name   description" lines stacked (stackCols in the terminal script) */
+.term-body .kv .k, .term-body .kv .v { display: block; }
+.term-body .kv .v { padding-left: 1.4em; color: var(--paper-faint); }
+.term-body .kv + div:not(.kv) { margin-top: 0.2em; }
 .term-input { display: flex; gap: 0.6rem; padding: 0.9rem 1.3rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.8rem; transition: border-color var(--dur-micro) ease; }
 .term-input:focus-within { border-top-color: var(--credit); }
 .term-input .ps1 { color: var(--credit); white-space: nowrap; }
@@ -452,7 +464,22 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 .term-body .out b.try-cmd { transition: background-color 0.3s ease, color 0.3s ease; }
 .term-body .out b.try-cmd.lit { background: var(--credit); color: var(--ink); }
 .owl-measure { position: absolute; visibility: hidden; white-space: pre; font-family: var(--mono); font-size: 0.8rem; }
-@media (max-width: 600px) { .term-body { padding-right: 104px; } .owl { width: 92px; height: 92px; right: 8px; bottom: calc(54px + var(--chips-h, 0px)); } }
+@media (max-width: 600px) { .term-body { padding-right: 76px; } .owl { width: 64px; height: 64px; right: 8px; bottom: calc(54px + var(--chips-h, 0px)); } }
+/* phones (16/10/2026, Ajay): the terminal goes solid paper like the share card (og-card-2), using the
+   light-scene tokens, with the card's double rule under the bar. Desktop keeps the dark terminal */
+@media (max-width: 720px) {
+  .terminal {
+    --ink: var(--light-bg); --paper: var(--light-ink); --paper-dim: var(--light-ink-dim); --paper-faint: var(--light-ink-faint);
+    --rule: var(--light-rule); --credit: var(--light-credit); --amber: var(--light-amber); --debit: var(--light-debit);
+    background: var(--light-bg); border-color: var(--light-rule); box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.55);
+  }
+  .term-bar { border-bottom: 3px double var(--rule); }
+  .term-chips .chip { background: var(--light-panel); }
+}
+/* touch: the 1-3 key numbers on the chips are a keyboard hint */
+@media (pointer: coarse) { .term-chips .chip kbd { display: none; } }
+/* touch: no sound toggle in the hero (home plays nothing, and the iOS silent switch mutes the case pages anyway) */
+@media (pointer: coarse) { .open-readout #snd { display: none; } }
 /* suggested replies (14/10/2026, Ajay picked board option B + F's ghost): numbered tags above the input, a
    "Show all commands" tag at the end, the first suggestion as ghost text in the empty input. Tags sit clear of
    the input rule; the owl stands on the row (--chips-h, set in JS). Hover is the button family: no new motion */
@@ -689,6 +716,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var touch = window.matchMedia('(pointer: coarse)').matches;
   var pageStart = Date.now();
   /* Motion tokens from css/design-tokens.css, so GSAP timings follow the same file as the CSS */
   var rootStyle = getComputedStyle(document.documentElement);
@@ -756,18 +784,28 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ---------- Reading progress: phone bar (top) and the desktop rail hairline (4C) ---------- */
   var prog = document.getElementById('scrollprog');
   var railFill = document.querySelector('.rail-fill');
+  var railShown = window.matchMedia('(min-width: 861px)');
+  var progTick = false;
   addEventListener('scroll', function () {
-    var h = document.documentElement.scrollHeight - innerHeight;
-    var p = h > 0 ? Math.min(1, scrollY / h) : 0;
-    prog.style.transform = 'scaleX(' + p + ')';
-    if (railFill) railFill.style.transform = 'scaleY(' + p + ')';
+    if (progTick) return;
+    progTick = true;
+    requestAnimationFrame(function () {
+      progTick = false;
+      var h = document.documentElement.scrollHeight - innerHeight;
+      var p = h > 0 ? Math.min(1, scrollY / h) : 0;
+      if (railShown.matches) { if (railFill) railFill.style.transform = 'scaleY(' + p + ')'; }
+      else prog.style.transform = 'scaleX(' + p + ')';
+    });
   }, { passive: true });
 
   /* ---------- GSAP scenes ---------- */
   if (window.gsap && !reduced) {
     gsap.registerPlugin(ScrollTrigger);
 
-    if (window.Lenis) {
+    /* iOS address bar show/hide resizes the viewport: do not re-measure the pin for it */
+    ScrollTrigger.config({ ignoreMobileResize: true });
+    /* touch scroll is native under Lenis anyway (no syncTouch), so phones skip its every-frame ticker */
+    if (window.Lenis && !touch) {
       var lenis = new Lenis({ duration: 1.15, easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
       if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { window.__lenis = lenis; }
       /* local-only design tweak panel (press D); file is gitignored, 404s in prod, loader is hostname-gated anyway */
@@ -817,7 +855,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     /* Ghost name drifts and loosens as the hero scrolls away */
-    gsap.to('.open-name', {
+    if (!window.matchMedia('(max-width: 480px)').matches) gsap.to('.open-name', {
       letterSpacing: '0.05em', yPercent: 18, ease: 'none',
       scrollTrigger: { trigger: '#top', start: 'top top', end: 'bottom top', scrub: true }
     });
@@ -849,12 +887,15 @@ document.addEventListener('DOMContentLoaded', function () {
     yrPin.appendChild(yrTrack);
     years.classList.add('is-live');
     function yrDist() { return Math.max(0, yrTrack.scrollWidth - yrPin.clientWidth); }
+    /* phones: full-width panels that snap to one whole year, and a shorter run (0.45 of the slide) */
+    var yrPhone = window.matchMedia('(max-width: 700px)').matches;
     gsap.to(yrTrack, {
       x: function () { return -yrDist(); }, ease: 'none',
       scrollTrigger: {
         trigger: yrPin, pin: true, anticipatePin: 1, start: 'top top',
-        end: function () { return '+=' + Math.round(yrDist() * 0.55); },
-        scrub: 0.6, invalidateOnRefresh: true
+        end: function () { return '+=' + Math.round(yrDist() * (yrPhone ? 0.45 : 0.55)); },
+        scrub: yrPhone ? 0.4 : 0.6, invalidateOnRefresh: true,
+        snap: yrPhone ? { snapTo: 1 / Math.max(1, marks.length - 1), directional: true, inertia: false, delay: 0.06, duration: { min: 0.2, max: 0.45 }, ease: 'power2.out' } : false
       }
     });
 
@@ -866,7 +907,8 @@ document.addEventListener('DOMContentLoaded', function () {
   (function () {
     var split = document.getElementById('split');
     if (!split) return;
-    if (reduced) { split.style.setProperty('--mx', '0.5'); return; }
+    /* touch: held at the middle (the drift was a forever rAF loop behind panes at 12% opacity) */
+    if (reduced || touch) { split.style.setProperty('--mx', '0.5'); return; }
     var hero = document.getElementById('top');
     var target = 0.5, cur = 0.5, fine = window.matchMedia('(pointer: fine)').matches, t0 = performance.now(), visible = true;
     if (fine) hero.addEventListener('pointermove', function (e) { target = Math.max(0.12, Math.min(0.88, e.clientX / innerWidth)); }, { passive: true });
@@ -1011,13 +1053,31 @@ document.addEventListener('DOMContentLoaded', function () {
   function tprint(html, cls) {
     var div = document.createElement('div');
     div.className = cls || 'out';
-    div.innerHTML = html;
+    div.innerHTML = termPhone && typeof html === 'string' ? stackCols(html) : html;
     tbody.appendChild(div);
     tbody.scrollTop = tbody.scrollHeight;
     return div;
   }
+  /* phones (16/10/2026): the short prompt, and "name   description" lines stack into one column */
+  var termPhone = window.matchMedia('(max-width: 720px)').matches;
+  var PS1 = termPhone ? '~$' : 'visitor@ajaysachdev.com:~$';
+  if (termPhone) document.querySelector('.term-input .ps1').textContent = PS1;
+  function stackCols(html) {
+    var lines = html.split(/<br\s*\/?>/), hit = false;
+    function balanced(t) { return (t.match(/<[a-z][^>]*>/gi) || []).length === (t.match(/<\/[a-z]+>/gi) || []).length; }
+    for (var i = 0; i < lines.length; i++) {
+      if (!balanced(lines[i])) return html;
+      if (/^\S.*?\S {2,}\S/.test(lines[i])) hit = true;
+    }
+    if (!hit) return html;
+    return lines.map(function (l) {
+      var m = /^(\S.*?\S|\S) {2,}(\S.*)$/.exec(l);
+      if (m && balanced(m[1])) return '<div class="kv"><span class="k">' + m[1] + '</span><span class="v">' + m[2].replace(/ {2,}/g, ', ') + '</span></div>';
+      return '<div>' + (l || '<br>') + '</div>';
+    }).join('');
+  }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-  function echo(cmd) { tprint('<span class="in">visitor@ajaysachdev.com:~$</span> ' + esc(cmd)); }
+  function echo(cmd) { tprint('<span class="in">' + PS1 + '</span> ' + esc(cmd)); }
   var COMMANDS = {
     help: function (arg) {
       if (arg) {
@@ -1030,8 +1090,8 @@ document.addEventListener('DOMContentLoaded', function () {
         '<b>About</b><br>cat about          who is behind this<br>cgma               the qualification<br>guardrails         the guardrails on his AI coding tools<br>timeline           the career years<br>skills             the skill set<br>education          degrees and qualifications<br>contact            email and linkedin<br><br>' +
         '<b>This site</b><br>log                the change log of this site<br>basis              how this site is built<br>uptime             how long the books have been open<br>date               today, in the house format<br>balance            trial balance of every system<br><br>' +
         '<b>Filesystem</b><br>tree               show the file tree<br>cat &lt;file&gt;         read a file (try: cat about.txt)<br>grep &lt;word&gt;        search across all facts<br>ls | grep &lt;word&gt;   pipe output through grep<br><br>' +
-        '<b>The terminal</b><br>history            what you have typed this session<br>sound on | off     blips on the case pages<br>echo &lt;text&gt;        say it back<br>clear | Ctrl+L     wipe the screen<br>!!                 repeat the last command<br>exit | Esc         close the terminal<br><br>' +
-        'Tab completes commands and project names. Ask a question in plain English.<br>help &lt;command&gt; explains one. up/down arrows recall history.');
+        '<b>The terminal</b><br>history            what you have typed this session<br>sound on | off     blips on the case pages<br>echo &lt;text&gt;        say it back<br>' + (touch ? 'clear              wipe the screen' : 'clear | Ctrl+L     wipe the screen') + '<br>!!                 repeat the last command<br>' + (touch ? 'exit               close the terminal' : 'exit | Esc         close the terminal') + '<br><br>' +
+        (touch ? 'Ask a question in plain English.<br>help &lt;command&gt; explains one.' : 'Tab completes commands and project names. Ask a question in plain English.<br>help &lt;command&gt; explains one. up/down arrows recall history.'));
     },
     basis: function () {
       tprint('<b>How this site is built</b><br>One hand-written HTML file per page. No framework, no build step, no npm.<br>Type: Instrument Serif, Inter, JetBrains Mono. Subset and self-hosted.<br>Motion: GSAP + ScrollTrigger + Lenis, self-hosted and deferred.<br>Analytics: GoatCounter. No cookies, nothing personal collected.<br>Also on file: <b>humans.txt</b>, <b>llms.txt</b>, and a 404 that balances.');
@@ -1696,6 +1756,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-term]').forEach(function (el) { el.textContent = 'Tap for terminal'; });
   }
   document.getElementById('term-close').addEventListener('click', closeTerm);
+  /* no Esc key on a phone */
+  if (touch) document.getElementById('term-close').textContent = 'CLOSE';
   /* v4: the terminal is a feature now. The footer prompt runs straight into it */
   var footPrompt = document.getElementById('foot-prompt'), footCmd = document.getElementById('foot-cmd');
   /* no keyboard shortcut on a phone, so the hint drops 'press T' there */

@@ -3,7 +3,8 @@
    into a black notch holding the monogram. Fine pointers open the notch on hover, touch
    opens it on tap, keyboard focus opens it, Escape closes it. Scrolling up opens it too (the
    same open notch, not the full bar) and scrolling down closes it again (Ajay, 14/10/2026). Never touches scrolling or
-   anchor clicks, and never assumes Lenis. Loaded with defer, so it runs before the
+   anchor clicks, and never assumes Lenis. Phones (16/10/2026): scrolling down tucks the
+   notch away entirely so it never sits over the text; scrolling up brings it back open. Loaded with defer, so it runs before the
    home page's DOMContentLoaded handler binds its anchor links. */
 (() => {
   const nav = document.querySelector(".site-nav");
@@ -11,6 +12,7 @@
   const bar = nav.querySelector(".nav-bar");
   const links = Array.from(bar.querySelectorAll(".nav-links a"));
   const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const phone = window.matchMedia("(max-width: 720px)");
   const at =
     parseFloat(
       getComputedStyle(document.documentElement).getPropertyValue(
@@ -23,7 +25,12 @@
   const side = (cls, list) => {
     const s = document.createElement("div");
     s.className = "side " + cls;
-    list.forEach((a) => s.appendChild(a.cloneNode(true)));
+    /* every link goes in the notch, including the ones the narrow bar hides (About) */
+    list.forEach((a) => {
+      const c = a.cloneNode(true);
+      c.classList.remove("nav-hide-sm");
+      s.appendChild(c);
+    });
     return s;
   };
   const half = Math.ceil(links.length / 2);
@@ -64,9 +71,13 @@
     lastY = y;
     if (!squeezed || !d) return;
     run = Math.sign(d) === Math.sign(run) ? run + d : d;
-    if (run <= -DIR_PX && !notch.classList.contains("is-open")) setOpen(true);
-    else if (run >= DIR_PX && notch.classList.contains("is-open") && !held())
-      setOpen(false);
+    if (run <= -DIR_PX) {
+      nav.classList.remove("is-tucked");
+      if (!notch.classList.contains("is-open")) setOpen(true);
+    } else if (run >= DIR_PX && !held()) {
+      if (notch.classList.contains("is-open")) setOpen(false);
+      if (phone.matches) nav.classList.add("is-tucked");
+    }
   };
 
   const update = () => {
@@ -74,7 +85,10 @@
     if (s === squeezed) return;
     squeezed = s;
     nav.classList.toggle("is-squeezed", s);
-    if (!s) close();
+    if (!s) {
+      close();
+      nav.classList.remove("is-tucked");
+    }
   };
   let ticking = false;
   window.addEventListener(
