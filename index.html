@@ -180,7 +180,7 @@ a { color: inherit; }
 .foot-prompt input:focus { outline: none; }
 /* iOS Safari zooms the page into any focused input under 16px: touch devices get 16px inputs (no maximum-scale hack, so pinch zoom still works) */
 @media (pointer: coarse) { html .foot-prompt input, html .term-input input { font-size: 16px; } }
-.foot-prompt:focus-within { border-color: var(--credit); }
+.foot-prompt:focus-within { border-color: var(--credit); box-shadow: 0 0 0 1px var(--credit); }
 @media (max-width: 480px) { .foot-prompt label { display: none; } }
 
 /* ================= Cold open ================= */
@@ -1681,6 +1681,11 @@ document.addEventListener('DOMContentLoaded', function () {
     all[n].focus();
   });
   addEventListener('resize', function () { if (term.classList.contains('open')) liftOwl(); });
+  function missFact() {
+    track('terminal-miss');
+    if (owl) owl.verdict('miss', null);
+    tprint('I don\'t have a fact for that. try one of these:<br>  help           full command list<br>  stats          project figures<br>  cat about      who is behind this<br>  grep &lt;word&gt;    search across everything<br>or ask about a specific project by name.');
+  }
   function run(raw) {
     var text = raw.trim();
     /* !! repeats last command */
@@ -1706,6 +1711,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!COMMANDS[cmd] && parts.length > 1 && (QUESTION.test(text.toLowerCase()) || text.indexOf('?') !== -1)) {
       var early = matchFact(text);
       if (early) { answer(early); return; }
+      /* no fact: never fall through to a one-word alias, or "who is the ceo of ..." reads out the bio (who -> cat) */
+      return missFact();
     }
     var name = COMMANDS[cmd] ? cmd : ALIASES[cmd];
     if (name === 'cat' && cmd !== 'cat') arg = 'about';
@@ -1724,10 +1731,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (QUESTION.test(text.toLowerCase()) || text.indexOf('?') !== -1) {
       var fact = matchFact(text);
       if (fact) { answer(fact); return; }
-      track('terminal-miss');
-      if (owl) owl.verdict('miss', null);
-      tprint('I don\'t have a fact for that. try one of these:<br>  help           full command list<br>  stats          project figures<br>  cat about      who is behind this<br>  grep &lt;word&gt;    search across everything<br>or ask about a specific project by name.');
-      return;
+      return missFact();
     }
     /* Try fact matching even for non-questions */
     var fact2 = matchFact(text);
