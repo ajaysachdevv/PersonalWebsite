@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | Ajay Sachdev</title>
+<meta name="description" content="I'm a Finance & Operations Manager and ACMA CGMA in Cambridge. Most evenings I build software; when I switch off, it's chess, badminton, travel and the piano.">
+<meta property="og:title" content="About | Ajay Sachdev">
+<meta property="og:description" content="I'm a Finance & Operations Manager and ACMA CGMA in Cambridge. Most evenings I build software; when I switch off, it's chess, badminton, travel and the piano.">
+<meta property="og:type" content="profile">
+<meta name="author" content="Ajay Sachdev">
+<meta name="publish_date" property="og:publish_date" content="2026-10-15T00:00:00+0000">
+<meta property="article:published_time" content="2026-10-15T00:00:00+00:00">
+<meta property="article:modified_time" content="2026-10-15T00:00:00+00:00">
+<meta property="article:author" content="Ajay Sachdev">
+<link rel="canonical" href="https://ajaysachdev.com/about/">
+<meta property="og:url" content="https://ajaysachdev.com/about/">
+<meta property="og:image" content="https://ajaysachdev.com/images/og-card-2.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="Ajay Sachdev. The accountant who ships code.">
+<meta property="og:site_name" content="Ajay Sachdev">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About | Ajay Sachdev">
+<meta name="twitter:description" content="I'm a Finance & Operations Manager and ACMA CGMA in Cambridge. Most evenings I build software; when I switch off, it's chess, badminton, travel and the piano.">
+<meta name="twitter:image" content="https://ajaysachdev.com/images/og-card-2.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"AboutPage","@id":"https://ajaysachdev.com/about/#page","name":"About","description":"I'm a Finance & Operations Manager and ACMA CGMA in Cambridge. Most evenings I build software; when I switch off, it's chess, badminton, travel and the piano.","url":"https://ajaysachdev.com/about/","inLanguage":"en-GB","isPartOf":{"@id":"https://ajaysachdev.com/#site"},"mainEntity":{"@id":"https://ajaysachdev.com/#person"},"primaryImageOfPage":"https://ajaysachdev.com/images/off-the-clock.png"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajaysachdev.com/"},{"@type":"ListItem","position":2,"name":"About","item":"https://ajaysachdev.com/about/"}]}]}
+</script>
+<meta name="theme-color" content="#efe8d5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0c0a'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232fbf71'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+
+<link rel="preload" href="../vendor/fonts/inter-400-500-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../vendor/fonts/instrumentserif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../vendor/fonts/instrumentserif-400-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../vendor/fonts/jetbrainsmono-400-500-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../images/off-the-clock.webp" as="image" type="image/webp">
+<link rel="stylesheet" href="../css/design-tokens.css">
+<script src="../vendor/gsap.min.js" defer></script>
+<script src="../vendor/ScrollTrigger.min.js" defer></script>
+<script src="../js/nav.js" defer></script>
+<style>
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('../vendor/fonts/instrumentserif-400-italic-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('../vendor/fonts/inter-400-500-800-latin.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 100 800; font-display: swap; src: url('../vendor/fonts/jetbrainsmono-400-500-700-latin.woff2') format('woff2'); }
+/* Metric-matched fallbacks (size-adjust): no layout shift when the webfonts swap in. Measured with fontTools against the Windows system faces, 08/10/2026 */
+@font-face { font-family: 'Instrument Serif Fallback'; src: local('Georgia'); size-adjust: 76.92%; ascent-override: 128.71%; descent-override: 40.3%; line-gap-override: 0%; }
+@font-face { font-family: 'Inter Fallback'; src: local('Arial'), local('Helvetica'); size-adjust: 107.48%; ascent-override: 90.14%; descent-override: 22.44%; line-gap-override: 0%; }
+@font-face { font-family: 'JetBrains Mono Fallback'; src: local('Consolas'); size-adjust: 109.13%; ascent-override: 93.47%; descent-override: 27.49%; line-gap-override: 0%; }
+</style>
+
+<style>
+/* About page (15/10/2026). Shared blocks (token remap, nav, footer, reveal) duplicated from projects/*.html on purpose: no build step. */
+/* ================= Tokens: the whole page is the light scene (as on Uni-Nation) ================= */
+:root {
+  --ink: var(--light-bg);
+  --ink-2: var(--light-panel);
+  --paper: var(--light-ink);
+  --paper-dim: var(--light-ink-dim);
+  --paper-faint: var(--light-ink-faint);
+  --rule: var(--light-rule);
+  --credit: var(--light-credit);
+  --amber: var(--light-amber);
+  --debit: var(--light-debit);
+  --nav-fill: rgba(239, 232, 213, 0.86); /* shared nav bar fill on the light scene (--light-bg at 86%) */
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scrollbar-color: var(--paper-faint) var(--ink); overflow-x: clip; scroll-behavior: smooth; }
+body {
+  background: var(--ink); color: var(--paper); font-family: var(--sans);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip; /* clip, never hidden: hidden kills position: sticky */
+}
+::selection { background: var(--credit); color: var(--ink); }
+a { color: inherit; }
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--credit); outline-offset: 3px; }
+.skip-link {
+  position: fixed; top: 0.9rem; left: 0.9rem; z-index: 200;
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--paper); background: var(--ink); border: 1px solid var(--credit);
+  padding: 0.7rem 1.1rem; text-decoration: none;
+  transform: translateY(calc(-100% - 1.5rem)); opacity: 0; pointer-events: none;
+  transition: transform var(--dur-micro) ease, opacity var(--dur-micro) ease;
+}
+.skip-link:focus { transform: translateY(0); opacity: 1; pointer-events: auto; }
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 60; pointer-events: none; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.wrap { max-width: 74rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
+
+/* ================= Off the clock: the page opens on it ================= */
+/* Cut-out portrait with giant type crossing it as you scroll (after dennissnellenberg.com, studied 15/10/2026).
+   Static full-screen scene by default (no JS, reduced motion); .otc-live (GSAP) makes it a tall pinned stage. */
+.otc { position: relative; }
+.otc.otc-live { height: 260vh; }
+.otc-pin { position: relative; height: 100vh; height: 100svh; min-height: 620px; overflow: hidden; }
+.otc-live .otc-pin { position: sticky; top: 0; }
+.otc-bg { position: absolute; inset: -30px; background: url('../images/off-the-clock-bg.jpg') 50% 40% / cover; }
+.otc-bg::after { content: ''; position: absolute; inset: 0; background: rgba(239, 232, 213, 0.8); }
+.otc-copy { position: absolute; z-index: 6; left: clamp(1.25rem, 6vw, 5rem); top: max(14%, 6.5rem); max-width: 27rem; }
+.crumb { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper-faint); }
+.crumb a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid var(--rule); transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro); }
+.crumb a:hover, .crumb a:focus-visible { color: var(--paper); border-color: var(--credit); }
+.otc-h { font-family: var(--serif); font-weight: 400; font-size: clamp(2.3rem, 4.4vw, 3.8rem); line-height: 1.03; margin-top: 0.9rem; text-wrap: balance; }
+.otc-h em { color: var(--credit); }
+.otc-p { margin-top: 1rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; text-wrap: pretty; }
+.otc-ledger { position: absolute; z-index: 6; right: clamp(1.25rem, 6vw, 5rem); top: max(14%, 6.5rem); width: min(19rem, 30vw); list-style: none; border-top: 2px solid var(--paper); }
+.otc-ledger li, .otc-side { font-family: var(--mono); text-transform: uppercase; }
+.otc-ledger li { display: flex; justify-content: space-between; gap: 0.75rem; padding: 0.62rem 0; border-bottom: 1px solid var(--rule); font-size: var(--ms-2); letter-spacing: var(--tr-2); }
+.otc-ledger li span:last-child { color: var(--credit); }
+.otc-ledger .otc-tot { border-bottom: 0; border-top: 3px double var(--paper); margin-top: 0.4rem; color: var(--paper-faint); }
+.otc-ledger .otc-tot span:last-child { color: var(--paper-faint); }
+.otc-side { position: absolute; z-index: 5; bottom: 10%; font-size: var(--ms-1); letter-spacing: var(--tr-3); color: var(--paper-faint); writing-mode: vertical-rl; }
+.otc-side-a { left: clamp(0.6rem, 2vw, 1.5rem); }
+.otc-side-b { right: clamp(0.6rem, 2vw, 1.5rem); }
+.otc-fig { position: absolute; z-index: 3; left: 50%; bottom: 0; height: 52%; transform: translateX(-50%); }
+.otc-fig img { height: 100%; width: auto; max-width: none; display: block; }
+.otc-m1, .otc-m2 { position: absolute; left: 0; white-space: nowrap; font-family: var(--serif); line-height: 1; will-change: transform; }
+.otc:not(.otc-live) .otc-m1, .otc:not(.otc-live) .otc-m2 { transform: translateX(-20%); }
+.otc-m1 { z-index: 4; top: 70%; font-size: clamp(3.2rem, 8.5vw, 8rem); color: var(--paper); }
+.otc-m1 em { color: var(--credit); font-style: normal; }
+.otc-m2 { z-index: 2; top: calc(70% + clamp(3.2rem, 8.5vw, 8rem) * 1.04); font-style: italic; font-size: clamp(1.4rem, 3vw, 2.7rem); color: var(--paper-dim); }
+@media (max-width: 760px) {
+  .otc-ledger, .otc-side { display: none; }
+  .otc-copy { right: 1.25rem; top: 5.5rem; }
+  .otc-p { font-size: 0.88rem; }
+  .otc-fig { height: 40%; }
+  .otc-m1 { top: 76%; }
+  .otc-m2 { top: calc(76% + 3.4rem); }
+}
+
+/* ================= Background: the notes that used to sit on the home page ================= */
+.section-head {
+  font-family: var(--mono); font-size: var(--ms-3); letter-spacing: var(--tr-3); text-transform: uppercase;
+  color: var(--paper-dim); padding: 0.85rem 0; border-top: 2px solid var(--paper);
+  display: flex; justify-content: space-between; gap: 1rem; margin-top: clamp(4rem, 8vw, 6rem);
+}
+.about { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); margin-top: 2.5rem; }
+.about h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.12; text-wrap: balance; }
+.about h2 em { color: var(--credit); }
+.about-lede { margin-top: 1.4rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; max-width: 28rem; text-wrap: pretty; }
+.notes { list-style: none; }
+.notes li { padding: 1.05rem 0; border-bottom: 1px solid var(--rule); font-size: 0.88rem; line-height: 1.55; color: var(--paper-dim); text-wrap: pretty; }
+.notes li:first-child { border-top: 1px solid var(--rule); }
+.notes b { color: var(--paper); font-weight: 500; }
+@media (max-width: 820px) { .about { grid-template-columns: 1fr; } }
+
+/* ================= Footer ================= */
+footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 2.5rem; }
+.foot-links a {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--paper-dim); text-decoration: none; border: 1px solid var(--rule); padding: 0.8rem 1.4rem;
+  transition: color var(--dur-link) var(--ease-micro), border-color var(--dur-link) var(--ease-micro);
+}
+.foot-links a:hover, .foot-links a:focus-visible { color: var(--paper); border-color: var(--credit); }
+@media (max-width: 480px) { .foot-links a { flex: 1 1 40%; text-align: center; } }
+.foot-sign {
+  margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem 2rem;
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; color: var(--paper-faint); text-transform: uppercase;
+}
+
+/* ================= Reveal + motion prefs ================= */
+.reveal { opacity: 0; transform: translateY(var(--reveal-dist)); transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+@media print {
+  body::after, nav, .otc-bg, .otc-m1, .otc-m2, .otc-side { display: none !important; }
+  .otc.otc-live { height: auto; }
+  .otc-pin { position: static !important; height: auto; min-height: 0; overflow: visible; }
+  .otc-copy, .otc-ledger, .otc-fig { position: static; transform: none; width: auto; height: auto; margin-top: 1rem; }
+  .otc-fig img { height: 9cm; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+</style>
+<noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
+</head>
+<body>
+
+<a class="skip-link" href="#background">Skip to my background</a>
+
+<nav id="nav" class="site-nav" aria-label="Main">
+  <div class="nav-bar">
+    <a class="nav-mark" href="../">Ajay<em>.</em>Sachdev</a>
+    <div class="nav-links">
+      <a href="../">Home</a>
+      <a href="../projects/">Projects</a>
+      <a class="nav-hide-sm" href="./" aria-current="page">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <span class="nav-fy">ABOUT</span>
+  </div>
+</nav>
+
+<main>
+  <div class="otc" id="otc">
+    <div class="otc-pin">
+      <div class="otc-bg" aria-hidden="true"></div>
+      <div class="otc-copy">
+        <p class="crumb"><a href="../">Home</a> / About</p>
+        <h1 class="otc-h">Most evenings, <em>I'm building something.</em></h1>
+        <p class="otc-p">I'll admit I'm a workaholic, and learning to code gave that energy somewhere to go. I don't have to wait for someone else to make the tool I want. When I do switch off, it's chess, badminton, travel, or another go at the piano.</p>
+      </div>
+      <ul class="otc-ledger" aria-label="Off the clock">
+        <li><span>Chess</span><span>In play</span></li>
+        <li><span>Badminton</span><span>On court</span></li>
+        <li><span>Travel</span><span>Boarding</span></li>
+        <li><span>Piano</span><span>Learning</span></li>
+        <li class="otc-tot"><span>Off the clock</span><span>4</span></li>
+      </ul>
+      <span class="otc-side otc-side-a" aria-hidden="true">Finance by day</span>
+      <span class="otc-side otc-side-b" aria-hidden="true">Software by night</span>
+      <picture class="otc-fig">
+        <source srcset="../images/off-the-clock.webp" type="image/webp">
+        <img src="../images/off-the-clock.png" alt="Ajay Sachdev, smiling, in a green quarter-zip" width="728" height="1100" fetchpriority="high" decoding="async">
+      </picture>
+      <div class="otc-m1" aria-hidden="true">Off the clock <em>/</em> chess <em>/</em> badminton <em>/</em> travel <em>/</em> piano <em>/</em> Off the clock</div>
+      <div class="otc-m2" aria-hidden="true">finance by day / software by night / finance by day / software by night / finance by day /</div>
+    </div>
+  </div>
+
+  <section class="wrap" id="background">
+    <div class="section-head"><span>Background</span></div>
+    <div class="about">
+      <div class="reveal">
+        <h2>Numbers by training. <em>Systems by temperament.</em></h2>
+        <p class="about-lede">I work in finance and operations at a UK tech company. The software started because I kept needing tools that didn't exist yet, so I built them. I haven't stopped since.</p>
+      </div>
+      <ul class="notes">
+        <li class="reveal"><span><b>Finance and operations manager</b> at a UK tech company. I joined as the intern in 2021.</span></li>
+        <li class="reveal"><span><b>50+ live dashboards</b> built on product, marketing and finance data; reporting automation that saves 40+ hours a month.</span></li>
+        <li class="reveal"><span><b>ACMA CGMA (CIMA):</b> qualified 2026, on top of an MSc in Finance from Loughborough.</span></li>
+        <li class="reveal"><span><b>I build in Python and TypeScript</b> at night: AI agents, search pipelines, dashboards and a Chrome extension. Self-taught, like the SQL and Power BI before it.</span></li>
+        <li class="reveal"><span><b>Guardrails on my own AI tools.</b> I built 11 around my AI coding assistant: hooks that block deletions, protect secrets, catch fix-break loops and review pushes. It can edit, build and deploy freely. Anything destructive stops for my approval.</span></li>
+        <li class="reveal"><span><b>Grew up in the family textile business</b> in India.</span></li>
+        <li class="reveal"><span><b>Four languages</b> (English, Hindi, Sindhi, Marathi), and a school governor at a local primary.</span></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap" id="contact">
+  <div class="foot-links reveal">
+    <a href="../">Home</a>
+    <a href="../projects/">Projects</a>
+    <a href="https://www.linkedin.com/in/ajayy-sachdev/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:ajay@ajaysachdev.com?subject=Hello">Email</a>
+  </div>
+  <div class="foot-sign">
+    <span>Ajay Sachdev, 2026</span>
+  </div>
+</footer>
+
+<script>
+/* Runs after the deferred GSAP / ScrollTrigger (deferred scripts execute before DOMContentLoaded) */
+document.addEventListener('DOMContentLoaded', function () {
+  'use strict';
+  /* Analytics: GoatCounter (production only, no cookies, no PII); automated browsers never counted */
+  if ((location.hostname === 'ajaysachdev.com' || location.hostname === 'www.ajaysachdev.com') && !navigator.webdriver) {
+    var gc = document.createElement('script');
+    gc.async = true;
+    gc.src = 'https://gc.zgo.at/count.js';
+    gc.setAttribute('data-goatcounter', 'https://ajaysachdev.goatcounter.com/count');
+    document.head.appendChild(gc);
+  }
+  var tracked = {};
+  function track(name) {
+    if (tracked[name]) return;
+    tracked[name] = true;
+    if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, event: true });
+  }
+  window.addEventListener('load', function () { setTimeout(function () { track('about-view'); }, 1500); });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a');
+    if (!a) return;
+    var h = a.getAttribute('href') || '';
+    if (h.indexOf('mailto:') === 0) track('contact-email');
+    else if (h.indexOf('linkedin.com') !== -1) track('contact-linkedin');
+  });
+  var bg = document.getElementById('background');
+  if (bg && 'IntersectionObserver' in window) {
+    var bio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { track('about-background'); bio.disconnect(); } }, { threshold: 0.25 });
+    bio.observe(bg);
+  }
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Reveals (same as /projects/) */
+  var reveals = document.querySelectorAll('.reveal');
+  if (reduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var stagger = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stagger-reveal')) || 0.12;
+    var io = new IntersectionObserver(function (entries) {
+      var k = 0;
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.style.transitionDelay = (Math.min(k++, 4) * stagger) + 's';
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+  /* Off the clock: the page's one signature moment. The type crosses the portrait as you scroll */
+  var otc = document.getElementById('otc');
+  if (otc && window.gsap && window.ScrollTrigger && !reduced) {
+    gsap.registerPlugin(ScrollTrigger);
+    otc.classList.add('otc-live');
+    var scrub = function () { return { trigger: otc, start: 'top top', end: 'bottom bottom', scrub: 0.5 }; };
+    gsap.fromTo('.otc-m1', { xPercent: 2 }, { xPercent: -56, ease: 'none', scrollTrigger: scrub() });
+    gsap.fromTo('.otc-m2', { xPercent: -40 }, { xPercent: 0, ease: 'none', scrollTrigger: scrub() });
+    gsap.fromTo('.otc-bg', { scale: 1.08 }, { scale: 1, ease: 'none', scrollTrigger: scrub() });
+  }
+});
+</script>
+</body>
+</html>
