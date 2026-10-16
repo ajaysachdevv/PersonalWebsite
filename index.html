@@ -908,7 +908,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* Big years (13/10/2026, Canals Amsterdam): one aria-hidden panel per year, built from the static list,
        each holding everything done up to that year (new that year = green rule). The pinned track slides
-       sideways while you scroll down; scroll distance is 0.55 of the slide so a year costs about half a screen. */
+       sideways while you scroll down; scroll distance is 0.44 of the slide on desktop (0.45 on phones), so a year costs less than half a screen. */
     var years = document.getElementById('years');
     var yrPin = years.querySelector('.yr-pin');
     var entries = [].map.call(years.querySelectorAll('.yr-static li'), function (li) {
