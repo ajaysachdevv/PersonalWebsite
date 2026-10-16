@@ -1249,6 +1249,18 @@ document.addEventListener('DOMContentLoaded', function () {
       return results.join('<br>');
     },
     balance: function () {
+      /* phones: the 53-character table cannot fit, so one account per line, same figures */
+      if (termPhone) {
+        tprint('<b>Trial Balance</b> (status of accounts)<br><br>' +
+          'OpsPilot  95,000+ lines, <span class="ok">production</span><br>' +
+          'Trading Bot  7,000+ lines, <span class="ok">paper mode</span><br>' +
+          'Uni-Nation  30,000+ lines, <span class="warn">repairing</span><br>' +
+          'WhatsApp Smart  ~16,000 lines, <span class="warn">prototype</span><br>' +
+          'SCS Cockpit  11,584 lines, [--] retired<br>' +
+          'TOTAL  160,000+ lines, 5 entries<br>' +
+          '<br>approximate where marked.');
+        return;
+      }
       tprint('<b>Trial Balance</b> (status of accounts)<br><br>' +
         'ACCOUNT               DR        CR        STATUS<br>' +
         '-----------------------------------------------------<br>' +

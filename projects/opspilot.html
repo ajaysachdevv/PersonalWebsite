@@ -690,10 +690,11 @@ main.wrap > header .reveal { opacity: 1; }
   try { muted = localStorage.getItem('ledger-snd') === 'off'; } catch (e) { /* private mode */ }
   var actx = null;
   var touchUI = window.matchMedia('(pointer: coarse)').matches;
-  /* iOS only starts Web Audio inside a tap: create or wake the context on every touch, so blips that
-     fire later (timers, animation frames) are not silent */
-  addEventListener('pointerdown', function () {
-    if (muted) return;
+  /* iOS only starts Web Audio inside a tap: create or wake the context when a moment's button is
+     touched, so blips that fire later (timers, animation frames) are not silent. Buttons only, so
+     reading the page never wakes audio (that can pause music playing in the background) */
+  addEventListener('pointerdown', function (e) {
+    if (muted || !e.target.closest || !e.target.closest('button:not(.nav-mono)')) return;
     try {
       actx = actx || new (window.AudioContext || window.webkitAudioContext)();
       if (actx.state === 'suspended') actx.resume();

@@ -116,7 +116,14 @@
     pinned = !notch.classList.contains("is-open") || !pinned;
     setOpen(pinned);
   });
-  notch.addEventListener("focusin", () => setOpen(true));
+  notch.addEventListener("focusin", () => {
+    nav.classList.remove("is-tucked");
+    setOpen(true);
+  });
+  /* tucking is phone-only: widening past 720px (rotation) brings the notch back */
+  phone.addEventListener("change", () => {
+    if (!phone.matches) nav.classList.remove("is-tucked");
+  });
   notch.addEventListener("focusout", (e) => {
     if (!notch.contains(e.relatedTarget) && !pinned) setOpen(false);
   });
