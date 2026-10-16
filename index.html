@@ -176,6 +176,8 @@ a { color: inherit; }
 .foot-prompt input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--paper); font: inherit; caret-color: var(--credit); }
 .foot-prompt input::placeholder { color: var(--paper-faint); }
 .foot-prompt input:focus { outline: none; }
+/* iOS Safari zooms the page into any focused input under 16px: touch devices get 16px inputs (no maximum-scale hack, so pinch zoom still works) */
+@media (pointer: coarse) { html .foot-prompt input, html .term-input input { font-size: 16px; } }
 .foot-prompt:focus-within { border-color: var(--credit); }
 @media (max-width: 480px) { .foot-prompt label { display: none; } }
 
@@ -663,7 +665,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   </form>
   <div class="foot-sign">
     <button type="button" class="term-hint" id="basis-link">How this site is built</button>
-    <span>Ajay Sachdev / updated 14/10/2026</span>
+    <span>Ajay Sachdev / updated 16/10/2026</span>
   </div>
 </footer>
 
@@ -1696,6 +1698,8 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('term-close').addEventListener('click', closeTerm);
   /* v4: the terminal is a feature now. The footer prompt runs straight into it */
   var footPrompt = document.getElementById('foot-prompt'), footCmd = document.getElementById('foot-cmd');
+  /* no keyboard shortcut on a phone, so the hint drops 'press T' there */
+  if (footCmd && window.matchMedia('(pointer: coarse)').matches) footCmd.placeholder = 'type here. try: impairments';
   if (footPrompt) {
     footPrompt.addEventListener('submit', function (e) {
       e.preventDefault();
