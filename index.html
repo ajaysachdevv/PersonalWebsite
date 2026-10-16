@@ -25,6 +25,7 @@
 <meta name="twitter:title" content="Ajay Sachdev | Finance &amp; Operations Manager">
 <meta name="twitter:description" content="Finance and operations by day, production software by night. Ten projects, five case studies.">
 <meta name="twitter:image" content="https://ajaysachdev.com/images/og-card-2.jpg">
+<meta name="twitter:image:alt" content="Ajay Sachdev. The accountant who ships code.">
 <meta name="theme-color" content="#0d0c0a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0c0a'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232fbf71'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -398,6 +399,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 .foot-sign .term-hint { cursor: pointer; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; transition: color var(--dur-link) var(--ease-micro), text-decoration-color var(--dur-link) var(--ease-micro); }
 .foot-sign .term-hint:focus-visible { color: var(--paper); text-decoration-color: var(--credit); }
 @media (hover: hover) { .foot-sign .term-hint:hover { color: var(--paper); text-decoration-color: var(--credit); } }
+@media (pointer: coarse) { .foot-sign button.term-hint { padding: 0.95rem 0.4rem; margin: -0.95rem -0.4rem; } }
 
 /* ================= Terminal ================= */
 .terminal {
@@ -418,8 +420,10 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 }
 .term-bar button:focus-visible { color: var(--paper); border-color: var(--credit); }
 @media (hover: hover) { .term-bar button:hover { color: var(--paper); border-color: var(--credit); } }
-.term-body { flex: 1; overflow-y: auto; padding: 1.2rem 1.3rem; font-family: var(--mono); font-size: 0.8rem; line-height: 1.85; color: var(--paper-dim); white-space: pre-wrap; display: flex; flex-direction: column; }
+.term-body { flex: 1; overflow-y: auto; padding: 1.2rem 1.3rem; font-family: var(--mono); font-size: 0.8rem; line-height: 1.85; color: var(--paper-dim); white-space: pre-wrap; overflow-wrap: anywhere; display: flex; flex-direction: column; }
 .term-body::before { content: ''; flex: 1 0 auto; }
+/* phones: answers start at the top, no empty paper above the boot lines */
+@media (max-width: 720px) { .term-body::before { display: none; } }
 .term-body .in { color: var(--credit); }
 .term-body .out b { color: var(--paper); font-weight: 500; }
 .term-body .out .ok { color: var(--credit); }
@@ -429,7 +433,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 .term-body .kv .v { padding-left: 1.4em; color: var(--paper-faint); }
 .term-body .kv + div:not(.kv) { margin-top: 0.2em; }
 .term-input { display: flex; gap: 0.6rem; padding: 0.9rem 1.3rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.8rem; transition: border-color var(--dur-micro) ease; }
-.term-input:focus-within { border-top-color: var(--credit); }
+.term-input:focus-within { border-top-color: var(--credit); box-shadow: inset 0 0 0 2px var(--credit); }
 .term-input .ps1 { color: var(--credit); white-space: nowrap; }
 .term-input input { flex: 1; background: none; border: none; outline: none; color: var(--paper); font-family: var(--mono); font-size: 0.8rem; caret-color: var(--credit); }
 
@@ -491,15 +495,16 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   display: flex; align-items: center; height: 58px; width: 58px; padding: 0 0 0 4px; overflow: hidden;
   font: inherit; color: var(--paper); cursor: pointer;
   background: var(--ink); border: var(--rule-hair) solid var(--rule); border-radius: 9999px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  opacity: 0; transform: translateY(12px); visibility: hidden; pointer-events: none;
-  transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s var(--dur-short), width 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 0; transform: translateY(12px); pointer-events: none;
+  transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), width 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.15s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .owl-dock.show {
-  opacity: 1; transform: none; visibility: visible; pointer-events: auto;
-  transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s, width 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 1; transform: none; pointer-events: auto;
+  transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), width 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.15s cubic-bezier(0.23, 1, 0.32, 1);
 }
-body:has(.site-nav.is-tucked) .owl-dock.show { opacity: 0; transform: translateY(12px); visibility: hidden; pointer-events: none; }
-.owl-dock:focus-visible { outline: 2px solid var(--credit); outline-offset: 4px; }
+body:has(.site-nav.is-tucked) .owl-dock.show { opacity: 0; transform: translateY(12px); pointer-events: none; }
+/* never visibility:hidden: it stays in the tab order (last stop, after the footer) and keyboard focus shows it anywhere */
+.owl-dock:focus-visible, body:has(.site-nav.is-tucked) .owl-dock:focus-visible { opacity: 1; transform: none; pointer-events: auto; outline: 2px solid var(--credit); outline-offset: 4px; }
 .owl-dock .dk-owl { flex: 0 0 48px; width: 48px; height: 48px; }
 .owl-dock .dk-owl svg { width: 100%; height: 100%; overflow: visible; display: block; }
 .owl-dock .pupil { transition: transform 0.18s var(--ease-out); }
@@ -741,7 +746,7 @@ body:has(.site-nav.is-tucked) .owl-dock.show { opacity: 0; transform: translateY
     <span>visitor@ajaysachdev.com</span>
     <button id="term-close">ESC TO CLOSE</button>
   </div>
-  <div class="term-body" id="term-body"></div>
+  <div class="term-body" id="term-body" role="log" aria-live="off"></div>
   <div class="term-chips" id="term-chips" role="group" aria-label="Suggested replies"></div>
   <div class="term-input">
     <span class="ps1">visitor@ajaysachdev.com:~$</span>
@@ -925,13 +930,14 @@ document.addEventListener('DOMContentLoaded', function () {
     yrPin.appendChild(yrTrack);
     years.classList.add('is-live');
     function yrDist() { return Math.max(0, yrTrack.scrollWidth - yrPin.clientWidth); }
-    /* phones: full-width panels that snap to one whole year, and a shorter run (0.45 of the slide) */
+    /* phones: full-width panels that snap to one whole year, and a shorter run (0.45 of the slide).
+       desktop: 0.44 of the slide (was 0.55, cut 20% on 16/10/2026 after the persona review: evaluators tired by 2021) */
     var yrPhone = window.matchMedia('(max-width: 700px)').matches;
     gsap.to(yrTrack, {
       x: function () { return -yrDist(); }, ease: 'none',
       scrollTrigger: {
         trigger: yrPin, pin: true, anticipatePin: 1, start: 'top top',
-        end: function () { return '+=' + Math.round(yrDist() * (yrPhone ? 0.45 : 0.55)); },
+        end: function () { return '+=' + Math.round(yrDist() * (yrPhone ? 0.45 : 0.44)); },
         scrub: yrPhone ? 0.4 : 0.6, invalidateOnRefresh: true,
         snap: yrPhone ? { snapTo: 1 / Math.max(1, marks.length - 1), directional: true, inertia: false, delay: 0.06, duration: { min: 0.2, max: 0.45 }, ease: 'power2.out' } : false
       }
@@ -1295,21 +1301,24 @@ document.addEventListener('DOMContentLoaded', function () {
           'Uni-Nation  30,000+ lines, <span class="warn">repairing</span><br>' +
           'WhatsApp Smart  ~16,000 lines, <span class="warn">prototype</span><br>' +
           'SCS Cockpit  11,584 lines, [--] retired<br>' +
-          'TOTAL  160,000+ lines, 5 entries<br>' +
-          '<br>approximate where marked.');
+          'Evenings and weekends  CR 160,000+ lines<br>' +
+          'TOTAL  DR 160,000+ = CR 160,000+, <span class="ok">balanced</span><br>' +
+          '<br>DR: what got built. CR: the evenings and weekends that paid for it. approximate where marked.');
         return;
       }
       tprint('<b>Trial Balance</b> (status of accounts)<br><br>' +
-        'ACCOUNT               DR        CR        STATUS<br>' +
+        'ACCOUNT                     DR        CR  STATUS<br>' +
         '-----------------------------------------------------<br>' +
-        'OpsPilot              95,000+             <span class="ok">production</span><br>' +
-        'Trading Bot            7,000+             <span class="ok">paper mode</span><br>' +
-        'Uni-Nation            30,000+             <span class="warn">repairing</span><br>' +
-        'WhatsApp Smart       ~16,000              <span class="warn">prototype</span><br>' +
-        'SCS Cockpit           11,584              [--] retired<br>' +
+        'OpsPilot               95,000+            <span class="ok">production</span><br>' +
+        'Trading Bot             7,000+            <span class="ok">paper mode</span><br>' +
+        'Uni-Nation             30,000+            <span class="warn">repairing</span><br>' +
+        'WhatsApp Smart         ~16,000            <span class="warn">prototype</span><br>' +
+        'SCS Cockpit             11,584            [--] retired<br>' +
+        'Evenings and weekends           160,000+  what it took<br>' +
         '-----------------------------------------------------<br>' +
-        'TOTAL                160,000+   lines     5 entries<br>' +
-        '<br>approximate where marked.');
+        'TOTAL (lines)         160,000+  160,000+  <span class="ok">balanced</span><br>' +
+        '=====================================================<br>' +
+        '<br>DR: what got built. CR: the evenings and weekends that paid for it. approximate where marked.');
     },
     wc: function (arg) {
       if (!arg) { tprint('160,000+ lines across the five case studies.'); return; }
@@ -1747,15 +1756,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!opened) {
       opened = true;
       var boot = [
-        'mounting /projects ............ <span class="ok">[OK]</span> 10 projects',
-                'waking the agent floor ........ <span class="ok">[OK]</span> 4 voices, 1 veto',
+        'opening the books ............. <span class="ok">[OK]</span> 10 projects',
+        'waking the owl ................ <span class="ok">[OK]</span> ready for questions',
         ''
       ];
       boot.forEach(function (line, i) { setTimeout(function () { tprint(line); }, i * 160); });
       setTimeout(function () {
         tprint('<b>The Ledger, interactive edition.</b>');
-        tprint('Type <b>help</b> to see the commands, or <b>ls projects</b> to list the projects.');
+        tprint('Ask a question in plain English, pick a suggestion below, or type <b>help</b> for the commands.');
         renderChips(chipsFor(null));
+        tbody.setAttribute('aria-live', 'polite');
       }, boot.length * 160 + 60);
     }
     owlMake().wake();

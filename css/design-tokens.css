@@ -164,6 +164,17 @@
    repaints the whole screen on every scroll frame. Pages keep their own grain rule for desktop. ---------- */
 @media (pointer: coarse) { body::after, .yr-pin::after { display: none; } }
 
+/* ---------- Touch targets (16/10/2026, persona review): 44px hit areas, nothing visible moves. Bar links
+   grow an invisible hit box; the notch is 2px taller and its links fill its height. ---------- */
+@media (pointer: coarse) {
+  .nav-links a, .nav-mark { position: relative; }
+  .nav-links a::after, .nav-mark::after { content: ''; position: absolute; inset: -15px -6px; }
+  .nav-notch { height: 2.75rem; }
+  .nav-notch .side { align-self: stretch; }
+  .nav-notch .side a { display: flex; align-items: center; }
+  .nav-mono { align-self: stretch; }
+}
+
 /* ---------- The one ambient pulse keyframe (status dot on "Production" only, map "now") ---------- */
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 
@@ -179,3 +190,11 @@
 ::view-transition-old(schedule-title), ::view-transition-new(schedule-title) {
   animation-duration: var(--dur-morph); animation-timing-function: var(--ease-morph);
 }
+
+/* ---------- Case pages: "In plain words" line + jump to the moment (16/10/2026, persona review) ---------- */
+.entry-plain { margin-top: 1.4rem; max-width: 62ch; font-family: var(--sans); font-size: 1rem; line-height: 1.6; color: var(--paper-dim); }
+.entry-plain .ep-lab { display: block; margin-bottom: 0.35rem; font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-2); text-transform: uppercase; color: var(--paper-faint); }
+.entry-plain .ep-try { display: inline-block; padding: 0.6rem 0; margin: -0.6rem 0; white-space: nowrap; color: var(--paper); text-decoration: underline; text-decoration-thickness: var(--rule-hair); text-underline-offset: 4px; text-decoration-color: var(--credit); transition: color var(--dur-link) var(--ease-micro); }
+.entry-plain .ep-try:focus-visible { outline: 2px solid var(--credit); outline-offset: 3px; }
+@media (hover: hover) { .entry-plain .ep-try:hover { color: var(--credit); } }
+#adcard, #session, #voice, #undo, #drill { scroll-margin-top: 5rem; }
