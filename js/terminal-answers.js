@@ -102,6 +102,15 @@ window.TERMINAL_KB = [
       "where did you grow up",
       "when did you move to the uk",
       "cambridge",
+      "where does ajay live",
+      "where does he live",
+      "where does he live now",
+      "where is ajay based",
+      "where is he based",
+      "where is ajay",
+      "where is ajay from",
+      "where is he from",
+      "which city does ajay live in",
     ],
     keys: [
       "where",
@@ -653,6 +662,26 @@ window.TERMINAL_KB = [
 
   /* ---------- skills and AI ---------- */
   {
+    id: "finance-systems",
+    cmd: "cat skills.txt",
+    answer:
+      "Xero, HubSpot and Factorial on the finance side, SQL and Power BI for reporting. OpsPilot reads Xero and HubSpot directly, and its Xero access is read-only by design.",
+    phrases: [
+      "what accounting systems has he worked with",
+      "what accounting systems",
+      "accounting systems",
+      "accounting software",
+      "which finance systems",
+      "finance systems",
+      "what finance software",
+      "does he use xero",
+      "does he know xero",
+      "what erp",
+      "which systems does he use",
+    ],
+    keys: ["xero", "hubspot", "factorial", "erp"],
+  },
+  {
     id: "stack",
     cmd: "cat skills.txt",
     answer:
@@ -910,8 +939,6 @@ window.TERMINAL_KB = [
       "day rate",
       "visa",
       "right to work",
-      "how old are you",
-      "are you married",
     ],
     keys: [
       "salary",
@@ -922,10 +949,23 @@ window.TERMINAL_KB = [
       "earn",
       "pay",
       "visa",
-      "age",
-      "old",
-      "married",
     ],
+  },
+  {
+    id: "age",
+    cmd: "timeline",
+    answer:
+      "Old enough to have qualified as an accountant, young enough to still be debugging at midnight. The timeline has the years.",
+    phrases: ["how old are you", "how old is he", "how old is ajay", "what is his age", "what age is he", "when was he born", "birthday"],
+    keys: ["age", "old", "born", "birthday"],
+  },
+  {
+    id: "personal",
+    cmd: null,
+    answer:
+      "That one stays off the books. Happy to talk about the work, the projects, or what he does for fun: try asking about hobbies.",
+    phrases: ["are you married", "is he married", "is ajay married", "does he have a wife", "does he have a girlfriend", "does he have kids", "is he single", "what religion is he"],
+    keys: ["married", "wife", "girlfriend", "boyfriend", "kids", "children", "religion", "dating"],
   },
   {
     id: "hobbies",
@@ -1105,7 +1145,7 @@ window.TERMINAL_CHIPS = {
     start: [["bio", "Who is Ajay?"], ["projects", "What have you built?"], ["contact", "Get in touch", "contact"]],
   },
   groups: {
-    about: "bio role title location languages-spoken governor family-business career hobbies",
+    about: "bio role title location languages-spoken governor family-business career hobbies age personal",
     work: "projects lines status savings finance-to-code advice dashboards contracts work-tools praise meaning wrong",
     opspilot: "opspilot opspilot-how opspilot-accuracy",
     trading: "trading trading-money trading-veto",
@@ -1113,7 +1153,7 @@ window.TERMINAL_CHIPS = {
     whatsapp: "whatsapp whatsapp-privacy",
     study: "education cima scs",
     site: "site why-vanilla privacy-site terminal",
-    stack: "stack ai-models guardrails",
+    stack: "stack ai-models guardrails finance-systems",
     reach: "contact github availability money-personal cv thanks bye",
   },
   /* commands typed or tapped, mapped to the topic whose follow-ups come next */
