@@ -4,7 +4,7 @@
    opens it on tap, keyboard focus opens it, Escape closes it. Scrolling up opens it too (the
    same open notch, not the full bar) and scrolling down closes it again (Ajay, 14/10/2026). Never touches scrolling or
    anchor clicks, and never assumes Lenis. Phones (16/10/2026): scrolling down tucks the
-   notch away entirely so it never sits over the text; scrolling up brings it back open. Loaded with defer, so it runs before the
+   notch away entirely so it never sits over the text; scrolling up brings back the monogram only, closed. Loaded with defer, so it runs before the
    home page's DOMContentLoaded handler binds its anchor links. */
 (() => {
   const nav = document.querySelector(".site-nav");
@@ -73,7 +73,8 @@
     run = Math.sign(d) === Math.sign(run) ? run + d : d;
     if (run <= -DIR_PX) {
       nav.classList.remove("is-tucked");
-      if (!notch.classList.contains("is-open")) setOpen(true);
+      /* phones come back as the monogram only; a tap opens it (Ajay 16/10/2026) */
+      if (!phone.matches && !notch.classList.contains("is-open")) setOpen(true);
     } else if (run >= DIR_PX && !held()) {
       if (notch.classList.contains("is-open")) setOpen(false);
       if (phone.matches) nav.classList.add("is-tucked");
