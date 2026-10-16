@@ -480,6 +480,42 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 @media (pointer: coarse) { .term-chips .chip kbd { display: none; } }
 /* touch: no sound toggle in the hero (home plays nothing, and the iOS silent switch mutes the case pages anyway) */
 @media (pointer: coarse) { .open-readout #snd { display: none; } }
+
+/* ================= Owl dock (16/10/2026, Ajay's pick C) =================
+   Round owl button bottom-right that opens the terminal. Widens to show "Ask me" on hover or keyboard
+   focus (dqnamo Dynamic Button: width 0.3s, label crossfade); eyes follow a fine pointer (page-mascot).
+   Shown past the hero, hidden at the footer (it has its own prompt) and while the terminal is open;
+   on phones it tucks away with the notch on scroll down. */
+.owl-dock {
+  position: fixed; z-index: 90; right: clamp(14px, 2vw, 24px); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: center; height: 58px; width: 58px; padding: 0 0 0 4px; overflow: hidden;
+  font: inherit; color: var(--paper); cursor: pointer;
+  background: var(--ink); border: var(--rule-hair) solid var(--rule); border-radius: 9999px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  opacity: 0; transform: translateY(12px); visibility: hidden; pointer-events: none;
+  transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s var(--dur-short), width 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.owl-dock.show {
+  opacity: 1; transform: none; visibility: visible; pointer-events: auto;
+  transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s, width 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+}
+body:has(.site-nav.is-tucked) .owl-dock.show { opacity: 0; transform: translateY(12px); visibility: hidden; pointer-events: none; }
+.owl-dock:focus-visible { outline: 2px solid var(--credit); outline-offset: 4px; }
+.owl-dock .dk-owl { flex: 0 0 48px; width: 48px; height: 48px; }
+.owl-dock .dk-owl svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.owl-dock .pupil { transition: transform 0.18s var(--ease-out); }
+.owl-dock .head { transform-box: view-box; transform-origin: 60px 70px; transition: transform 0.35s var(--ease-out); }
+.owl-dock .lid, .owl-dock .lidhalf { transform: scaleY(0); }
+.owl-dock .happy, .owl-dock .brow, .owl-dock .ohh, .owl-dock .zz { opacity: 0; }
+.owl-dock .dk-tag {
+  padding: 0 18px 0 8px; white-space: nowrap; opacity: 0; transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-2); text-transform: uppercase; color: var(--paper);
+}
+.owl-dock.wide { width: var(--dk-w, 150px); border-color: var(--credit); }
+.owl-dock.wide .dk-tag { opacity: 1; transition-delay: 0.08s; }
+@keyframes dk-squash { 0% { transform: scale(1.08, 0.88); } 45% { transform: scale(0.95, 1.06); } 100% { transform: none; } }
+.owl-dock .dk-owl.squash { animation: dk-squash 0.42s var(--ease-spring); transform-origin: 50% 92%; }
+/* reduced motion: no transitions at all (a 0.01ms one starts at "hidden", so focus handed back on close would miss it) */
+@media (prefers-reduced-motion: reduce) { .owl-dock, .owl-dock.show, .owl-dock * { transition: none !important; } .owl-dock, body:has(.site-nav.is-tucked) .owl-dock.show { transform: none; } }
 /* suggested replies (14/10/2026, Ajay picked board option B + F's ghost): numbered tags above the input, a
    "Show all commands" tag at the end, the first suggestion as ghost text in the empty input. Tags sit clear of
    the input rule; the owl stands on the row (--chips-h, set in JS). Hover is the button family: no new motion */
@@ -500,7 +536,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 /* ================= Print: the statement of work on actual paper ================= */
 @media print {
   body { background: #fff !important; color: #1c160d; }
-  body::after, nav, .rail, .scroll-prog, .terminal,
+  body::after, nav, .rail, .scroll-prog, .terminal, .owl-dock,
   .split, .nav-pos, .foot-prompt, .topo, .open-name, .open-readout,
   .yr-pin::after, .yr-track, .ch-motif { display: none !important; }
   .years.is-live .yr-static { position: static; width: auto; height: auto; overflow: visible; clip: auto; clip-path: none; white-space: normal; }
@@ -698,6 +734,8 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 
 
 <!-- ============ Terminal ============ -->
+<button type="button" class="owl-dock" id="owl-dock" aria-label="Ask me: open the terminal"><span class="dk-owl" aria-hidden="true"></span><span class="dk-tag" aria-hidden="true">Ask me</span></button>
+
 <div class="terminal" id="terminal" role="dialog" aria-modal="true" aria-label="Terminal">
   <div class="term-bar">
     <span>visitor@ajaysachdev.com</span>
@@ -1692,15 +1730,17 @@ document.addEventListener('DOMContentLoaded', function () {
   var termTrigger = null;
   var morphMs = tok('--dur-morph', 0.22) * 1000;
   var morphEase = rootStyle.getPropertyValue('--ease-morph').trim() || 'ease-out';
-  function openTerm() {
-    termTrigger = document.activeElement;
+  function openTerm(src) {
+    /* src: the element it grows from when focus cannot say (iOS does not focus a tapped button) */
+    termTrigger = src && src.nodeType === 1 ? src : document.activeElement;
     track('terminal-opened');
     term.classList.add('open');
+    dockPlace();
     if (!reduced && term.animate) {
       var box = term.getBoundingClientRect();
-      var src = termTrigger && termTrigger !== document.body && termTrigger.getBoundingClientRect ? termTrigger.getBoundingClientRect() : null;
-      var ox = src && src.width ? src.left + src.width / 2 - box.left : box.width / 2;
-      var oy = src && src.height ? src.top + src.height / 2 - box.top : box.height;
+      var from = termTrigger && termTrigger !== document.body && termTrigger.getBoundingClientRect ? termTrigger.getBoundingClientRect() : null;
+      var ox = from && from.width ? from.left + from.width / 2 - box.left : box.width / 2;
+      var oy = from && from.height ? from.top + from.height / 2 - box.top : box.height;
       term.style.transformOrigin = ox + 'px ' + oy + 'px';
       term.animate([{ transform: 'scale(0.6)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: morphMs, easing: morphEase });
     }
@@ -1724,12 +1764,14 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = 'hidden';
   }
   var closing = false;
+  var dockPlace = function () {};
   function closeTerm() {
     if (closing || !term.classList.contains('open')) return;
     function done() {
       closing = false;
       term.classList.remove('open');
       document.body.style.overflow = '';
+      dockPlace();
       if (termTrigger && typeof termTrigger.focus === 'function') { termTrigger.focus(); }
       termTrigger = null;
     }
@@ -1737,6 +1779,65 @@ document.addEventListener('DOMContentLoaded', function () {
     closing = true;
     term.animate([{ transform: 'none', opacity: 1 }, { transform: 'scale(0.6)', opacity: 0 }], { duration: morphMs, easing: morphEase, fill: 'forwards' }).onfinish = function (ev) { ev.target.cancel(); done(); };
   }
+  /* ---------- Owl dock (16/10/2026, option C): the terminal, reachable from anywhere on the page ---------- */
+  (function () {
+    var dock = document.getElementById('owl-dock');
+    if (!dock) return;
+    var dOwl = dock.querySelector('.dk-owl'), dTag = dock.querySelector('.dk-tag');
+    dOwl.innerHTML = OWL_SVG;
+    var dPupil = dOwl.querySelector('.pupil'), dHead = dOwl.querySelector('.head');
+    var hero = document.getElementById('top'), foot = document.getElementById('contact'), navEl = document.getElementById('nav');
+    var dFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches, hinted = false;
+    function widen() { dock.style.setProperty('--dk-w', (58 + dTag.scrollWidth) + 'px'); dock.classList.add('wide'); }
+    function narrow() { if (document.activeElement !== dock) dock.classList.remove('wide'); }
+    dockPlace = function () {
+      var show = hero.getBoundingClientRect().bottom < innerHeight * 0.35 &&
+        !(foot && foot.getBoundingClientRect().top < innerHeight * 0.85) && !term.classList.contains('open');
+      dock.classList.toggle('show', show);
+      /* phones get the label once, the first time it appears, then it folds away */
+      if (show && !dFine && !hinted && !navEl.classList.contains('is-tucked')) { hinted = true; widen(); setTimeout(function () { dock.classList.remove('wide'); }, 2600); }
+    };
+    var dTick = false;
+    addEventListener('scroll', function () {
+      if (dTick) return;
+      dTick = true;
+      requestAnimationFrame(function () { dTick = false; dockPlace(); });
+    }, { passive: true });
+    addEventListener('resize', dockPlace, { passive: true });
+    dockPlace();
+    if (dFine) {
+      dock.addEventListener('pointerenter', widen);
+      dock.addEventListener('pointerleave', narrow);
+      /* eyes follow the cursor, with a dead zone so the head settles close up (page-mascot) */
+      if (!reduced) {
+        var lookTick = false, lx = 0, ly = 0;
+        document.addEventListener('pointermove', function (e) {
+          lx = e.clientX; ly = e.clientY;
+          if (lookTick || !dock.classList.contains('show')) return;
+          lookTick = true;
+          requestAnimationFrame(function () {
+            lookTick = false;
+            var r = dOwl.getBoundingClientRect(), dx = lx - (r.left + r.width / 2), dy = ly - (r.top + r.height * 0.45), d = Math.sqrt(dx * dx + dy * dy);
+            var k = d < 40 ? 0 : Math.min(1, d / 600), x = d ? dx / d * k : 0, y = d ? dy / d * k : 0;
+            dPupil.style.transform = 'translate(' + (x * 4.6).toFixed(1) + 'px,' + (y * 4).toFixed(1) + 'px)';
+            dHead.style.transform = 'rotate(' + (x * 6).toFixed(1) + 'deg) translateY(' + (y * 1.5).toFixed(1) + 'px)';
+          });
+        }, { passive: true });
+      }
+    }
+    /* keyboard focus only: a tap, or focus handed back after the terminal closes, keeps it round */
+    dock.addEventListener('focus', function () { if (dock.matches(':focus-visible')) widen(); });
+    dock.addEventListener('blur', function () { dock.classList.remove('wide'); });
+    dock.addEventListener('pointerdown', function () {
+      if (reduced) return;
+      dOwl.classList.remove('squash'); void dOwl.offsetWidth; dOwl.classList.add('squash');
+    });
+    dock.addEventListener('click', function () {
+      track('terminal-dock');
+      /* let the squash land before the terminal grows out of the button */
+      if (reduced) openTerm(dock); else setTimeout(function () { openTerm(dock); }, 160);
+    });
+  })();
   term.addEventListener('keydown', function (e) {
     if (e.key !== 'Tab') return;
     /* Let tab completion handle Tab when the input has focus (non-shift) */
@@ -1747,7 +1848,7 @@ document.addEventListener('DOMContentLoaded', function () {
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     else if (focusables.indexOf(document.activeElement) === -1) { e.preventDefault(); first.focus(); }
   });
-  document.querySelectorAll('[data-term]').forEach(function (el) { el.addEventListener('click', openTerm); });
+  document.querySelectorAll('[data-term]').forEach(function (el) { el.addEventListener('click', function () { openTerm(el); }); });
   /* [data-term-run="cmd"]: open the terminal and run one command (boot sequence needs ~1.2s on first open) */
   document.querySelectorAll('[data-term-run]').forEach(function (el) {
     el.addEventListener('click', function () {
