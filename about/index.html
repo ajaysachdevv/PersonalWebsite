@@ -108,12 +108,7 @@ body::after {
 .otc-h { font-family: var(--serif); font-weight: 400; font-size: clamp(2.3rem, 4.4vw, 3.8rem); line-height: 1.03; margin-top: 0.9rem; text-wrap: balance; }
 .otc-h em { color: var(--credit); }
 .otc-p { margin-top: 1rem; color: var(--paper-dim); line-height: 1.7; font-size: 0.95rem; text-wrap: pretty; }
-.otc-ledger { position: absolute; z-index: 6; right: clamp(1.25rem, 6vw, 5rem); top: max(14%, 6.5rem); width: min(19rem, 30vw); list-style: none; border-top: 2px solid var(--paper); }
-.otc-ledger li, .otc-side { font-family: var(--mono); text-transform: uppercase; }
-.otc-ledger li { display: flex; justify-content: space-between; gap: 0.75rem; padding: 0.62rem 0; border-bottom: 1px solid var(--rule); font-size: var(--ms-2); letter-spacing: var(--tr-2); }
-.otc-ledger li span:last-child { color: var(--credit); }
-.otc-ledger .otc-tot { border-bottom: 0; border-top: 3px double var(--paper); margin-top: 0.4rem; color: var(--paper-faint); }
-.otc-ledger .otc-tot span:last-child { color: var(--paper-faint); }
+.otc-side { font-family: var(--mono); text-transform: uppercase; }
 .otc-side { position: absolute; z-index: 5; bottom: 10%; font-size: var(--ms-1); letter-spacing: var(--tr-3); color: var(--paper-faint); writing-mode: vertical-rl; }
 .otc-side-a { left: clamp(0.6rem, 2vw, 1.5rem); }
 .otc-side-b { right: clamp(0.6rem, 2vw, 1.5rem); }
@@ -125,7 +120,7 @@ body::after {
 .otc-m1 em { color: var(--credit); font-style: normal; }
 .otc-m2 { z-index: 2; top: calc(70% + clamp(3.2rem, 8.5vw, 8rem) * 1.04); font-style: italic; font-size: clamp(1.4rem, 3vw, 2.7rem); color: var(--paper-dim); }
 @media (max-width: 760px) {
-  .otc-ledger, .otc-side { display: none; }
+  .otc-side { display: none; }
   .otc-copy { right: 1.25rem; top: 5.5rem; }
   .otc-p { font-size: 0.88rem; }
   .otc-fig { height: 40%; }
@@ -177,7 +172,7 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
   body::after, nav, .otc-bg, .otc-m1, .otc-m2, .otc-side { display: none !important; }
   .otc.otc-live { height: auto; }
   .otc-pin { position: static !important; height: auto; min-height: 0; overflow: visible; }
-  .otc-copy, .otc-ledger, .otc-fig { position: static; transform: none; width: auto; height: auto; margin-top: 1rem; }
+  .otc-copy, .otc-fig { position: static; transform: none; width: auto; height: auto; margin-top: 1rem; }
   .otc-fig img { height: 9cm; }
   .reveal { opacity: 1 !important; transform: none !important; }
 }
@@ -210,20 +205,13 @@ footer.wrap { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 2rem; }
         <h1 class="otc-h">Most evenings, <em>I'm building something.</em></h1>
         <p class="otc-p">I'll admit I'm a workaholic, and learning to code gave that energy somewhere to go. I don't have to wait for someone else to make the tool I want. When I do switch off, it's chess, badminton, travel, or another go at the piano.</p>
       </div>
-      <ul class="otc-ledger" aria-label="Off the clock">
-        <li><span>Chess</span><span>In play</span></li>
-        <li><span>Badminton</span><span>On court</span></li>
-        <li><span>Travel</span><span>Boarding</span></li>
-        <li><span>Piano</span><span>Learning</span></li>
-        <li class="otc-tot"><span>Off the clock</span><span>4</span></li>
-      </ul>
       <span class="otc-side otc-side-a" aria-hidden="true">Finance by day</span>
       <span class="otc-side otc-side-b" aria-hidden="true">Software by night</span>
       <picture class="otc-fig">
         <source srcset="../images/off-the-clock.webp" type="image/webp">
         <img src="../images/off-the-clock.png" alt="Ajay Sachdev, smiling, in a green quarter-zip" width="728" height="1100" fetchpriority="high" decoding="async">
       </picture>
-      <div class="otc-m1" aria-hidden="true">Off the clock <em>/</em> chess <em>/</em> badminton <em>/</em> travel <em>/</em> piano <em>/</em> Off the clock</div>
+      <div class="otc-m1" aria-hidden="true">Off the clock<em>:</em> chess <em>/</em> badminton <em>/</em> travel <em>/</em> piano <em>/</em> Off the clock<em>:</em> chess</div>
       <div class="otc-m2" aria-hidden="true">finance by day / software by night / finance by day / software by night / finance by day /</div>
     </div>
   </div>
