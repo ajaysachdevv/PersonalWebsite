@@ -33,7 +33,7 @@ An intraday trading system where four AI agents vote on every signal and a Risk 
 
 ### Uni-Nation Digital (uni-nation.in)
 Website, inventory system and analytics for the family fabric business running since 1988.
-- Inventory system (30,000+ lines) tracking roughly $2m of sales data, ~2,000 products, 650+ customers
+- Inventory system (30,000+ lines) tracking ~$2m of sales data, ~2,000 products, 650+ customers
 - Voice stock entry in mixed Hindi-English: the parser understands thaan, taaka, metre and Hindi numbers, and corrects speech-to-text on fabric names
 - Receivables tracking with WhatsApp follow-up generation
 
@@ -105,7 +105,7 @@ Q: What is the AI trading bot with a veto?
 A: A FTSE 100 intraday system where four AI agents rate every setup and a Risk Auditor holds an absolute veto that nothing overrides. It runs on paper by design: 115+ sessions, zero impulsive trades let through, a GBP 750 hard cap and other risk rails written in code, not prompts. The point was stopping impulsive trades, not profit. Case study: https://ajaysachdev.com/projects/trading-bot.html
 
 Q: What is Hindi voice stock entry?
-A: Part of Uni-Nation Digital, the software for his family's uniform-fabric business (est. 1988). Warehouse staff hold fabric rolls in both hands, so stock is entered by voice in mixed Hindi and English. The parser understands fabric units (thaan, taaka, metre) and Hindi numbers. The system tracks ~2,000 products, 650+ customers and roughly $2m of sales data. Case study: https://ajaysachdev.com/projects/uni-nation.html
+A: Part of Uni-Nation Digital, the software for his family's uniform-fabric business (est. 1988). Warehouse staff hold fabric rolls in both hands, so stock is entered by voice in mixed Hindi and English. The parser understands fabric units (thaan, taaka, metre) and Hindi numbers. The system tracks ~2,000 products, 650+ customers and ~$2m of sales data. Case study: https://ajaysachdev.com/projects/uni-nation.html
 
 Q: What is WhatsApp Smart?
 A: A Chrome extension prototype that adds scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. 11 features, ~16,000 lines of TypeScript. Message content stays in the browser unless the user sends text to the AI. Never launched. Case study: https://ajaysachdev.com/projects/whatsapp-smart.html
