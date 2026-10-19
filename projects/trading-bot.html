@@ -164,10 +164,10 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .sched li.hot .t { color: var(--credit); }
 .sched li.hot span:last-child { color: var(--paper); }
 
-/* Agent floor */
-.agents { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.4rem; }
+/* Agent floor: a vertical chain, one exit per stage (chain pattern: Supabase architecture, studied 19/10/2026) */
+.agents { display: grid; grid-template-columns: minmax(0, 30rem) 1fr; column-gap: 0; row-gap: 1.7rem; margin-top: 2.4rem; max-width: 48rem; }
 .agent {
-  border: 1px solid var(--rule); border-radius: 5px; padding: 1.1rem 1.2rem;
+  position: relative; border: 1px solid var(--rule); border-radius: 5px; padding: 1.1rem 1.2rem; background: var(--ink-2);
   font-family: var(--mono); font-size: 0.72rem; line-height: 1.65; color: var(--paper-dim);
 }
 .agent .who { color: var(--paper); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.7rem; }
@@ -175,7 +175,35 @@ header + section .section-head, .notes-col > section:first-child .section-head {
 .agent .verdict.ok { color: var(--credit); }
 .agent .verdict.no { color: var(--debit); }
 .agent .verdict.hmm { color: var(--amber); }
-@media (max-width: 680px) { .agents { grid-template-columns: 1fr; } }
+/* connector down to the next stage, drawn in the row gap */
+.exit + .agent::before, .exit + .order::before {
+  content: ""; position: absolute; left: 50%; top: -1.7rem; height: 1.7rem; border-left: 1px solid var(--paper-faint);
+}
+.exit + .agent::after, .exit + .order::after {
+  content: ""; position: absolute; left: 50%; top: -7px; transform: translateX(-50%);
+  border: 4px solid transparent; border-top: 6px solid var(--paper-faint); border-bottom: 0;
+}
+/* exit to the right: the trade dies here */
+.exit {
+  align-self: center; display: flex; align-items: center; gap: 0; padding-left: 0;
+  font-family: var(--mono); font-size: var(--ms-1); letter-spacing: var(--tr-1); text-transform: uppercase; color: var(--debit); white-space: nowrap;
+}
+.exit::before { content: ""; width: 2.2rem; height: 1px; background: var(--debit); flex: none; }
+.exit i { font-style: normal; position: relative; padding-left: 0.6rem; }
+.exit i::before { content: ""; position: absolute; left: -1px; top: 50%; transform: translateY(-50%); border: 4px solid transparent; border-left: 6px solid var(--debit); border-right: 0; }
+.exit.hard { font-weight: 700; }
+.agents .order {
+  position: relative; border: 1px solid var(--credit); border-radius: 5px; padding: 0.8rem 1.2rem; grid-column: 1;
+  font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-1); text-transform: uppercase; color: var(--credit); text-align: center;
+}
+.exit + .order::before { border-left-color: var(--credit); }
+.exit + .order::after { border-top-color: var(--credit); }
+@media (max-width: 680px) {
+  .agents { grid-template-columns: 1fr; row-gap: 0; }
+  .exit { justify-content: flex-start; padding: 0.55rem 0 1.5rem 1.2rem; white-space: normal; }
+  .exit::before { width: 1.2rem; }
+  .exit + .agent::before, .exit + .order::before { top: -1.5rem; height: 1.5rem; }
+}
 
 /* Session record terminal */
 .term {
@@ -403,11 +431,16 @@ main.wrap > header .reveal { opacity: 1; }
     <section data-note="3">
       <div class="section-head reveal"><h2>The floor</h2><span class="right">Four agents, one veto</span></div>
       <p class="prose reveal">First thing each session: kill-switch and market regime check. If either fails, nothing else runs. News gets scanned and classified by tier before the technical check: EMA, VWAP, RSI. Only setups that pass everything reach the quality gate, where Claude Sonnet rates them against a strict JSON schema. The last word belongs to Claude Opus as risk auditor. <b>If it vetoes, the trade dies.</b> The rails are in code. The agents can assess and recommend but they cannot change the config.</p>
-      <div class="agents reveal">
+      <div class="agents reveal" role="group" aria-label="The four stages a setup passes through, top to bottom, and where it can be stopped">
         <div class="agent"><span class="who">Orchestrator</span><span class="verdict ok">GATE</span><br>Kill-switch and regime check. If the equity floor is breached or the FTSE fails its regime gate, the session never starts.</div>
+        <div class="exit"><i>session never starts</i></div>
         <div class="agent"><span class="who">Context Lead</span><span class="verdict hmm">SCAN</span><br>Same-day RNS announcements, classified Tier A (earnings, M&amp;A), Tier B (upgrades, buybacks) or Tier C (skip). No catalyst, no conviction.</div>
+        <div class="exit"><i>no catalyst, no trade</i></div>
         <div class="agent"><span class="who">Analyst</span><span class="verdict hmm">RATE</span><br>Technical quality gate. EMA, VWAP and RSI checks, then a structured 1 to 5 rating. Marginal setups score exactly what they deserve.</div>
+        <div class="exit"><i>low rating, no trade</i></div>
         <div class="agent"><span class="who">Risk Auditor</span><span class="verdict no">VETO</span><br>Absolute veto, no appeal. Checks correlation risk, position sizing and session history.</div>
+        <div class="exit hard"><i>veto, the trade dies</i></div>
+        <div class="order">Paper order placed</div>
       </div>
       <div class="term reveal" id="session">
         <div class="term-bar"><span>trading-bot : session record</span><span><b class="tb-clock" id="tb-clock">10:35:07.000</b> / Sample output</span></div>
