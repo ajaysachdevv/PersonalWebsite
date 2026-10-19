@@ -1,0 +1,3 @@
+# Hand-formatted static site: no automatic reformatting of any file.
+# (The global Claude Code auto-format hook runs prettier after edits; this keeps diffs honest.)
+*
