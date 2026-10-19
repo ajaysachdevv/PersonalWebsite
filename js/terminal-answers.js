@@ -165,7 +165,7 @@ window.TERMINAL_KB = [
     id: "family-business",
     cmd: "open uni-nation",
     answer:
-      "The family runs a uniform-fabric business in Mumbai, est. 1988. Ajay grew up in it, worked in it from 2018 to 2020, and later built its website, inventory system and Hindi voice stock entry: that is the Uni-Nation Digital project.",
+      "The family runs a uniform-fabric business in Mumbai, est. 1988. Ajay grew up in it, worked in it from 2018 to 2020, and later built the Uni-Nation Digital project for it: website, inventory system and Hindi voice stock entry.",
     phrases: [
       "family business",
       "tell me about your family",
@@ -248,7 +248,7 @@ window.TERMINAL_KB = [
     id: "cima",
     cmd: "open scs-cockpit",
     answer:
-      "ACMA CGMA (CIMA), qualified 2026. The final exam, the Strategic Case Study, was passed with a study engine built for it: SCS Cockpit.",
+      "ACMA CGMA (CIMA), qualified 2026. He passed the final exam, the Strategic Case Study, using SCS Cockpit, a study engine he built for it.",
     phrases: [
       "are you qualified",
       "cima",
@@ -294,7 +294,7 @@ window.TERMINAL_KB = [
     id: "advice",
     cmd: "projects",
     answer:
-      "No course to sell here. What worked for him: pick one annoying problem at work, build the smallest tool that fixes it, then keep going. The projects page shows where that led.",
+      "No course to sell here. What worked for him: pick one annoying problem at work and build the smallest tool that fixes it. Then keep going. The projects page shows where that led.",
     phrases: [
       "how do i learn to code",
       "advice for finance people learning to code",
@@ -442,7 +442,7 @@ window.TERMINAL_KB = [
     id: "opspilot",
     cmd: "open opspilot",
     answer:
-      "OpsPilot: an AI assistant that lives in Microsoft Teams. It searches 6,124+ documents, pulls live accounting and CRM data, and drafts answers that get approved with one click. 95,000+ lines, 43 features, in production.",
+      "OpsPilot: an AI assistant that lives in Microsoft Teams. It searches 6,124+ documents and pulls live accounting and CRM data, then drafts answers that get approved with one click. 95,000+ lines, 43 features, in production.",
     phrases: [
       "what is opspilot",
       "tell me about opspilot",
@@ -495,7 +495,7 @@ window.TERMINAL_KB = [
     id: "trading",
     cmd: "open trading-bot",
     answer:
-      "Trading Bot: four AI agents rate every FTSE 100 setup and a risk auditor holds an absolute veto. 115+ paper sessions, zero impulsive trades let through, a GBP 750 hard cap in code. Paper trading, by design.",
+      "Trading Bot: four AI agents rate every FTSE 100 setup. The last of them, a risk auditor, holds an absolute veto. 115+ paper sessions, zero impulsive trades let through, a GBP 750 hard cap in code. Paper trading, by design.",
     phrases: [
       "trading bot",
       "tell me about the trading bot",
@@ -513,7 +513,7 @@ window.TERMINAL_KB = [
     id: "trading-money",
     cmd: "open trading-bot",
     answer:
-      "It does not trade real money. It runs on paper by design: the point was never the profit, it was stopping impulsive trades.",
+      "It does not trade real money. It runs on paper by design. It exists to stop impulsive trades.",
     phrases: [
       "does it make money",
       "is it profitable",
@@ -685,7 +685,7 @@ window.TERMINAL_KB = [
     id: "stack",
     cmd: "cat skills.txt",
     answer:
-      "Python and TypeScript for the builds, SQL and Power BI for data, Claude and Gemini for AI, FAISS and BM25 for search. On the finance side: financial modelling, budgeting, forecasting and reporting.",
+      "Python and TypeScript for the builds. SQL and Power BI for data. On the AI side: Claude, Gemini, FAISS, BM25. On the finance side: financial modelling, budgeting, forecasting and reporting.",
     phrases: [
       "tech stack",
       "what languages do you use",
@@ -763,7 +763,7 @@ window.TERMINAL_KB = [
     id: "site",
     cmd: "basis",
     answer:
-      "One hand-written HTML file per page. No framework, no build step, no npm. Instrument Serif, Inter and JetBrains Mono, self-hosted. Motion by GSAP and Lenis. Type basis for more.",
+      "One hand-written HTML file per page. No framework and no build step. Instrument Serif, Inter and JetBrains Mono, self-hosted. Motion by GSAP and Lenis. Type basis for more.",
     phrases: [
       "how was this site built",
       "how did you build this",
@@ -794,7 +794,7 @@ window.TERMINAL_KB = [
     id: "why-vanilla",
     cmd: "basis",
     answer:
-      "A personal site does not need a framework. Plain HTML loads fast, has nothing to update, and still works in ten years.",
+      "A personal site does not need a framework. Plain HTML loads fast and has nothing to update. It will still work in ten years.",
     phrases: [
       "why not react",
       "why vanilla js",

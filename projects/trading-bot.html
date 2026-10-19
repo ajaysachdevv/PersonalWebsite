@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trading Bot | Ajay Sachdev</title>
-<meta name="description" content="Four AI agents that veto impulsive trades: 115+ paper-trading sessions on the FTSE 100, zero trades let through, hard risk rails in code.">
+<meta name="description" content="I built four AI agents that veto my impulsive trades. 115+ paper sessions on the FTSE 100, zero impulsive trades let through, every risk rail in code.">
 <meta property="og:title" content="Trading Bot | Ajay Sachdev">
 <meta property="og:description" content="Four AI agents with an absolute veto. 115+ sessions, 0 impulsive trades let through. The point was the restraint.">
 <meta property="og:type" content="article">
@@ -402,12 +402,12 @@ main.wrap > header .reveal { opacity: 1; }
 
     <section data-note="3">
       <div class="section-head reveal"><h2>The floor</h2><span class="right">Four agents, one veto</span></div>
-      <p class="prose reveal">First thing each session: kill-switch and market regime check. If either fails, nothing else runs. News gets scanned and classified by tier before the technical check: EMA, VWAP, RSI. Only setups that pass everything reach the quality gate, where Claude Sonnet rates them against a strict JSON schema. The last word belongs to Claude Opus as risk auditor. <b>If it vetoes, the trade dies.</b> The rails live in code, not prompts: the agents can assess and recommend, they cannot override the config.</p>
+      <p class="prose reveal">First thing each session: kill-switch and market regime check. If either fails, nothing else runs. News gets scanned and classified by tier before the technical check: EMA, VWAP, RSI. Only setups that pass everything reach the quality gate, where Claude Sonnet rates them against a strict JSON schema. The last word belongs to Claude Opus as risk auditor. <b>If it vetoes, the trade dies.</b> The rails are in code. The agents can assess and recommend but they cannot change the config.</p>
       <div class="agents reveal">
         <div class="agent"><span class="who">Orchestrator</span><span class="verdict ok">GATE</span><br>Kill-switch and regime check. If the equity floor is breached or the FTSE fails its regime gate, the session never starts.</div>
         <div class="agent"><span class="who">Context Lead</span><span class="verdict hmm">SCAN</span><br>Same-day RNS announcements, classified Tier A (earnings, M&amp;A), Tier B (upgrades, buybacks) or Tier C (skip). No catalyst, no conviction.</div>
         <div class="agent"><span class="who">Analyst</span><span class="verdict hmm">RATE</span><br>Technical quality gate. EMA, VWAP and RSI checks, then a structured 1 to 5 rating. Marginal setups score exactly what they deserve.</div>
-        <div class="agent"><span class="who">Risk Auditor</span><span class="verdict no">VETO</span><br>Absolute veto, no appeal. Correlation risk, position sizing, session context. 115+ sessions, and nothing has got past the floor.</div>
+        <div class="agent"><span class="who">Risk Auditor</span><span class="verdict no">VETO</span><br>Absolute veto, no appeal. Checks correlation risk, position sizing and session history.</div>
       </div>
       <div class="term reveal" id="session">
         <div class="term-bar"><span>trading-bot : session record</span><span><b class="tb-clock" id="tb-clock">10:35:07.000</b> / Sample output</span></div>
@@ -446,7 +446,7 @@ main.wrap > header .reveal { opacity: 1; }
     <section data-note="5">
       <div class="section-head reveal"><h2>Engineering</h2><span class="right">The parts that mattered</span></div>
       <ul class="notes">
-        <li class="reveal"><span><b>Structured outputs, no fallback holes</b>The quality gate used to run on a model whose JSON sometimes failed to parse, and the fallback defaulted the score to 3: a safety hole that could let marginal trades through. Switched to Claude Sonnet with a guaranteed schema. No parse failures, no fallback needed. Prompt caching across parallel scans cut token spend by about 90%.</span></li>
+        <li class="reveal"><span><b>Structured outputs, no fallback holes</b>The quality gate used to run on a model whose JSON sometimes failed to parse, and the fallback defaulted the score to 3: a safety hole that could let marginal trades through. Switched to Claude Sonnet with a guaranteed schema. No parse failures since the switch. Prompt caching across parallel scans cut token spend by about 90%.</span></li>
         <li class="reveal"><span><b>News before numbers</b>Each ticker's RNS gets checked before the technical scan. One API call finds same-day announcements and classifies them by tier. This replaced a screen scraper that kept breaking; the scraper survives only as the fallback.</span></li>
         <li class="reveal"><span><b>Walk-forward backtesting</b>60-day default, up to two years. Evaluates at 10:35 on each historical day with no lookahead bias and a 0.2% round-trip spread cost deducted.</span></li>
         <li class="reveal"><span><b>Atomic state, full audit trail</b>A file-locked state manager prevents race conditions between the order manager and the kill switch. Every decision writes to a JSONL audit trail: timestamp, session, stage, ticker, outcome. The whole system is one long paper trail, which is how I like my systems.</span></li>

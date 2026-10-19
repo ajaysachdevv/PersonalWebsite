@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OpsPilot | Ajay Sachdev</title>
-<meta name="description" content="An AI operations layer that lives in Microsoft Teams: 95,000+ lines of code, 43 features live, 6,124+ documents indexed, 100% on a 50-query test suite.">
+<meta name="description" content="An AI layer inside Teams that searches 6,124+ documents, pulls live finance data and drafts replies I approve with one click. 95,000+ lines, 43 features.">
 <meta property="og:title" content="OpsPilot | Ajay Sachdev">
 <meta property="og:description" content="The AI that answers a finance manager's messages: hybrid search over 6,124+ documents, live accounting and CRM data, drafts approved with one click.">
 <meta property="og:type" content="article">
@@ -439,7 +439,7 @@ main.wrap > header .reveal { opacity: 1; }
 
     <section data-note="1">
       <div class="section-head reveal"><h2>The problem</h2><span class="right">Where the hours went</span></div>
-      <p class="prose reveal">I work in finance and operations at a tech company. My day is split across Teams, SharePoint, Xero, HubSpot and email. Someone asks a question in one system, the answer lives in another, and the context for why it matters is in a third. I was spending hours just pulling data, missing follow-ups because nobody tracked who said what, and scrambling for context five minutes before meetings.</p>
+      <p class="prose reveal">I work in finance and operations at a tech company. My day is split across Teams, SharePoint, Xero, HubSpot and email. Someone asks a question in one system and the answer sits in another. The context for why it matters is somewhere else again. I was spending hours just pulling data, missing follow-ups because nobody tracked who said what, and scrambling for context five minutes before meetings.</p>
       <p class="prose reveal">"What does the contract say about payment terms?" That's a SharePoint search. "Who hasn't paid us?" That's Xero. "What deals is the sales team working on?" HubSpot. "Tell me about this customer." That needs all three. The information always existed. It was scattered across 6,124+ documents and half a dozen systems.</p>
       <div class="ba reveal">
         <div class="deb">
@@ -475,7 +475,7 @@ main.wrap > header .reveal { opacity: 1; }
         <li><span><b>Multi-draft generation</b> in my writing style, several answer shapes to choose from</span></li>
         <li class="hl"><span><b>Sensitivity gate</b>: UK PII detector, a hard blocker before anything can auto-send</span></li>
         <li><span><b>Adaptive Card builder</b> formats the answer with sources and figures</span></li>
-        <li class="hl"><span><b>Approve, edit or reject</b>. A human signs every entry. That's the design, not a limitation</span></li>
+        <li class="hl"><span><b>Approve, edit or reject</b>. A human signs every entry. By design</span></li>
       </ol>
       <table class="ledger reveal">
         <thead><tr><th>Test suite</th><th>Scope</th><th>Result</th></tr></thead>
@@ -496,7 +496,7 @@ main.wrap > header .reveal { opacity: 1; }
         <span class="ac-stamp" id="ac-stamp" aria-hidden="true"></span>
       </div>
       <div class="ac-log" id="ac-log" role="status"></div>
-      <div class="mo-bar"><span class="mo-hint">It's live. Approve it, edit it, or reject it.</span><button class="mo-btn ghost mo-replay" id="ac-replay" type="button">Replay</button></div>
+      <div class="mo-bar"><span class="mo-hint">It's live. Your call: approve, edit or reject.</span><button class="mo-btn ghost mo-replay" id="ac-replay" type="button">Replay</button></div>
     </section>
 
     <section data-note="3">
@@ -516,7 +516,7 @@ main.wrap > header .reveal { opacity: 1; }
       <div class="section-head reveal"><h2>What it does</h2><span class="right">Beyond answering</span></div>
       <ul class="notes">
         <li class="reveal"><span><b>Hybrid search</b>Vague questions still land on the right document. BM25 matches keywords and FAISS matches meaning, reciprocal rank fusion merges the two, and an AI reranker picks the top five. HyDE query expansion adds domain terms before the search runs.</span></li>
-        <li class="reveal"><span><b>Live data, no hallucination surface</b>"Who hasn't paid us?" reads Xero receivables directly. "What deals are open?" queries the HubSpot pipeline. 17 direct API actions where the LLM never touches the numbers: formatted figures, straight back. Xero access is read-only by design.</span></li>
+        <li class="reveal"><span><b>Live data, no hallucination surface</b>"Who hasn't paid us?" reads Xero receivables directly. "What deals are open?" queries the HubSpot pipeline. 17 direct API actions that skip the LLM entirely. The numbers come back formatted, not generated. Xero access is read-only by design.</span></li>
         <li class="reveal"><span><b>Autonomous monitoring</b>Morning briefing at 08:00, evening wrap at 17:30. Deal-stage checks run every five minutes during business hours. An invoice scanner reads PDFs from my inbox, extracts line items, matches them against Xero and flags duplicates and price drift. A commitment tracker detects promises in Teams and email and alerts when they slip.</span></li>
         <li class="reveal"><span><b>Dashboard</b>A React dashboard on precomputed state: P&amp;L, cash position, pipeline, receivables, engagement. FastAPI serves it from SQLite so the page never waits on a third-party API.</span></li>
         <li class="reveal"><span><b>Personal growth journal</b>Every evening it writes a first-person diary entry from the day's activity, then a behavioural layer flags blind spots: unreplied messages, tone drift, people I haven't spoken to in a while. Weekly digest on Fridays.</span></li>
@@ -546,7 +546,6 @@ main.wrap > header .reveal { opacity: 1; }
         <div><span class="s-name">APScheduler</span><span class="s-role">Briefings and scheduled jobs</span></div>
         <div><span class="s-name">Oracle Cloud</span><span class="s-role">Ubuntu VM, systemd, auto-deploy</span></div>
       </div>
-      <p class="pull reveal">Nobody could find anything in 6,124 files. Now the files <span>answer back.</span></p>
     </section>
     </div>
     <aside class="rail" aria-label="Margin notes">

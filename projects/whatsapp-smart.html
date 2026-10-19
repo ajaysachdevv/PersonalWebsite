@@ -6,7 +6,7 @@
 <title>WhatsApp Smart | Ajay Sachdev</title>
 <meta name="description" content="A Chrome extension that gives WhatsApp Web scheduling, AI replies, tone changes and group summaries. 11 features, ~16,000 lines of TypeScript. Prototype.">
 <meta property="og:title" content="WhatsApp Smart | Ajay Sachdev">
-<meta property="og:description" content="I wanted to schedule a birthday message and WhatsApp couldn't. A privacy-first Chrome extension prototype: scheduling, AI replies, summaries. Messages stay in the browser unless you send one to the AI.">
+<meta property="og:description" content="I wanted to schedule a birthday message and WhatsApp couldn't. A privacy-first Chrome extension prototype: scheduling, AI replies, summaries. Message content stays in the browser unless you select text for the AI.">
 <meta property="og:type" content="article">
 <meta name="author" content="Ajay Sachdev">
 <meta name="publish_date" property="og:publish_date" content="2026-07-22T00:00:00+0000">
@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Ajay Sachdev">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="WhatsApp Smart | Ajay Sachdev">
-<meta name="twitter:description" content="I wanted to schedule a birthday message and WhatsApp couldn't. A privacy-first Chrome extension prototype: scheduling, AI replies, summaries. Messages stay in the browser unless you send one to the AI.">
+<meta name="twitter:description" content="I wanted to schedule a birthday message and WhatsApp couldn't. A privacy-first Chrome extension prototype: scheduling, AI replies, summaries. Message content stays in the browser unless you select text for the AI.">
 <meta name="twitter:image" content="https://ajaysachdev.com/images/og-card-2.jpg">
 <meta name="twitter:image:alt" content="Ajay Sachdev. The accountant who ships code.">
 <script type="application/ld+json">
@@ -328,7 +328,7 @@ main.wrap > header .reveal { opacity: 1; }
     <p class="crumb reveal"><a href="./">Projects</a> / Chrome extension</p>
     <h1 class="reveal">WhatsApp Smart<em>.</em></h1>
     <p class="entry-status reveal"><span class="l-status amber"><i></i>Prototype, never launched</span></p>
-    <p class="entry-lede reveal">I wanted to schedule a birthday message for midnight, and WhatsApp couldn't. So I built a Chrome extension that adds scheduling, AI replies, tone adjustment and group summaries. <em>Messages stay in the browser unless you send one to the AI.</em></p>
+    <p class="entry-lede reveal">I wanted to schedule a birthday message for midnight, and WhatsApp couldn't. So I built a Chrome extension that adds scheduling, AI replies, tone adjustment and group summaries. <em>Message content stays in the browser unless you select text for the AI.</em></p>
     <p class="entry-plain reveal"><span class="ep-lab">In plain words</span>An add-on for WhatsApp in the Chrome browser: schedule messages, get reply suggestions, and take a message back within five seconds. <a class="ep-try" href="#undo">Try it below</a></p>
     <div class="fig-row">
       <div class="fig reveal"><span class="fig-num">11</span><span class="fig-lab">features built</span></div>
@@ -367,7 +367,7 @@ main.wrap > header .reveal { opacity: 1; }
 
     <section data-note="3">
       <div class="section-head reveal"><h2>How it works</h2><span class="right">Three layers, local first</span></div>
-      <p class="prose reveal">You open WhatsApp Web and the extension is already there: a small toolbar next to the compose box with AI suggestions, a tone adjuster and a schedule button. Message access comes from an open-source WhatsApp Web API library, not brittle DOM scraping. <b>No server required for core features. No sign-up.</b></p>
+      <p class="prose reveal">You open WhatsApp Web and the extension is already there: a small toolbar next to the compose box with AI suggestions, a tone adjuster and a schedule button. Message access comes from an open-source WhatsApp Web API library rather than reading the page markup directly. <b>No server required for core features. No sign-up.</b></p>
 
       <ul class="notes reveal">
         <li><span><b>In the page</b>A content script spots WhatsApp Web with a MutationObserver and mounts a React 19 UI of 54 components in shadow DOM, talking to the page through a postMessage bridge.</span></li>
@@ -380,9 +380,9 @@ main.wrap > header .reveal { opacity: 1; }
       <div class="section-head reveal"><h2>What it does</h2><span class="right">Eleven features</span></div>
       <ul class="notes">
         <li class="reveal"><span><b>Smart scheduling</b>One-off or recurring messages, per-contact office hours so nothing fires at 3am, staggered batch sending.</span></li>
-        <li class="reveal"><span><b>AI reply suggestions</b>Reads the chat context and suggests three replies instantly. Learns your emoji habits and tone.</span></li>
+        <li class="reveal"><span><b>AI reply suggestions</b>Reads the last few messages and suggests replies you can send or edit.</span></li>
         <li class="reveal"><span><b>Tone adjuster</b>Draft quickly, then rewrite as formal, casual or professional with one click.</span></li>
-        <li class="reveal"><span><b>Group chat summary</b>30+ unread messages become structured bullets: decisions, assignees, deadlines.</span></li>
+        <li class="reveal"><span><b>Group chat summary</b>Turns a busy group chat into a short list: who said what, what was decided, what is due.</span></li>
         <li class="reveal"><span><b>Undo send</b>A five-second countdown intercepts every message before it hits WhatsApp's servers.</span></li>
         <li class="reveal"><span><b>Follow-up reminders</b>Flag messages to bounce back later; keyword alerts for terms like "urgent" or "deadline".</span></li>
         <li class="reveal"><span><b>Privacy first</b>All data in local Chrome storage. No sign-up. Messages stay in the browser; only text you send to the AI leaves it, and those prompts are not stored.</span></li>

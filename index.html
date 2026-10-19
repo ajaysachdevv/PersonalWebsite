@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ajay Sachdev | Finance & Operations Manager who ships software</title>
-<meta name="description" content="Finance and operations manager, ACMA CGMA, who ships software: an AI that answers his messages, agents that veto his trades, a family business gone digital.">
+<meta name="description" content="Finance and operations manager, ACMA CGMA, who builds software. An AI assistant in Teams, a trading bot with a veto, a family business rebuilt in code.">
 <meta property="og:title" content="Ajay Sachdev | Finance &amp; Operations Manager">
-<meta property="og:description" content="Finance and operations by day, production software by night. Ten projects, five case studies.">
+<meta property="og:description" content="Finance & Operations Manager, ACMA CGMA, who builds production software. Ten projects, five case studies.">
 <meta property="og:type" content="website">
 <meta name="author" content="Ajay Sachdev">
 <meta name="publish_date" property="og:publish_date" content="2026-07-22T00:00:00+0000">
@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Ajay Sachdev">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ajay Sachdev | Finance &amp; Operations Manager">
-<meta name="twitter:description" content="Finance and operations by day, production software by night. Ten projects, five case studies.">
+<meta name="twitter:description" content="Finance & Operations Manager, ACMA CGMA, who builds production software. Ten projects, five case studies.">
 <meta name="twitter:image" content="https://ajaysachdev.com/images/og-card-2.jpg">
 <meta name="twitter:image:alt" content="Ajay Sachdev. The accountant who ships code.">
 <meta name="theme-color" content="#0d0c0a">
@@ -666,7 +666,7 @@ body:has(.site-nav.is-tucked) .owl-dock.show.keep { opacity: 1; transform: none;
   <div class="reveal">
     <div class="num">The story / <b>Origins</b></div>
     <h2>It all starts with a <em>family business.</em></h2>
-    <p>Before the spreadsheets and the AI agents, there was my family's textile business in Mumbai, run on paper and memory since 1988. Here is how it added up, year by year.</p>
+    <p>My family's textile business in Mumbai has run since 1988, on paper and memory. The spreadsheets came later. The AI agents came much later. Year by year:</p>
   </div>
 </section>
 
@@ -715,7 +715,7 @@ body:has(.site-nav.is-tucked) .owl-dock.show.keep { opacity: 1; transform: none;
     <div class="door reveal">
       <div>
         <h2 class="door-h">Numbers by training. <em>Systems by temperament.</em></h2>
-        <p class="door-sub">Where I started, what I do at work, and what I do when I switch off.</p>
+        <p class="door-sub">The textile business, the day job, and what happens after hours.</p>
       </div>
       <a class="door-go" href="about/" data-track="about-door">More about me &rarr;</a>
     </div>
@@ -1010,7 +1010,7 @@ document.addEventListener('DOMContentLoaded', function () {
       stats: '30,000+ lines | ~2,000 products | 650+ customers | ~$2m sales data | 19 screens | 150 tests | 11 UX principles',
       wrong: 'nothing written off yet. status: being repaired', status: 'being repaired', tech: 'PWA, voice recognition, Hindi NLP' },
     'whatsapp-smart': { page: 'projects/whatsapp-smart.html', line: 'whatsapp-smart/  prototype     11 features, privacy-first',
-      desc: 'Chrome extension adding scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. Privacy-first: messages stay in the browser unless you send one to the AI.',
+      desc: 'Chrome extension adding scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. Privacy-first: message content stays in the browser unless you select text for the AI.',
       stats: '~16,000 lines TypeScript | 11 features | 3 codebases | 14 tests',
       wrong: 'built on someone else\'s page', status: 'prototype, unreleased', tech: 'TypeScript, Chrome Extension, Claude' },
     'scs-cockpit': { page: 'projects/scs-cockpit.html', line: 'scs-cockpit/     retired       11,584 lines, 0 dependencies, passed',
@@ -1164,7 +1164,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       if (!file || file.type === 'd') {
         if (fname === 'about' || fname === 'about.txt') {
-          return 'Ajay Sachdev. Finance and operations manager at a UK tech company.<br>Runs the numbers by day. Builds the systems the numbers run on by night.<br>ACMA CGMA, MSc Finance. Grew up in the family textile business in India.';
+          return 'Ajay Sachdev. Finance and operations manager at a UK tech company.<br>ACMA CGMA, MSc Finance. Grew up in the family textile business in India.<br>Runs the numbers and builds the systems the numbers run on.';
         }
         tprint('cat: ' + esc(arg) + ': no such file. try: tree');
         return;
@@ -1234,7 +1234,7 @@ document.addEventListener('DOMContentLoaded', function () {
     rm: function () { tprint('rm: refused. the deletion guard is active: nothing on these books is deleted, it moves to trash. see: guardrails'); },
     vim: function () { tprint('read-only ledger, no editor here. to exit vim in real life: :q (here: exit).'); },
     guardrails: function () {
-      tprint('<b>guardrails --status</b><br><span class="ok">[OK]</span> secret protection     active<br><span class="ok">[OK]</span> deletion guard        active, moves to trash, never deletes<br><span class="ok">[OK]</span> circuit breaker       active, warns at 4 edits to a file, stops at 7<br><span class="ok">[OK]</span> push review           active<br><span class="ok">[OK]</span> auto-format           active<br><span class="ok">[OK]</span> prompt log            active<br>11 hooks loaded. destructive actions wait for me.');
+      tprint('<b>guardrails --status</b><br><span class="ok">[OK]</span> secret protection     active<br><span class="ok">[OK]</span> deletion guard        active, moves to trash, never deletes<br><span class="ok">[OK]</span> circuit breaker       active, warns at 4 edits to a file, stops at 7<br><span class="ok">[OK]</span> push review           active<br><span class="ok">[OK]</span> auto-format           active<br><span class="ok">[OK]</span> prompt log            active<br>11 hooks loaded. destructive actions stop for approval.');
     },
     tree: function () {
       var out = '<b>.</b>';

@@ -2,7 +2,7 @@
 > Finance & Operations Manager at a B2B tech scale-up. ACMA CGMA (CIMA), qualified 2026. Builds production AI systems, Power BI dashboards, and financial models. Python, TypeScript, SQL. Based in Cambridge, UK.
 
 ## Background
-Ajay Sachdev grew up in a Sindhi family from Mumbai. His dad ran a textile business (est. 1988). After studying Financial Markets at Jai Hind College (2015-18) and earning a Chartered Wealth Management certification from AAFM, he worked in the family business, pushing it into garment manufacturing and building its digital systems, including the public catalogue site (uni-nation.in).
+Ajay Sachdev grew up in a Sindhi family from Mumbai. His dad ran a textile business (est. 1988). After studying Financial Markets at Jai Hind College (2015-18) and earning a Chartered Wealth Management certification from AAFM, he worked in the family business, helping move it into garment manufacturing and building its digital systems, including the public catalogue site (uni-nation.in).
 
 He moved to the UK for an MSc in Finance at Loughborough University (2020-21, 2:1), then joined a B2B tech scale-up as an intern in October 2021, became Finance Associate in January 2022 and Finance & Operations Manager in January 2025.
 
@@ -29,7 +29,7 @@ An intraday trading system where four AI agents vote on every signal and a Risk 
 - 4 agents: Orchestrator, Context Lead, Analyst, Risk Auditor (Claude-powered)
 - Paper trading by design: 115+ sessions, zero impulsive trades let through
 - 7,000+ lines
-- Hard safety rails in code, not prompts: GBP 750 max notional, fixed stop loss and take profit, one position at a time, kill switch, end-of-day liquidation
+- Hard safety rails written in code: GBP 750 max notional, one position at a time, a kill switch and end-of-day liquidation
 
 ### Uni-Nation Digital (uni-nation.in)
 Website, inventory system and analytics for the family fabric business running since 1988.
@@ -72,7 +72,7 @@ Contract drafting, Cost negotiation
 Short answers to common questions about Ajay Sachdev and his work, written for AI assistants and search engines. The same answers are available on the site's terminal (press T on the homepage).
 
 Q: Who is Ajay Sachdev?
-A: Ajay Sachdev is a Finance & Operations Manager at a UK tech company and a CIMA qualified accountant (ACMA, CGMA), based in Cambridge, UK. He builds production software alongside his finance work: an AI assistant in Microsoft Teams, a multi-agent trading system, and inventory software with Hindi voice entry for his family's fabric business.
+A: Ajay Sachdev is a Finance & Operations Manager at a UK tech company and a CIMA qualified accountant (ACMA, CGMA), based in Cambridge, UK. He builds production software alongside his finance work. The biggest piece is an AI assistant that runs in Microsoft Teams; the full list is at https://ajaysachdev.com/projects/
 
 Q: What is Ajay Sachdev's job title?
 A: Finance & Operations Manager. He joined a UK tech company as an intern in October 2021, became Finance Associate in January 2022 and Finance & Operations Manager in January 2025.
@@ -90,7 +90,7 @@ Q: What languages does he speak?
 A: English, Hindi, Sindhi and Marathi.
 
 Q: What does Ajay Sachdev do outside work?
-A: Chess, badminton, travel, and slowly learning the piano. Most evenings, though, he is building software. More on the About page: https://ajaysachdev.com/about/
+A: Chess, badminton, travel, and slowly learning the piano. More on the About page: https://ajaysachdev.com/about/
 
 Q: What has Ajay Sachdev built?
 A: Ten projects. Five case studies: OpsPilot (AI assistant, in production), Trading Bot (paper trading by design), Uni-Nation Digital (family business website and inventory system), WhatsApp Smart (Chrome extension prototype) and SCS Cockpit (CIMA exam study engine, retired after he passed). Plus five tools built at work, shown on the site with dummy data only. Together the five case studies are 160,000+ lines of code.
