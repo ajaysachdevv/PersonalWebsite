@@ -38,7 +38,7 @@ Website, inventory system and analytics for the family fabric business running s
 - Receivables tracking with WhatsApp follow-up generation
 
 ### WhatsApp Smart: Chrome Extension Prototype
-Adds scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. ~16,000 lines of TypeScript. Privacy-first: messages stay in the browser unless the user sends one to the AI. 11 features built; unreleased prototype.
+Adds scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. ~16,000 lines of TypeScript. Privacy-first: message content stays in the browser unless the user selects text for the AI. 11 features built; unreleased prototype.
 
 ### SCS Cockpit: Exam Study Engine
 A zero-dependency browser study tool he built for his own CIMA Strategic Case Study: timed drills, spaced repetition, 5-dimension debrief scoring. 11,584 lines, no build step, 166 study items, 23 frameworks, 54 source PDFs normalised. He passed. Retired, job done. Case study: https://ajaysachdev.com/projects/scs-cockpit.html
@@ -108,7 +108,7 @@ Q: What is Hindi voice stock entry?
 A: Part of Uni-Nation Digital, the software for his family's uniform-fabric business (est. 1988). Warehouse staff hold fabric rolls in both hands, so stock is entered by voice in mixed Hindi and English. The parser understands fabric units (thaan, taaka, metre) and Hindi numbers. The system tracks ~2,000 products, 650+ customers and ~$2m of sales data. Case study: https://ajaysachdev.com/projects/uni-nation.html
 
 Q: What is WhatsApp Smart?
-A: A Chrome extension prototype that adds scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. 11 features, ~16,000 lines of TypeScript. Message content stays in the browser unless the user sends text to the AI. Never launched. Case study: https://ajaysachdev.com/projects/whatsapp-smart.html
+A: A Chrome extension prototype that adds scheduling, AI replies, tone adjustment and group summaries to WhatsApp Web. 11 features, ~16,000 lines of TypeScript. Message content stays in the browser unless the user selects text for the AI. Never launched. Case study: https://ajaysachdev.com/projects/whatsapp-smart.html
 
 Q: Is there a study tool for the CIMA Strategic Case Study exam?
 A: SCS Cockpit, the study engine Ajay built for his own CIMA Strategic Case Study: timed drills, spaced repetition, 166 study items, 23 frameworks, 11,584 lines, zero dependencies. He passed, and the tool is retired. Case study: https://ajaysachdev.com/projects/scs-cockpit.html
