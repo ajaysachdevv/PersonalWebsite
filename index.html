@@ -411,7 +411,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 /* ================= Terminal ================= */
 .terminal {
   position: fixed; inset: clamp(0.8rem, 2vw, 1.5rem); z-index: 100;
-  background: rgba(13, 12, 10, 0.97); border: 1px solid var(--paper-faint);
+  background: rgba(13, 12, 10, 0.99); border: 1px solid var(--paper-faint);
   display: none; flex-direction: column; box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.6);
 }
 .terminal.open { display: flex; }
@@ -433,9 +433,10 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 @media (max-width: 720px) { .term-body::before { display: none; } }
 .term-body .in { color: var(--credit); }
 /* your line vs its reply (Ajay 23/10/2026): what you typed sits in a faint band, bright; the reply is indented behind a hairline, dim */
-.term-body .you { margin: 0.9em -0.6em 0.1em; padding: 0.1em 0.6em; background: var(--ink-2); border-radius: var(--radius-1); color: var(--paper); }
+.terminal { --band: rgba(236, 231, 220, 0.12); --band-rule: rgba(236, 231, 220, 0.38); }
+.term-body .you { margin: 1em -0.6em 0.15em; padding: 0.12em 0.6em; background: var(--band); border-left: 3px solid var(--credit); border-radius: 0 var(--radius-1) var(--radius-1) 0; color: var(--paper); }
 .term-body .you .said { font-weight: 600; }
-.term-body .reply { padding-left: 1.6ch; border-left: 1px solid var(--rule); }
+.term-body .reply { padding-left: 1.6ch; margin-left: 0.2ch; border-left: 1px solid var(--band-rule); }
 .term-body .reply .hint { color: var(--paper-faint); }
 .term-body .out b { color: var(--paper); font-weight: 500; }
 .term-body .out .ok { color: var(--credit); }
@@ -485,7 +486,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
    light-scene tokens, with the card's double rule under the bar. Desktop keeps the dark terminal */
 @media (max-width: 720px) {
   .terminal {
-    --ink: var(--light-bg); --ink-2: var(--light-panel); --paper: var(--light-ink); --paper-dim: var(--light-ink-dim); --paper-faint: var(--light-ink-faint);
+    --ink: var(--light-bg); --ink-2: var(--light-panel); --band: rgba(28, 22, 13, 0.08); --band-rule: rgba(28, 22, 13, 0.3); --paper: var(--light-ink); --paper-dim: var(--light-ink-dim); --paper-faint: var(--light-ink-faint);
     --rule: var(--light-rule); --credit: var(--light-credit); --amber: var(--light-amber); --debit: var(--light-debit);
     background: var(--light-bg); border-color: var(--light-rule); box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.55);
   }
