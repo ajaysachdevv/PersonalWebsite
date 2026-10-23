@@ -303,7 +303,12 @@ h3.yr-num { margin: 0; font-weight: 400; }
 .yr-last .yr-num, .yr-static .yr-num { color: var(--credit); font-style: italic; }
 .yr-list { list-style: none; margin: clamp(1.2rem, 3vh, 2rem) 0 0; padding: 0; max-width: 32rem; display: grid; gap: 0.15rem; }
 .yr-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.32rem 0 0.32rem 0.7rem; border-left: 2px solid transparent; font-size: 0.92rem; line-height: 1.35; color: var(--paper-dim); }
-.yr-list li.new { color: var(--paper); border-left-color: var(--credit); }
+.yr-list li.new { color: var(--paper); border-left-color: var(--credit); font-size: 1.02rem; }
+/* live panels: the "new" group leads, older lines sit back */
+.yr-lab { margin-top: clamp(1.2rem, 3vh, 2rem); font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-2); text-transform: uppercase; color: var(--credit); }
+.yr-lab + .yr-list { margin-top: 0.5rem; }
+.yr-list li.old { font-size: 0.84rem; color: var(--paper-faint); }
+.yr-list li.new + li.old { margin-top: 0.9rem; }
 .yr-list .yr-when { font-family: var(--mono); font-size: var(--ms-2); letter-spacing: var(--tr-1); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--paper-dim); }
 .yr-list li.new .yr-when { color: var(--credit); }
 /* live (motion on): the static list stays for screen readers only */
@@ -427,6 +432,11 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
 /* phones: answers start at the top, no empty paper above the boot lines */
 @media (max-width: 720px) { .term-body::before { display: none; } }
 .term-body .in { color: var(--credit); }
+/* your line vs its reply (Ajay 23/10/2026): what you typed sits in a faint band, bright; the reply is indented behind a hairline, dim */
+.term-body .you { margin: 0.9em -0.6em 0.1em; padding: 0.1em 0.6em; background: var(--ink-2); border-radius: var(--radius-1); color: var(--paper); }
+.term-body .you .said { font-weight: 600; }
+.term-body .reply { padding-left: 1.6ch; border-left: 1px solid var(--rule); }
+.term-body .reply .hint { color: var(--paper-faint); }
 .term-body .out b { color: var(--paper); font-weight: 500; }
 .term-body .out .ok { color: var(--credit); }
 .term-body .out .warn { color: var(--amber); }
@@ -475,7 +485,7 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
    light-scene tokens, with the card's double rule under the bar. Desktop keeps the dark terminal */
 @media (max-width: 720px) {
   .terminal {
-    --ink: var(--light-bg); --paper: var(--light-ink); --paper-dim: var(--light-ink-dim); --paper-faint: var(--light-ink-faint);
+    --ink: var(--light-bg); --ink-2: var(--light-panel); --paper: var(--light-ink); --paper-dim: var(--light-ink-dim); --paper-faint: var(--light-ink-faint);
     --rule: var(--light-rule); --credit: var(--light-credit); --amber: var(--light-amber); --debit: var(--light-debit);
     background: var(--light-bg); border-color: var(--light-rule); box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.55);
   }
@@ -927,9 +937,12 @@ document.addEventListener('DOMContentLoaded', function () {
     yrTrack.className = 'yr-track';
     yrTrack.setAttribute('aria-hidden', 'true');
     yrTrack.innerHTML = marks.map(function (y, i) {
-      return '<div class="yr-panel' + (i === marks.length - 1 ? ' yr-last' : '') + '"><div class="yr-num">' + y + '</div><ol class="yr-list">' +
-        entries.filter(function (e) { return e.from <= y; }).map(function (e) {
-          return '<li' + (e.from === y ? ' class="new"' : '') + '><span>' + e.what + '</span><span class="yr-when">' + when(e, y) + '</span></li>';
+      /* new that year first, right under the numeral, so the eye lands in the same spot every panel (Ajay 23/10/2026); the rest follow, smaller and dimmer */
+      var fresh = entries.filter(function (e) { return e.from === y; }), older = entries.filter(function (e) { return e.from < y; });
+      return '<div class="yr-panel' + (i === marks.length - 1 ? ' yr-last' : '') + '"><div class="yr-num">' + y + '</div>' +
+        '<div class="yr-lab">New in ' + y + '</div><ol class="yr-list">' +
+        fresh.concat(older).map(function (e) {
+          return '<li class="' + (e.from === y ? 'new' : 'old') + '"><span>' + e.what + '</span><span class="yr-when">' + when(e, y) + '</span></li>';
         }).join('') + '</ol></div>';
     }).join('');
     yrPin.appendChild(yrTrack);
@@ -1099,9 +1112,10 @@ document.addEventListener('DOMContentLoaded', function () {
     kbLastScore = bestScore;
     return bestScore >= 2 ? best : null;
   }
+  var inReply = false;
   function tprint(html, cls) {
     var div = document.createElement('div');
-    div.className = cls || 'out';
+    div.className = cls || (inReply ? 'out reply' : 'out');
     div.innerHTML = termPhone && typeof html === 'string' ? stackCols(html) : html;
     tbody.appendChild(div);
     tbody.scrollTop = tbody.scrollHeight;
@@ -1126,7 +1140,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }).join('');
   }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-  function echo(cmd) { tprint('<span class="in">' + PS1 + '</span> ' + esc(cmd)); }
+  function echo(cmd) { inReply = false; tprint('<span class="in">' + PS1 + '</span> <span class="said">' + esc(cmd) + '</span>', 'out you'); inReply = true; }
   var COMMANDS = {
     help: function (arg) {
       if (arg) {
@@ -1192,7 +1206,7 @@ document.addEventListener('DOMContentLoaded', function () {
       setTimeout(function () { location.href = 'projects/'; }, 450);
     },
     contact: function () { tprint('email      ajay@ajaysachdev.com<br>linkedin   linkedin.com/in/ajayy-sachdev<br><br>fastest route: email. response time: usually same day.'); },
-    clear: function () { tbody.innerHTML = ''; },
+    clear: function () { tbody.innerHTML = ''; inReply = false; },
     exit: function () { closeTerm(); },
     whoami: function () { tprint('a visitor. to learn about me: cat about'); },
     sudo: function () { tprint('nice try. this ledger is read-only.'); },
@@ -1616,7 +1630,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   /* print a matched answer and let the owl react to it */
   function answer(fact) {
-    var line = tprint(esc(fact.answer) + (fact.cmd ? '<br><br>try: <b class="try-cmd">' + esc(fact.cmd) + '</b>' : ''));
+    var line = tprint(esc(fact.answer) + (fact.cmd ? '<br><br><span class="hint">try: <b class="try-cmd">' + esc(fact.cmd) + '</b></span>' : ''));
     var state = fact.id === 'offtopic' ? 'off' : fact.id === 'rude' ? 'rude' : WARM[fact.id] ? 'warm' : kbLastScore >= 5 ? 'sure' : 'maybe';
     chipFact = fact;
     if (owl) owl.verdict(state, line);
