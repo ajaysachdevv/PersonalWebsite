@@ -504,7 +504,8 @@ footer { padding: clamp(6rem, 12vw, 10rem) 0 2rem; }
   opacity: 1; transform: none; pointer-events: auto;
   transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), width 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.15s cubic-bezier(0.23, 1, 0.32, 1);
 }
-body:has(.site-nav.is-tucked) .owl-dock.show { opacity: 0; transform: translateY(12px); pointer-events: none; }
+/* phones: hides 1.5s after the notch tucks, so a short scroll does not take it away (Ajay 22/10/2026); comes back at once on scroll up */
+body:has(.site-nav.is-tucked) .owl-dock.show { opacity: 0; transform: translateY(12px); pointer-events: none; transition-delay: 1.5s, 1.5s, 0s, 0s; }
 /* phones: the one stretch where it stays out even while the notch is tucked, the two doors before the footer */
 body:has(.site-nav.is-tucked) .owl-dock.show.keep { opacity: 1; transform: none; pointer-events: auto; }
 /* never visibility:hidden: it stays in the tab order (last stop, after the footer) and keyboard focus shows it anywhere */
@@ -1804,19 +1805,27 @@ document.addEventListener('DOMContentLoaded', function () {
     var dOwl = dock.querySelector('.dk-owl'), dTag = dock.querySelector('.dk-tag');
     dOwl.innerHTML = OWL_SVG;
     var dPupil = dOwl.querySelector('.pupil'), dHead = dOwl.querySelector('.head');
-    var hero = document.getElementById('top'), foot = document.getElementById('contact'), navEl = document.getElementById('nav'), books = document.getElementById('books');
+    var hero = document.getElementById('top'), foot = document.getElementById('contact'), navEl = document.getElementById('nav'), books = document.getElementById('books'), footPrompt = document.getElementById('foot-prompt');
+    /* the dock steps aside once the footer's own prompt is fully on screen (Ajay 22/10/2026: it used to go at the first sight of the footer); where the prompt is hidden (phones) the footer's top half is the cue */
+    function footerTakesOver() {
+      var p = footPrompt && footPrompt.getBoundingClientRect();
+      if (p && p.height > 0) return p.bottom < innerHeight;
+      return !!foot && foot.getBoundingClientRect().top < innerHeight * 0.55;
+    }
     var dFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches, hinted = false;
-    function widen() { dock.style.setProperty('--dk-w', (64 + dTag.scrollWidth) + 'px'); dock.classList.add('wide'); }
+    function widen() { clearTimeout(narrowT); dock.style.setProperty('--dk-w', (64 + dTag.scrollWidth) + 'px'); dock.classList.add('wide'); }
     /* only focus that arrived by Tab keeps the label open: a click, or focus handed back on close, does not */
     var kbFocus = false;
-    function narrow() { if (!kbFocus) dock.classList.remove('wide'); }
+    /* the label lingers 0.9s after the pointer leaves (Ajay 22/10/2026); coming back cancels the fold */
+    var narrowT = 0;
+    function narrow() { clearTimeout(narrowT); if (!kbFocus) narrowT = setTimeout(function () { dock.classList.remove('wide'); }, 900); }
     dockPlace = function () {
       var show = hero.getBoundingClientRect().bottom < innerHeight * 0.35 &&
-        !(foot && foot.getBoundingClientRect().top < innerHeight * 0.85) && !term.classList.contains('open');
+        !footerTakesOver() && !term.classList.contains('open');
       dock.classList.toggle('show', show);
       dock.classList.toggle('keep', show && !dFine && books.getBoundingClientRect().top < innerHeight * 0.6);
       /* phones get the label once, the first time it appears, then it folds away */
-      if (show && !dFine && !hinted && !navEl.classList.contains('is-tucked')) { hinted = true; widen(); setTimeout(function () { dock.classList.remove('wide'); }, 2600); }
+      if (show && !dFine && !hinted && !navEl.classList.contains('is-tucked')) { hinted = true; widen(); setTimeout(function () { dock.classList.remove('wide'); }, 4200); }
     };
     var dTick = false;
     addEventListener('scroll', function () {
